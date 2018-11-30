@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.guoxunkai.springSecurity.config;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

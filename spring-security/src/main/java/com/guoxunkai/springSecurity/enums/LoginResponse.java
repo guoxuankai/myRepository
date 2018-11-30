@@ -1,4 +1,4 @@
-package com.example.demo.enums;
+package com.guoxunkai.springSecurity.enums;
 
 public class LoginResponse {
 

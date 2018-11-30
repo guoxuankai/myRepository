@@ -1,4 +1,4 @@
-package com.example.demo.ui;
+package com.guoxunkai.springSecurity.ui;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

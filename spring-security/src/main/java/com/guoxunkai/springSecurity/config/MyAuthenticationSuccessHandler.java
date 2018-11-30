@@ -1,6 +1,6 @@
-package com.example.demo.config;
+package com.guoxunkai.springSecurity.config;
 
-import com.example.demo.enums.LoginResponse;
+import com.guoxunkai.springSecurity.enums.LoginResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

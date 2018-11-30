@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.guoxunkai.springSecurity.config;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
