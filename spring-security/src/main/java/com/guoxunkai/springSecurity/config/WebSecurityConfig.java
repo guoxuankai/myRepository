@@ -29,8 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+//    @Autowired
+//    private UserDetailsService userDetailsService;
 
 
     @Bean
@@ -48,8 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(myAuthenticationFailureHandler)
                 .and().rememberMe()
                 .tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(2000)
-                .userDetailsService(userDetailsService)
+                .tokenValiditySeconds(1209600)
+//                .userDetailsService(userDetailsService)
                 .and().authorizeRequests()
                 .antMatchers("/login","/imgCode","/hello")
                 .permitAll()

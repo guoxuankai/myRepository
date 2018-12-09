@@ -3,6 +3,7 @@ package com.guoxunkai.springSecurity.config;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+//如果定义了自定义验证，此代码将不会执行
 @Component
 public class MyPasswordEncoder implements PasswordEncoder {
     @Override
