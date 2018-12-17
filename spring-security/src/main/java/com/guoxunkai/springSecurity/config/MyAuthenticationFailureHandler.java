@@ -14,6 +14,7 @@ import java.io.IOException;
 
 @Component
 public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler {
+
     @Autowired
     private ObjectMapper objectMapper;
 

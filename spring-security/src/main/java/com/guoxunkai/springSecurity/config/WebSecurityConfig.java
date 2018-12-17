@@ -6,12 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import javax.jnlp.PersistenceService;
 import javax.sql.DataSource;
 
 @Configuration
@@ -29,12 +27,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
-//    @Autowired
-//    private UserDetailsService userDetailsService;
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
 
     @Bean
-    public PersistentTokenRepository persistentTokenRepository(){
+    public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
         jdbcTokenRepository.setDataSource(dataSource);
         return jdbcTokenRepository;
@@ -49,11 +47,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().rememberMe()
                 .tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(1209600)
-//                .userDetailsService(userDetailsService)
                 .and().authorizeRequests()
-                .antMatchers("/login","/imgCode","/hello")
+                .antMatchers("/login", "/imgCode", "/code/sms")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();
+        http.apply(smsCodeAuthenticationSecurityConfig);
     }
 }
