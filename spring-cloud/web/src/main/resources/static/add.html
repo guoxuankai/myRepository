@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/pubilc.css">
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var employee = new Object();
+
+
+
+            //获取URL所有参数
+            function GetUrlParms() {
+                var args = new Object();
+                var query = location.search.substring(1); //获取查询串
+                var pairs = query.split("&"); //在逗号处断开
+                for (var i = 0; i < pairs.length; i++) {
+                    var pos = pairs[i].indexOf('='); //查找name=value
+                    if (pos == -1) continue; //如果没有找到就跳过
+                    var argname = pairs[i].substring(0, pos); //提取name
+                    var value = pairs[i].substring(pos + 1); //提取value
+                    args[argname] = unescape(value); //存为属性
+                }
+                return args;
+            }
+
+            var parms = GetUrlParms();
+
+            if(parms.type=="update"){
+                $('#t1').html("修改");
+                var id = parms.id;
+                $.ajax({
+                    type : "get",
+                    url : "/office/emp/emp/"+id,
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: "json",
+                    success : function(data, status) {
+                        employee = data;
+                        console.log(employee);
+                        var name = $('#f1').attr("value",employee.name);
+                        var pwd = $('#f2').attr("value",employee.pwd);
+                        var uname = $('#f3').attr("value",employee.uname);
+                        // var birthday = $('#f4').attr("value",employee.birthday);
+                        var wages = $('#f5').attr("value",employee.wages);
+                        var hobby = $('#f6').attr("value",employee.hobby);
+                        var mibiao = $('#f7').attr("value",employee.mibiao);
+                        var midaan = $('#f8').attr("value",employee.midaan);
+                        var options1 = $("#s1").children();
+                        var options2 = $("#s2").children();
+
+                        if(employee.level==1){
+                            options1[1].selected=true;
+                        }else if(employee.level==2){
+                            options1[2].selected=true;
+                        }else if(employee.level==3){
+                            options1[3].selected=true;
+                        }else if(employee.level==4){
+                            options1[4].selected=true;
+                        }
+
+                        if(employee.six==1){
+                            options2[1].selected=true;
+                        }else{
+                            options2[2].selected=true;
+                        }
+
+                        $.ajax({
+                            type : "get",
+                            url : "/office/dept/getAll",
+                            success : function(data, status) {
+                                $.each(data,function(index,item){
+
+
+                                    if(item.id==employee.department.id){
+                                        $("#s3").append(
+                                            "<option selected='true' value="+item.id+">" + item.name+ "</option>");
+                                    }else{
+                                        $("#s3").append(
+                                            "<option value="+item.id+">" + item.name+ "</option>");
+                                    }
+
+
+
+                                });
+
+
+                            },
+                        });
+
+                    },
+                });
+            }else{
+                $('#t1').html("新增");
+                $.ajax({
+                    type : "get",
+                    url : "/office/dept/getAll",
+                    success : function(data, status) {
+                        $.each(data,function(index,item){
+                            $("#s3").append(
+                                "<option value="+item.id+">" + item.name+ "</option>");
+                        });
+
+
+                    },
+                });
+            }
+
+            $("#backIndex").click(function (obj) {
+                window.location.href='/list.html';
+            });
+
+
+
+            $("#tijiao").click(function (obj) {
+
+                var name = $('#f1').val();
+                var pwd = $('#f2').val();
+                var uname = $('#f3').val();
+                // var birthday = $('#f4').val();
+                var wages = $('#f5').val();
+                var hobby = $('#f6').val();
+                var mibiao = $('#f7').val();
+                var midaan = $('#f8').val();
+                var level = $('#s1 option:selected').val();
+                var six = $('#s2 option:selected').val();
+                var deptid = $('#s3 option:selected').val();
+
+                var obj = new Object();
+
+                obj.name=name;
+                obj.pwd=pwd;
+                obj.uname=uname;
+                // obj.birthday =birthday;
+                obj.wages=wages;
+                obj.hobby=hobby;
+                obj.mibiao=mibiao;
+                obj.midaan=midaan;
+                obj.level=level;
+                obj.six=six;
+                var department = new Object();
+                department.id=deptid;
+                obj.department=department;
+
+
+                if(parms.type=="update"){
+                    obj.id=parms.id;;
+                    var b2 =JSON.stringify(obj);
+
+
+                    $.ajax({
+                        type : "put",
+                        url : "/office/emp/emp",
+                        contentType: 'application/json; charset=UTF-8',
+                        data: b2,
+                        dataType: "json",
+                        error:function(jqXHR){
+                            alert("修改失败，薪水值为数字类型，且部门不能为空");
+                        },
+                        success : function(data, status) {
+
+                            if(data=='SUCCESS'){
+                                alert('修改成功');
+                                url = "list.html";//此处拼接内容
+                                window.location.href = url;
+                            }else{
+                                alert("修改失败，薪水值为数字类型，且部门不能为空");
+                            }
+
+                        },
+                    });
+
+                }else{
+
+                    var b2 =JSON.stringify(obj);
+                    $.ajax({
+                        type : "post",
+                        url : "/office/emp/emp",
+                        contentType: 'application/json; charset=UTF-8',
+                        data: b2,
+                        dataType: "json",
+                        error:function(jqXHR){
+                            alert("新增失败，薪水值为数字类型，且部门不能为空");
+                        },
+                        success : function(data, status) {
+
+                            if(data=='SUCCESS'){
+                                alert('新增成功');
+                                url = "list.html";//此处拼接内容
+                                window.location.href = url;
+                            }else{
+                                alert("新增失败，薪水值为数字类型，且部门不能为空");
+                            }
+
+                        },
+                    });
+
+                }
+
+
+
+
+
+
+
+            });
+
+
+
+        });
+    </script>
+</head>
+<body>
+<form>
+    <div class="kuan">
+        <h2> <label id="t1"></label> </h2>
+        员工账号：<input id="f1" type="text" style="height: 20px"><br/>
+        员工密码：<input id="f2" type="text"style="height: 20px"><br/>
+        员工姓名：<input id="f3" type="text" style="height: 20px"><br/>
+        员工工资：<input id="f5" type="text" style="height: 20px"><br/>
+        员工爱好：<input id="f6" type="text"style="height: 20px"><br/>
+        员工密保人：<input id="f7" type="text" style="height: 20px"><br/>
+        员工密保答案：<input id="f8" type="text"style="height: 20px"><br/>
+        员工级别：
+        <select  id="s1" style="height: 27px;width: 170px" >
+            <option value ="">---请选择---</option>
+            <option value ="1">王者</option>
+            <option value ="2">黄金</option>
+            <option value="3">青铜</option>
+            <option value="4">白银</option>
+        </select><br/>
+        员工性别：
+        <select   id="s2" style="height: 27px;width: 170px" >
+            <option value ="">---请选择---</option>
+            <option value ="1">男</option>
+            <option value="2">女</option>
+        </select><br/>
+        所属部门：
+        <select id="s3" style="height: 27px;width: 170px" >
+            <option value ="">---请选择---</option>
+        </select><br/>
+        <button id="tijiao" type="button">提交</button>
+        <button id="backIndex" type="button">返回</button>
+    </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" href="css/pubilc.css">
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $.ajax({
+                type : "get",
+                url : "/office/dept/getAll", //此次url改为真正需要的url
+                success : function(data, status) {
+                    $.each(data, function(index, item) {
+                        $("#s1").append(  //此处向select中循环绑定数据
+                            "<option value="+item.id+">" + item.name+ "</option>");
+                    });
+
+                },
+            });
+
+
+
+            $("#register").click(function (obj) {
+                var obj = new Object();
+                var name = $('#name').val();
+                var pwd = $('#pwd').val();
+                var deptid = $('#s1 option:selected').val();
+                obj.name=name;
+                obj.pwd=pwd;
+                var department = new Object();
+                department.id=deptid;
+                obj.department=department;
+                var user =JSON.stringify(obj);
+
+
+                $.ajax({
+                    type: "post",
+                    url: "/user/user/register",
+                    contentType: 'application/json; charset=UTF-8',
+                    data: user,
+                    dataType: "json",
+                    success: function (data, status) {
+                        if(data=='SUCCESS'){
+                            alert('注册成功');
+                        }else{
+                            alert('注册失败');
+                        }
+                        url = "login.html";
+                        window.location.href = url;
+
+                    },
+                });
+
+
+
+            });
+
+
+
+
+        });
+    </script>
+</head>
+<body>
+
+<form>
+    <div class="kuan">
+        <h2> 注 册 </h2>
+        用户名：<input id="name" type="text" style="height: 20px"><br/>
+        密码：<input id="pwd" type="text"style="height: 20px"><br/>
+        部门名称：
+        <select id="s1" style="height: 27px;width: 170px" >
+            <option value ="">--请选择--</option >
+        </select><br/>
+        <!--验证码：<input type="text"style="height: 20px">-->
+        <!--<input type="text"style="height: 20px"placeholder="这里下载一个验证码"><br/>-->
+        <!--<a href="pwd1.html">忘记密码</a>-->
+        <!--<a href="login.html">已有账号</a><br/>-->
+        <button id="register" type="button">注册</button>
+    </div>
+</form>
+
+</body>
+</html>
