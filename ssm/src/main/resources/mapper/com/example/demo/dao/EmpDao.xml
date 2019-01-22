@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.EmpDao">
+
+    <resultMap id="empResultMap" type="com.example.demo.entity.Emp">
+        <id column="e_id" property="id" />
+        <result column="e_name" property="name" />
+        <association property="dept" javaType="com.example.demo.entity.Dept">
+            <id column="d_id" property="id" />
+            <result column="d_name" property="name" />
+        </association>
+    </resultMap>
+
+
+    <select id="getAll"  resultMap="empResultMap" >
+        select A.e_id,A.e_name,B.d_id,B.d_name from emp A left join dept B on A.e_deptid=B.d_id
+    </select>
+</mapper>
