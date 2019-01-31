@@ -10,11 +10,5 @@
     <input type="file" name="file"/>
     <input type="submit" value="导入Excel">
 </form>
-<br>
-<form action="/upload" enctype="multipart/form-data" method="post">
-    <input type="file" name="file"/>
-    <input type="submit" value="上传文件">
-</form>
-
 </body>
 </html>
