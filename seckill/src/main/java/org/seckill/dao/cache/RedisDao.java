@@ -23,6 +23,11 @@ public class RedisDao {
 
     private RuntimeSchema<Seckill> schema = RuntimeSchema.createFrom(Seckill.class);
 
+    /**
+     * 从redis取seckill对象（反序列化）
+     * @param seckillId
+     * @return
+     */
     public Seckill getSeckill(long seckillId) {
         //redis操作逻辑
         try {
@@ -51,6 +56,12 @@ public class RedisDao {
         return null;
     }
 
+
+    /**
+     * 将seckill对象存入redis（序列化）
+     * @param seckill
+     * @return
+     */
     public String putSeckill(Seckill seckill) {
         // set Object(Seckill) -> 序列化 -> byte[]
         try {
