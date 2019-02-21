@@ -104,6 +104,7 @@ public class SearchServiceImpl implements ISearchService {
 
     @KafkaListener(topics = INDEX_TOPIC)
     private void handleMessage(String content) {
+        System.out.println("接收消息："+content);
         try {
             HouseIndexMessage message = objectMapper.readValue(content, HouseIndexMessage.class);
 
@@ -344,7 +345,7 @@ public class SearchServiceImpl implements ISearchService {
 
         if (rentSearch.getRentWay() > -1) {
             boolQuery.filter(
-                QueryBuilders.termQuery(HouseIndexKey.RENT_WAY, rentSearch.getRentWay())
+                    QueryBuilders.termQuery(HouseIndexKey.RENT_WAY, rentSearch.getRentWay())
             );
         }
 
@@ -452,7 +453,7 @@ public class SearchServiceImpl implements ISearchService {
                 .setQuery(boolQuery)
                 .addAggregation(
                         AggregationBuilders.terms(HouseIndexKey.AGG_DISTRICT)
-                        .field(HouseIndexKey.DISTRICT)
+                                .field(HouseIndexKey.DISTRICT)
                 ).setSize(0);
 
         logger.debug(requestBuilder.toString());
@@ -533,11 +534,11 @@ public class SearchServiceImpl implements ISearchService {
         boolQuery.filter(QueryBuilders.termQuery(HouseIndexKey.CITY_EN_NAME, mapSearch.getCityEnName()));
 
         boolQuery.filter(
-            QueryBuilders.geoBoundingBoxQuery("location")
-                .setCorners(
-                        new GeoPoint(mapSearch.getLeftLatitude(), mapSearch.getLeftLongitude()),
-                        new GeoPoint(mapSearch.getRightLatitude(), mapSearch.getRightLongitude())
-                ));
+                QueryBuilders.geoBoundingBoxQuery("location")
+                        .setCorners(
+                                new GeoPoint(mapSearch.getLeftLatitude(), mapSearch.getLeftLongitude()),
+                                new GeoPoint(mapSearch.getRightLatitude(), mapSearch.getRightLongitude())
+                        ));
 
         SearchRequestBuilder builder = this.esClient.prepareSearch(INDEX_NAME)
                 .setTypes(INDEX_TYPE)

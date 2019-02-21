@@ -22,23 +22,23 @@ public class ElasticSearchConfig {
     @Value("${elasticsearch.port}")
     private int esPort;
 
-    @Value("${elasticsearch.cluster.name}")
+    @Value("elasticsearch")
     private String esName;
 
     @Bean
     public TransportClient esClient() throws UnknownHostException {
         Settings settings = Settings.builder()
-                .put("cluster.name", this.esName)
-//                .put("cluster.name", "elasticsearch")
+//                .put("cluster.name", this.esName)
+                .put("cluster.name", "elasticsearch")
                 .put("client.transport.sniff", true)
                 .build();
 
         InetSocketTransportAddress master = new InetSocketTransportAddress(
-            InetAddress.getByName(esHost), esPort
+                InetAddress.getByName(esHost), esPort
 //          InetAddress.getByName("10.99.207.76"), 8999
         );
 
-        TransportClient client = new PreBuiltTransportClient(settings)
+        TransportClient client = new PreBuiltTransportClient(Settings.EMPTY)
                 .addTransportAddress(master);
 
         return client;
