@@ -5,7 +5,7 @@ spring:
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
 
-mybatis: 
+mybatis:
   mapper-locations:
   - classpath:com/example/demo/mapper/*.xml
   type-aliases-package: com.example.demo.entity
@@ -13,5 +13,3 @@ mybatis:
 logging:
   level:
     com.example.demo.dao : debug
-
-    

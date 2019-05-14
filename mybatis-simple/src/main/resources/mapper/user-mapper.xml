@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="com.example.demo.dao.UserDao">
+    <select id="getUserInfo" resultType="com.example.demo.entity.User">
+        select * from tb_user
+        where id = ?;
+    </select>
+
+    <update id="updateUserName">
+        update tb_user set name = ?
+        where id = ?
+    </update>
+
+    <insert id="insertUser">
+        insert into tb_user
+        values(?, ?, ?, ?);
+    </insert>
+</mapper>
