@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.user.mapper.ShipperInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.user.entity.ShipperInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="shipper_code" jdbcType="VARCHAR" property="shipperCode"/>
+        <result column="shipper_name" jdbcType="VARCHAR" property="shipperName"/>
+        <result column="contacts" jdbcType="VARCHAR" property="contacts"/>
+        <result column="contact_way" jdbcType="VARCHAR" property="contactWay"/>
+        <result column="provincial" jdbcType="VARCHAR" property="provincial"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="district" jdbcType="VARCHAR" property="district"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, shipper_code, shipper_name, contacts, contact_way, provincial, city,
+        district, address, create_by, create_time, last_update_by, last_update_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_shipper_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByShipperCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_shipper_info
+        where id in (select shipper_id from t_customer_shipper_info where customer_id = #{customerId,jdbcType=INTEGER})
+        and shipper_code = #{shipperCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByShipperName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_shipper_info
+        where id in (select shipper_id from t_customer_shipper_info where customer_id = #{customerId,jdbcType=INTEGER})
+        and shipper_name = #{shipperName,jdbcType=VARCHAR}
+        <if test="shipperId != null">
+            and id != #{shipperId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectShipperListByCustomerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_shipper_info
+        where id in (select shipper_id from t_customer_shipper_info where customer_id = #{customerId,jdbcType=INTEGER})
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        shipper_code, shipper_name
+        from t_shipper_info
+        <where>
+            <if test="customerCode != null">
+                id in (select shipper_id from t_customer_shipper_info where customer_id =
+                (select id from t_customer_info where customer_code = #{customerCode,jdbcType=VARCHAR}))
+            </if>
+        </where>
+        GROUP BY shipper_code
+    </select>
+
+    <select id="selectByCustomerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        id, shipper_code, shipper_name, contacts, contact_way, provincial, city,
+        district, address, create_by, create_time, last_update_by, last_update_time
+        from t_shipper_info
+        where id in (select shipper_id from t_customer_shipper_info where customer_id = #{id,jdbcType=INTEGER})
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_shipper_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.user.entity.ShipperInfo">
+        insert into t_shipper_info (id, shipper_code, shipper_name,
+            contacts, contact_way,
+            provincial, city, district,
+            address, create_by, create_time,
+            last_update_by, last_update_time)
+        values (#{id,jdbcType=INTEGER}, #{shipperCode,jdbcType=VARCHAR}, #{shipperName,jdbcType=VARCHAR},
+            #{contacts,jdbcType=VARCHAR}, #{contactWay,jdbcType=VARCHAR},
+            #{provincial,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR},
+            #{address,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+            #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.user.entity.ShipperInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_shipper_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="shipperCode != null">
+                shipper_code,
+            </if>
+            <if test="shipperName != null">
+                shipper_name,
+            </if>
+            <if test="contacts != null">
+                contacts,
+            </if>
+            <if test="contactWay != null">
+                contact_way,
+            </if>
+            <if test="provincial != null">
+                provincial,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="district != null">
+                district,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="shipperCode != null">
+                #{shipperCode,jdbcType=VARCHAR},
+            </if>
+            <if test="shipperName != null">
+                #{shipperName,jdbcType=VARCHAR},
+            </if>
+            <if test="contacts != null">
+                #{contacts,jdbcType=VARCHAR},
+            </if>
+            <if test="contactWay != null">
+                #{contactWay,jdbcType=VARCHAR},
+            </if>
+            <if test="provincial != null">
+                #{provincial,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.user.entity.ShipperInfo">
+        update t_shipper_info
+        <set>
+            <if test="shipperCode != null">
+                shipper_code = #{shipperCode,jdbcType=VARCHAR},
+            </if>
+            <if test="shipperName != null">
+                shipper_name = #{shipperName,jdbcType=VARCHAR},
+            </if>
+            <if test="contacts != null">
+                contacts = #{contacts,jdbcType=VARCHAR},
+            </if>
+            <if test="contactWay != null">
+                contact_way = #{contactWay,jdbcType=VARCHAR},
+            </if>
+            <if test="provincial != null">
+                provincial = #{provincial,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                district = #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.user.entity.ShipperInfo">
+        update t_shipper_info
+        set shipper_code = #{shipperCode,jdbcType=VARCHAR},
+            shipper_name = #{shipperName,jdbcType=VARCHAR},
+            contacts = #{contacts,jdbcType=VARCHAR},
+            contact_way = #{contactWay,jdbcType=VARCHAR},
+            provincial = #{provincial,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            district = #{district,jdbcType=VARCHAR},
+            address = #{address,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.user.entity.ShipperInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_shipper_info
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="shipperCode != null and shipperCode != ''">
+                and shipper_code = #{shipperCode,jdbcType=VARCHAR}
+            </if>
+            <if test="shipperName != null and shipperName != ''">
+                and shipper_name = #{shipperName,jdbcType=VARCHAR}
+            </if>
+            <if test="contacts != null and contacts != ''">
+                and contacts = #{contacts,jdbcType=VARCHAR}
+            </if>
+            <if test="contactWay != null and contactWay != ''">
+                and contact_way = #{contactWay,jdbcType=VARCHAR}
+            </if>
+            <if test="provincial != null and provincial != ''">
+                and provincial = #{provincial,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="district != null and district != ''">
+                and district = #{district,jdbcType=VARCHAR}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastUpdateBy != null and lastUpdateBy != ''">
+                and last_update_by = #{lastUpdateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">
+                and last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByShipperCodeList" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        shipper_code, shipper_name
+        from t_shipper_info
+        where shipper_code in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+        GROUP BY shipper_code
+    </select>
+
+    <insert id="insertList" parameterType="java.util.List" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_shipper_info(shipper_code, shipper_name,contacts, contact_way,
+        provincial, city, district,address, create_by,
+        create_time,last_update_by, last_update_time)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.shipperCode,jdbcType=VARCHAR},
+            #{item.shipperName,jdbcType=VARCHAR},#{item.contacts,jdbcType=VARCHAR},
+            #{item.contactWay,jdbcType=VARCHAR},#{item.provincial,jdbcType=VARCHAR}, #{item.city,jdbcType=VARCHAR},
+            #{item.district,jdbcType=VARCHAR},#{item.address,jdbcType=VARCHAR}, #{item.createBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},#{item.lastUpdateBy,jdbcType=VARCHAR},
+            #{item.lastUpdateTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+</mapper>

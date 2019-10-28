@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.logistics.mapper.LogisticsCollectorMapper">
+
+    <insert id="insertUpdateSelective" parameterType="com.brandslink.cloud.logistics.model.LogisticsCollectorModel">
+        insert into t_logistics_collector
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="collectorCode != null">
+                collector_code,
+            </if>
+            <if test="collectorName != null">
+                collector_name,
+            </if>
+            <if test="collector != null">
+                collector,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="warehouseCollectType != null">
+                warehouse_collect_type,
+            </if>
+            <if test="receiveCountry != null">
+                receive_country,
+            </if>
+            <if test="receiveState != null">
+                receive_state,
+            </if>
+            <if test="receiveCity != null">
+                receive_city,
+            </if>
+            <if test="receiveAddress != null">
+                receive_address,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="collectorCode != null">
+                #{collectorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="collectorName != null">
+                #{collectorName,jdbcType=VARCHAR},
+            </if>
+            <if test="collector != null">
+                #{collector,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="warehouseCollectType != null">
+                #{warehouseCollectType,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="receiveCountry != null">
+                #{receiveCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveState != null">
+                #{receiveState,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveCity != null">
+                #{receiveCity,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveAddress != null">
+                #{receiveAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        collector_code = VALUES(collector_code),
+        collector_name = VALUES(collector_name),
+        collector = VALUES(collector),
+        mobile = VALUES(mobile),
+        is_valid = VALUES(is_valid),
+        warehouse_collect_type = VALUES(warehouse_collect_type),
+        receive_country = VALUES(receive_country),
+        receive_state = VALUES(receive_state),
+        receive_city = VALUES(receive_city),
+        receive_address = VALUES(receive_address),
+        update_by = VALUES(update_by)
+    </insert>
+
+    <select id="page" parameterType="com.brandslink.cloud.logistics.model.LogisticsCollectorModel"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_logistics_collector
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="collectorCode != null and collectorCode != ''">
+                and collector_code = #{collectorCode,jdbcType=VARCHAR}
+            </if>
+            <if test="collectorName != null and collectorName != ''">
+                and collector_name like "%"#{collectorName,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="collector != null and collector != ''">
+                and collector = #{collector,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="isValid != null and isValid != ''">
+                and is_valid = #{isValid,jdbcType=TINYINT}
+            </if>
+            <if test="warehouseCollectType != null and warehouseCollectType != ''">
+                and warehouse_collect_type =
+                #{warehouseCollectType,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler}
+            </if>
+            <if test="receiveCountry != null and receiveCountry != ''">
+                and receive_country = #{receiveCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="receiveState != null and receiveState != ''">
+                and receive_state = #{receiveState,jdbcType=VARCHAR}
+            </if>
+            <if test="receiveCity != null and receiveCity != ''">
+                and receive_city = #{receiveCity,jdbcType=VARCHAR}
+            </if>
+            <if test="receiveAddress != null and receiveAddress != ''">
+                and receive_address = #{receiveAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <resultMap id="selectMethodListByCollectorIdResultMap" type="com.brandslink.cloud.logistics.model.CollectorMethodModel">
+        <id column="collector_id" jdbcType="BIGINT" property="collectorId"/>
+        <result column="provider_id" jdbcType="BIGINT" property="providerId"/>
+        <result column="logistics_shortened" jdbcType="VARCHAR" property="logisticsShortened"/>
+        <result column="logistics_code" jdbcType="VARCHAR" property="logisticsCode"/>
+        <result column="method_id" jdbcType="BIGINT" property="methodId"/>
+        <result column="logistics_method_name" jdbcType="VARCHAR" property="logisticsMethodName"/>
+        <result column="logistics_method_code" jdbcType="VARCHAR" property="logisticsMethodCode"/>
+        <result column="is_valid" jdbcType="TINYINT" property="isValidMethod"/>
+    </resultMap>
+    <select id="selectMethodListByCollectorId"
+            resultMap="selectMethodListByCollectorIdResultMap">
+        select
+        r.collector_id,
+        r.provider_id,
+        p.logistics_shortened,
+        p.logistics_code,
+        r.method_id,
+        m.logistics_method_name,
+        m.logistics_method_code,
+        m.is_valid
+        from t_method_collector_relation r
+        left join t_logistics_provider p on r.provider_id = p.id
+        left join t_logistics_method m on r.method_id = m.id
+        where r.collector_id = #{collectorId,jdbcType=BIGINT}
+        order by m.is_valid ASC
+    </select>
+
+    <resultMap id="getByCodeResultMap" type="com.brandslink.cloud.logistics.entity.centre.CollectorVo">
+        <result column="collector_name" jdbcType="VARCHAR" property="collectorName"/>
+        <result column="method_name" jdbcType="VARCHAR" property="methodName"/>
+        <result column="collect_type" jdbcType="VARCHAR" property="collectType"/>
+    </resultMap>
+    <select id="getByCode" parameterType="map" resultMap="getByCodeResultMap">
+    select
+    t4.warehouse_collect_type collect_type,
+    t4.collector_name collector_name,
+    t.method_name
+    from (
+    select id mid,(
+        select id
+        from t_logistics_provider
+        where logistics_code=#{logisticsCode,jdbcType=VARCHAR}
+        ) pid,logistics_method_name method_name
+        from t_logistics_method
+        where logistics_method_code=#{methodCode,jdbcType=VARCHAR}
+        and provider_id=(select id from t_logistics_provider where logistics_code=#{logisticsCode,jdbcType=VARCHAR})
+    ) t join t_method_collector_relation t3
+    on t.pid = t3.provider_id
+    and  t.mid=t3.method_id
+    and t3.warehouse = #{warehouseCode,jdbcType=VARCHAR}
+    join t_logistics_collector t4 on t3.collector_id = t4.id
+    </select>
+
+    <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.logistics.model.LogisticsCollectorModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="collector_code" jdbcType="VARCHAR" property="collectorCode"/>
+        <result column="collector_name" jdbcType="VARCHAR" property="collectorName"/>
+        <result column="collector" jdbcType="VARCHAR" property="collector"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="is_valid" jdbcType="TINYINT" property="isValid"/>
+        <result column="warehouse_collect_type" jdbcType="OTHER" property="warehouseCollectType"
+                typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        <result column="receive_country" jdbcType="VARCHAR" property="receiveCountry"/>
+        <result column="receive_state" jdbcType="VARCHAR" property="receiveState"/>
+        <result column="receive_city" jdbcType="VARCHAR" property="receiveCity"/>
+        <result column="receive_address" jdbcType="VARCHAR" property="receiveAddress"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, collector_code, collector_name, collector, mobile, is_valid, warehouse_collect_type, 
+        receive_country, receive_state, receive_city, receive_address, create_date, create_by, 
+        update_date, update_by
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_logistics_collector
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_logistics_collector
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.logistics.model.LogisticsCollectorModel">
+        insert into t_logistics_collector (id, collector_code, collector_name, 
+            collector, mobile, is_valid, 
+            warehouse_collect_type, 
+            receive_country, receive_state, receive_city, 
+            receive_address, create_date, create_by, 
+            update_date, update_by)
+        values (#{id,jdbcType=BIGINT}, #{collectorCode,jdbcType=VARCHAR}, #{collectorName,jdbcType=VARCHAR}, 
+            #{collector,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{isValid,jdbcType=TINYINT}, 
+            #{warehouseCollectType,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler}, 
+            #{receiveCountry,jdbcType=VARCHAR}, #{receiveState,jdbcType=VARCHAR}, #{receiveCity,jdbcType=VARCHAR}, 
+            #{receiveAddress,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.logistics.model.LogisticsCollectorModel">
+        insert into t_logistics_collector
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="collectorCode != null">
+                collector_code,
+            </if>
+            <if test="collectorName != null">
+                collector_name,
+            </if>
+            <if test="collector != null">
+                collector,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="warehouseCollectType != null">
+                warehouse_collect_type,
+            </if>
+            <if test="receiveCountry != null">
+                receive_country,
+            </if>
+            <if test="receiveState != null">
+                receive_state,
+            </if>
+            <if test="receiveCity != null">
+                receive_city,
+            </if>
+            <if test="receiveAddress != null">
+                receive_address,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="collectorCode != null">
+                #{collectorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="collectorName != null">
+                #{collectorName,jdbcType=VARCHAR},
+            </if>
+            <if test="collector != null">
+                #{collector,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="warehouseCollectType != null">
+                #{warehouseCollectType,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="receiveCountry != null">
+                #{receiveCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveState != null">
+                #{receiveState,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveCity != null">
+                #{receiveCity,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveAddress != null">
+                #{receiveAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.logistics.model.LogisticsCollectorModel">
+        update t_logistics_collector
+        <set>
+            <if test="collectorCode != null">
+                collector_code = #{collectorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="collectorName != null">
+                collector_name = #{collectorName,jdbcType=VARCHAR},
+            </if>
+            <if test="collector != null">
+                collector = #{collector,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                is_valid = #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="warehouseCollectType != null">
+                warehouse_collect_type =
+                #{warehouseCollectType,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="receiveCountry != null">
+                receive_country = #{receiveCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveState != null">
+                receive_state = #{receiveState,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveCity != null">
+                receive_city = #{receiveCity,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveAddress != null">
+                receive_address = #{receiveAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.logistics.model.LogisticsCollectorModel">
+        update t_logistics_collector
+        set collector_code = #{collectorCode,jdbcType=VARCHAR},
+            collector_name = #{collectorName,jdbcType=VARCHAR},
+            collector = #{collector,jdbcType=VARCHAR},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            is_valid = #{isValid,jdbcType=TINYINT},
+            warehouse_collect_type = #{warehouseCollectType,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            receive_country = #{receiveCountry,jdbcType=VARCHAR},
+            receive_state = #{receiveState,jdbcType=VARCHAR},
+            receive_city = #{receiveCity,jdbcType=VARCHAR},
+            receive_address = #{receiveAddress,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--<select id="page" parameterType="com.brandslink.cloud.logistics.entity.LogisticsCollector" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_logistics_collector
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="collectorCode != null and collectorCode != ''">
+                 and collector_code = #{collectorCode,jdbcType=VARCHAR}
+            </if>
+            <if test="collectorName != null and collectorName != ''">
+                 and collector_name = #{collectorName,jdbcType=VARCHAR}
+            </if>
+            <if test="collector != null and collector != ''">
+                 and collector = #{collector,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                 and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="isValid != null and isValid != ''">
+                 and is_valid = #{isValid,jdbcType=TINYINT}
+            </if>
+            <if test="warehouseCollectType != null and warehouseCollectType != ''">
+                 and warehouse_collect_type = #{warehouseCollectType,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler}
+            </if>
+            <if test="receiveCountry != null and receiveCountry != ''">
+                 and receive_country = #{receiveCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="receiveState != null and receiveState != ''">
+                 and receive_state = #{receiveState,jdbcType=VARCHAR}
+            </if>
+            <if test="receiveCity != null and receiveCity != ''">
+                 and receive_city = #{receiveCity,jdbcType=VARCHAR}
+            </if>
+            <if test="receiveAddress != null and receiveAddress != ''">
+                 and receive_address = #{receiveAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>-->
+</mapper>

@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonPublishReportDetailMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AmazonPublishReportDetail">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="merchant_id" jdbcType="VARCHAR" property="merchantId" />
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId" />
+        <result column="sku" jdbcType="VARCHAR" property="sku" />
+        <result column="is_exist" jdbcType="INTEGER" property="isExist" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="port_time" jdbcType="VARCHAR" property="portTime" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+        <result column="message" jdbcType="VARCHAR" property="message" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.seller.entity.AmazonPublishReportDetail">
+        <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, merchant_id, marketplace_id, sku, is_exist, version, port_time, status, message, 
+        create_time, update_time
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        content
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from amazon_publish_report_detail
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from amazon_publish_report_detail
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportDetail">
+        insert into amazon_publish_report_detail (id, merchant_id, marketplace_id, 
+            sku, is_exist, version, 
+            port_time, status, message, 
+            create_time, update_time, content
+            )
+        values (#{id,jdbcType=BIGINT}, #{merchantId,jdbcType=VARCHAR}, #{marketplaceId,jdbcType=VARCHAR}, 
+            #{sku,jdbcType=VARCHAR}, #{isExist,jdbcType=INTEGER}, #{version,jdbcType=BIGINT}, 
+            #{portTime,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportDetail">
+        insert into amazon_publish_report_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="merchantId != null">
+                merchant_id,
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id,
+            </if>
+            <if test="sku != null">
+                sku,
+            </if>
+            <if test="isExist != null">
+                is_exist,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="portTime != null">
+                port_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="message != null">
+                message,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="merchantId != null">
+                #{merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="sku != null">
+                #{sku,jdbcType=VARCHAR},
+            </if>
+            <if test="isExist != null">
+                #{isExist,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="portTime != null">
+                #{portTime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null">
+                #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportDetail">
+        update amazon_publish_report_detail
+        <set>
+            <if test="merchantId != null">
+                merchant_id = #{merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="sku != null">
+                sku = #{sku,jdbcType=VARCHAR},
+            </if>
+            <if test="isExist != null">
+                is_exist = #{isExist,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="portTime != null">
+                port_time = #{portTime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null">
+                message = #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            update_time = now()
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportDetail">
+        update amazon_publish_report_detail
+        set merchant_id = #{merchantId,jdbcType=VARCHAR},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            sku = #{sku,jdbcType=VARCHAR},
+            is_exist = #{isExist,jdbcType=INTEGER},
+            version = #{version,jdbcType=BIGINT},
+            port_time = #{portTime,jdbcType=VARCHAR},
+            status = #{status,jdbcType=VARCHAR},
+            message = #{message,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            content = #{content,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportDetail">
+        update amazon_publish_report_detail
+        set merchant_id = #{merchantId,jdbcType=VARCHAR},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            sku = #{sku,jdbcType=VARCHAR},
+            is_exist = #{isExist,jdbcType=INTEGER},
+            version = #{version,jdbcType=BIGINT},
+            port_time = #{portTime,jdbcType=VARCHAR},
+            status = #{status,jdbcType=VARCHAR},
+            message = #{message,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportDetail" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from amazon_publish_report_detail
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="merchantId != null and merchantId != ''">
+                 and merchant_id = #{merchantId,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null and marketplaceId != ''">
+                 and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="sku != null and sku != ''">
+                 and sku = #{sku,jdbcType=VARCHAR}
+            </if>
+            <if test="isExist != null and isExist != ''">
+                 and is_exist = #{isExist,jdbcType=INTEGER}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="portTime != null and portTime != ''">
+                 and port_time = #{portTime,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=VARCHAR}
+            </if>
+            <if test="message != null and message != ''">
+                 and message = #{message,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="content != null and content != ''">
+                 and content = #{content,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <delete id="deleteByVersion" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportDetail" >
+        DELETE FROM amazon_publish_report_detail
+        WHERE merchant_id =  #{merchantId,jdbcType=VARCHAR} AND marketplace_id =  #{marketplaceId,jdbcType=VARCHAR} AND version &lt; #{version,jdbcType=BIGINT}
+    </delete>
+
+
+    <select id="selectLastOne" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportDetail" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from amazon_publish_report_detail
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="merchantId != null and merchantId != ''">
+                and merchant_id = #{merchantId,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null and marketplaceId != ''">
+                and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="sku != null and sku != ''">
+                and sku = #{sku,jdbcType=VARCHAR}
+            </if>
+            <if test="isExist != null and isExist != ''">
+                and is_exist = #{isExist,jdbcType=INTEGER}
+            </if>
+            <if test="version != null and version != ''">
+                and version = #{version,jdbcType=VARCHAR}
+            </if>
+            <if test="portTime != null and portTime != ''">
+                and port_time = #{portTime,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="content != null and content != ''">
+                and content like CONCAT('%',#{content,jdbcType=LONGVARCHAR},'%')
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        order by version desc limit 1
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

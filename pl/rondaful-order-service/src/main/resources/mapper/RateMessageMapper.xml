@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.RateMessageMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.RateMessage">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.order.entity.RateMessage">
+        <result column="rate_message" jdbcType="LONGVARCHAR" property="rateMessage" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, create_time, update_time
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        rate_message
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from tb_rate_message
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tb_rate_message
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.RateMessage">
+        insert into tb_rate_message (create_time, update_time,
+            rate_message)
+        values (now(),now(), #{rateMessage,jdbcType=LONGVARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.RateMessage">
+        insert into tb_rate_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="rateMessage != null">
+                rate_message,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),now(),
+            <if test="rateMessage != null">
+                #{rateMessage,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.RateMessage">
+        update tb_rate_message
+        <set>
+            update_time = now(),
+            <if test="rateMessage != null">
+                rate_message = #{rateMessage,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.order.entity.RateMessage">
+        update tb_rate_message
+        set update_time = now(),
+            rate_message = #{rateMessage,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.RateMessage">
+        update tb_rate_message
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.RateMessage" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from tb_rate_message
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="rateMessage != null">
+                 and rate_message = #{rateMessage,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+
+
+    <select id="findLastRate" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from tb_rate_message
+        order by id desc limit 1
+    </select>
+</mapper>

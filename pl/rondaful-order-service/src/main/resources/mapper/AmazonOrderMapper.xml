@@ -1,0 +1,1430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.AmazonOrderMapper">
+
+    <!--亚马逊订单基本结果集映射-->
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.Amazon.AmazonOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="amazon_shop_id" jdbcType="INTEGER" property="amazonShopId"/>
+        <result column="amazon_shop_name" jdbcType="VARCHAR" property="amazonShopName"/>
+        <result column="amazon_seller_account" jdbcType="VARCHAR" property="amazonSellerAccount"/>
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
+        <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime"/>
+        <result column="latest_ship_time" jdbcType="TIMESTAMP" property="latestShipTime"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+        <result column="payment_method" jdbcType="VARCHAR" property="paymentMethod"/>
+        <result column="order_total" jdbcType="DECIMAL" property="orderTotal"/>
+        <result column="currency_code" jdbcType="VARCHAR" property="currencyCode"/>
+        <result column="buyer_name" jdbcType="VARCHAR" property="buyerName"/>
+        <result column="consignee_name" jdbcType="VARCHAR" property="consigneeName"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="country_code" jdbcType="VARCHAR" property="countryCode"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="district" jdbcType="VARCHAR" property="district"/>
+        <result column="address1" jdbcType="VARCHAR" property="address1"/>
+        <result column="address2" jdbcType="VARCHAR" property="address2"/>
+        <result column="address3" jdbcType="VARCHAR" property="address3"/>
+        <result column="postal_code" jdbcType="VARCHAR" property="postalCode"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail"/>
+        <result column="pl_seller_account" jdbcType="VARCHAR" property="plSellerAccount"/>
+        <result column="pl_seller_account_id" jdbcType="INTEGER" property="plSellerAccountId"/>
+        <result column="pl_amazon_pay_status" jdbcType="VARCHAR" property="plAmazonPayStatus"/>
+        <result column="pl_exchange_rate" jdbcType="VARCHAR" property="plExchangeRate"/>
+        <result column="pl_convert_USA_amount" jdbcType="DECIMAL" property="plConvertUsaAmount"/>
+        <result column="pl_actual_shipping" jdbcType="DOUBLE" property="plActualShipping"/>
+        <result column="pl_track_number" jdbcType="VARCHAR" property="plTrackNumber"/>
+        <result column="pl_ship_method" jdbcType="TINYINT" property="plShipMethod"/>
+        <result column="pl_shipping_carrier_used" jdbcType="VARCHAR" property="plShippingCarrierUsed"/>
+        <result column="pl_process_status" jdbcType="TINYINT" property="plProcessStatus"/>
+        <result column="pl_total_bulk" jdbcType="DECIMAL" property="plTotalBulk"/>
+        <result column="pl_total_weight" jdbcType="DECIMAL" property="plTotalWeight"/>
+        <result column="pl_reference_id" jdbcType="VARCHAR" property="plReferenceId"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+    </resultMap>
+
+    <!--联合查询AmazonOrder结果集映射-->
+    <resultMap id="AmazonOrderMap" type="com.rondaful.cloud.order.entity.Amazon.AmazonOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="amazon_shop_id" jdbcType="INTEGER" property="amazonShopId"/>
+        <result column="amazon_shop_name" jdbcType="VARCHAR" property="amazonShopName"/>
+        <result column="amazon_seller_account" jdbcType="VARCHAR" property="amazonSellerAccount"/>
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
+        <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime"/>
+        <result column="latest_ship_time" jdbcType="TIMESTAMP" property="latestShipTime"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+        <result column="payment_method" jdbcType="VARCHAR" property="paymentMethod"/>
+        <result column="order_total" jdbcType="DECIMAL" property="orderTotal"/>
+        <result column="currency_code" jdbcType="VARCHAR" property="currencyCode"/>
+        <result column="buyer_name" jdbcType="VARCHAR" property="buyerName"/>
+        <result column="consignee_name" jdbcType="VARCHAR" property="consigneeName"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="country_code" jdbcType="VARCHAR" property="countryCode"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="district" jdbcType="VARCHAR" property="district"/>
+        <result column="address1" jdbcType="VARCHAR" property="address1"/>
+        <result column="address2" jdbcType="VARCHAR" property="address2"/>
+        <result column="address3" jdbcType="VARCHAR" property="address3"/>
+        <result column="postal_code" jdbcType="VARCHAR" property="postalCode"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail"/>
+        <result column="pl_seller_account" jdbcType="VARCHAR" property="plSellerAccount"/>
+        <result column="pl_seller_account_id" jdbcType="INTEGER" property="plSellerAccountId"/>
+        <result column="pl_amazon_pay_status" jdbcType="VARCHAR" property="plAmazonPayStatus"/>
+        <result column="pl_exchange_rate" jdbcType="VARCHAR" property="plExchangeRate"/>
+        <result column="pl_convert_USA_amount" jdbcType="DECIMAL" property="plConvertUsaAmount"/>
+        <result column="pl_actual_shipping" jdbcType="DOUBLE" property="plActualShipping"/>
+        <result column="pl_track_number" jdbcType="VARCHAR" property="plTrackNumber"/>
+        <result column="pl_ship_method" jdbcType="TINYINT" property="plShipMethod"/>
+        <result column="pl_shipping_carrier_used" jdbcType="VARCHAR" property="plShippingCarrierUsed"/>
+        <result column="pl_process_status" jdbcType="TINYINT" property="plProcessStatus"/>
+        <result column="pl_total_bulk" jdbcType="DECIMAL" property="plTotalBulk"/>
+        <result column="pl_total_weight" jdbcType="DECIMAL" property="plTotalWeight"/>
+        <result column="pl_reference_id" jdbcType="VARCHAR" property="plReferenceId"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <collection property="sysOrders"
+                    ofType="com.rondaful.cloud.order.entity.SysOrder"
+                    select="getSysOrder"
+                    column="order_id">
+        </collection>
+        <collection property="amazonOrderDetails"
+                    ofType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail"
+                    select="getOrderItemDetail"
+                    column="order_id">
+        </collection>
+    </resultMap>
+    <!--只查询亚马逊订单-->
+    <resultMap id="AmazonOrder" type="com.rondaful.cloud.order.entity.Amazon.AmazonOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="amazon_shop_id" jdbcType="INTEGER" property="amazonShopId"/>
+        <result column="amazon_shop_name" jdbcType="VARCHAR" property="amazonShopName"/>
+        <result column="amazon_seller_account" jdbcType="VARCHAR" property="amazonSellerAccount"/>
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
+        <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime"/>
+        <result column="latest_ship_time" jdbcType="TIMESTAMP" property="latestShipTime"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+        <result column="payment_method" jdbcType="VARCHAR" property="paymentMethod"/>
+        <result column="order_total" jdbcType="DECIMAL" property="orderTotal"/>
+        <result column="currency_code" jdbcType="VARCHAR" property="currencyCode"/>
+        <result column="buyer_name" jdbcType="VARCHAR" property="buyerName"/>
+        <result column="consignee_name" jdbcType="VARCHAR" property="consigneeName"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="country_code" jdbcType="VARCHAR" property="countryCode"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="district" jdbcType="VARCHAR" property="district"/>
+        <result column="address1" jdbcType="VARCHAR" property="address1"/>
+        <result column="address2" jdbcType="VARCHAR" property="address2"/>
+        <result column="address3" jdbcType="VARCHAR" property="address3"/>
+        <result column="postal_code" jdbcType="VARCHAR" property="postalCode"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail"/>
+        <result column="pl_seller_account" jdbcType="VARCHAR" property="plSellerAccount"/>
+        <result column="pl_seller_account_id" jdbcType="INTEGER" property="plSellerAccountId"/>
+        <result column="pl_amazon_pay_status" jdbcType="VARCHAR" property="plAmazonPayStatus"/>
+        <result column="pl_exchange_rate" jdbcType="VARCHAR" property="plExchangeRate"/>
+        <result column="pl_convert_USA_amount" jdbcType="DECIMAL" property="plConvertUsaAmount"/>
+        <result column="pl_actual_shipping" jdbcType="DOUBLE" property="plActualShipping"/>
+        <result column="pl_track_number" jdbcType="VARCHAR" property="plTrackNumber"/>
+        <result column="pl_ship_method" jdbcType="TINYINT" property="plShipMethod"/>
+        <result column="pl_shipping_carrier_used" jdbcType="VARCHAR" property="plShippingCarrierUsed"/>
+        <result column="pl_process_status" jdbcType="TINYINT" property="plProcessStatus"/>
+        <result column="pl_total_bulk" jdbcType="DECIMAL" property="plTotalBulk"/>
+        <result column="pl_total_weight" jdbcType="DECIMAL" property="plTotalWeight"/>
+        <result column="pl_reference_id" jdbcType="VARCHAR" property="plReferenceId"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+    </resultMap>
+
+    <!--联合查询AmazonOrderDetail结果集映射-->
+    <resultMap id="AmazonOrderDetailMap" type="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="pl_seller_account" jdbcType="VARCHAR" property="plSellerAccount"/>
+        <result column="amazon_seller_account" jdbcType="VARCHAR" property="amazonSellerAccount"/>
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId"/>
+        <result column="shipment_tracking_number" jdbcType="VARCHAR" property="shipmentTrackingNumber"/>
+        <result column="shipping_method" jdbcType="VARCHAR" property="shippingMethod"/>
+        <result column="carrier_name" jdbcType="VARCHAR" property="carrierName"/>
+        <result column="mark_deliver_status" jdbcType="TINYINT" property="markDeliverStatus"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="amazon_orderitem_id" jdbcType="VARCHAR" property="amazonOrderitemId"/>
+        <result column="asin" jdbcType="VARCHAR" property="asin"/>
+        <result column="platform_sku" jdbcType="VARCHAR" property="platformSku"/>
+        <result column="delivery_time" jdbcType="VARCHAR" property="deliveryTime"/>
+        <result column="item_title" jdbcType="VARCHAR" property="itemTitle"/>
+        <result column="item_currency_code" jdbcType="VARCHAR" property="itemCurrencyCode"/>
+        <result column="item_price" jdbcType="DECIMAL" property="itemPrice"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+        <result column="shipping_price" jdbcType="DECIMAL" property="shippingPrice"/>
+        <result column="shipping_currency_code" jdbcType="VARCHAR" property="shippingCurrencyCode"/>
+        <result column="condition_note" jdbcType="VARCHAR" property="conditionNote"/>
+        <result column="pl_process_sub_status" jdbcType="TINYINT" property="plProcessSubStatus"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <association property="amazonItemProperty"
+                     javaType="com.rondaful.cloud.order.entity.Amazon.AmazonItemProperty"
+                     select="getOrderItemProperty"
+                     column="asin">
+        </association>
+    </resultMap>
+    <!--联合查询结果集SysOrderMap-->
+    <resultMap id="SysOrderMap" type="com.rondaful.cloud.order.entity.SysOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId"/>
+        <result column="order_track_id" jdbcType="VARCHAR" property="orderTrackId"/>
+        <result column="record_number" jdbcType="VARCHAR" property="recordNumber"/>
+        <result column="source_order_id" jdbcType="VARCHAR" property="sourceOrderId"/>
+        <result column="deliver_deadline" jdbcType="VARCHAR" property="deliverDeadline"/>
+        <result column="conver_sys_status" jdbcType="TINYINT" property="converSysStatus"/>
+        <result column="order_source" jdbcType="TINYINT" property="orderSource"/>
+        <result column="order_delivery_status" jdbcType="TINYINT" property="orderDeliveryStatus"/>
+        <result column="is_after_sale_order" jdbcType="TINYINT" property="isAfterSaleOrder"/>
+        <result column="main_order_id" jdbcType="VARCHAR" property="mainOrderId"/>
+        <result column="splitted_or_merged" jdbcType="TINYINT" property="splittedOrMerged"/>
+        <result column="child_ids" jdbcType="VARCHAR" property="childIds"/>
+        <result column="platform_shop_id" jdbcType="INTEGER" property="platformShopId"/>
+        <result column="platform_seller_account" jdbcType="VARCHAR" property="platformSellerAccount"/>
+        <result column="platform_seller_id" jdbcType="VARCHAR" property="platformSellerId"/>
+        <result column="seller_pl_id" jdbcType="INTEGER" property="sellerPlId"/>
+        <result column="seller_pl_account" jdbcType="VARCHAR" property="sellerPlAccount"/>
+        <result column="supply_chain_company_id" jdbcType="INTEGER" property="supplyChainCompanyId"/>
+        <result column="supply_chain_company_name" jdbcType="VARCHAR" property="supplyChainCompanyName"/>
+        <result column="total" jdbcType="DECIMAL" property="total"/>
+        <result column="order_amount" jdbcType="DECIMAL" property="orderAmount"/>
+        <result column="commodities_amount" jdbcType="DECIMAL" property="commoditiesAmount"/>
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId"/>
+        <result column="pay_id" jdbcType="VARCHAR" property="payId"/>
+        <result column="pay_status" jdbcType="TINYINT" property="payStatus"/>
+        <result column="pay_method" jdbcType="TINYINT" property="payMethod"/>
+        <result column="pay_time" jdbcType="VARCHAR" property="payTime"/>
+        <result column="order_time" jdbcType="VARCHAR" property="orderTime"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="delivery_time" jdbcType="VARCHAR" property="deliveryTime"/>
+        <result column="delivery_warehouse_code" jdbcType="VARCHAR" property="deliveryWarehouseCode"/>
+        <result column="delivery_warehouse" jdbcType="VARCHAR" property="deliveryWarehouse"/>
+        <result column="shipping_carrier_used_code" jdbcType="VARCHAR" property="shippingCarrierUsedCode"/>
+        <result column="shipping_carrier_used" jdbcType="VARCHAR" property="shippingCarrierUsed"/>
+        <result column="delivery_method_code" jdbcType="VARCHAR" property="deliveryMethodCode"/>
+        <result column="delivery_method" jdbcType="VARCHAR" property="deliveryMethod"/>
+        <result column="amazon_carrier_name" jdbcType="VARCHAR" property="amazonCarrierName"/>
+        <result column="amazon_shipping_method" jdbcType="VARCHAR" property="amazonShippingMethod"/>
+        <result column="ebay_carrier_name" jdbcType="VARCHAR" property="ebayCarrierName"/>
+        <result column="shipping_service_cost" jdbcType="DECIMAL" property="shippingServiceCost"/>
+        <result column="actual_ship_cost" jdbcType="DECIMAL" property="actualShipCost"/>
+        <result column="estimate_ship_cost" jdbcType="DECIMAL" property="estimateShipCost"/>
+        <result column="sys_shipping_discount" jdbcType="DECIMAL" property="sysShippingDiscount"/>
+        <result column="ship_track_number" jdbcType="VARCHAR" property="shipTrackNumber"/>
+        <result column="ship_order_id" jdbcType="VARCHAR" property="shipOrderId"/>
+        <result column="first_carriage" jdbcType="DECIMAL" property="firstCarriage"/>
+        <result column="packing_expense" jdbcType="DECIMAL" property="packingExpense"/>
+        <result column="interest" jdbcType="DECIMAL" property="interest"/>
+        <result column="gross_margin" jdbcType="DECIMAL" property="grossMargin"/>
+        <result column="profit_margin" jdbcType="DECIMAL" property="profitMargin"/>
+        <result column="reference_id" jdbcType="VARCHAR" property="referenceId"/>
+        <result column="buyer_user_id" jdbcType="VARCHAR" property="buyerUserId"/>
+        <result column="buyer_name" jdbcType="VARCHAR" property="buyerName"/>
+        <result column="buyer_checkout_message" jdbcType="VARCHAR" property="buyerCheckoutMessage"/>
+        <result column="ship_to_name" jdbcType="VARCHAR" property="shipToName"/>
+        <result column="ship_to_country" jdbcType="VARCHAR" property="shipToCountry"/>
+        <result column="ship_to_country_name" jdbcType="VARCHAR" property="shipToCountryName"/>
+        <result column="ship_to_state" jdbcType="VARCHAR" property="shipToState"/>
+        <result column="ship_to_city" jdbcType="VARCHAR" property="shipToCity"/>
+        <result column="ship_to_addr_street1" jdbcType="VARCHAR" property="shipToAddrStreet1"/>
+        <result column="ship_to_addr_street2" jdbcType="VARCHAR" property="shipToAddrStreet2"/>
+        <result column="ship_to_addr_street3" jdbcType="VARCHAR" property="shipToAddrStreet3"/>
+        <result column="ship_to_postal_code" jdbcType="VARCHAR" property="shipToPostalCode"/>
+        <result column="ship_to_phone" jdbcType="VARCHAR" property="shipToPhone"/>
+        <result column="ship_to_email" jdbcType="VARCHAR" property="shipToEmail"/>
+        <result column="warehouse_ship_exception" jdbcType="VARCHAR" property="warehouseShipException"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <collection column="sys_order_id" ofType="com.rondaful.cloud.order.entity.SysOrderDetail"
+                    property="sysOrderDetails" select="getSysOrderDetail">
+        </collection>
+    </resultMap>
+    <!--联合查询系统订单项结果集映射-->
+    <resultMap id="SysOrderDetailMap" type="com.rondaful.cloud.order.entity.SysOrderDetail">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId"/>
+        <result column="source_order_id" jdbcType="VARCHAR" property="sourceOrderId"/>
+        <result column="source_order_line_item_id" jdbcType="VARCHAR" property="sourceOrderLineItemId"/>
+        <result column="order_line_item_id" jdbcType="VARCHAR" property="orderLineItemId"/>
+        <result column="bulk" jdbcType="DECIMAL" property="bulk"/>
+        <result column="weight" jdbcType="DECIMAL" property="weight"/>
+        <result column="item_id" jdbcType="BIGINT" property="itemId"/>
+        <result column="item_cost" jdbcType="DECIMAL" property="itemCost"/>
+        <result column="item_url" jdbcType="VARCHAR" property="itemUrl"/>
+        <result column="item_name" jdbcType="VARCHAR" property="itemName"/>
+        <result column="item_name_en" jdbcType="VARCHAR" property="itemNameEn"/>
+        <result column="item_attr" jdbcType="VARCHAR" property="itemAttr"/>
+        <result column="item_price" jdbcType="DECIMAL" property="itemPrice"/>
+        <result column="sku" jdbcType="VARCHAR" property="sku"/>
+        <result column="sku_title" jdbcType="VARCHAR" property="skuTitle"/>
+        <result column="sku_quantity" jdbcType="INTEGER" property="skuQuantity"/>
+        <result column="sku_shipping_fee" jdbcType="DECIMAL" property="skuShippingFee"/>
+        <result column="fare_type_amount" jdbcType="VARCHAR" property="fareTypeAmount"/>
+        <result column="supplier_id" jdbcType="BIGINT" property="supplierId"/>
+        <result column="supplier_name" jdbcType="VARCHAR" property="supplierName"/>
+        <result column="supply_chain_company_id" jdbcType="INTEGER" property="supplyChainCompanyId"/>
+        <result column="supply_chain_company_name" jdbcType="VARCHAR" property="supplyChainCompanyName"/>
+        <result column="supplier_sku" jdbcType="VARCHAR" property="supplierSku"/>
+        <result column="supplier_sku_title" jdbcType="VARCHAR" property="supplierSkuTitle"/>
+        <result column="supplier_sku_price" jdbcType="VARCHAR" property="supplierSkuPrice"/>
+        <result column="record_number" jdbcType="INTEGER" property="recordNumber"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <resultMap id="AmazonOrderItemPropertyMap" type="com.rondaful.cloud.order.entity.Amazon.AmazonItemProperty">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="asin" jdbcType="VARCHAR" property="asin"/>
+        <result column="item_title" jdbcType="VARCHAR" property="itemTitle"/>
+        <result column="item_url" jdbcType="VARCHAR" property="itemUrl"/>
+        <result column="item_height" jdbcType="DECIMAL" property="itemHeight"/>
+        <result column="item_length" jdbcType="DECIMAL" property="itemLength"/>
+        <result column="item_width" jdbcType="DECIMAL" property="itemWidth"/>
+        <result column="item_weight" jdbcType="DECIMAL" property="itemWeight"/>
+        <result column="item_color" jdbcType="VARCHAR" property="itemColor"/>
+        <result column="item_size" jdbcType="VARCHAR" property="itemSize"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+    </resultMap>
+    <!--AmazonOrderItemProperty SQL片段-->
+    <sql id="OrderItemProperty_Column_List">
+        id, asin, item_title, item_url, item_height, item_length, item_width, item_weight,
+        item_color, item_size, create_date, update_date
+    </sql>
+
+    <!--AmazonOrder SQL片段-->
+    <sql id="Base_Column_List">
+        id,amazon_shop_id,amazon_shop_name,amazon_seller_account, marketplace_id, order_id, order_status, payment_time,latest_ship_time,
+        last_update_time, payment_method, order_total, currency_code, buyer_name, consignee_name, 
+        country,country_code, state, city, district, address1, address2, address3, postal_code,
+        phone,buyer_email, pl_seller_account,pl_seller_account_id, pl_amazon_pay_status, pl_exchange_rate, pl_convert_USA_amount,
+        pl_actual_shipping, pl_track_number, pl_ship_method, pl_shipping_carrier_used, pl_process_status, 
+        pl_total_bulk, pl_total_weight, pl_reference_id, create_date, update_date
+    </sql>
+
+    <!--AmazonOrderDetail 订单项SQL片段-->
+    <sql id="OrderDetail_Column_List">
+       id, pl_seller_account, amazon_seller_account, marketplace_id, shipment_tracking_number,shipping_method,carrier_name,
+        mark_deliver_status, order_id, amazon_orderitem_id, asin, platform_sku,delivery_time, item_title,
+        item_currency_code, item_price, quantity, shipping_price,
+        shipping_currency_code,
+        condition_note, pl_process_sub_status, create_date, update_date, remark
+    </sql>
+    <!--sysOrder 系统订单SQL片段-->
+    <!--系统订单SQL片段-->
+    <sql id="SysOrder_Column_List">
+       id, sys_order_id, order_track_id, record_number, source_order_id, deliver_deadline,
+        conver_sys_status, order_source, order_delivery_status, is_after_sale_order, main_order_id,
+        splitted_or_merged, child_ids, platform_shop_id, platform_seller_account, platform_seller_id,
+        seller_pl_id, seller_pl_account, supply_chain_company_id, supply_chain_company_name,
+        total, order_amount, commodities_amount, marketplace_id, pay_id, pay_status, pay_method,
+        pay_time, order_time, created_time, delivery_time, delivery_warehouse_code, delivery_warehouse,
+        shipping_carrier_used_code, shipping_carrier_used, delivery_method_code, delivery_method,
+        amazon_carrier_name, amazon_shipping_method, ebay_carrier_name, shipping_service_cost,
+        actual_ship_cost, estimate_ship_cost, sys_shipping_discount, ship_track_number, ship_order_id,
+        first_carriage, packing_expense, interest, gross_margin, profit_margin, reference_id,
+        buyer_user_id, buyer_name, buyer_checkout_message, ship_to_name, ship_to_country,
+        ship_to_country_name, ship_to_state, ship_to_city, ship_to_addr_street1, ship_to_addr_street2,
+        ship_to_addr_street3, ship_to_postal_code, ship_to_phone, ship_to_email, warehouse_ship_exception,
+        create_date, create_by, update_date, update_by, remark
+    </sql>
+    <!--系统订单项SQL片段-->
+    <sql id="OrderDetail_Base_Column_List">
+              id, sys_order_id, source_order_id, source_order_line_item_id, order_line_item_id,
+        bulk, weight, item_id, item_cost, item_url, item_name,item_name_en, item_attr, item_price, sku,
+        sku_title, sku_quantity, sku_shipping_fee, fare_type_amount, supplier_id, supplier_name,
+        supply_chain_company_id, supply_chain_company_name, supplier_sku, supplier_sku_title, supplier_sku_price,
+        record_number, create_date, create_by, update_date, update_by, remark
+    </sql>
+    <!--多表查询亚马逊订单项子查询-->
+    <select id="getOrderItemDetail" resultMap="AmazonOrderDetailMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="OrderDetail_Column_List"/>
+
+        FROM tbl_amazon_order_detail
+        WHERE order_id = #{order_id,jdbcType=VARCHAR}
+    </select>
+    <!--多表查询亚马逊订单项商品属性子查询-->
+    <select id="getOrderItemProperty" resultMap="AmazonOrderItemPropertyMap" parameterType="java.lang.String">
+        select
+        <include refid="OrderItemProperty_Column_List"/>
+        from tbl_amazon_items_property
+        where asin = #{asin,jdbcType=VARCHAR}
+    </select>
+    <!--多表查询系统订单子查询-->
+    <select id="getSysOrder" resultMap="SysOrderMap"
+            parameterType="java.lang.String">
+        SELECT
+        <include refid="SysOrder_Column_List"/>
+        FROM tb_sys_order
+        WHERE source_order_id = #{order_id,jdbcType=VARCHAR}
+    </select>
+    <!--多表查询系统订单项子查询-->
+    <select id="getSysOrderDetail" resultMap="SysOrderDetailMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="OrderDetail_Base_Column_List"/>
+        FROM tb_sys_order_detail
+        WHERE sys_order_id = #{sys_order_id,jdbcType=VARCHAR}
+        AND bind_status != 'remove'
+    </select>
+
+    <!--查询亚马逊订单列表-->
+    <select id="findAmazonOrder" resultMap="AmazonOrderMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+    </select>
+
+    <!--查询该卖家是否存在亚马逊订单表-->
+    <select id="selectPlAccountIsExist" resultType="com.rondaful.cloud.order.entity.Amazon.AmazonOrder">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        where pl_seller_account = #{plAccount,jdbcType=VARCHAR}
+        and marketplace_id = #{marketPlaceId,jdbcType=VARCHAR}
+        and amazon_seller_account = #{sellerId,jdbcType=VARCHAR}
+        LIMIT 1
+    </select>
+    <!--多条件自定义查询-->
+    <select id="selectAmazonOrderByMultiCondition" resultMap="AmazonOrderMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="1==1">
+                AND pl_process_status NOT IN (0,2)
+            </if>
+            <if test="orderStatuss!=null and orderStatuss != '' ">
+                AND order_status = #{orderStatuss,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId!=null and orderId != '' ">
+                AND order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="plIdLists.size() > 0">
+                AND pl_seller_account_id IN
+                <foreach collection="plIdLists" item="id" index="index"
+                         open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="shopNameIdLists.size() > 0">
+                AND amazon_shop_id IN
+                <foreach collection="shopNameIdLists" item="shopNameId" index="index"
+                         open="(" close=")" separator=",">
+                    #{shopNameId}
+                </foreach>
+            </if>
+            <if test="plProcessStatuss != null and plProcessStatuss !=4 ">
+                AND pl_process_status = #{plProcessStatuss,jdbcType=TINYINT}
+            </if>
+            <if test="startDate!=null and endDate!=null and startDate!= '' and endDate != ''">
+                AND payment_time between
+                #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        ORDER BY payment_time DESC
+        <if test="bindex !=null and num!='' ">
+            limit #{bindex,jdbcType=INTEGER} , #{num,jdbcType=INTEGER}
+        </if>
+    </select>
+    <!--多条件自定义查询  管理后台-->
+    <select id="selectAmazonOrderByMultiConditionByCMS" resultMap="AmazonOrderMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        <trim prefix="WHERE" prefixOverrides="AND">
+          <!--  <if test="1==1">
+                AND pl_process_status NOT IN (0,2)
+            </if>-->
+            <if test="orderStatuss!=null and orderStatuss != '' ">
+                AND order_status = #{orderStatuss,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId!=null and orderId != '' ">
+                AND order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <!--  <if test="sellerPlAccount!=null and sellerPlAccount != '' ">
+                  AND pl_seller_account = #{sellerPlAccount,jdbcType=VARCHAR}
+              </if>-->
+
+            <if test="plIdLists.size() > 0">
+                AND pl_seller_account_id IN
+                <foreach collection="plIdLists" item="id" index="index"
+                         open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+
+            <!--   <if test="shopName!=null and shopName != '' ">
+                   AND amazon_shop_name = #{shopName,jdbcType=VARCHAR}
+               </if>-->
+            <!--         <if test="shopNameLists.size() > 0">
+                         AND amazon_shop_name IN
+                         <foreach collection="shopNameLists" item="shopName" index="index"
+                                  open="(" close=")" separator=",">
+                             #{shopName}
+                         </foreach>
+                     </if>-->
+            <if test="shopNameIdLists.size() > 0">
+                AND amazon_shop_id IN
+                <foreach collection="shopNameIdLists" item="shopNameId" index="index"
+                         open="(" close=")" separator=",">
+                    #{shopNameId}
+                </foreach>
+            </if>
+            <if test="plProcessStatuss != null and plProcessStatuss !=4 ">
+                AND pl_process_status = #{plProcessStatuss,jdbcType=TINYINT}
+            </if>
+            <if test="startDate!=null and endDate!=null and startDate!= '' and endDate != ''">
+                AND payment_time between
+                #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        ORDER BY payment_time DESC
+        <if test="bindex !=null and num!='' ">
+            limit #{bindex,jdbcType=INTEGER} , #{num,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <!--查询多条件自定义查询的总记录条数-->
+    <select id="selectAmazonOrderByMultiConditionCounts" resultType="java.lang.Integer">
+        select
+        count(*)
+        from tbl_amazon_order
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="1==1">
+                AND pl_process_status NOT IN (0,2)
+            </if>
+            <if test="orderStatuss!=null and orderStatuss != '' ">
+                AND order_status = #{orderStatuss,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId!=null and orderId != '' ">
+                AND order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <!--  <if test="sellerPlAccount!=null and sellerPlAccount != '' ">
+                  AND pl_seller_account = #{sellerPlAccount,jdbcType=VARCHAR}
+              </if>-->
+
+            <if test="plIdLists.size() > 0">
+                AND pl_seller_account_id IN
+                <foreach collection="plIdLists" item="id" index="index"
+                         open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+
+            <!--   <if test="shopName!=null and shopName != '' ">
+                   AND amazon_shop_name = #{shopName,jdbcType=VARCHAR}
+               </if>-->
+            <!--         <if test="shopNameLists.size() > 0">
+                         AND amazon_shop_name IN
+                         <foreach collection="shopNameLists" item="shopName" index="index"
+                                  open="(" close=")" separator=",">
+                             #{shopName}
+                         </foreach>
+                     </if>-->
+            <if test="shopNameIdLists.size() > 0">
+                AND amazon_shop_id IN
+                <foreach collection="shopNameIdLists" item="shopNameId" index="index"
+                         open="(" close=")" separator=",">
+                    #{shopNameId}
+                </foreach>
+            </if>
+            <if test="plProcessStatuss != null and plProcessStatuss !=4 ">
+                AND pl_process_status = #{plProcessStatuss,jdbcType=TINYINT}
+            </if>
+            <if test="startDate!=null and endDate!=null and startDate!= '' and endDate != ''">
+                AND payment_time between
+                #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        ORDER BY payment_time DESC
+    </select>
+
+
+    <!--通过订单ID查找订单、订单详情(这是多表联合查询，会查出子订单项)-->
+    <select id="getAmazonOrderDetailByOrderId" parameterType="java.lang.String" resultMap="AmazonOrderMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        where order_id = #{orderId,jdbcType=VARCHAR};
+    </select>
+
+    <!--查询未转入系统订单的订单-->
+    <select id="selectAmazonOrderOnlyUseConvertOrder" parameterType="java.lang.String" resultMap="AmazonOrder">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        where order_id = #{orderId,jdbcType=VARCHAR} and
+        pl_process_status!=1
+    </select>
+
+    <select id="selectAmazonOrderByOrderListId" parameterType="java.util.List" resultMap="AmazonOrderMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        WHERE order_id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <!--通过订单ID和下单时间查找订单、订单详情-->
+    <select id="selectAmazonOrderByOrderId" parameterType="java.lang.String"
+            resultMap="AmazonOrderMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <!--通过订单ID只查找亚马逊订单，不连表查询亚马逊订单项表-->
+    <select id="onlyQeryAmazonOrderByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        where order_id = #{orderId,jdbcType=VARCHAR}
+        and order_status NOT IN ('已取消','预订','待支付','无法配送')
+    </select>
+
+    <!--通过品连处理状态和卖家品连账号查找订单、订单详情-->
+    <select id="selectAmazonOrdersByPLProcessStatusAnaPlAccount"
+            resultMap="AmazonOrderMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        where marketplace_id = #{marketPlaceId,jdbcType=VARCHAR}
+        and order_status NOT IN ('已取消','预订','待支付','无法配送')
+        and pl_process_status = #{plProcessStatus,jdbcType=TINYINT}
+        and amazon_seller_account = #{sellerId,jdbcType=VARCHAR}
+        <![CDATA[ and create_date  >=  #{date}  ]]>
+    </select>
+
+    <!--根据品连账号查询最新的更新时间-->
+    <select id="selectLastUpdateTimeByPlAccount" parameterType="java.lang.String"
+            resultType="java.lang.String">
+        select max(last_update_time)
+       from tbl_amazon_order
+       where pl_seller_account =  #{plAccount,jdbcType=VARCHAR}
+       AND marketplace_id = #{marketPlaceId,jdbcType=VARCHAR}
+       AND amazon_seller_account = #{sellerId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!--有更新无则插入亚马逊平台订单-->
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrder">
+        insert into tbl_amazon_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="amazonShopId != null">
+                amazon_shop_id,
+            </if>
+            <if test="amazonShopName != null">
+                amazon_shop_name,
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account,
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="orderStatus != null">
+                order_status,
+            </if>
+            <if test="paymentTime != null">
+                payment_time,
+            </if>
+            <if test="latestShipTime != null">
+                latest_ship_time,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+            <if test="paymentMethod != null">
+                payment_method,
+            </if>
+            <if test="orderTotal != null">
+                order_total,
+            </if>
+            <if test="currencyCode != null">
+                currency_code,
+            </if>
+            <if test="buyerName != null">
+                buyer_name,
+            </if>
+            <if test="consigneeName != null">
+                consignee_name,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="countryCode != null">
+                country_code,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="district != null">
+                district,
+            </if>
+            <if test="address1 != null">
+                address1,
+            </if>
+            <if test="address2 != null">
+                address2,
+            </if>
+            <if test="address3 != null">
+                address3,
+            </if>
+            <if test="postalCode != null">
+                postal_code,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="buyerEmail != null">
+                buyer_email,
+            </if>
+            <if test="plSellerAccount != null">
+                pl_seller_account,
+            </if>
+            <if test="plSellerAccountId != null">
+                pl_seller_account_id,
+            </if>
+            <if test="plAmazonPayStatus != null">
+                pl_amazon_pay_status,
+            </if>
+            <if test="plExchangeRate != null">
+                pl_exchange_rate,
+            </if>
+            <if test="plConvertUsaAmount != null">
+                pl_convert_USA_amount,
+            </if>
+            <if test="plActualShipping != null">
+                pl_actual_shipping,
+            </if>
+            <if test="plTrackNumber != null">
+                pl_track_number,
+            </if>
+            <if test="plShipMethod != null">
+                pl_ship_method,
+            </if>
+            <if test="plShippingCarrierUsed != null">
+                pl_shipping_carrier_used,
+            </if>
+            <if test="plProcessStatus != null">
+                pl_process_status,
+            </if>
+            <if test="plTotalBulk != null">
+                pl_total_bulk,
+            </if>
+            <if test="plTotalWeight != null">
+                pl_total_weight,
+            </if>
+            <if test="plReferenceId != null">
+                pl_reference_id,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="amazonShopId != null">
+                #{amazonShopId,jdbcType=INTEGER},
+            </if>
+            <if test="amazonShopName != null">
+                #{amazonShopName,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentTime != null">
+                #{paymentTime,jdbcType=VARCHAR},
+            </if>
+            <if test="latestShipTime != null">
+                #{latestShipTime,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentMethod != null">
+                #{paymentMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="orderTotal != null">
+                #{orderTotal,jdbcType=DECIMAL},
+            </if>
+            <if test="currencyCode != null">
+                #{currencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerName != null">
+                #{buyerName,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneeName != null">
+                #{consigneeName,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="countryCode != null">
+                #{countryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="address1 != null">
+                #{address1,jdbcType=VARCHAR},
+            </if>
+            <if test="address2 != null">
+                #{address2,jdbcType=VARCHAR},
+            </if>
+            <if test="address3 != null">
+                #{address3,jdbcType=VARCHAR},
+            </if>
+            <if test="postalCode != null">
+                #{postalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerEmail != null">
+                #{buyerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="plSellerAccount != null">
+                #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="plSellerAccountId != null">
+                #{plSellerAccountId,jdbcType=INTEGER},
+            </if>
+            <if test="plAmazonPayStatus != null">
+                #{plAmazonPayStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="plExchangeRate != null">
+                #{plExchangeRate,jdbcType=VARCHAR},
+            </if>
+            <if test="plConvertUsaAmount != null">
+                #{plConvertUsaAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="plActualShipping != null">
+                #{plActualShipping,jdbcType=DOUBLE},
+            </if>
+            <if test="plTrackNumber != null">
+                #{plTrackNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="plShipMethod != null">
+                #{plShipMethod,jdbcType=TINYINT},
+            </if>
+            <if test="plShippingCarrierUsed != null">
+                #{plShippingCarrierUsed,jdbcType=VARCHAR},
+            </if>
+            <if test="plProcessStatus != null">
+                #{plProcessStatus,jdbcType=TINYINT},
+            </if>
+            <if test="plTotalBulk != null">
+                #{plTotalBulk,jdbcType=DECIMAL},
+            </if>
+            <if test="plTotalWeight != null">
+                #{plTotalWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="plReferenceId != null">
+                #{plReferenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="amazonShopId != null">
+                amazon_shop_id = #{amazonShopId,jdbcType=INTEGER},
+            </if>
+            <if test="amazonShopName != null">
+                amazon_shop_name = #{amazonShopName,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentTime != null">
+                payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="latestShipTime != null">
+                latest_ship_time = #{latestShipTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="paymentMethod != null">
+                payment_method = #{paymentMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="orderTotal != null">
+                order_total = #{orderTotal,jdbcType=DECIMAL},
+            </if>
+            <if test="currencyCode != null">
+                currency_code = #{currencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerName != null">
+                buyer_name = #{buyerName,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneeName != null">
+                consignee_name = #{consigneeName,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="countryCode != null">
+                country_code = #{countryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                district = #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="address1 != null">
+                address1 = #{address1,jdbcType=VARCHAR},
+            </if>
+            <if test="address2 != null">
+                address2 = #{address2,jdbcType=VARCHAR},
+            </if>
+            <if test="address3 != null">
+                address3 = #{address3,jdbcType=VARCHAR},
+            </if>
+            <if test="postalCode != null">
+                postal_code = #{postalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerEmail != null">
+                buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="plSellerAccount != null">
+                pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="plSellerAccountId != null">
+                pl_seller_account_id = #{plSellerAccountId,jdbcType=INTEGER},
+            </if>
+            <if test="plAmazonPayStatus != null">
+                pl_amazon_pay_status = #{plAmazonPayStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="plExchangeRate != null">
+                pl_exchange_rate = #{plExchangeRate,jdbcType=VARCHAR},
+            </if>
+            <if test="plConvertUsaAmount != null">
+                pl_convert_USA_amount = #{plConvertUsaAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="plActualShipping != null">
+                pl_actual_shipping = #{plActualShipping,jdbcType=DOUBLE},
+            </if>
+            <if test="plTrackNumber != null">
+                pl_track_number = #{plTrackNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="plShipMethod != null">
+                pl_ship_method = #{plShipMethod,jdbcType=TINYINT},
+            </if>
+            <if test="plShippingCarrierUsed != null">
+                pl_shipping_carrier_used = #{plShippingCarrierUsed,jdbcType=VARCHAR},
+            </if>
+            <if test="plProcessStatus != null">
+                pl_process_status = #{plProcessStatus,jdbcType=TINYINT},
+            </if>
+            <if test="plTotalBulk != null">
+                pl_total_bulk = #{plTotalBulk,jdbcType=DECIMAL},
+            </if>
+            <if test="plTotalWeight != null">
+                pl_total_weight = #{plTotalWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="plReferenceId != null">
+                pl_reference_id = #{plReferenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tbl_amazon_order
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrder">
+        insert into tbl_amazon_order (id, amazon_shop_id,amazon_shop_name,amazon_seller_account, marketplace_id,
+            order_id, order_status, payment_time,latest_ship_time,
+            last_update_time, payment_method, order_total,
+            currency_code, buyer_name, consignee_name,
+            country,country_code, state, city,
+            district, address1, address2,
+            address3, postal_code, phone,
+            buyer_email, pl_seller_account,pl_seller_account_id, pl_amazon_pay_status,
+            pl_exchange_rate, pl_convert_USA_amount, pl_actual_shipping,
+            pl_track_number, pl_ship_method, pl_shipping_carrier_used,
+            pl_process_status, pl_total_bulk, pl_total_weight,
+            pl_reference_id, create_date, update_date
+            )
+        values (#{id,jdbcType=INTEGER}, #{amazonShopId,jdbcType=INTEGER},#{amazonShopName,jdbcType=VARCHAR}, #{amazonSellerAccount,jdbcType=VARCHAR}, #{marketplaceId,jdbcType=VARCHAR},
+            #{orderId,jdbcType=VARCHAR}, #{orderStatus,jdbcType=VARCHAR}, #{paymentTime,jdbcType=TIMESTAMP},
+             #{latestShipTime,jdbcType=TIMESTAMP},
+            #{lastUpdateTime,jdbcType=TIMESTAMP}, #{paymentMethod,jdbcType=VARCHAR}, #{orderTotal,jdbcType=DECIMAL}, 
+            #{currencyCode,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, #{consigneeName,jdbcType=VARCHAR}, 
+            #{country,jdbcType=VARCHAR},#{countryCode,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},
+            #{district,jdbcType=VARCHAR}, #{address1,jdbcType=VARCHAR}, #{address2,jdbcType=VARCHAR}, 
+            #{address3,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+            #{buyerEmail,jdbcType=VARCHAR}, #{plSellerAccount,jdbcType=VARCHAR},#{plSellerAccountId,jdbcType=INTEGER}, #{plAmazonPayStatus,jdbcType=VARCHAR},
+            #{plExchangeRate,jdbcType=VARCHAR}, #{plConvertUsaAmount,jdbcType=DECIMAL}, #{plActualShipping,jdbcType=DOUBLE},
+            #{plTrackNumber,jdbcType=VARCHAR}, #{plShipMethod,jdbcType=TINYINT}, #{plShippingCarrierUsed,jdbcType=VARCHAR}, 
+            #{plProcessStatus,jdbcType=TINYINT}, #{plTotalBulk,jdbcType=DECIMAL}, #{plTotalWeight,jdbcType=DECIMAL}, 
+            #{plReferenceId,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+            )
+    </insert>
+    <!--批量插入  有则更新 无则插入   pl_process_status=values(pl_process_status),   , create_date=values(create_date), update_date=values(update_date)-->
+    <update id="insertBulk" parameterType="java.util.ArrayList">
+        insert into tbl_amazon_order
+        <trim prefix=" (" suffix=")">
+            amazon_shop_id,amazon_shop_name,amazon_seller_account, marketplace_id, order_id, order_status,
+            payment_time,latest_ship_time,
+            last_update_time, payment_method, order_total, currency_code, buyer_name, consignee_name,
+            country,country_code, state, city, district, address1, address2, address3, postal_code,
+            phone,buyer_email, pl_seller_account,pl_seller_account_id, pl_amazon_pay_status, pl_exchange_rate,
+            pl_convert_USA_amount,
+            pl_actual_shipping, pl_track_number, pl_ship_method, pl_shipping_carrier_used, pl_process_status,
+            pl_total_bulk, pl_total_weight, pl_reference_id, create_date, update_date
+        </trim>
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.amazonShopId,jdbcType=INTEGER},#{item.amazonShopName,jdbcType=VARCHAR},#{item.amazonSellerAccount,jdbcType=VARCHAR},
+            #{item.marketplaceId,jdbcType=VARCHAR},
+            #{item.orderId,jdbcType=VARCHAR}, #{item.orderStatus,jdbcType=VARCHAR},
+            #{item.paymentTime,jdbcType=TIMESTAMP},#{item.latestShipTime,jdbcType=TIMESTAMP},
+            #{item.lastUpdateTime,jdbcType=TIMESTAMP}, #{item.paymentMethod,jdbcType=VARCHAR},
+            #{item.orderTotal,jdbcType=DECIMAL},
+            #{item.currencyCode,jdbcType=VARCHAR}, #{item.buyerName,jdbcType=VARCHAR},
+            #{item.consigneeName,jdbcType=VARCHAR},
+            #{item.country,jdbcType=VARCHAR},#{item.countryCode,jdbcType=VARCHAR},
+            #{item.state,jdbcType=VARCHAR},#{item.city,jdbcType=VARCHAR},
+            #{item.district,jdbcType=VARCHAR},#{item.address1,jdbcType=VARCHAR}, #{item.address2,jdbcType=VARCHAR},
+            #{item.address3,jdbcType=VARCHAR}, #{item.postalCode,jdbcType=VARCHAR}, #{item.phone,jdbcType=VARCHAR},
+            #{item.buyerEmail,jdbcType=VARCHAR},
+            #{item.plSellerAccount,jdbcType=VARCHAR},#{item.plSellerAccountId,jdbcType=INTEGER},#{item.plAmazonPayStatus,jdbcType=VARCHAR},
+            #{item.plExchangeRate,jdbcType=VARCHAR},#{item.plConvertUsaAmount,jdbcType=DECIMAL},#{item.plActualShipping,jdbcType=DOUBLE},
+            #{item.plTrackNumber,jdbcType=VARCHAR},#{item.plShipMethod,jdbcType=TINYINT},#{item.plShippingCarrierUsed,jdbcType=VARCHAR},
+            #{item.plProcessStatus,jdbcType=TINYINT},#{item.plTotalBulk,jdbcType=DECIMAL},#{item.plTotalWeight,jdbcType=DECIMAL},
+            #{item.plReferenceId,jdbcType=VARCHAR},
+            #{item.createDate,jdbcType=TIMESTAMP},#{item.updateDate,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        order_status = VALUES(order_status),
+        last_update_time = VALUES(last_update_time)
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrder">
+        update tbl_amazon_order
+        <set>
+            <if test="amazonShopId != null">
+                amazon_shop_id = #{amazonShopId,jdbcType=INTEGER},
+            </if>
+            <if test="amazonShopName != null">
+                amazon_shop_name = #{amazonShopName,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentTime != null">
+                payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="latestShipTime != null">
+                latest_ship_time = #{latestShipTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="paymentMethod != null">
+                payment_method = #{paymentMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="orderTotal != null">
+                order_total = #{orderTotal,jdbcType=DECIMAL},
+            </if>
+            <if test="currencyCode != null">
+                currency_code = #{currencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerName != null">
+                buyer_name = #{buyerName,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneeName != null">
+                consignee_name = #{consigneeName,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="countryCode != null">
+                country_code = #{countryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                district = #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="address1 != null">
+                address1 = #{address1,jdbcType=VARCHAR},
+            </if>
+            <if test="address2 != null">
+                address2 = #{address2,jdbcType=VARCHAR},
+            </if>
+            <if test="address3 != null">
+                address3 = #{address3,jdbcType=VARCHAR},
+            </if>
+            <if test="postalCode != null">
+                postal_code = #{postalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerEmail != null">
+                buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="plSellerAccount != null">
+                pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="plSellerAccountId != null">
+                pl_seller_account_id = #{plSellerAccountId,jdbcType=INTEGER},
+            </if>
+            <if test="plAmazonPayStatus != null">
+                pl_amazon_pay_status = #{plAmazonPayStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="plExchangeRate != null">
+                pl_exchange_rate = #{plExchangeRate,jdbcType=VARCHAR},
+            </if>
+            <if test="plConvertUsaAmount != null">
+                pl_convert_USA_amount = #{plConvertUsaAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="plActualShipping != null">
+                pl_actual_shipping = #{plActualShipping,jdbcType=DOUBLE},
+            </if>
+            <if test="plTrackNumber != null">
+                pl_track_number = #{plTrackNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="plShipMethod != null">
+                pl_ship_method = #{plShipMethod,jdbcType=TINYINT},
+            </if>
+            <if test="plShippingCarrierUsed != null">
+                pl_shipping_carrier_used = #{plShippingCarrierUsed,jdbcType=VARCHAR},
+            </if>
+            <if test="plProcessStatus != null">
+                pl_process_status = #{plProcessStatus,jdbcType=TINYINT},
+            </if>
+            <if test="plTotalBulk != null">
+                pl_total_bulk = #{plTotalBulk,jdbcType=DECIMAL},
+            </if>
+            <if test="plTotalWeight != null">
+                pl_total_weight = #{plTotalWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="plReferenceId != null">
+                pl_reference_id = #{plReferenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateplAmazonPayStatusByOrderId" parameterType="java.lang.String">
+        update tbl_amazon_order
+        <set>
+            <if test="plAmazonPayStatus != null">
+                pl_amazon_pay_status = #{plAmazonPayStatus,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where order_id=#{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateplProcessStatusByOrderId">
+        update tbl_amazon_order
+        set
+        pl_process_status = #{plProcessStatus,jdbcType=TINYINT}
+        where order_id=#{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 批量更新Amazon订单状态表==转单用的 wujiachuang-->
+    <update id="updateConvertStatusBatch" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE tbl_amazon_order
+            <set>
+                pl_process_status = #{item.converSysStatus,jdbcType=TINYINT},
+            </set>
+            <where>
+                order_id = #{item.orderId,jdbcType=VARCHAR}
+            </where>
+        </foreach>
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrder">
+        update tbl_amazon_order
+        set amazon_shop_id = #{amazonShopId,jdbcType=INTEGER}, amazon_shop_name = #{amazonShopName,jdbcType=VARCHAR},
+            amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            order_id = #{orderId,jdbcType=VARCHAR},
+            order_status = #{orderStatus,jdbcType=VARCHAR},
+            payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+            latest_ship_time = #{latestShipTime,jdbcType=TIMESTAMP},
+            last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            payment_method = #{paymentMethod,jdbcType=VARCHAR},
+            order_total = #{orderTotal,jdbcType=DECIMAL},
+            currency_code = #{currencyCode,jdbcType=VARCHAR},
+            buyer_name = #{buyerName,jdbcType=VARCHAR},
+            consignee_name = #{consigneeName,jdbcType=VARCHAR},
+            country = #{country,jdbcType=VARCHAR},
+            country_code = #{countryCode,jdbcType=VARCHAR},
+            state = #{state,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            district = #{district,jdbcType=VARCHAR},
+            address1 = #{address1,jdbcType=VARCHAR},
+            address2 = #{address2,jdbcType=VARCHAR},
+            address3 = #{address3,jdbcType=VARCHAR},
+            postal_code = #{postalCode,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+            pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            pl_seller_account_id = #{plSellerAccountId,jdbcType=INTEGER},
+            pl_amazon_pay_status = #{plAmazonPayStatus,jdbcType=VARCHAR},
+            pl_exchange_rate = #{plExchangeRate,jdbcType=VARCHAR},
+            pl_convert_USA_amount = #{plConvertUsaAmount,jdbcType=DECIMAL},
+            pl_actual_shipping = #{plActualShipping,jdbcType=DOUBLE},
+            pl_track_number = #{plTrackNumber,jdbcType=VARCHAR},
+            pl_ship_method = #{plShipMethod,jdbcType=TINYINT},
+            pl_shipping_carrier_used = #{plShippingCarrierUsed,jdbcType=VARCHAR},
+            pl_process_status = #{plProcessStatus,jdbcType=TINYINT},
+            pl_total_bulk = #{plTotalBulk,jdbcType=DECIMAL},
+            pl_total_weight = #{plTotalWeight,jdbcType=DECIMAL},
+            pl_reference_id = #{plReferenceId,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            update_date = #{updateDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrder" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="amazonShopId != null">
+                and amazon_shop_id = #{amazonShopId,jdbcType=INTEGER}
+            </if>
+            <if test="amazonShopName != null">
+                and amazon_shop_name = #{amazonShopName,jdbcType=VARCHAR}
+            </if>
+            <if test="amazonSellerAccount != null">
+                and amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null">
+                and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId != null">
+                and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderStatus != null">
+                and order_status = #{orderStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentTime != null">
+                and payment_time = #{paymentTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="latestShipTime != null">
+                and latest_ship_time = #{latestShipTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastUpdateTime != null">
+                and last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="paymentMethod != null">
+                and payment_method = #{paymentMethod,jdbcType=VARCHAR}
+            </if>
+            <if test="orderTotal != null">
+                and order_total = #{orderTotal,jdbcType=DECIMAL}
+            </if>
+            <if test="currencyCode != null">
+                and currency_code = #{currencyCode,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerName != null">
+                and buyer_name = #{buyerName,jdbcType=VARCHAR}
+            </if>
+            <if test="consigneeName != null">
+                and consignee_name = #{consigneeName,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null">
+                and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="countryCode != null">
+                and country_code = #{countryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null">
+                and state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null">
+                and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="district != null">
+                and district = #{district,jdbcType=VARCHAR}
+            </if>
+            <if test="address1 != null">
+                and address1 = #{address1,jdbcType=VARCHAR}
+            </if>
+            <if test="address2 != null">
+                and address2 = #{address2,jdbcType=VARCHAR}
+            </if>
+            <if test="address3 != null">
+                and address3 = #{address3,jdbcType=VARCHAR}
+            </if>
+            <if test="postalCode != null">
+                and postal_code = #{postalCode,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null">
+                and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerEmail != null">
+                and buyer_email = #{buyerEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="plSellerAccount != null">
+                and pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="plSellerAccountId != null">
+                and pl_seller_account_id = #{plSellerAccountId,jdbcType=INTEGER}
+            </if>
+            <if test="plAmazonPayStatus != null">
+                and pl_amazon_pay_status = #{plAmazonPayStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="plExchangeRate != null">
+                and pl_exchange_rate = #{plExchangeRate,jdbcType=VARCHAR}
+            </if>
+            <if test="plConvertUsaAmount != null">
+                and pl_convert_USA_amount = #{plConvertUsaAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="plActualShipping != null">
+                and pl_actual_shipping = #{plActualShipping,jdbcType=DOUBLE}
+            </if>
+            <if test="plTrackNumber != null">
+                and pl_track_number = #{plTrackNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="plShipMethod != null">
+                and pl_ship_method = #{plShipMethod,jdbcType=TINYINT}
+            </if>
+            <if test="plShippingCarrierUsed != null">
+                and pl_shipping_carrier_used = #{plShippingCarrierUsed,jdbcType=VARCHAR}
+            </if>
+            <if test="plProcessStatus != null">
+                and pl_process_status = #{plProcessStatus,jdbcType=TINYINT}
+            </if>
+            <if test="plTotalBulk != null">
+                and pl_total_bulk = #{plTotalBulk,jdbcType=DECIMAL}
+            </if>
+            <if test="plTotalWeight != null">
+                and pl_total_weight = #{plTotalWeight,jdbcType=DECIMAL}
+            </if>
+            <if test="plReferenceId != null">
+                and pl_reference_id = #{plReferenceId,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateDate != null">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+</mapper>

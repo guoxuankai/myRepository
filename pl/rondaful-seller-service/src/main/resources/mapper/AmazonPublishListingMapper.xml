@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonPublishListingMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AmazonPublishListing">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="pl_account" jdbcType="VARCHAR" property="plAccount"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="pl_sku" jdbcType="VARCHAR" property="plSku"/>
+        <result column="platform_sku" jdbcType="VARCHAR" property="platformSku"/>
+        <result column="ASIN" jdbcType="VARCHAR" property="asin"/>
+        <result column="publish_site" jdbcType="VARCHAR" property="publishSite"/>
+        <result column="publish_account" jdbcType="VARCHAR" property="publishAccount"/>
+        <result column="merchant_identifier" jdbcType="VARCHAR" property="merchantIdentifier"/>
+        <result column="publish_type" jdbcType="INTEGER" property="publishType"/>
+        <result column="publish_status" jdbcType="INTEGER" property="publishStatus"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="version_data" jdbcType="VARCHAR" property="versionData"/>
+        <result column="batch_no" jdbcType="VARCHAR" property="batchNo"/>
+        <result column="submitfeedid" jdbcType="VARCHAR" property="submitfeedid"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="ext" jdbcType="LONGVARCHAR" property="ext"/>
+        <result column="success_time" jdbcType="TIMESTAMP" property="successTime"/>
+        <result column="product_image" jdbcType="VARCHAR" property="productImage"/>
+        <result column="amwToken" jdbcType="VARCHAR" property="amwToken"/>
+        <result column="data_source" jdbcType="INTEGER" property="dataSource"/>
+        <result column="online_time" jdbcType="TIMESTAMP" property="onlineTime"/>
+        <result column="has_required" jdbcType="INTEGER" property="hasRequired"/>
+        <result column="logistics_type" jdbcType="INTEGER" property="logisticsType"/>
+        <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId"/>
+        <result column="logistics_code" jdbcType="VARCHAR" property="logisticsCode"/>
+        <result column="update_status" jdbcType="INTEGER" property="updateStatus"/>
+        <result column="sale_user_id" jdbcType="INTEGER" property="saleUserId"/>
+        <result column="pl_sku_tort" jdbcType="INTEGER" property="plSkuTort"/>
+    </resultMap>
+ 
+
+    <resultMap id="AmazonQueryLoadTaskResultResultMap" type="com.rondaful.cloud.seller.entity.amazon.AmazonQueryLoadTaskResult">
+        <id column="listing_ids" jdbcType="VARCHAR" property="listingIds"/>
+        <result column="pl_account" jdbcType="VARCHAR" property="plAccount"/>
+        <result column="publish_site" jdbcType="VARCHAR" property="publishSite"/>
+        <result column="publish_account" jdbcType="VARCHAR" property="publishAccount"/>
+        <result column="merchant_identifier" jdbcType="VARCHAR" property="merchantIdentifier"/>
+        <result column="amwToken" jdbcType="VARCHAR" property="amwToken"/>
+        <result column="publish_type" jdbcType="INTEGER" property="publishType"/>
+    </resultMap>
+
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.rondaful.cloud.seller.entity.AmazonPublishListing">
+        <result column="publish_message" jdbcType="LONGVARCHAR" property="publishMessage"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,pl_account, title, pl_sku, platform_sku, ASIN, publish_site, publish_account, publish_type,
+        publish_status, create_time, update_time,version_data,batch_no,submitfeedid
+        publish_status, create_time, update_time,remark,ext,success_time,product_image,amwToken,merchant_identifier,
+        data_source,has_required,logistics_type,warehouse_id,logistics_code,update_status,sale_user_id
+    </sql>
+
+    <sql id="Blob_Column_List">
+        publish_message
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from amazon_publish_listing
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from amazon_publish_listing
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing">
+        insert into amazon_publish_listing (pl_account, title, pl_sku,
+            platform_sku, ASIN, publish_site, 
+            publish_account, publish_type, publish_status, 
+            create_time, update_time, version_data ,batch_no,submitfeedid,remark,publish_message,ext,success_time,product_image,amwToken,
+            merchant_identifier,data_source,has_required
+            )
+        values ( #{plAccount,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+        	#{plSku,jdbcType=VARCHAR},
+            #{platformSku,jdbcType=VARCHAR}, #{asin,jdbcType=VARCHAR}, #{publishSite,jdbcType=VARCHAR}, 
+            #{publishAccount,jdbcType=VARCHAR}, #{publishType,jdbcType=INTEGER}, #{publishStatus,jdbcType=INTEGER}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},  #{versionData,jdbcType=VARCHAR},
+            #{batchNo,jdbcType=VARCHAR},#{submitfeedid,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR}, 
+            #{publishMessage,jdbcType=LONGVARCHAR},#{ext,jdbcType=LONGVARCHAR}, #{successTime,jdbcType=TIMESTAMP},  #{productImage,jdbcType=VARCHAR}
+            ,  #{amwToken,jdbcType=VARCHAR},  #{merchantIdentifier,jdbcType=VARCHAR},#{dataSource,jdbcType=INTEGER},#{hasRequired,jdbcType=INTEGER}
+            )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
+            parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing">
+        insert into amazon_publish_listing
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(id)">
+                id,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(plAccount )">
+                pl_account,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(title )">
+                title,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(plSku )">
+                pl_sku,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(platformSku )">
+                platform_sku,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(asin )">
+                ASIN,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishSite )">
+                publish_site,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishAccount )">
+                publish_account,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishType )">
+                publish_type,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishStatus )">
+                publish_status,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(createTime )">
+                create_time,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(updateTime )">
+                update_time,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(versionData )">
+                version_data,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(batchNo )">
+                batch_no,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(submitfeedid )">
+                submitfeedid,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(remark )">
+                remark,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishMessage )">
+                publish_message,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(ext )">
+                ext,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(successTime )">
+                success_time,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(productImage)">
+                product_image,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(amwToken)">
+                amwToken,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(merchantIdentifier)">
+                merchant_identifier,
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(dataSource)">
+                data_source,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(onlineTime)">
+                online_time,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(hasRequired)">
+                has_required,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(logisticsType)">
+                logistics_type,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(warehouseId)">
+                warehouse_id,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(logisticsCode)">
+                logistics_code,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(updateStatus)">
+                update_status,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(saleUserId)">
+                sale_user_id,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(id )">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(plAccount )">
+                #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(title )">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(plSku )">
+                #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(platformSku )">
+                #{platformSku,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(asin )">
+                #{asin,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishSite )">
+                #{publishSite,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishAccount )">
+                #{publishAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishType )">
+                #{publishType,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishStatus )">
+                #{publishStatus,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(createTime )">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(updateTime )">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(versionData )">
+                #{versionData,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(batchNo )">
+                #{batchNo,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(submitfeedid )">
+                #{submitfeedid,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(remark )">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishMessage )">
+                #{publishMessage,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(ext )">
+                #{ext,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(successTime )">
+                #{successTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(productImage )">
+                #{productImage,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(amwToken )">
+                #{amwToken,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(merchantIdentifier)">
+                #{merchantIdentifier,jdbcType=VARCHAR},
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(dataSource)">
+                #{dataSource,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(onlineTime)">
+                #{onlineTime,jdbcType=TIMESTAMP},
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(hasRequired)">
+                #{hasRequired,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(logisticsType)">
+                #{logisticsType,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(warehouseId)">
+                #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(logisticsCode)">
+                #{logisticsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(updateStatus)">
+                #{updateStatus,jdbcType=INTEGER},
+        	</if>
+        	<if test="@com.rondaful.cloud.Ognl@isNotEmpty(saleUserId)">
+                #{saleUserId,jdbcType=INTEGER},
+        	</if>
+
+
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing">
+        update amazon_publish_listing
+        <set>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(plAccount )">
+                pl_account = #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(title )">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(plSku )">
+                pl_sku = #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(platformSku )">
+                platform_sku = #{platformSku,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(asin )">
+                ASIN = #{asin,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishSite )">
+                publish_site = #{publishSite,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishAccount )">
+                publish_account = #{publishAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishType )">
+                publish_type = #{publishType,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishStatus )">
+                publish_status = #{publishStatus,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(createTime )">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(updateTime )">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(versionData )">
+                version_data = #{versionData,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(batchNo )">
+                batch_no = #{batchNo,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(submitfeedid )">
+                submitfeedid = #{submitfeedid,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotNullSimple(remark )">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishMessage )">
+                publish_message = #{publishMessage,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(ext )">
+                ext = #{ext,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(successTime )">
+                success_time = #{successTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(productImage )">
+                product_image = #{productImage,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(amwToken )">
+                amwToken = #{amwToken,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(merchantIdentifier)">
+                merchant_identifier = #{merchantIdentifier,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(hasRequired)">
+                has_required = #{hasRequired,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(logisticsType)">
+                logistics_type = #{logisticsType,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(warehouseId)">
+                warehouse_id = #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(logisticsCode)">
+                logistics_code = #{logisticsCode,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(updateStatus)">
+                update_status = #{updateStatus,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(saleUserId)">
+                sale_user_id = #{saleUserId,jdbcType=INTEGER},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        <if test="@com.rondaful.cloud.Ognl@isNotEmpty(version)">
+            and version = #{version,jdbcType=VARCHAR}
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing">
+        update amazon_publish_listing
+        set pl_account = #{plAccount,jdbcType=VARCHAR},
+            title = #{title,jdbcType=VARCHAR},
+            pl_sku = #{plSku,jdbcType=VARCHAR},
+            platform_sku = #{platformSku,jdbcType=VARCHAR},
+            ASIN = #{asin,jdbcType=VARCHAR},
+            publish_site = #{publishSite,jdbcType=VARCHAR},
+            publish_account = #{publishAccount,jdbcType=VARCHAR},
+            publish_type = #{publishType,jdbcType=INTEGER},
+            publish_status = #{publishStatus,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            version_data = #{versionData,jdbcType=VARCHAR},
+            batch_no = #{batchNo,jdbcType=VARCHAR},
+            submitfeedid = #{submitfeedid,jdbcType=VARCHAR},
+            remark =  #{remark,jdbcType=VARCHAR},
+            publish_message = #{publishMessage,jdbcType=LONGVARCHAR},
+            ext =  #{ext,jdbcType=LONGVARCHAR},
+            success_time = #{successTime,jdbcType=TIMESTAMP},
+            product_image = #{productImage,jdbcType=VARCHAR},
+            amwToken = #{amwToken,jdbcType=VARCHAR},
+            merchant_identifier = #{merchantIdentifier,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing">
+        update amazon_publish_listing
+        set pl_account = #{plAccount,jdbcType=VARCHAR},
+            title = #{title,jdbcType=VARCHAR},
+            pl_sku = #{plSku,jdbcType=VARCHAR},
+            platform_sku = #{platformSku,jdbcType=VARCHAR},
+            ASIN = #{asin,jdbcType=VARCHAR},
+            publish_site = #{publishSite,jdbcType=VARCHAR},
+            publish_account = #{publishAccount,jdbcType=VARCHAR},
+            publish_type = #{publishType,jdbcType=INTEGER},
+            publish_status = #{publishStatus,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            version_data = #{versionData,jdbcType=VARCHAR},
+            batch_no = #{batchNo,jdbcType=VARCHAR},
+            submitfeedid = #{submitfeedid,jdbcType=VARCHAR},
+            remark =  #{remark,jdbcType=VARCHAR},
+            ext =  #{ext,jdbcType=LONGVARCHAR},
+            success_time = #{successTime,jdbcType=TIMESTAMP},
+            product_image = #{productImage,jdbcType=VARCHAR},
+            amwToken = #{amwToken,jdbcType=VARCHAR},
+            merchant_identifier = #{merchantIdentifier,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectAllMobile" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing" resultType="com.rondaful.cloud.seller.entity.AmazonPublishListingMobile">
+        SELECT
+            apl.id,
+            DATEDIFF(NOW(),apl.success_time) AS publishDays,
+            apl.success_time AS successTime,
+            apl.product_image AS productImage,
+            apl.publish_status AS publishStatus,
+            apl.title AS productName,
+            apl.publish_account AS storeName
+        FROM amazon_publish_listing apl
+        WHERE
+            apl.pl_account = #{plAccount}
+         AND apl.publish_status IN (3,5)
+        <if test="publishAccounts != null and publishAccounts.size()>0">
+            and apl.publish_account in
+            <foreach collection="publishAccounts" item="publishAccount" index="index" open="(" close=")" separator=",">
+                #{publishAccount}
+            </foreach>
+        </if>
+         order by apl.create_time desc
+    </select>
+
+
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing"
+            resultMap="ResultMapWithBLOBs">
+        select main.id,main.pl_account, main.title, main.pl_sku, main.platform_sku, main.ASIN, main.publish_site, main.publish_account, main.publish_type,
+        main.publish_status, main.publish_message, main.create_time, main.update_time, main.batch_no, main.version_data,main.submitfeedid, main.remark,
+        main.version, main.success_time,main.online_time, main.product_image, main.amwToken,main.has_required, main.merchant_identifier,main.update_status
+        ,main.sale_user_id,main.warehouse_id,main.logistics_code,main.logistics_type,sub.pl_sku_tort
+        from amazon_publish_listing main
+        LEFT JOIN amazon_publish_sub_listing sub ON main.id = sub.listing_id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(id )">
+                and main.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(plAccount )">
+                and main.pl_account = #{plAccount,jdbcType=BIGINT}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(updateStatus )">
+                and main.update_status = #{updateStatus,jdbcType=INTEGER}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(saleUserId)">
+                and main.sale_user_id = #{saleUserId,jdbcType=INTEGER}
+            </if>
+            <if test="publishAccounts != null and publishAccounts.size()>0">
+                and main.publish_account in
+                <foreach collection="publishAccounts" item="publishAccount" index="index" open="(" close=")" separator=",">
+                    #{publishAccount}
+                </foreach>
+            </if>
+            <if test="ids != null and ids.size()>0">
+                and main.id in
+                <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(title )">
+                and (main.title like CONCAT('%',#{title,jdbcType=VARCHAR},'%') or main.publish_message like
+                CONCAT('%"title":"',#{title,jdbcType=VARCHAR},'%"%') )
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(plSku )">
+                and (main.pl_sku like CONCAT('%',#{plSku,jdbcType=VARCHAR},'%') or sub.pl_sku like
+                CONCAT('%',#{plSku,jdbcType=VARCHAR},'%'))
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(platformSku )">
+                and (main.platform_sku like CONCAT('%', #{platformSku,jdbcType=VARCHAR},'%') or sub.sku like
+                CONCAT('%',#{platformSku,jdbcType=VARCHAR},'%'))
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(asin )">
+                and sub.asin like CONCAT('%', #{asin,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishSite )">
+                and main.publish_site = #{publishSite,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishAccount )">
+                and main.publish_account = #{publishAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishType )">
+                and main.publish_type = #{publishType,jdbcType=INTEGER}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(dataSource)">
+                and main.data_source = #{dataSource,jdbcType=INTEGER}
+            </if>
+
+            <choose>
+                <when test="@com.rondaful.cloud.Ognl@isNotEmpty(publishStatus ) and @com.rondaful.cloud.Ognl@isNotEmpty(publishStatusList ) ">
+                    and ( main.publish_status = #{publishStatus,jdbcType=INTEGER} or main.publish_status in
+                    <foreach item="puStatus" collection="publishStatusList" open="(" separator="," close=")">
+                        #{puStatus}
+                    </foreach>
+                    )
+                    <if test="publishStatus == 3">
+                        <if test="listingType == 1">
+                            and main.pl_sku != #{temp}
+                        </if>
+                        <if test="listingType == 0">
+                            and main.pl_sku = #{temp}
+                        </if>
+                    </if>
+                </when>
+                <when test="@com.rondaful.cloud.Ognl@isNotEmpty(publishStatus )">
+                    and main.publish_status = #{publishStatus,jdbcType=INTEGER}
+                </when>
+
+                <when test="@com.rondaful.cloud.Ognl@isNotEmpty(publishStatusList )">
+                    and main.publish_status in
+                    <foreach item="puStatus" collection="publishStatusList" open="(" separator="," close=")">
+                        #{puStatus}
+                    </foreach>
+                </when>
+                <otherwise></otherwise>
+            </choose>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishMessage )">
+                and main.publish_message = #{publishMessage,jdbcType=LONGVARCHAR}
+            </if>
+            <choose>
+                <when test="@com.rondaful.cloud.Ognl@isNotEmpty(timeType)">
+                    <if test="@com.rondaful.cloud.Ognl@isNotEmpty(startCreateTime )">
+                        and
+                        <if test="timeType == '0'.toString()">DATE_FORMAT(main.create_time,'%Y-%m-%d')</if>
+                        <if test="timeType == '3'.toString()">DATE_FORMAT(main.update_time,'%Y-%m-%d')</if>
+                        <if test="timeType == '2'.toString()">DATE_FORMAT(main.online_time,'%Y-%m-%d')</if>
+                        <if test="timeType == '1'.toString()">DATE_FORMAT(main.success_time,'%Y-%m-%d')</if>
+                        >= #{startCreateTime,jdbcType=VARCHAR}
+                    </if>
+                    <if test="@com.rondaful.cloud.Ognl@isNotEmpty(endCreateTime )">
+                        and
+                        <if test="timeType == '0'.toString()">DATE_FORMAT(main.create_time,'%Y-%m-%d')</if>
+                        <if test="timeType == '3'.toString()">DATE_FORMAT(main.update_time,'%Y-%m-%d')</if>
+                        <if test="timeType == '2'.toString()">DATE_FORMAT(main.online_time,'%Y-%m-%d')</if>
+                        <if test="timeType == '1'.toString()">DATE_FORMAT(main.success_time,'%Y-%m-%d')</if>
+                        &lt;= #{endCreateTime,jdbcType=VARCHAR}
+                    </if>
+                </when>
+                <otherwise></otherwise>
+            </choose>
+
+            <choose>
+                <when test="@com.rondaful.cloud.Ognl@isNotEmpty(supplyStatus)">
+                    and main.pl_sku != '亚马逊同步数据'
+                    and ((main.publish_type = 1 and sub.parent_type = 1) or (main.publish_type = 2)) and sub.msg_type = '_POST_PRODUCT_DATA_'
+                    <if test="supplyStatus == '0'.toString()"> and sub.pl_sku_status = 3 and sub.pl_sku_count >= 20 and (sub.pl_sku_tort=0 or sub.pl_sku_tort is null) and main.warehouse_id is not null</if>
+                    <if test="supplyStatus == '1'.toString()"> and sub.pl_sku_status = 1</if>
+                    <if test="supplyStatus == '2'.toString()"> and sub.pl_sku_status = 3 and sub.pl_sku_count <![CDATA[<=]]> 0  and (sub.pl_sku_tort=0 or sub.pl_sku_tort is null)  and main.warehouse_id is not null</if>
+                    <if test="supplyStatus == '3'.toString()"> and sub.pl_sku_status = 3 and sub.pl_sku_count &lt; 20 and sub.pl_sku_count > 0  and (sub.pl_sku_tort=0 or sub.pl_sku_tort is null)  and main.warehouse_id is not null</if>
+                    <if test="supplyStatus == '4'.toString()"> and (sub.pl_sku_status = 4 or sub.pl_sku_status is null or (sub.pl_sku_status = 3 and (sub.pl_sku_tort=0 or sub.pl_sku_tort is null) and (main.warehouse_id is null or sub.pl_sku_count is null)))</if>
+                    <if test="supplyStatus == '5'.toString()"> and sub.pl_sku_tort=1 and sub.pl_sku_status = 3</if>
+                </when>
+                <otherwise></otherwise>
+            </choose>
+
+        </trim>
+        GROUP BY main.id
+        ORDER BY id DESC
+    </select>
+
+    <!-- 复制刊登 -->
+    <insert id="copyPublish" parameterType="Long">
+        insert into amazon_publish_listing
+            (title,pl_sku,platform_sku,ASIN,publish_site,publish_account,publish_type,publish_status,publish_message,
+            pl_account,create_time,update_time,remark,ext,amwToken,batch_no,product_image)
+        select
+            title,pl_sku,platform_sku,ASIN,publish_site,publish_account,publish_type,1,publish_message,
+            pl_account,NOW() as create_time, now() as update_time,remark,ext,amwToken,UUID(),product_image
+        from amazon_publish_listing where id = #{id,jdbcType=BIGINT}
+    </insert>
+
+    <!-- 根据批次号查询 -->
+    <select id="selectBybatchNo" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from amazon_publish_listing
+        where batch_no = #{batchNo,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByBatchNo" parameterType="java.lang.String">
+        delete from amazon_publish_listing
+        where batch_no = #{batchNo,jdbcType=VARCHAR}
+    </delete>
+
+
+
+    <!-- 查询用户刊登成功过的亚马逊刊登总数 -->
+    <select id="selectCount" resultType="Integer">
+         select count(0) FROM amazon_publish_listing WHERE pl_account = #{plAccount} AND publish_status IN (3,5)
+    </select>
+
+    <select id="selectOne" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from amazon_publish_listing
+        <trim prefix="where" prefixOverrides="and">
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishSite )">
+                and publish_site = #{publishSite,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishAccount )">
+                and publish_account = #{publishAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishType )">
+                and publish_type = #{publishType,jdbcType=INTEGER}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishStatus )">
+                and publish_status = #{publishStatus,jdbcType=INTEGER}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(id )">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(plAccount )">
+                and pl_account = #{plAccount,jdbcType=BIGINT}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(merchantIdentifier )">
+                and merchant_identifier = #{merchantIdentifier,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        order by create_time ASC
+        limit 1
+    </select>
+
+
+		<select id="selectBySubmitfeedId" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing"
+            resultMap="ResultMapWithBLOBs">
+            
+            
+		select 
+			main.id,main.pl_account, main.title, main.pl_sku, main.platform_sku, main.ASIN, main.publish_site, main.publish_account, main.publish_type,
+        	main.publish_status, main.publish_message, main.create_time, main.update_time, main.batch_no, main.version_data,main.submitfeedid, main.remark,
+        	main.version, main.success_time, main.product_image, main.amwToken, main.merchant_identifier
+        from amazon_publish_listing main
+        LEFT JOIN amazon_publish_sub_listing sub ON main.id = sub.listing_id 
+		WHERE 
+			sub.merchant_id = #{merchantIdentifier,jdbcType=VARCHAR} 
+			AND  sub.submitfeed_id = #{submitfeedid,jdbcType=VARCHAR}
+		 limit 1
+    </select>
+    
+    <select id="selectLoadTaskPulish" parameterType="java.util.Map" resultMap="AmazonQueryLoadTaskResultResultMap">
+			SELECT * FROM (
+				SELECT *,IF (@tmp = merchant_identifier ,@rank :=@rank + 1 ,@rank := 1) AS new_rank, @tmp := merchant_identifier AS tmp
+				FROM
+				(
+			     SELECT  *, GROUP_CONCAT(id) AS listing_ids ,COUNT(1) AS counts
+				 FROM (
+			        SELECT 
+						create_time,
+						id,
+			        	pl_account,
+			        	merchant_identifier,
+			        	publish_site,
+			        	publish_account,
+			        	amwToken,
+			        	-1 as publish_type
+			        FROM amazon_publish_listing 
+			        where 1=1 and publish_status in 
+							<foreach collection="statusArr" item="status"  open="(" close=")" separator=",">
+					  			#{status}
+							</foreach>
+							ORDER BY create_time LIMIT 200
+					) T GROUP BY publish_site,merchant_identifier,pl_account,publish_site,publish_account, amwToken ORDER BY counts,merchant_identifier DESC 
+				)K , (SELECT @rank := 0) r ORDER BY merchant_identifier,counts DESC
+			) F WHERE  2 >= new_rank
+    </select>
+
+
+    <update id="updateLoadTaskPulishBatch" parameterType="java.util.Map">
+        update amazon_publish_listing
+        <set>
+            update_time = now(),
+            online_time = IFNULL(online_time,now()),
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishStatus)">
+                publish_status = #{publishStatus,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(remark)">
+                remark = CONCAT(IFNULL(remark,''),',System:',#{remark,jdbcType=VARCHAR}),
+            </if>
+        </set>
+        WHERE id IN
+        <foreach collection="ids" item="id"  open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    
+    <update id="updateLoadTaskPulishBatchOnlineTime" parameterType="java.util.Map">
+        update amazon_publish_listing
+        <set>
+            online_time = IFNULL(online_time,now()),
+        </set>
+        WHERE id IN
+        <foreach collection="ids" item="id"  open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <!-- 查询某个亚马逊卖家某个商城下的某个平台sku的数据 -->
+    <select id="findList" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing"
+            resultMap="ResultMapWithBLOBs">
+        select main.*
+        from amazon_publish_listing main
+        LEFT JOIN amazon_publish_sub_listing sub ON main.id = sub.listing_id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(platformSku )">
+                and (main.platform_sku = #{platformSku,jdbcType=VARCHAR} or
+                      sub.sku = #{platformSku,jdbcType=VARCHAR})
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(publishSite )">
+                and main.publish_site = #{publishSite,jdbcType=VARCHAR}
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(merchantIdentifier )">
+                and main.merchant_identifier = #{merchantIdentifier,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        GROUP BY main.id
+        ORDER BY id DESC
+    </select>
+
+    <!-- 根据亚马逊卖家ID和刊登站点查询在线的没有asin的刊登数据，返回结果中的平台sku是字表中的sku -->
+    <select id="selectNoAsinList" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing" resultMap="ResultMapWithBLOBs" >
+        SELECT main.id,main.pl_account, main.title, main.pl_sku, sub.sku AS platform_sku, main.ASIN, main.publish_site, main.publish_account, main.publish_type,
+               main.publish_status, main.publish_message, main.create_time, main.update_time, main.batch_no, main.version_data,main.submitfeedid, main.remark,
+               main.version, main.success_time, main.product_image, main.amwToken, main.merchant_identifier
+        FROM amazon_publish_listing main LEFT JOIN amazon_publish_sub_listing sub ON sub.listing_id = main.id
+        WHERE main.publish_status = 3 AND main.merchant_identifier = #{merchantIdentifier,jdbcType=VARCHAR} AND main.publish_site = #{publishSite,jdbcType=VARCHAR}  AND !ISNULL(sub.sku) AND  ISNULL(sub.asin) GROUP BY sub.sku LIMIT 5;
+    </select>
+
+	<select id="getBatchByIds" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+	select * from amazon_publish_listing where 1=1 and
+		id IN
+        <foreach collection="ids" item="id"  open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+	</select>
+
+
+    <select id="getAmazonWarehouseIdList" resultType="java.lang.Integer" >
+        SELECT warehouse_id FROM amazon_publish_listing GROUP BY warehouse_id;
+    </select>
+
+    <select id="getAmazonListPlSkuByWarehouseId" parameterType="java.lang.Integer"  resultType="java.lang.String">
+        SELECT
+            s.pl_sku
+        FROM
+            amazon_publish_listing a
+            LEFT JOIN amazon_publish_sub_listing s ON a.id = s.listing_id
+        WHERE
+            a.warehouse_id = #{warehouseId}
+        GROUP BY
+            s.pl_sku
+    </select>
+
+    <update id="updatePlSkuCount" parameterType="java.util.HashMap" >
+        UPDATE amazon_publish_listing a
+        LEFT JOIN amazon_publish_sub_listing s ON a.id = s.listing_id
+        SET s.pl_sku_count = #{plSkuCount}
+        WHERE
+            a.warehouse_id = #{warehouseId}
+            AND s.pl_sku = #{plSku};
+    </update>
+
+    <select id="findListIfOnline"  resultType="com.rondaful.cloud.seller.entity.AmazonPublishListing">
+        SELECT
+            id,
+            update_status updateStatus
+        FROM
+            amazon_publish_listing
+        WHERE id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+
+    </select>
+
+    <update id="updatelistingStatus">
+        update amazon_publish_listing
+        <set>
+            update_time = now(),
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(updateStatus)">
+                update_status = #{updateStatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE id IN
+        <foreach collection="onlineIds" item="id"  open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="selectByAsin" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishListing"
+            resultMap="ResultMapWithBLOBs">
+        select main.id,main.pl_account, main.title, main.pl_sku, main.platform_sku, main.ASIN, main.publish_site, main.publish_account, main.publish_type,
+        main.publish_status, main.publish_message, main.create_time, main.update_time, main.batch_no, main.version_data,main.submitfeedid, main.remark,
+        main.version, main.success_time,main.online_time, main.product_image, main.amwToken,main.has_required, main.merchant_identifier
+        from amazon_publish_listing main
+        LEFT JOIN amazon_publish_sub_listing sub ON main.id = sub.listing_id
+        where sub.asin = #{asin}
+        GROUP BY main.id
+    </select>
+
+    <sql id="updatePublishStatus" >
+        UPDATE
+                amazon_publish_listing main
+                LEFT JOIN amazon_publish_report_time  art on main.merchant_identifier = art.merchant_id and main.publish_site = art.publish_site
+                LEFT JOIN (
+                            SELECT
+                                        sub1.listing_id,
+                                        count(1) allCount,
+                                        sum(if(isnull(ad1.id),0,1)) exCount,
+                                        sum(CASE WHEN ad1.status = 'Active' THEN 1 ELSE 0 END ) as activeCount,
+                                        sum(CASE WHEN ad1.status = 'Inactive' THEN 1 ELSE 0 END ) as inactiveCount,
+                                        sum(CASE WHEN ad1.status = 'Incomplete' THEN 1 ELSE 0 END ) as incompleteCount
+                            FROM amazon_publish_sub_listing sub1
+                            left join amazon_publish_report_detail ad1 on ad1.sku = sub1.sku and  sub1.marketplace_id = ad1.marketplace_id
+                            where sub1.msg_type = '_POST_PRODUCT_DATA_'   GROUP BY sub1.listing_id
+                        ) tb1 on tb1.listing_id = main.id
+    </sql>
+
+
+    <update id="updateSuccessToDefault" >
+        <include refid="updatePublishStatus" />
+        -- to defult
+        SET main.publish_status = 4,main.update_time = now(),main.update_status = 0
+        WHERE art.report_time is not null and art.report_time > main.update_time and main.publish_status = 3 and tb1.exCount = 0
+    </update>
+
+    <update id="updateDefaultToSuccess" >
+        <include refid="updatePublishStatus" />
+        -- to success
+        SET main.publish_status = 3,main.online_time = now(),main.update_time = now(),main.update_status = 1
+        WHERE art.report_time is not null and art.report_time > main.update_time and main.publish_status = 4
+             and tb1.allCount > 0 and tb1.allCount = tb1.activeCount
+    </update>
+
+	<select id="getByplatformSkuAndSite" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+        select main.id,main.pl_account, main.title, main.pl_sku, main.platform_sku, main.ASIN, main.publish_site, main.publish_account, main.publish_type,
+        main.publish_status, main.create_time, main.update_time, main.batch_no, main.version_data,main.submitfeedid, main.remark,
+        main.version, main.success_time,main.online_time, main.product_image, main.amwToken,main.has_required, main.merchant_identifier
+        , main.warehouse_id, main.logistics_type, main.logistics_code
+        from amazon_publish_listing main
+        WHERE 1=1 and main.publish_site=#{publishSite,jdbcType=VARCHAR}  and merchant_identifier=#{merchantIdentifier,jdbcType=VARCHAR} and main.platform_sku in
+        <foreach collection="platformSkus" item="platformSku"  open="(" close=")" separator=",">
+            #{platformSku,jdbcType=VARCHAR}
+        </foreach>
+       
+    </select>
+ 
+ 
+
+
+
+
+
+
+</mapper>

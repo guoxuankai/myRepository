@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishListingShippingTransportMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishListingShippingTransport">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="listing_id" jdbcType="BIGINT" property="listingId" />
+        <result column="shipping_id" jdbcType="BIGINT" property="shippingId" />
+        <result column="transport_type" jdbcType="INTEGER" property="transportType" />
+        <result column="shipping_service_additional_cost" jdbcType="VARCHAR" property="shippingServiceAdditionalCost" />
+        <result column="ship_to_location" jdbcType="VARCHAR" property="shipToLocation" />
+        <result column="shipping_service" jdbcType="VARCHAR" property="shippingService" />
+        <result column="shipping_service_cost" jdbcType="VARCHAR" property="shippingServiceCost" />
+        <result column="free_shipping" jdbcType="BIT" property="freeShipping" />
+        <result column="shipping_service_priority" jdbcType="INTEGER" property="shippingServicePriority" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, shipping_id, transport_type, shipping_service_additional_cost, ship_to_location, 
+        shipping_service, shipping_service_cost, free_shipping, shipping_service_priority
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_shipping_transport
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from ebay_publish_listing_shipping_transport
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByListingId" parameterType="java.lang.Long">
+        delete from ebay_publish_listing_shipping_transport
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </delete>
+
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingShippingTransport">
+        insert into ebay_publish_listing_shipping_transport (id, listing_id, shipping_id, 
+            transport_type, shipping_service_additional_cost, 
+            ship_to_location, shipping_service, shipping_service_cost, 
+            free_shipping, shipping_service_priority)
+        values (#{id,jdbcType=BIGINT}, #{listingId,jdbcType=BIGINT}, #{shippingId,jdbcType=BIGINT}, 
+            #{transportType,jdbcType=INTEGER}, #{shippingServiceAdditionalCost,jdbcType=VARCHAR}, 
+            #{shipToLocation,jdbcType=VARCHAR}, #{shippingService,jdbcType=VARCHAR}, #{shippingServiceCost,jdbcType=VARCHAR},
+            #{freeShipping,jdbcType=BIT}, #{shippingServicePriority,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingShippingTransport">
+        insert into ebay_publish_listing_shipping_transport
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="shippingId != null">
+                shipping_id,
+            </if>
+            <if test="transportType != null">
+                transport_type,
+            </if>
+            <if test="shippingServiceAdditionalCost != null">
+                shipping_service_additional_cost,
+            </if>
+            <if test="shipToLocation != null">
+                ship_to_location,
+            </if>
+            <if test="shippingService != null">
+                shipping_service,
+            </if>
+            <if test="shippingServiceCost != null">
+                shipping_service_cost,
+            </if>
+            <if test="freeShipping != null">
+                free_shipping,
+            </if>
+            <if test="shippingServicePriority != null">
+                shipping_service_priority,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="shippingId != null">
+                #{shippingId,jdbcType=BIGINT},
+            </if>
+            <if test="transportType != null">
+                #{transportType,jdbcType=INTEGER},
+            </if>
+            <if test="shippingServiceAdditionalCost != null">
+                #{shippingServiceAdditionalCost,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToLocation != null">
+                #{shipToLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingService != null">
+                #{shippingService,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingServiceCost != null">
+                #{shippingServiceCost,jdbcType=VARCHAR},
+            </if>
+            <if test="freeShipping != null">
+                #{freeShipping,jdbcType=BIT},
+            </if>
+            <if test="shippingServicePriority != null">
+                #{shippingServicePriority,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingShippingTransport">
+        update ebay_publish_listing_shipping_transport
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="shippingId != null">
+                shipping_id = #{shippingId,jdbcType=BIGINT},
+            </if>
+            <if test="transportType != null">
+                transport_type = #{transportType,jdbcType=INTEGER},
+            </if>
+            <if test="shippingServiceAdditionalCost != null">
+                shipping_service_additional_cost = #{shippingServiceAdditionalCost,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToLocation != null">
+                ship_to_location = #{shipToLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingService != null">
+                shipping_service = #{shippingService,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingServiceCost != null">
+                shipping_service_cost = #{shippingServiceCost,jdbcType=VARCHAR},
+            </if>
+            <if test="freeShipping != null">
+                free_shipping = #{freeShipping,jdbcType=BIT},
+            </if>
+            <if test="shippingServicePriority != null">
+                shipping_service_priority = #{shippingServicePriority,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingShippingTransport">
+        update ebay_publish_listing_shipping_transport
+        set listing_id = #{listingId,jdbcType=BIGINT},
+            shipping_id = #{shippingId,jdbcType=BIGINT},
+            transport_type = #{transportType,jdbcType=INTEGER},
+            shipping_service_additional_cost = #{shippingServiceAdditionalCost,jdbcType=VARCHAR},
+            ship_to_location = #{shipToLocation,jdbcType=VARCHAR},
+            shipping_service = #{shippingService,jdbcType=VARCHAR},
+            shipping_service_cost = #{shippingServiceCost,jdbcType=VARCHAR},
+            free_shipping = #{freeShipping,jdbcType=BIT},
+            shipping_service_priority = #{shippingServicePriority,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingShippingTransport" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_shipping_transport
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="listingId != null and listingId != ''">
+                 and listing_id = #{listingId,jdbcType=BIGINT}
+            </if>
+            <if test="shippingId != null and shippingId != ''">
+                 and shipping_id = #{shippingId,jdbcType=BIGINT}
+            </if>
+            <if test="transportType != null and transportType != ''">
+                 and transport_type = #{transportType,jdbcType=INTEGER}
+            </if>
+            <if test="shippingServiceAdditionalCost != null and shippingServiceAdditionalCost != ''">
+                 and shipping_service_additional_cost = #{shippingServiceAdditionalCost,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToLocation != null and shipToLocation != ''">
+                 and ship_to_location = #{shipToLocation,jdbcType=VARCHAR}
+            </if>
+            <if test="shippingService != null and shippingService != ''">
+                 and shipping_service = #{shippingService,jdbcType=VARCHAR}
+            </if>
+            <if test="shippingServiceCost != null and shippingServiceCost != ''">
+                 and shipping_service_cost = #{shippingServiceCost,jdbcType=VARCHAR}
+            </if>
+            <if test="freeShipping != null and freeShipping != ''">
+                 and free_shipping = #{freeShipping,jdbcType=BIT}
+            </if>
+            <if test="shippingServicePriority != null and shippingServicePriority != ''">
+                 and shipping_service_priority = #{shippingServicePriority,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+</mapper>

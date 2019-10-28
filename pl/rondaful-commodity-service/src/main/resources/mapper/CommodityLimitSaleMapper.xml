@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.CommodityLimitSaleMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.CommodityLimitSale">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="commodity_id" jdbcType="BIGINT" property="commodityId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="code_type" jdbcType="BIT" property="codeType" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List">
+    id, commodity_id, code, code_type, version, create_time, update_time
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_commodity_limit_sale
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByCommodityId" parameterType="java.lang.Long">
+    delete from t_commodity_limit_sale
+    where commodity_id = #{commodityId,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.CommodityLimitSale">
+    insert into t_commodity_limit_sale (
+    	commodity_id, 
+    	code, 
+      	code_type, 
+      	create_time
+      )
+    values (
+    	#{commodityId,jdbcType=BIGINT}, 
+    	#{code,jdbcType=VARCHAR}, 
+      	#{codeType}, 
+      	now()
+      )
+  </insert>
+
+	<insert id="insertBatch" parameterType="java.util.ArrayList">
+		insert into t_commodity_limit_sale (
+			commodity_id, 
+	    	code, 
+	      	code_type, 
+	      	create_time
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+			#{item.commodityId,jdbcType=BIGINT},
+			#{item.code,jdbcType=VARCHAR},
+			#{item.codeType},
+			now()
+			)
+		</foreach>
+	</insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityLimitSale">
+    update t_commodity_limit_sale
+    <set>
+      <if test="commodityId != null">
+        commodity_id = #{commodityId,jdbcType=BIGINT},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="codeType != null">
+        code_type = #{codeType},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+    and version = #{version,jdbcType=BIGINT}
+  </update>
+  
+   <select id="selectAllCode" resultType="String" parameterType="com.rondaful.cloud.commodity.entity.CommodityLimitSale">
+    select code
+    from t_commodity_limit_sale
+    <trim prefix="where" prefixOverrides="and">
+   		<if test="commodityId != null">
+       		and commodity_id = #{commodityId,jdbcType=BIGINT}
+       </if>
+       <if test="codeType != null">
+       		and code_type = #{codeType}
+       </if>
+       <if test="code != null and code != ''">
+       		and code = #{code}
+       </if>
+    </trim>
+  </select>
+ 
+</mapper>

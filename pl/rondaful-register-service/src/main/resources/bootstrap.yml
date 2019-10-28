@@ -1,0 +1,77 @@
+#应用名称
+spring:
+  application:
+           name: rondaful-register-service
+#应用端口
+server:
+    port: 8000
+
+  #主机名
+eureka:
+  instance:
+    hostname: localhost
+  # 注册时显示ip
+  #eureka.instance.prefer-ip-address=true
+  #是否注册为服务
+  client:
+     register-with-eureka: false
+      #是否检索服务
+     fetch-registry: false
+  #eureka默认空间的地址
+     service-url:
+        defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  #关闭自我保护(生产时打开该选项)
+  server:
+      enable-self-preservation: false
+      #扫描失效服务的间隔时间（缺省为60*1000ms）
+      eviction-interval-timer-in-ms: 5000
+      #刷新readCacheMap的时间
+      response-cache-update-interval-ms: 3000
+
+
+# 安全认证的配置
+security:
+  basic:
+     enabled: true
+  user:
+     name: rondaful
+     password: rondaful123
+
+
+
+
+
+
+
+
+
+---
+spring:
+  profiles: test
+
+security:
+  basic:
+    enabled: true
+  user:
+    name: rondaful
+    password: rondaful123
+
+---
+spring:
+  profiles: prod
+
+
+#应用端口
+server:
+  port: 50105
+
+
+security:
+  basic:
+    enabled: true
+  user:
+    name: rondaful
+    password: rondaful123
+
+---
+

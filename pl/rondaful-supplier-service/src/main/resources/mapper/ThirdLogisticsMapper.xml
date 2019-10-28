@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.ThirdLogisticsMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.ThirdLogistics">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+        <result column="name_en" jdbcType="VARCHAR" property="nameEn" />
+        <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
+        <result column="type" jdbcType="BIT" property="type" />
+        <result column="platform_type" jdbcType="BIT" property="platformType" />
+        <result column="is_signature" jdbcType="BIT" property="isSignature" />
+        <result column="fl_warehouse_code" jdbcType="VARCHAR" property="flWarehouseCode" />
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode" />
+        <result column="carrier_name" jdbcType="VARCHAR" property="carrierName" />
+        <result column="carrier_code" jdbcType="VARCHAR" property="carrierCode" />
+        <result column="app_key" jdbcType="VARCHAR" property="appKey" />
+        <result column="app_token" jdbcType="VARCHAR" property="appToken" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, short_name, name_en, full_name, code, type, platform_type, is_signature, fl_warehouse_code, 
+        warehouse_code, carrier_name, carrier_code, app_key, app_token, update_time, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_third_logistics
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <insert id="insertErpLogistics" parameterType="java.util.List">
+        insert into t_third_logistics (short_name,full_name,code,
+        	platform_type, warehouse_code, carrier_name, carrier_code)
+        values 
+        	<foreach collection="list" index="index" item="thirdLogistics" separator="," >
+        		(#{thirdLogistics.shortname},#{thirdLogistics.fullname},#{thirdLogistics.code}, 
+        		'0', #{thirdLogistics.warehouseCode}, #{thirdLogistics.carrier_name}, #{thirdLogistics.carrier_code})
+           	</foreach>
+    </insert>
+
+    <insert id="insertGuLogisticsList" parameterType="java.util.List">
+        insert into t_third_logistics (short_name, name_en,
+            code, type,platform_type, is_signature, 
+            fl_warehouse_code,warehouse_code,
+            carrier_code,app_key, app_token)
+        values
+        <foreach collection="list" index="index" item="third" separator="," >
+            (#{third.name}, #{third.name_en},
+             #{third.code}, #{third.type},
+            '1', #{third.is_signature}, #{third.fl_warehouse_code},
+            #{third.warehouse_code}, #{third.sp_code},
+            #{third.app_key}, #{third.app_token})
+        </foreach>
+    </insert>
+    
+    <insert id="insertAliexpressLogistics"  parameterType="java.util.List">  
+        insert into t_aliexpress_logistics 
+        	(recommend_order,tracking_no_regex,min_process_day,logistics_company,
+        	 max_process_day,display_name,service_name)
+          values 
+         <foreach collection="list" item="aliexpress" index="index"  separator=",">
+          (#{aliexpress.recommend_order},#{aliexpress.tracking_no_regex},#{aliexpress.min_process_day},#{aliexpress.logistics_company},
+           #{aliexpress.max_process_day},#{aliexpress.display_name},#{aliexpress.service_name})
+   		 </foreach>      
+	</insert>
+
+	<update id="updateLogisticsMappingList" parameterType="java.util.List">
+
+        <foreach collection="list" item="logistics" index="index"  open="" close=""  separator=";">
+            update t_logistics_info
+            <set>
+                ebay_carrier = #{logistics.ebayCarrier},
+                amazon_carrier = #{logistics.amazonCarrier},
+                amazon_code = #{logistics.amazonCode},
+                aliexpress_code = #{logistics.aliexpressCode}
+            </set>
+		        where code = #{logistics.code}
+        </foreach>
+	</update>
+
+    <select id="queryLogisticsCountByCode" resultType="java.lang.Integer">
+        select
+            count(id)
+        from t_logistics_info
+        where code = #{logisticsCode} and warehouse_id =  #{warehouseId}
+    </select>
+
+    <select id="queryCountryByCode" parameterType="com.rondaful.cloud.supplier.entity.CountryMap" resultType="com.rondaful.cloud.supplier.entity.CountryMap">
+        select
+          country_code countryCode, country_name countryName,
+          country_name_en countryNameEn,post_code postCode
+        from t_country_map
+        where 1=1
+        <if test="countryCode != null">
+          and country_code = #{countryCode}
+        </if>
+    </select>
+
+    <update id="updateCountryByCode" parameterType="com.rondaful.cloud.supplier.entity.CountryMap">
+        update t_country_map
+        <set>
+            <if test="countryName != null">
+                country_name = #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="countryNameEn != null">
+                country_name_en = #{countryNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="postCode != null">
+                post_code = #{postCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where country_code = #{countryCode,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertCountry" parameterType="com.rondaful.cloud.supplier.entity.CountryMap">
+        insert into t_country_map
+          (country_code,country_name,country_name_en,post_code)
+        values
+            (#{countryCode},#{countryName},#{countryNameEn},#{postCode})
+    </insert>
+
+    <select id="queryPostCode" resultType="java.lang.String">
+       select post_code from t_country_map
+
+    </select>
+</mapper>

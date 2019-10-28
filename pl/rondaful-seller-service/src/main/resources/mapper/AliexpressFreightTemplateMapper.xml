@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressFreightTemplateMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressFreightTemplate">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="template_id" jdbcType="BIGINT" property="templateId" />
+        <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+        <result column="defaults" jdbcType="BIT" property="defaults" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="pl_account" jdbcType="VARCHAR" property="plAccount" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="empower_id" jdbcType="BIGINT" property="empowerId" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, template_id, template_name, defaults, create_time, pl_account, status, empower_id
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_freight_template
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_freight_template
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressFreightTemplate">
+        insert into aliexpress_freight_template (id, template_id, template_name, 
+            defaults, create_time, pl_account, 
+            status, empower_id)
+        values (#{id,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, #{templateName,jdbcType=VARCHAR}, 
+            #{defaults,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{plAccount,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{empowerId,jdbcType=BIGINT})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressFreightTemplate">
+        insert into aliexpress_freight_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="templateId != null">
+                template_id,
+            </if>
+            <if test="templateName != null">
+                template_name,
+            </if>
+            <if test="defaults != null">
+                defaults,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="plAccount != null">
+                pl_account,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="templateId != null">
+                #{templateId,jdbcType=BIGINT},
+            </if>
+            <if test="templateName != null">
+                #{templateName,jdbcType=VARCHAR},
+            </if>
+            <if test="defaults != null">
+                #{defaults,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="plAccount != null">
+                #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressFreightTemplate">
+        update aliexpress_freight_template
+        <set>
+            <if test="templateId != null">
+                template_id = #{templateId,jdbcType=BIGINT},
+            </if>
+            <if test="templateName != null">
+                template_name = #{templateName,jdbcType=VARCHAR},
+            </if>
+            <if test="defaults != null">
+                defaults = #{defaults,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="plAccount != null">
+                pl_account = #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressFreightTemplate">
+        update aliexpress_freight_template
+        set template_id = #{templateId,jdbcType=BIGINT},
+            template_name = #{templateName,jdbcType=VARCHAR},
+            defaults = #{defaults,jdbcType=BIT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            pl_account = #{plAccount,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            empower_id = #{empowerId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressFreightTemplate" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_freight_template
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="templateId != null and templateId != ''">
+                 and template_id = #{templateId,jdbcType=BIGINT}
+            </if>
+            <if test="templateName != null and templateName != ''">
+                 and template_name = #{templateName,jdbcType=VARCHAR}
+            </if>
+            <if test="defaults != null and defaults != ''">
+                 and defaults = #{defaults,jdbcType=BIT}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="plAccount != null and plAccount != ''">
+                 and pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                 and empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+    <select id="getAliexpressFreightTemplateByPlAccountList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_freight_template
+        where status = 0
+        <if test="empowerId != null and empowerId != ''">
+            and empower_id = #{empowerId,jdbcType=BIGINT}
+        </if>
+        <if test="plAccount != null and plAccount != ''">
+            and pl_account = #{plAccount,jdbcType=VARCHAR}
+        </if>
+        <if test="templateId != null and templateId != ''">
+            and template_id = #{templateId,jdbcType=BIGINT}
+        </if>
+    </select>
+</mapper>

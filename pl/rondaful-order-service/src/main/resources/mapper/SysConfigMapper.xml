@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.SysConfigMapper">
+
+    <sql id="Base_Column_List">
+        `id`, `key`, `value`, `describe`
+    </sql>
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.system.SysConfig">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="key" jdbcType="VARCHAR" property="key"/>
+        <result column="value" jdbcType="VARCHAR" property="value"/>
+        <result column="describe" jdbcType="VARCHAR" property="describe"/>
+    </resultMap>
+
+    <select id="querySysConfigKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_config
+        where `key` = #{key,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

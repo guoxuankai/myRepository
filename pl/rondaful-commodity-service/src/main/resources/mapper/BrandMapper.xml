@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.BrandMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.Brand">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
+        <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+        <result column="brand_website" jdbcType="VARCHAR" property="brandWebsite" />
+        <result column="brand_describe" jdbcType="VARCHAR" property="brandDescribe" />
+        <result column="brand_logo" jdbcType="VARCHAR" property="brandLogo" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="audit_description" jdbcType="VARCHAR" property="auditDescription" />
+        <result column="creat_time" jdbcType="VARCHAR" property="creatTime" />
+        <result column="brand_name_en" jdbcType="VARCHAR" property="brandNameEn" />
+        <result column="country" jdbcType="VARCHAR" property="country" />
+        <result column="prove_file" jdbcType="VARCHAR" property="proveFile" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, supplier_id, brand_name, brand_website, brand_describe, brand_logo, version, 
+        state, audit_description, creat_time,brand_name_en,country,prove_file
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_brand
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_brand
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.Brand">
+        insert into t_brand (id, supplier_id, brand_name, 
+            brand_website, brand_describe, brand_logo, 
+            version, state, audit_description, 
+            creat_time,brand_name_en,country,prove_file)
+        values (#{id,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, #{brandName,jdbcType=VARCHAR}, 
+            #{brandWebsite,jdbcType=VARCHAR}, #{brandDescribe,jdbcType=VARCHAR}, #{brandLogo,jdbcType=VARCHAR}, 
+            #{version,jdbcType=BIGINT}, #{state,jdbcType=INTEGER}, #{auditDescription,jdbcType=VARCHAR}, 
+            #{creatTime,jdbcType=VARCHAR},#{brandNameEn},#{country},#{proveFile})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.Brand" useGeneratedKeys="true" keyProperty="id">
+        insert into t_brand
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="brandName != null">
+                brand_name,
+            </if>
+            <if test="brandWebsite != null">
+                brand_website,
+            </if>
+            <if test="brandDescribe != null">
+                brand_describe,
+            </if>
+            <if test="brandLogo != null">
+                brand_logo,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="auditDescription != null">
+                audit_description,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+            <if test="brandNameEn != null">
+                brand_name_en,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="proveFile != null">
+                prove_file,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=BIGINT},
+            </if>
+            <if test="brandName != null">
+                #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandWebsite != null">
+                #{brandWebsite,jdbcType=VARCHAR},
+            </if>
+            <if test="brandDescribe != null">
+                #{brandDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="brandLogo != null">
+                #{brandLogo,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="auditDescription != null">
+                #{auditDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=VARCHAR},
+            </if>
+            <if test="brandNameEn != null">
+                #{brandNameEn},
+            </if>
+            <if test="country != null">
+                #{country},
+            </if>
+            <if test="proveFile != null">
+                #{proveFile},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.Brand">
+        update t_brand
+        <set>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=BIGINT},
+            </if>
+            <if test="brandName != null">
+                brand_name = #{brandName,jdbcType=VARCHAR},
+            </if>
+            <if test="brandWebsite != null">
+                brand_website = #{brandWebsite,jdbcType=VARCHAR},
+            </if>
+            <if test="brandDescribe != null">
+                brand_describe = #{brandDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="brandLogo != null">
+                brand_logo = #{brandLogo,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="auditDescription != null">
+                audit_description = #{auditDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=VARCHAR},
+            </if>
+            <if test="brandNameEn != null">
+                brand_name_en = #{brandNameEn},
+            </if>
+            <if test="country != null">
+                country = #{country},
+            </if>
+            <if test="proveFile != null">
+                prove_file = #{proveFile},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.Brand">
+        update t_brand
+        set supplier_id = #{supplierId,jdbcType=BIGINT},
+            brand_name = #{brandName,jdbcType=VARCHAR},
+            brand_website = #{brandWebsite,jdbcType=VARCHAR},
+            brand_describe = #{brandDescribe,jdbcType=VARCHAR},
+            brand_logo = #{brandLogo,jdbcType=VARCHAR},
+            version = #{version,jdbcType=BIGINT} + 1,
+            state = #{state,jdbcType=INTEGER},
+            audit_description = #{auditDescription,jdbcType=VARCHAR},
+            creat_time = #{creatTime,jdbcType=VARCHAR},
+            brand_name_en = #{brandNameEn},
+            country = #{country},
+            prove_file = #{proveFile}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="findBrandList" parameterType="com.rondaful.cloud.commodity.entity.Brand" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_brand
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="supplierId != null">
+                and supplier_id = #{supplierId,jdbcType=BIGINT}
+            </if>
+            <if test="brandName != null">
+                and brand_name = #{brandName,jdbcType=VARCHAR}
+            </if>
+            <if test="brandNameEn != null">
+                and brand_name_en = #{brandNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="brandWebsite != null">
+                and brand_website = #{brandWebsite,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    
+    <select id="page" parameterType="com.rondaful.cloud.commodity.entity.Brand" resultMap="BaseResultMap">
+        select 
+	        t1.id, t1.supplier_id, t1.brand_name, t1.brand_website, t1.brand_describe, t1.brand_logo, t1.version, 
+	        t1.state, t1.audit_description, t1.creat_time,t1.brand_name_en,t1.country,t1.prove_file
+        from t_brand t1
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and t1.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="supplierId != null">
+                 and t1.supplier_id = #{supplierId,jdbcType=BIGINT}
+            </if>
+            <if test="brandName != null">
+                 and t1.brand_name like CONCAT(CONCAT('%', #{brandName}), '%')
+            </if>
+            <if test="version != null">
+                 and t1.version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="state != null">
+                 and t1.state = #{state,jdbcType=INTEGER}
+            </if>
+            <if test="bindSku != null and bindSku==1">
+            	and EXISTS (
+					select 1 from t_commodity_base t2 where t2.brand_id=t1.id
+					<if test="category_level_1 != null">
+						and t2.category_level_1 = #{category_level_1}
+					</if>
+					<if test="category_level_2 != null">
+						and t2.category_level_2 = #{category_level_2}
+					</if>
+					<if test="category_level_3 != null">
+						and t2.category_level_3 = #{category_level_3}
+					</if>
+				)
+            </if>
+        </trim>
+        order by t1.id DESC
+    </select>
+    
+     <select id="getUnAuditNum" resultType="int">
+     	select count(*) from t_brand where state=0
+     </select>
+</mapper>

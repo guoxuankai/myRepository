@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressPublishListingProductMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressPublishListingProduct">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="publish_listing_id" jdbcType="BIGINT" property="publishListingId" />
+        <result column="smt_sku_id" jdbcType="VARCHAR" property="smtSkuId" />
+        <result column="pl_sku" jdbcType="VARCHAR" property="plSku" />
+        <result column="platform_sku" jdbcType="VARCHAR" property="platformSku" />
+        <result column="inventory" jdbcType="INTEGER" property="inventory" />
+        <result column="retail_price" jdbcType="DECIMAL" property="retailPrice" />
+        <result column="product_image" jdbcType="VARCHAR" property="productImage" />
+        <result column="publish_product_image" jdbcType="VARCHAR" property="publishProductImage" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="estimated_freight" jdbcType="DECIMAL" property="estimatedFreight" />
+        <result column="forecast_profits" jdbcType="DECIMAL" property="forecastProfits" />
+        <result column="platform_commission" jdbcType="DECIMAL" property="platformCommission" />
+        <result column="freight_fee" jdbcType="DECIMAL" property="freightFee" />
+        <result column="other_fee" jdbcType="DECIMAL" property="otherFee" />
+        <result column="other_fee1" jdbcType="DECIMAL" property="otherFee1" />
+        <result column="other_fee2" jdbcType="DECIMAL" property="otherFee2" />
+        <result column="other_fee3" jdbcType="DECIMAL" property="otherFee3" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, publish_listing_id, pl_sku, platform_sku,smt_sku_id,
+        inventory, retail_price, product_image, publish_product_image, create_time, sort, version,
+        estimated_freight, forecast_profits, platform_commission,
+        freight_fee, other_fee, other_fee1, other_fee2, other_fee3
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_product
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_publish_listing_product
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingProduct">
+        insert into aliexpress_publish_listing_product (id, publish_listing_id, pl_sku, 
+            platform_sku, inventory, retail_price,
+            product_image, create_time, sort,version,
+            estimated_freight, forecast_profits, platform_commission)
+        values (#{id,jdbcType=BIGINT}, #{publishListingId,jdbcType=BIGINT}, #{plSku,jdbcType=VARCHAR}, 
+            #{platformSku,jdbcType=VARCHAR}, #{inventory,jdbcType=INTEGER}, #{retailPrice,jdbcType=DECIMAL},
+            #{productImage,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER}, 
+            #{version,jdbcType=INTEGER},
+            #{estimatedFreight,jdbcType=DECIMAL}, #{forecastProfits,jdbcType=DECIMAL}, #{platformCommission,jdbcType=DECIMAL})
+    </insert>
+    
+    <insert id="insertSelective" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingProduct">
+        insert into aliexpress_publish_listing_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="publishListingId != null">
+                publish_listing_id,
+            </if>
+            <if test="smtSkuId != null">
+                smt_sku_id,
+            </if>
+            <if test="plSku != null">
+                pl_sku,
+            </if>
+            <if test="platformSku != null">
+                platform_sku,
+            </if>
+
+            <if test="inventory != null">
+                inventory,
+            </if>
+            <if test="retailPrice != null">
+                retail_price,
+            </if>
+            <if test="productImage != null">
+                product_image,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="estimatedFreight != null">
+                estimated_freight,
+            </if>
+            <if test="forecastProfits != null">
+                forecast_profits,
+            </if>
+            <if test="platformCommission != null">
+                platform_commission,
+            </if>
+            <if test="freightFee != null">
+                freight_fee,
+            </if>
+            <if test="otherFee != null">
+                other_fee,
+            </if>
+            <if test="otherFee1 != null">
+                other_fee1,
+            </if>
+            <if test="otherFee2 != null">
+                other_fee2,
+            </if>
+            <if test="otherFee3 != null">
+                other_fee3,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="publishListingId != null">
+                #{publishListingId,jdbcType=BIGINT},
+            </if>
+            <if test="smtSkuId != null">
+                #{smtSkuId,jdbcType=VARCHAR},
+            </if>
+            <if test="plSku != null">
+                #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSku != null">
+                #{platformSku,jdbcType=VARCHAR},
+            </if>
+
+            <if test="inventory != null">
+                #{inventory,jdbcType=INTEGER},
+            </if>
+            <if test="retailPrice != null">
+                #{retailPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="productImage != null">
+                #{productImage,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="estimatedFreight != null">
+                #{estimatedFreight,jdbcType=DECIMAL},
+            </if>
+            <if test="forecastProfits != null">
+                #{forecastProfits,jdbcType=DECIMAL},
+            </if>
+            <if test="platformCommission != null">
+                #{platformCommission,jdbcType=DECIMAL},
+            </if>
+            <if test="freightFee != null">
+                #{freightFee,jdbcType=DECIMAL},
+            </if>
+            <if test="otherFee != null">
+                #{otherFee,jdbcType=DECIMAL},
+            </if>
+            <if test="otherFee1 != null">
+                #{otherFee1,jdbcType=DECIMAL},
+            </if>
+            <if test="otherFee2 != null">
+                #{otherFee2,jdbcType=DECIMAL},
+            </if>
+            <if test="otherFee3 != null">
+                #{otherFee3,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingProduct">
+        update aliexpress_publish_listing_product
+        <set>
+            <if test="publishListingId != null">
+                publish_listing_id = #{publishListingId,jdbcType=BIGINT},
+            </if>
+            <if test="smtSkuId != null">
+                smt_sku_id = #{smtSkuId,jdbcType=VARCHAR},
+            </if>
+            <if test="plSku != null">
+                pl_sku = #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSku != null">
+                platform_sku = #{platformSku,jdbcType=VARCHAR},
+            </if>
+
+            <if test="inventory != null">
+                inventory = #{inventory,jdbcType=INTEGER},
+            </if>
+            <if test="retailPrice != null">
+                retail_price = #{retailPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="productImage != null">
+                product_image = #{productImage,jdbcType=VARCHAR},
+            </if>
+            <if test="publishProductImage != null">
+                publish_product_image = #{publishProductImage,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+            <if test="estimatedFreight != null">
+                estimated_freight = #{estimatedFreight,jdbcType=DECIMAL},
+            </if>
+            <if test="forecastProfits != null">
+                forecast_profits = #{forecastProfits,jdbcType=DECIMAL},
+            </if>
+            <if test="platformCommission != null">
+                platform_commission = #{platformCommission,jdbcType=DECIMAL},
+            </if>
+            <if test="freightFee != null">
+                freight_fee = #{freightFee,jdbcType=DECIMAL},
+            </if>
+            <if test="otherFee != null">
+                other_fee = #{otherFee,jdbcType=DECIMAL},
+            </if>
+            <if test="otherFee1 != null">
+                other_fee1 = #{otherFee1,jdbcType=DECIMAL},
+            </if>
+            <if test="otherFee2 != null">
+                other_fee2 = #{otherFee2,jdbcType=DECIMAL},
+            </if>
+            <if test="otherFee3 != null">
+                other_fee3 = #{otherFee3,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingProduct">
+        update aliexpress_publish_listing_product
+        set publish_listing_id = #{publishListingId,jdbcType=BIGINT},
+            pl_sku = #{plSku,jdbcType=VARCHAR},
+            platform_sku = #{platformSku,jdbcType=VARCHAR},
+            inventory = #{inventory,jdbcType=INTEGER},
+            retail_price = #{retailPrice,jdbcType=DECIMAL},
+            product_image = #{productImage,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            sort = #{sort,jdbcType=INTEGER},
+            version = #{version,jdbcType=INTEGER} + 1,
+            estimated_freight = #{estimatedFreight,jdbcType=DECIMAL},
+            forecast_profits = #{forecastProfits,jdbcType=DECIMAL},
+            platform_commission = #{platformCommission,jdbcType=DECIMAL},
+            freight_fee = #{freightFee,jdbcType=DECIMAL},
+            other_fee = #{otherFee,jdbcType=DECIMAL},
+            other_fee1 = #{otherFee1,jdbcType=DECIMAL},
+            other_fee2 = #{otherFee2,jdbcType=DECIMAL},
+            other_fee3 = #{otherFee3,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingProduct" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_product
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="publishListingId != null and publishListingId != ''">
+                 and publish_listing_id = #{publishListingId,jdbcType=BIGINT}
+            </if>
+            <if test="plSku != null and plSku != ''">
+                 and pl_sku = #{plSku,jdbcType=VARCHAR}
+            </if>
+            <if test="platformSku != null and platformSku != ''">
+                 and platform_sku = #{platformSku,jdbcType=VARCHAR}
+            </if>
+
+            <if test="inventory != null and inventory != ''">
+                 and inventory = #{inventory,jdbcType=INTEGER}
+            </if>
+            <if test="retailPrice != null and retailPrice != ''">
+                 and retail_price = #{retailPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="productImage != null and productImage != ''">
+                 and product_image = #{productImage,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="sort != null and sort != ''">
+                 and sort = #{sort,jdbcType=INTEGER}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+            <if test="estimatedFreight != null and estimatedFreight != ''">
+                and estimated_freight = #{estimatedFreight,jdbcType=DECIMAL}
+            </if>
+            <if test="forecastProfits != null and forecastProfits != ''">
+                and forecast_profits = #{forecastProfits,jdbcType=DECIMAL}
+            </if>
+            <if test="platformCommission != null and platformCommission != ''">
+                and platform_commission = #{platformCommission,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getPublishListingProductByListingId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_product
+        where publish_listing_id = #{publishListingId,jdbcType=BIGINT}
+    </select>
+    <select id="getPublishListingProductByListingIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_product
+        where publish_listing_id in
+        <foreach collection="publishListingIds" item="publishListingId" separator="," open="(" close=")">
+            #{publishListingId,jdbcType=BIGINT}
+        </foreach>
+
+    </select>
+
+
+    <delete id="deleteByListingId" parameterType="java.lang.Long">
+        delete from aliexpress_publish_listing_product
+        where publish_listing_id = #{publishListingId,jdbcType=BIGINT}
+    </delete>
+    <select id="getPublishListingProductByPlatformSku" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_product
+        where
+        <if test="publishListingId != null">
+            publish_listing_id!= #{publishListingId,jdbcType=BIGINT}
+            and
+        </if>
+         platform_sku in
+        <foreach collection="map" index="key" item="item" separator="," open="(" close=")">
+            #{key,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+    <select id="getProductByPlatformSku" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_product
+
+        where platform_sku = #{platformSku,jdbcType=VARCHAR}
+        <if test="publishListingId != null">
+            and publish_listing_id!= #{publishListingId,jdbcType=BIGINT}
+        </if>
+
+
+    </select>
+
+
+</mapper>

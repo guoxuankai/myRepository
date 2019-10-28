@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishListingReturnPolicyMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishListingReturnPolicy">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="listing_id" jdbcType="BIGINT" property="listingId" />
+        <result column="returns_within_option" jdbcType="VARCHAR" property="returnsWithinOption" />
+        <result column="refund_option" jdbcType="VARCHAR" property="refundOption" />
+        <result column="shipping_cost_paid_by_option" jdbcType="VARCHAR" property="shippingCostPaidByOption" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="international_returns_within_option" jdbcType="VARCHAR" property="internationalReturnsWithinOption" />
+        <result column="international_refund_option" jdbcType="VARCHAR" property="internationalRefundOption" />
+        <result column="international_shipping_cost_paid_by_option" jdbcType="VARCHAR" property="internationalShippingCostPaidByOption" />
+        <result column="international_returns_accepted_option" jdbcType="VARCHAR" property="internationalReturnsAcceptedOption" />
+        <result column="returns_accepted_option" jdbcType="VARCHAR" property="returnsAcceptedOption" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, returns_within_option, refund_option, shipping_cost_paid_by_option, 
+        description, international_returns_within_option, international_refund_option, international_shipping_cost_paid_by_option, 
+        international_returns_accepted_option, returns_accepted_option
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_return_policy
+        where listing_id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from ebay_publish_listing_return_policy
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByListingId" parameterType="java.lang.Long">
+        delete from ebay_publish_listing_return_policy
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingReturnPolicy">
+        insert into ebay_publish_listing_return_policy (id, listing_id, returns_within_option, 
+            refund_option, shipping_cost_paid_by_option, 
+            description, international_returns_within_option, 
+            international_refund_option, international_shipping_cost_paid_by_option, 
+            international_returns_accepted_option, returns_accepted_option
+            )
+        values (#{id,jdbcType=BIGINT}, #{listingId,jdbcType=BIGINT}, #{returnsWithinOption,jdbcType=VARCHAR}, 
+            #{refundOption,jdbcType=VARCHAR}, #{shippingCostPaidByOption,jdbcType=VARCHAR}, 
+            #{description,jdbcType=VARCHAR}, #{internationalReturnsWithinOption,jdbcType=VARCHAR}, 
+            #{internationalRefundOption,jdbcType=VARCHAR}, #{internationalShippingCostPaidByOption,jdbcType=VARCHAR}, 
+            #{internationalReturnsAcceptedOption,jdbcType=VARCHAR}, #{returnsAcceptedOption,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingReturnPolicy">
+        insert into ebay_publish_listing_return_policy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="returnsWithinOption != null">
+                returns_within_option,
+            </if>
+            <if test="refundOption != null">
+                refund_option,
+            </if>
+            <if test="shippingCostPaidByOption != null">
+                shipping_cost_paid_by_option,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="internationalReturnsWithinOption != null">
+                international_returns_within_option,
+            </if>
+            <if test="internationalRefundOption != null">
+                international_refund_option,
+            </if>
+            <if test="internationalShippingCostPaidByOption != null">
+                international_shipping_cost_paid_by_option,
+            </if>
+            <if test="internationalReturnsAcceptedOption != null">
+                international_returns_accepted_option,
+            </if>
+            <if test="returnsAcceptedOption != null">
+                returns_accepted_option,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="returnsWithinOption != null">
+                #{returnsWithinOption,jdbcType=VARCHAR},
+            </if>
+            <if test="refundOption != null">
+                #{refundOption,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingCostPaidByOption != null">
+                #{shippingCostPaidByOption,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="internationalReturnsWithinOption != null">
+                #{internationalReturnsWithinOption,jdbcType=VARCHAR},
+            </if>
+            <if test="internationalRefundOption != null">
+                #{internationalRefundOption,jdbcType=VARCHAR},
+            </if>
+            <if test="internationalShippingCostPaidByOption != null">
+                #{internationalShippingCostPaidByOption,jdbcType=VARCHAR},
+            </if>
+            <if test="internationalReturnsAcceptedOption != null">
+                #{internationalReturnsAcceptedOption,jdbcType=VARCHAR},
+            </if>
+            <if test="returnsAcceptedOption != null">
+                #{returnsAcceptedOption,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingReturnPolicy">
+        update ebay_publish_listing_return_policy
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="returnsWithinOption != null">
+                returns_within_option = #{returnsWithinOption,jdbcType=VARCHAR},
+            </if>
+            <if test="refundOption != null">
+                refund_option = #{refundOption,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingCostPaidByOption != null">
+                shipping_cost_paid_by_option = #{shippingCostPaidByOption,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="internationalReturnsWithinOption != null">
+                international_returns_within_option = #{internationalReturnsWithinOption,jdbcType=VARCHAR},
+            </if>
+            <if test="internationalRefundOption != null">
+                international_refund_option = #{internationalRefundOption,jdbcType=VARCHAR},
+            </if>
+            <if test="internationalShippingCostPaidByOption != null">
+                international_shipping_cost_paid_by_option = #{internationalShippingCostPaidByOption,jdbcType=VARCHAR},
+            </if>
+            <if test="internationalReturnsAcceptedOption != null">
+                international_returns_accepted_option = #{internationalReturnsAcceptedOption,jdbcType=VARCHAR},
+            </if>
+            <if test="returnsAcceptedOption != null">
+                returns_accepted_option = #{returnsAcceptedOption,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingReturnPolicy">
+        update ebay_publish_listing_return_policy
+        set listing_id = #{listingId,jdbcType=BIGINT},
+            returns_within_option = #{returnsWithinOption,jdbcType=VARCHAR},
+            refund_option = #{refundOption,jdbcType=VARCHAR},
+            shipping_cost_paid_by_option = #{shippingCostPaidByOption,jdbcType=VARCHAR},
+            description = #{description,jdbcType=VARCHAR},
+            international_returns_within_option = #{internationalReturnsWithinOption,jdbcType=VARCHAR},
+            international_refund_option = #{internationalRefundOption,jdbcType=VARCHAR},
+            international_shipping_cost_paid_by_option = #{internationalShippingCostPaidByOption,jdbcType=VARCHAR},
+            international_returns_accepted_option = #{internationalReturnsAcceptedOption,jdbcType=VARCHAR},
+            returns_accepted_option = #{returnsAcceptedOption,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingReturnPolicy" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_return_policy
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="listingId != null and listingId != ''">
+                 and listing_id = #{listingId,jdbcType=BIGINT}
+            </if>
+            <if test="returnsWithinOption != null and returnsWithinOption != ''">
+                 and returns_within_option = #{returnsWithinOption,jdbcType=VARCHAR}
+            </if>
+            <if test="refundOption != null and refundOption != ''">
+                 and refund_option = #{refundOption,jdbcType=VARCHAR}
+            </if>
+            <if test="shippingCostPaidByOption != null and shippingCostPaidByOption != ''">
+                 and shipping_cost_paid_by_option = #{shippingCostPaidByOption,jdbcType=VARCHAR}
+            </if>
+            <if test="description != null and description != ''">
+                 and description = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="internationalReturnsWithinOption != null and internationalReturnsWithinOption != ''">
+                 and international_returns_within_option = #{internationalReturnsWithinOption,jdbcType=VARCHAR}
+            </if>
+            <if test="internationalRefundOption != null and internationalRefundOption != ''">
+                 and international_refund_option = #{internationalRefundOption,jdbcType=VARCHAR}
+            </if>
+            <if test="internationalShippingCostPaidByOption != null and internationalShippingCostPaidByOption != ''">
+                 and international_shipping_cost_paid_by_option = #{internationalShippingCostPaidByOption,jdbcType=VARCHAR}
+            </if>
+            <if test="internationalReturnsAcceptedOption != null and internationalReturnsAcceptedOption != ''">
+                 and international_returns_accepted_option = #{internationalReturnsAcceptedOption,jdbcType=VARCHAR}
+            </if>
+            <if test="returnsAcceptedOption != null and returnsAcceptedOption != ''">
+                 and returns_accepted_option = #{returnsAcceptedOption,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

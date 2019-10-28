@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonTypeAttributeMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.amazon.AmazonTypeAttribute">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parent_type_id" jdbcType="INTEGER" property="parentTypeId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type_id" jdbcType="INTEGER" property="typeId" />
+    <result column="use" jdbcType="VARCHAR" property="use" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="restriction" jdbcType="VARCHAR" property="restriction" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="check_id" jdbcType="SMALLINT" property="checkId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parent_type_id, name, type_id, use, create_time, restriction, type_name, check_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from amazon_type_attribute
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from amazon_type_attribute
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonTypeAttribute">
+    insert into amazon_type_attribute (id, parent_type_id, name, 
+      type_id, use, create_time, 
+      restriction, type_name, check_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{parentTypeId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=INTEGER}, #{use,jdbcType=VARCHAR}, #{createTime,jdbcType=INTEGER}, 
+      #{restriction,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{checkId,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonTypeAttribute">
+    insert into amazon_type_attribute
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parentTypeId != null">
+        parent_type_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="typeId != null">
+        type_id,
+      </if>
+      <if test="use != null">
+        use,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="restriction != null">
+        restriction,
+      </if>
+      <if test="typeName != null">
+        type_name,
+      </if>
+      <if test="checkId != null">
+        check_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="parentTypeId != null">
+        #{parentTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="use != null">
+        #{use,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="restriction != null">
+        #{restriction,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null">
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkId != null">
+        #{checkId,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonTypeAttribute">
+    update amazon_type_attribute
+    <set>
+      <if test="parentTypeId != null">
+        parent_type_id = #{parentTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="use != null">
+        use = #{use,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="restriction != null">
+        restriction = #{restriction,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null">
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkId != null">
+        check_id = #{checkId,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonTypeAttribute">
+    update amazon_type_attribute
+    set parent_type_id = #{parentTypeId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=INTEGER},
+      use = #{use,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=INTEGER},
+      restriction = #{restriction,jdbcType=VARCHAR},
+      type_name = #{typeName,jdbcType=VARCHAR},
+      check_id = #{checkId,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+ 
+</mapper>

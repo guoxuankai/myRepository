@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.logistics.mapper.InvoiceSpecificationMapper">
+
+    <insert id="insertUpdateSelective" parameterType="com.brandslink.cloud.logistics.model.InvoiceSpecificationModel">
+        insert into t_invoice_specification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="methodId != null">
+                method_id,
+            </if>
+            <if test="specification != null">
+                specification,
+            </if>
+            <if test="printDirection != null">
+                print_direction,
+            </if>
+            <if test="overTime != null">
+                over_time,
+            </if>
+            <if test="allowTimes != null">
+                allow_times,
+            </if>
+            <if test="labelFrom != null">
+                label_from,
+            </if>
+            <if test="isCustomsDeclaration != null">
+                is_customs_declaration,
+            </if>
+            <if test="barCodeType != null">
+                bar_code_type,
+            </if>
+            <if test="expressSheetSequence != null">
+                express_sheet_sequence,
+            </if>
+            <if test="coordinateX != null">
+                coordinate_x,
+            </if>
+            <if test="coordinateY != null">
+                coordinate_y,
+            </if>
+            <if test="wordSize != null">
+                word_size,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="methodId != null">
+                #{methodId,jdbcType=BIGINT},
+            </if>
+            <if test="specification != null">
+                #{specification,jdbcType=VARCHAR},
+            </if>
+            <if test="printDirection != null">
+                #{printDirection,jdbcType=TINYINT},
+            </if>
+            <if test="overTime != null">
+                #{overTime,jdbcType=TINYINT},
+            </if>
+            <if test="allowTimes != null">
+                #{allowTimes,jdbcType=TINYINT},
+            </if>
+            <if test="labelFrom != null">
+                #{labelFrom,jdbcType=TINYINT},
+            </if>
+            <if test="isCustomsDeclaration != null">
+                #{isCustomsDeclaration,jdbcType=TINYINT},
+            </if>
+            <if test="barCodeType != null">
+                #{barCodeType,jdbcType=TINYINT},
+            </if>
+            <if test="expressSheetSequence != null">
+                #{expressSheetSequence,jdbcType=VARCHAR},
+            </if>
+            <if test="coordinateX != null">
+                #{coordinateX,jdbcType=TINYINT},
+            </if>
+            <if test="coordinateY != null">
+                #{coordinateY,jdbcType=TINYINT},
+            </if>
+            <if test="wordSize != null">
+                #{wordSize,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        method_id = VALUES(method_id),
+        specification = VALUES(specification),
+        print_direction = VALUES(print_direction),
+        over_time = VALUES(over_time),
+        allow_times = VALUES(allow_times),
+        label_from = VALUES(label_from),
+        is_customs_declaration = VALUES(is_customs_declaration),
+        bar_code_type = VALUES(bar_code_type),
+        express_sheet_sequence = VALUES(express_sheet_sequence),
+        coordinate_x = VALUES(coordinate_x),
+        coordinate_y = VALUES(coordinate_y),
+        word_size = VALUES(word_size),
+        update_by = VALUES(update_by)
+    </insert>
+
+    <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.logistics.model.InvoiceSpecificationModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="method_id" jdbcType="BIGINT" property="methodId"/>
+        <result column="specification" jdbcType="VARCHAR" property="specification"/>
+        <result column="print_direction" jdbcType="TINYINT" property="printDirection"/>
+        <result column="over_time" jdbcType="TINYINT" property="overTime"/>
+        <result column="allow_times" jdbcType="TINYINT" property="allowTimes"/>
+        <result column="label_from" jdbcType="TINYINT" property="labelFrom"/>
+        <result column="is_customs_declaration" jdbcType="TINYINT" property="isCustomsDeclaration"/>
+        <result column="bar_code_type" jdbcType="TINYINT" property="barCodeType"/>
+        <result column="express_sheet_sequence" jdbcType="VARCHAR" property="expressSheetSequence"/>
+        <result column="coordinate_x" jdbcType="TINYINT" property="coordinateX"/>
+        <result column="coordinate_y" jdbcType="TINYINT" property="coordinateY"/>
+        <result column="word_size" jdbcType="TINYINT" property="wordSize"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, method_id, specification, print_direction, over_time, allow_times, label_from, 
+        is_customs_declaration, bar_code_type, express_sheet_sequence, coordinate_x, coordinate_y, 
+        word_size, create_date, create_by, update_date, update_by
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_invoice_specification
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_invoice_specification
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.logistics.model.InvoiceSpecificationModel">
+        insert into t_invoice_specification (id, method_id, specification, 
+            print_direction, over_time, allow_times, 
+            label_from, is_customs_declaration, bar_code_type, 
+            express_sheet_sequence, coordinate_x, coordinate_y, 
+            word_size, create_date, create_by, 
+            update_date, update_by)
+        values (#{id,jdbcType=BIGINT}, #{methodId,jdbcType=BIGINT}, #{specification,jdbcType=VARCHAR}, 
+            #{printDirection,jdbcType=TINYINT}, #{overTime,jdbcType=TINYINT}, #{allowTimes,jdbcType=TINYINT}, 
+            #{labelFrom,jdbcType=TINYINT}, #{isCustomsDeclaration,jdbcType=TINYINT}, #{barCodeType,jdbcType=TINYINT}, 
+            #{expressSheetSequence,jdbcType=VARCHAR}, #{coordinateX,jdbcType=TINYINT}, #{coordinateY,jdbcType=TINYINT}, 
+            #{wordSize,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.logistics.model.InvoiceSpecificationModel">
+        insert into t_invoice_specification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="methodId != null">
+                method_id,
+            </if>
+            <if test="specification != null">
+                specification,
+            </if>
+            <if test="printDirection != null">
+                print_direction,
+            </if>
+            <if test="overTime != null">
+                over_time,
+            </if>
+            <if test="allowTimes != null">
+                allow_times,
+            </if>
+            <if test="labelFrom != null">
+                label_from,
+            </if>
+            <if test="isCustomsDeclaration != null">
+                is_customs_declaration,
+            </if>
+            <if test="barCodeType != null">
+                bar_code_type,
+            </if>
+            <if test="expressSheetSequence != null">
+                express_sheet_sequence,
+            </if>
+            <if test="coordinateX != null">
+                coordinate_x,
+            </if>
+            <if test="coordinateY != null">
+                coordinate_y,
+            </if>
+            <if test="wordSize != null">
+                word_size,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="methodId != null">
+                #{methodId,jdbcType=BIGINT},
+            </if>
+            <if test="specification != null">
+                #{specification,jdbcType=VARCHAR},
+            </if>
+            <if test="printDirection != null">
+                #{printDirection,jdbcType=TINYINT},
+            </if>
+            <if test="overTime != null">
+                #{overTime,jdbcType=TINYINT},
+            </if>
+            <if test="allowTimes != null">
+                #{allowTimes,jdbcType=TINYINT},
+            </if>
+            <if test="labelFrom != null">
+                #{labelFrom,jdbcType=TINYINT},
+            </if>
+            <if test="isCustomsDeclaration != null">
+                #{isCustomsDeclaration,jdbcType=TINYINT},
+            </if>
+            <if test="barCodeType != null">
+                #{barCodeType,jdbcType=TINYINT},
+            </if>
+            <if test="expressSheetSequence != null">
+                #{expressSheetSequence,jdbcType=VARCHAR},
+            </if>
+            <if test="coordinateX != null">
+                #{coordinateX,jdbcType=TINYINT},
+            </if>
+            <if test="coordinateY != null">
+                #{coordinateY,jdbcType=TINYINT},
+            </if>
+            <if test="wordSize != null">
+                #{wordSize,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.logistics.model.InvoiceSpecificationModel">
+        update t_invoice_specification
+        <set>
+            <if test="methodId != null">
+                method_id = #{methodId,jdbcType=BIGINT},
+            </if>
+            <if test="specification != null">
+                specification = #{specification,jdbcType=VARCHAR},
+            </if>
+            <if test="printDirection != null">
+                print_direction = #{printDirection,jdbcType=TINYINT},
+            </if>
+            <if test="overTime != null">
+                over_time = #{overTime,jdbcType=TINYINT},
+            </if>
+            <if test="allowTimes != null">
+                allow_times = #{allowTimes,jdbcType=TINYINT},
+            </if>
+            <if test="labelFrom != null">
+                label_from = #{labelFrom,jdbcType=TINYINT},
+            </if>
+            <if test="isCustomsDeclaration != null">
+                is_customs_declaration = #{isCustomsDeclaration,jdbcType=TINYINT},
+            </if>
+            <if test="barCodeType != null">
+                bar_code_type = #{barCodeType,jdbcType=TINYINT},
+            </if>
+            <if test="expressSheetSequence != null">
+                express_sheet_sequence = #{expressSheetSequence,jdbcType=VARCHAR},
+            </if>
+            <if test="coordinateX != null">
+                coordinate_x = #{coordinateX,jdbcType=TINYINT},
+            </if>
+            <if test="coordinateY != null">
+                coordinate_y = #{coordinateY,jdbcType=TINYINT},
+            </if>
+            <if test="wordSize != null">
+                word_size = #{wordSize,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.logistics.model.InvoiceSpecificationModel">
+        update t_invoice_specification
+        set method_id = #{methodId,jdbcType=BIGINT},
+            specification = #{specification,jdbcType=VARCHAR},
+            print_direction = #{printDirection,jdbcType=TINYINT},
+            over_time = #{overTime,jdbcType=TINYINT},
+            allow_times = #{allowTimes,jdbcType=TINYINT},
+            label_from = #{labelFrom,jdbcType=TINYINT},
+            is_customs_declaration = #{isCustomsDeclaration,jdbcType=TINYINT},
+            bar_code_type = #{barCodeType,jdbcType=TINYINT},
+            express_sheet_sequence = #{expressSheetSequence,jdbcType=VARCHAR},
+            coordinate_x = #{coordinateX,jdbcType=TINYINT},
+            coordinate_y = #{coordinateY,jdbcType=TINYINT},
+            word_size = #{wordSize,jdbcType=TINYINT},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.logistics.model.InvoiceSpecificationModel"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_invoice_specification
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="methodId != null and methodId != ''">
+                and method_id = #{methodId,jdbcType=BIGINT}
+            </if>
+            <if test="specification != null and specification != ''">
+                and specification = #{specification,jdbcType=VARCHAR}
+            </if>
+            <if test="printDirection != null and printDirection != ''">
+                and print_direction = #{printDirection,jdbcType=TINYINT}
+            </if>
+            <if test="overTime != null and overTime != ''">
+                and over_time = #{overTime,jdbcType=TINYINT}
+            </if>
+            <if test="allowTimes != null and allowTimes != ''">
+                and allow_times = #{allowTimes,jdbcType=TINYINT}
+            </if>
+            <if test="labelFrom != null and labelFrom != ''">
+                and label_from = #{labelFrom,jdbcType=TINYINT}
+            </if>
+            <if test="isCustomsDeclaration != null and isCustomsDeclaration != ''">
+                and is_customs_declaration = #{isCustomsDeclaration,jdbcType=TINYINT}
+            </if>
+            <if test="barCodeType != null and barCodeType != ''">
+                and bar_code_type = #{barCodeType,jdbcType=TINYINT}
+            </if>
+            <if test="expressSheetSequence != null and expressSheetSequence != ''">
+                and express_sheet_sequence = #{expressSheetSequence,jdbcType=VARCHAR}
+            </if>
+            <if test="coordinateX != null and coordinateX != ''">
+                and coordinate_x = #{coordinateX,jdbcType=TINYINT}
+            </if>
+            <if test="coordinateY != null and coordinateY != ''">
+                and coordinate_y = #{coordinateY,jdbcType=TINYINT}
+            </if>
+            <if test="wordSize != null and wordSize != ''">
+                and word_size = #{wordSize,jdbcType=TINYINT}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

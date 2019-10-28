@@ -1,0 +1,91 @@
+#应用名称
+spring:
+  application:
+           name: rondaful-transorder-service
+  #配置中心
+  cloud:
+    config:
+      profile: dev
+      name: config,default
+      username: rondaful
+      password: rondaful123
+      discovery:
+        enabled: true
+        service-id: rondaful-config-service
+      label: master
+
+
+#应用端口
+server:
+    port: 8105
+
+#服务发现
+eureka:
+  client:
+    serviceUrl:
+       defaultZone: http://rondaful:rondaful123@localhost:8000/eureka/
+    #刷新本地缓存时间
+    registryFetchIntervalSeconds: 5
+  instance:
+     status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/rest/api/doc/index.html
+     instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+     prefer-ip-address: true
+     #服务过期时间配置,超过这个时间没有接收到心跳EurekaServer就会将这个实例剔除
+     lease-expiration-duration-in-seconds: 15
+     #服务刷新时间配置，每隔这个时间会主动心跳一次
+     lease-renewal-interval-in-seconds: 5
+
+
+
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: rondaful
+    password: rondaful123
+
+
+#免登陆请求
+system:
+  ignore:
+    login:
+      url: /**
+
+
+---
+spring:
+  profiles: test
+  cloud:
+    config:
+      profile: test
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://rondaful:rondaful123@172.16.2.203:8000/eureka/
+
+
+
+---
+spring:
+  profiles: prod
+  cloud:
+    config:
+      profile: prod
+      
+      
+#应用端口
+server:
+    port: 50116
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://rondaful:rondaful123@192.168.0.4:50105/eureka/
+
+
+
+---
+

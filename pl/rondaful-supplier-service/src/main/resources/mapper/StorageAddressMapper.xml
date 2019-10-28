@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.StorageAddressMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.storage.StorageAddress">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+        <result column="first_name" jdbcType="VARCHAR" property="firstName" />
+        <result column="last_name" jdbcType="VARCHAR" property="lastName" />
+        <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="country_code" jdbcType="VARCHAR" property="countryCode" />
+        <result column="zipcode" jdbcType="VARCHAR" property="zipcode" />
+        <result column="address1" jdbcType="VARCHAR" property="address1" />
+        <result column="address2" jdbcType="VARCHAR" property="address2" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, supplier_id, first_name, last_name, contact_phone, state, city, country_code, 
+        zipcode, address1, address2
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_storage_address
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_storage_address
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageAddress">
+        insert into t_storage_address (id, supplier_id, first_name, 
+            last_name, contact_phone, state, 
+            city, country_code, zipcode, 
+            address1, address2)
+        values (#{id,jdbcType=INTEGER}, #{supplierId,jdbcType=INTEGER}, #{firstName,jdbcType=VARCHAR}, 
+            #{lastName,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+            #{city,jdbcType=VARCHAR}, #{countryCode,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}, 
+            #{address1,jdbcType=VARCHAR}, #{address2,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageAddress">
+        insert into t_storage_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="firstName != null">
+                first_name,
+            </if>
+            <if test="lastName != null">
+                last_name,
+            </if>
+            <if test="contactPhone != null">
+                contact_phone,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="countryCode != null">
+                country_code,
+            </if>
+            <if test="zipcode != null">
+                zipcode,
+            </if>
+            <if test="address1 != null">
+                address1,
+            </if>
+            <if test="address2 != null">
+                address2,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="firstName != null">
+                #{firstName,jdbcType=VARCHAR},
+            </if>
+            <if test="lastName != null">
+                #{lastName,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPhone != null">
+                #{contactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="countryCode != null">
+                #{countryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="zipcode != null">
+                #{zipcode,jdbcType=VARCHAR},
+            </if>
+            <if test="address1 != null">
+                #{address1,jdbcType=VARCHAR},
+            </if>
+            <if test="address2 != null">
+                #{address2,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageAddress">
+        update t_storage_address
+        <set>
+            <if test="firstName != null">
+                first_name = #{firstName,jdbcType=VARCHAR},
+            </if>
+            <if test="lastName != null">
+                last_name = #{lastName,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPhone != null">
+                contact_phone = #{contactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="countryCode != null">
+                country_code = #{countryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="zipcode != null">
+                zipcode = #{zipcode,jdbcType=VARCHAR},
+            </if>
+            <if test="address1 != null">
+                address1 = #{address1,jdbcType=VARCHAR},
+            </if>
+            <if test="address2 != null">
+                address2 = #{address2,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageAddress">
+        update t_storage_address
+        set first_name = #{firstName,jdbcType=VARCHAR},
+            last_name = #{lastName,jdbcType=VARCHAR},
+            contact_phone = #{contactPhone,jdbcType=VARCHAR},
+            state = #{state,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            country_code = #{countryCode,jdbcType=VARCHAR},
+            zipcode = #{zipcode,jdbcType=VARCHAR},
+            address1 = #{address1,jdbcType=VARCHAR},
+            address2 = #{address2,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageAddress" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_storage_address
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                 and supplier_id = #{supplierId,jdbcType=INTEGER}
+            </if>
+            <if test="firstName != null and firstName != ''">
+                 and first_name = #{firstName,jdbcType=VARCHAR}
+            </if>
+            <if test="lastName != null and lastName != ''">
+                 and last_name = #{lastName,jdbcType=VARCHAR}
+            </if>
+            <if test="contactPhone != null and contactPhone != ''">
+                 and contact_phone = #{contactPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null and state != ''">
+                 and state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null and city != ''">
+                 and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="countryCode != null and countryCode != ''">
+                 and country_code = #{countryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="zipcode != null and zipcode != ''">
+                 and zipcode = #{zipcode,jdbcType=VARCHAR}
+            </if>
+            <if test="address1 != null and address1 != ''">
+                 and address1 = #{address1,jdbcType=VARCHAR}
+            </if>
+            <if test="address2 != null and address2 != ''">
+                 and address2 = #{address2,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getsBySupplierId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_storage_address
+        where supplier_id = #{supplierId,jdbcType=INTEGER}
+        <if test="phone != null and phone !=''">
+            and contact_phone = #{phone,jdbcType=VARCHAR}
+        </if>
+    </select>
+</mapper>

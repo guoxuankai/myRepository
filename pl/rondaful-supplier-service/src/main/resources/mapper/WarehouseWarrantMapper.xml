@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WarehouseWarrantMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.WarehouseWarrant">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sequence_number" jdbcType="VARCHAR" property="sequenceNumber"/>
+        <result column="receiving_code" jdbcType="VARCHAR" property="receivingCode"/>
+        <result column="receiving_status" jdbcType="TINYINT" property="receivingStatus"/>
+        <result column="warehouse_facilitator_name" jdbcType="VARCHAR" property="warehouseFacilitatorName"/>
+        <result column="warehouse_facilitator_code" jdbcType="VARCHAR" property="warehouseFacilitatorCode"/>
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName"/>
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode"/>
+        <result column="transit_type" jdbcType="TINYINT" property="transitType"/>
+        <result column="receiving_shipping_type" jdbcType="TINYINT" property="receivingShippingType"/>
+        <result column="tracking_number" jdbcType="VARCHAR" property="trackingNumber"/>
+        <result column="eta_date" jdbcType="TIMESTAMP" property="etaDate"/>
+        <result column="vat_number" jdbcType="VARCHAR" property="vatNumber"/>
+        <result column="exemption_number" jdbcType="VARCHAR" property="exemptionNumber"/>
+        <result column="eori" jdbcType="VARCHAR" property="eori"/>
+        <result column="sm_code" jdbcType="VARCHAR" property="smCode"/>
+        <result column="transit_warehouse_code" jdbcType="VARCHAR" property="transitWarehouseCode"/>
+        <result column="transit_warehouse_name" jdbcType="VARCHAR" property="transitWarehouseName"/>
+        <result column="weight" jdbcType="DECIMAL" property="weight"/>
+        <result column="volume" jdbcType="DECIMAL" property="volume"/>
+        <result column="pickup_form" jdbcType="TINYINT" property="pickupForm"/>
+        <result column="customs_type" jdbcType="TINYINT" property="customsType"/>
+        <result column="clearance_attached" jdbcType="VARCHAR" property="clearanceAttached"/>
+        <result column="invoice_attached" jdbcType="VARCHAR" property="invoiceAttached"/>
+        <result column="collecting_service" jdbcType="TINYINT" property="collectingService"/>
+        <result column="value_added_service" jdbcType="VARCHAR" property="valueAddedService"/>
+        <result column="clearance_service" jdbcType="TINYINT" property="clearanceService"/>
+        <result column="import_company" jdbcType="INTEGER" property="importCompany"/>
+        <result column="export_company" jdbcType="INTEGER" property="exportCompany"/>
+        <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="version" jdbcType="TINYINT" property="version"/>
+        <result column="supplier_id" jdbcType="INTEGER" property="supplierId"/>
+        <result column="supplier" jdbcType="VARCHAR" property="supplier"/>
+        <result column="receiving_desc" jdbcType="VARCHAR" property="receivingDesc"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy"/>
+        <result column="clearance_attached_name" jdbcType="VARCHAR" property="clearanceAttachedName"/>
+        <result column="invoice_attached_name" jdbcType="VARCHAR" property="invoiceAttachedName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, sequence_number, receiving_code, receiving_status, warehouse_facilitator_name, warehouse_facilitator_code,
+        warehouse_name, warehouse_code, transit_type, receiving_shipping_type, tracking_number, eta_date,
+        vat_number, exemption_number, eori, sm_code, transit_warehouse_code, transit_warehouse_name,
+        weight, volume, pickup_form, customs_type, clearance_attached, invoice_attached,
+        collecting_service, value_added_service, clearance_service, import_company, export_company,
+        creat_time, update_time, version, supplier_id, supplier, receiving_desc, create_by,
+        last_update_by, clearance_attached_name, invoice_attached_name
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_warrant
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <sql id="Valid_Column_List">
+        receiving_code,sequence_number, creat_time, supplier_id, supplier, create_by
+    </sql>
+
+    <select id="selectValidColumnByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Valid_Column_List"/>
+        from t_warehouse_warrant
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectValidColumnByPrimaryKeyOnSequenceNumber" parameterType="java.lang.Long"
+            resultType="java.lang.String">
+        select
+        sequence_number
+        from t_warehouse_warrant
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_warehouse_warrant
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrant">
+        insert into t_warehouse_warrant (id, sequence_number, receiving_code,
+            receiving_status, warehouse_facilitator_name, warehouse_facilitator_code,
+            warehouse_name, warehouse_code, transit_type, receiving_shipping_type,
+            tracking_number, eta_date, vat_number,
+            exemption_number, eori, sm_code,
+            transit_warehouse_code, transit_warehouse_name,
+            weight, volume, pickup_form,
+            customs_type, clearance_attached, invoice_attached,
+            collecting_service, value_added_service,
+            clearance_service, import_company, export_company,
+            creat_time, update_time, version,
+            supplier_id, supplier, receiving_desc,
+            create_by, last_update_by, clearance_attached_name, invoice_attached_name)
+        values (#{id,jdbcType=BIGINT}, #{sequenceNumber,jdbcType=VARCHAR}, #{receivingCode,jdbcType=VARCHAR},
+            #{receivingStatus,jdbcType=TINYINT}, #{warehouseFacilitatorName,jdbcType=VARCHAR}, #{warehouseFacilitatorCode,jdbcType=VARCHAR},
+            #{warehouseName,jdbcType=VARCHAR}, #{transitType,jdbcType=TINYINT}, #{receivingShippingType,jdbcType=TINYINT},
+            #{trackingNumber,jdbcType=VARCHAR}, #{etaDate,jdbcType=TIMESTAMP}, #{vatNumber,jdbcType=VARCHAR},
+            #{exemptionNumber,jdbcType=VARCHAR}, #{eori,jdbcType=VARCHAR}, #{smCode,jdbcType=VARCHAR},
+            #{transitWarehouseCode,jdbcType=INTEGER}, #{transitWarehouseName,jdbcType=VARCHAR},
+            #{weight,jdbcType=DECIMAL}, #{volume,jdbcType=DECIMAL}, #{pickupForm,jdbcType=TINYINT},
+            #{customsType,jdbcType=TINYINT}, #{clearanceAttached,jdbcType=VARCHAR}, #{invoiceAttached,jdbcType=VARCHAR},
+            #{collectingService,jdbcType=TINYINT}, #{valueAddedService,jdbcType=VARCHAR},
+            #{clearanceService,jdbcType=TINYINT}, #{importCompany,jdbcType=INTEGER}, #{exportCompany,jdbcType=INTEGER},
+            #{creatTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=TINYINT},
+            #{supplierId,jdbcType=INTEGER}, #{supplier,jdbcType=VARCHAR}, #{receivingDesc,jdbcType=VARCHAR},
+            #{createBy,jdbcType=VARCHAR}, #{lastUpdateBy,jdbcType=VARCHAR}, #{clearanceAttachedName,jdbcType=VARCHAR}, #{invoiceAttachedName,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrant">
+        insert into t_warehouse_warrant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sequenceNumber != null">
+                sequence_number,
+            </if>
+            <if test="receivingCode != null">
+                receiving_code,
+            </if>
+            <if test="receivingStatus != null">
+                receiving_status,
+            </if>
+            <if test="warehouseFacilitatorName != null">
+                warehouse_facilitator_name,
+            </if>
+            <if test="warehouseFacilitatorCode != null">
+                warehouse_facilitator_code,
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name,
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code,
+            </if>
+            <if test="transitType != null">
+                transit_type,
+            </if>
+            <if test="receivingShippingType != null">
+                receiving_shipping_type,
+            </if>
+            <if test="trackingNumber != null">
+                tracking_number,
+            </if>
+            <if test="etaDate != null">
+                eta_date,
+            </if>
+            <if test="vatNumber != null">
+                vat_number,
+            </if>
+            <if test="exemptionNumber != null">
+                exemption_number,
+            </if>
+            <if test="eori != null">
+                eori,
+            </if>
+            <if test="smCode != null">
+                sm_code,
+            </if>
+            <if test="transitWarehouseCode != null">
+                transit_warehouse_code,
+            </if>
+            <if test="transitWarehouseName != null">
+                transit_warehouse_name,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="volume != null">
+                volume,
+            </if>
+            <if test="pickupForm != null">
+                pickup_form,
+            </if>
+            <if test="customsType != null">
+                customs_type,
+            </if>
+            <if test="clearanceAttached != null">
+                clearance_attached,
+            </if>
+            <if test="invoiceAttached != null">
+                invoice_attached,
+            </if>
+            <if test="collectingService != null">
+                collecting_service,
+            </if>
+            <if test="valueAddedService != null">
+                value_added_service,
+            </if>
+            <if test="clearanceService != null">
+                clearance_service,
+            </if>
+            <if test="importCompany != null">
+                import_company,
+            </if>
+            <if test="exportCompany != null">
+                export_company,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="supplier != null">
+                supplier,
+            </if>
+            <if test="receivingDesc != null">
+                receiving_desc,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by,
+            </if>
+            <if test="clearanceAttachedName != null">
+                clearance_attached_name,
+            </if>
+            <if test="invoiceAttachedName != null">
+                invoice_attached_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sequenceNumber != null">
+                #{sequenceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingCode != null">
+                #{receivingCode,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingStatus != null">
+                #{receivingStatus,jdbcType=TINYINT},
+            </if>
+            <if test="warehouseFacilitatorName != null">
+                #{warehouseFacilitatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseFacilitatorCode != null">
+                #{warehouseFacilitatorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transitType != null">
+                #{transitType,jdbcType=TINYINT},
+            </if>
+            <if test="receivingShippingType != null">
+                #{receivingShippingType,jdbcType=TINYINT},
+            </if>
+            <if test="trackingNumber != null">
+                #{trackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="etaDate != null">
+                #{etaDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="vatNumber != null">
+                #{vatNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="exemptionNumber != null">
+                #{exemptionNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="eori != null">
+                #{eori,jdbcType=VARCHAR},
+            </if>
+            <if test="smCode != null">
+                #{smCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transitWarehouseCode != null">
+                #{transitWarehouseCode,jdbcType=INTEGER},
+            </if>
+            <if test="transitWarehouseName != null">
+                #{transitWarehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="volume != null">
+                #{volume,jdbcType=DECIMAL},
+            </if>
+            <if test="pickupForm != null">
+                #{pickupForm,jdbcType=TINYINT},
+            </if>
+            <if test="customsType != null">
+                #{customsType,jdbcType=TINYINT},
+            </if>
+            <if test="clearanceAttached != null">
+                #{clearanceAttached,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceAttached != null">
+                #{invoiceAttached,jdbcType=VARCHAR},
+            </if>
+            <if test="collectingService != null">
+                #{collectingService,jdbcType=TINYINT},
+            </if>
+            <if test="valueAddedService != null">
+                #{valueAddedService,jdbcType=VARCHAR},
+            </if>
+            <if test="clearanceService != null">
+                #{clearanceService,jdbcType=TINYINT},
+            </if>
+            <if test="importCompany != null">
+                #{importCompany,jdbcType=INTEGER},
+            </if>
+            <if test="exportCompany != null">
+                #{exportCompany,jdbcType=INTEGER},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=TINYINT},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="supplier != null">
+                #{supplier,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingDesc != null">
+                #{receivingDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateBy != null">
+                #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="clearanceAttachedName != null">
+                #{clearanceAttachedName,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceAttachedName != null">
+                #{invoiceAttachedName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrant">
+        update t_warehouse_warrant
+        <set>
+            <if test="sequenceNumber != null">
+                sequence_number = #{sequenceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingCode != null">
+                receiving_code = #{receivingCode,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingStatus != null">
+                receiving_status = #{receivingStatus,jdbcType=TINYINT},
+            </if>
+            <if test="warehouseFacilitatorName != null">
+                warehouse_facilitator_name = #{warehouseFacilitatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseFacilitatorCode != null">
+                warehouse_facilitator_code = #{warehouseFacilitatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transitType != null">
+                transit_type = #{transitType,jdbcType=TINYINT},
+            </if>
+            <if test="receivingShippingType != null">
+                receiving_shipping_type = #{receivingShippingType,jdbcType=TINYINT},
+            </if>
+            <if test="trackingNumber != null">
+                tracking_number = #{trackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="etaDate != null">
+                eta_date = #{etaDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="vatNumber != null">
+                vat_number = #{vatNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="exemptionNumber != null">
+                exemption_number = #{exemptionNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="eori != null">
+                eori = #{eori,jdbcType=VARCHAR},
+            </if>
+            <if test="smCode != null">
+                sm_code = #{smCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transitWarehouseCode != null">
+                transit_warehouse_code = #{transitWarehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transitWarehouseName != null">
+                transit_warehouse_name = #{transitWarehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="volume != null">
+                volume = #{volume,jdbcType=DECIMAL},
+            </if>
+            <if test="pickupForm != null">
+                pickup_form = #{pickupForm,jdbcType=TINYINT},
+            </if>
+            <if test="customsType != null">
+                customs_type = #{customsType,jdbcType=TINYINT},
+            </if>
+            <if test="clearanceAttached != null">
+                clearance_attached = #{clearanceAttached,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceAttached != null">
+                invoice_attached = #{invoiceAttached,jdbcType=VARCHAR},
+            </if>
+            <if test="collectingService != null">
+                collecting_service = #{collectingService,jdbcType=TINYINT},
+            </if>
+            <if test="valueAddedService != null">
+                value_added_service = #{valueAddedService,jdbcType=VARCHAR},
+            </if>
+            <if test="clearanceService != null">
+                clearance_service = #{clearanceService,jdbcType=TINYINT},
+            </if>
+            <if test="importCompany != null">
+                import_company = #{importCompany,jdbcType=INTEGER},
+            </if>
+            <if test="exportCompany != null">
+                export_company = #{exportCompany,jdbcType=INTEGER},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=TINYINT},
+            </if>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="supplier != null">
+                supplier = #{supplier,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingDesc != null">
+                receiving_desc = #{receivingDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="clearanceAttachedName != null">
+                clearance_attached_name = #{clearanceAttachedName,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceAttachedName != null">
+                invoice_attached_name = #{invoiceAttachedName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrant">
+        update t_warehouse_warrant
+        set sequence_number = #{sequenceNumber,jdbcType=VARCHAR},
+            receiving_code = #{receivingCode,jdbcType=VARCHAR},
+            receiving_status = #{receivingStatus,jdbcType=TINYINT},
+            warehouse_facilitator_name = #{warehouseFacilitatorName,jdbcType=VARCHAR},
+            warehouse_facilitator_code = #{warehouseFacilitatorCode,jdbcType=VARCHAR},
+            warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            transit_type = #{transitType,jdbcType=TINYINT},
+            receiving_shipping_type = #{receivingShippingType,jdbcType=TINYINT},
+            tracking_number = #{trackingNumber,jdbcType=VARCHAR},
+            eta_date = #{etaDate,jdbcType=TIMESTAMP},
+            vat_number = #{vatNumber,jdbcType=VARCHAR},
+            exemption_number = #{exemptionNumber,jdbcType=VARCHAR},
+            eori = #{eori,jdbcType=VARCHAR},
+            sm_code = #{smCode,jdbcType=VARCHAR},
+            transit_warehouse_code = #{transitWarehouseCode,jdbcType=VARCHAR},
+            transit_warehouse_name = #{transitWarehouseName,jdbcType=VARCHAR},
+            weight = #{weight,jdbcType=DECIMAL},
+            volume = #{volume,jdbcType=DECIMAL},
+            pickup_form = #{pickupForm,jdbcType=TINYINT},
+            customs_type = #{customsType,jdbcType=TINYINT},
+            clearance_attached = #{clearanceAttached,jdbcType=VARCHAR},
+            invoice_attached = #{invoiceAttached,jdbcType=VARCHAR},
+            collecting_service = #{collectingService,jdbcType=TINYINT},
+            value_added_service = #{valueAddedService,jdbcType=VARCHAR},
+            clearance_service = #{clearanceService,jdbcType=TINYINT},
+            import_company = #{importCompany,jdbcType=INTEGER},
+            export_company = #{exportCompany,jdbcType=INTEGER},
+            creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            version = #{version,jdbcType=TINYINT},
+            supplier_id = #{supplierId,jdbcType=INTEGER},
+            supplier = #{supplier,jdbcType=VARCHAR},
+            receiving_desc = #{receivingDesc,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            clearance_attached_name = #{clearanceAttachedName,jdbcType=VARCHAR},
+            invoice_attached_name = #{invoiceAttachedName,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrant" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_warrant
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="sequenceNumber != null and sequenceNumber != ''">
+                and sequence_number = #{sequenceNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="receivingCode != null and receivingCode != ''">
+                and receiving_code = #{receivingCode,jdbcType=VARCHAR}
+            </if>
+            <if test="receivingStatus != null and receivingStatus != ''">
+                and receiving_status = #{receivingStatus,jdbcType=TINYINT}
+            </if>
+            <if test="warehouseFacilitatorName != null and warehouseFacilitatorName != ''">
+                and warehouse_facilitator_name = #{warehouseFacilitatorName,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseFacilitatorCode != null and warehouseFacilitatorCode != ''">
+                and warehouse_facilitator_code = #{warehouseFacilitatorCode,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseName != null and warehouseName != ''">
+                and warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseCode != null and warehouseCode != ''">
+                and warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="transitType != null and transitType != ''">
+                and transit_type = #{transitType,jdbcType=TINYINT}
+            </if>
+            <if test="receivingShippingType != null and receivingShippingType != ''">
+                and receiving_shipping_type = #{receivingShippingType,jdbcType=TINYINT}
+            </if>
+            <if test="trackingNumber != null and trackingNumber != ''">
+                and tracking_number = #{trackingNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="etaDate != null and etaDate != ''">
+                and eta_date = #{etaDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="vatNumber != null and vatNumber != ''">
+                and vat_number = #{vatNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="exemptionNumber != null and exemptionNumber != ''">
+                and exemption_number = #{exemptionNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="eori != null and eori != ''">
+                and eori = #{eori,jdbcType=VARCHAR}
+            </if>
+            <if test="smCode != null and smCode != ''">
+                and sm_code = #{smCode,jdbcType=VARCHAR}
+            </if>
+            <if test="transitWarehouseCode != null and transitWarehouseCode != ''">
+                and transit_warehouse_code = #{transitWarehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="transitWarehouseName != null and transitWarehouseName != ''">
+                and transit_warehouse_name = #{transitWarehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="weight != null and weight != ''">
+                and weight = #{weight,jdbcType=DECIMAL}
+            </if>
+            <if test="volume != null and volume != ''">
+                and volume = #{volume,jdbcType=DECIMAL}
+            </if>
+            <if test="pickupForm != null and pickupForm != ''">
+                and pickup_form = #{pickupForm,jdbcType=TINYINT}
+            </if>
+            <if test="customsType != null and customsType != ''">
+                and customs_type = #{customsType,jdbcType=TINYINT}
+            </if>
+            <if test="clearanceAttached != null and clearanceAttached != ''">
+                and clearance_attached = #{clearanceAttached,jdbcType=VARCHAR}
+            </if>
+            <if test="invoiceAttached != null and invoiceAttached != ''">
+                and invoice_attached = #{invoiceAttached,jdbcType=VARCHAR}
+            </if>
+            <if test="collectingService != null and collectingService != ''">
+                and collecting_service = #{collectingService,jdbcType=TINYINT}
+            </if>
+            <if test="valueAddedService != null and valueAddedService != ''">
+                and value_added_service = #{valueAddedService,jdbcType=VARCHAR}
+            </if>
+            <if test="clearanceService != null and clearanceService != ''">
+                and clearance_service = #{clearanceService,jdbcType=TINYINT}
+            </if>
+            <if test="importCompany != null and importCompany != ''">
+                and import_company = #{importCompany,jdbcType=INTEGER}
+            </if>
+            <if test="exportCompany != null and exportCompany != ''">
+                and export_company = #{exportCompany,jdbcType=INTEGER}
+            </if>
+            <if test="creatTime != null and creatTime != ''">
+                and creat_time = #{creatTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="version != null and version != ''">
+                and version = #{version,jdbcType=TINYINT}
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                and supplier_id = #{supplierId,jdbcType=INTEGER}
+            </if>
+            <if test="supplier != null and supplier != ''">
+                and supplier = #{supplier,jdbcType=VARCHAR}
+            </if>
+            <if test="receivingDesc != null and receivingDesc != ''">
+                and receiving_desc = #{receivingDesc,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="lastUpdateBy != null and lastUpdateBy != ''">
+                and last_update_by = #{lastUpdateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="clearanceAttachedName != null and clearanceAttachedName != ''">
+                and clearance_attached_name = #{clearanceAttachedName,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceAttachedName != null and invoiceAttachedName != ''">
+                and invoice_attached_name = #{invoiceAttachedName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </select>
+
+    <resultMap id="ResultMap" type="com.rondaful.cloud.supplier.entity.WarehouseWarrantResponse">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="receiving_code" jdbcType="VARCHAR" property="receivingCode"/>
+        <result column="receiving_status" jdbcType="TINYINT" property="receivingStatus"/>
+        <result column="warehouse_facilitator_name" jdbcType="VARCHAR" property="warehouseFacilitatorName"/>
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName"/>
+        <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="receiving_desc" jdbcType="VARCHAR" property="receivingDesc"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy"/>
+        <result column="supplier" jdbcType="VARCHAR" property="supplier"/>
+    </resultMap>
+
+    <sql id="warrant_list_column">
+        id, receiving_code, receiving_status, warehouse_facilitator_name, warehouse_name,
+        creat_time,update_time, receiving_desc,create_by, last_update_by, supplier
+    </sql>
+
+    <select id="selectWarehouseWarrantListBySelective" resultMap="ResultMap"
+            parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrantRequest">
+        select
+        <include refid="warrant_list_column"/>
+        from t_warehouse_warrant
+        <where>
+            <if test="status != null and status != ''">
+                and receiving_status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="facilitatorCode != null and facilitatorCode != ''">
+                and warehouse_facilitator_code = #{facilitatorCode,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseCode != null and warehouseCode != ''">
+                and warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="receivingCode != null and receivingCode != ''">
+                and receiving_code = #{receivingCode,jdbcType=VARCHAR}
+            </if>
+            <if test="supplier != null and supplier != ''">
+                and supplier = #{supplier,jdbcType=VARCHAR}
+            </if>
+            <if test="topFlag != null and topFlag == 0">
+                <choose>
+                    <when test="supplierId != null">
+                        and supplier_id = #{supplierId,jdbcType=INTEGER}
+                    </when>
+                    <when test='supplies == null or supplies.size() == 0'>
+                        and 1=1
+                    </when>
+                    <otherwise>
+                        and 1=2
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="topFlag != null and topFlag == 1">
+                <choose>
+                    <when test="supplierId != null and codeList != null and codeList.size() > 0">
+                        and supplier_id = #{supplierId,jdbcType=INTEGER}
+                        and warehouse_code in
+                        <foreach collection="codeList" index="index" item="item" separator="," open="(" close=")">
+                            #{item,jdbcType=VARCHAR}
+                        </foreach>
+                    </when>
+                    <when test='supplies!= null and supplies.size() > 0'>
+                        and supplier_id in
+                        <foreach collection="supplies" index="index" item="item" separator="," open="(" close=")">
+                            #{item,jdbcType=INTEGER}
+                        </foreach>
+                    </when>
+                    <otherwise>
+                        and 1=2
+                    </otherwise>
+                </choose>
+            </if>
+            <foreach collection="wareHouseCodeList" index="index" item="item" open="and warehouse_code in(" close=")"
+                     separator=",">
+                #{item,jdbcType=VARCHAR}
+            </foreach>
+        </where>
+        ORDER BY creat_time DESC
+    </select>
+
+    <select id="selectReceivingCodeByReceivingStatus" resultType="java.lang.String">
+        select receiving_code from t_warehouse_warrant where receiving_status in ( '1','2','0' )
+    </select>
+
+    <select id="selectWarehouseWarrantDetailByReceivingCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_warrant
+        where receiving_code = #{receivingCode,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateBySequenceNumber" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrant">
+        update t_warehouse_warrant
+        <set>
+            <if test="receivingCode != null">
+                receiving_code = #{receivingCode,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingStatus != null">
+                receiving_status = #{receivingStatus,jdbcType=TINYINT},
+            </if>
+            <if test="warehouseFacilitatorName != null">
+                warehouse_facilitator_name = #{warehouseFacilitatorName,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseFacilitatorCode != null">
+                warehouse_facilitator_code = #{warehouseFacilitatorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transitType != null">
+                transit_type = #{transitType,jdbcType=TINYINT},
+            </if>
+            <if test="receivingShippingType != null">
+                receiving_shipping_type = #{receivingShippingType,jdbcType=TINYINT},
+            </if>
+            <if test="trackingNumber != null">
+                tracking_number = #{trackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="etaDate != null">
+                eta_date = #{etaDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="vatNumber != null">
+                vat_number = #{vatNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="exemptionNumber != null">
+                exemption_number = #{exemptionNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="eori != null">
+                eori = #{eori,jdbcType=VARCHAR},
+            </if>
+            <if test="smCode != null">
+                sm_code = #{smCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transitWarehouseCode != null">
+                transit_warehouse_code = #{transitWarehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transitWarehouseName != null">
+                transit_warehouse_name = #{transitWarehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="volume != null">
+                volume = #{volume,jdbcType=DECIMAL},
+            </if>
+            <if test="pickupForm != null">
+                pickup_form = #{pickupForm,jdbcType=TINYINT},
+            </if>
+            <if test="customsType != null">
+                customs_type = #{customsType,jdbcType=TINYINT},
+            </if>
+            <if test="clearanceAttached != null">
+                clearance_attached = #{clearanceAttached,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceAttached != null">
+                invoice_attached = #{invoiceAttached,jdbcType=VARCHAR},
+            </if>
+            <if test="collectingService != null">
+                collecting_service = #{collectingService,jdbcType=TINYINT},
+            </if>
+            <if test="valueAddedService != null">
+                value_added_service = #{valueAddedService,jdbcType=VARCHAR},
+            </if>
+            <if test="clearanceService != null">
+                clearance_service = #{clearanceService,jdbcType=TINYINT},
+            </if>
+            <if test="importCompany != null">
+                import_company = #{importCompany,jdbcType=INTEGER},
+            </if>
+            <if test="exportCompany != null">
+                export_company = #{exportCompany,jdbcType=INTEGER},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=TINYINT},
+            </if>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="supplier != null">
+                supplier = #{supplier,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingDesc != null">
+                receiving_desc = #{receivingDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="clearanceAttachedName != null">
+                clearance_attached_name = #{clearanceAttachedName,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceAttachedName != null">
+                invoice_attached_name = #{invoiceAttachedName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where sequence_number = #{sequenceNumber,jdbcType=VARCHAR}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+
+    <update id="updateReceivingStatusByReceivingCodeList" parameterType="java.util.Map">
+        update t_warehouse_warrant set receiving_status = case receiving_code
+        <foreach collection="map.entrySet()" item="value" index="key" separator=" ">
+            when #{key,jdbcType=VARCHAR} then #{value,jdbcType=TINYINT}
+        </foreach>
+        end
+        where receiving_code in
+        <foreach collection="map.keySet()" item="value" index="key" separator="," open="(" close=")">
+            #{value,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <update id="updateCommentByPrimaryKey">
+        update t_warehouse_warrant set receiving_desc = #{comment,jdbcType=VARCHAR} where id = #{primaryKey,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateWarrantStatusByReceivingCode">
+        update t_warehouse_warrant set receiving_status = #{status,jdbcType=TINYINT} where receiving_code = #{code,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

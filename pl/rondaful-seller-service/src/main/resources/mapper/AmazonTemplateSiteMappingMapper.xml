@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonTemplateSiteMappingMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AmazonTemplateSiteMapping">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="site" jdbcType="VARCHAR" property="site" />
+        <result column="model_file" jdbcType="VARCHAR" property="modelFile" />
+        <result column="template_parent" jdbcType="VARCHAR" property="templateParent" />
+        <result column="template_child" jdbcType="VARCHAR" property="templateChild" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="is_disabled" jdbcType="INTEGER" property="isDisabled" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, site, model_file, template_parent, template_child, create_time, update_time,is_disabled
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from amazon_template_site_mapping
+        where is_disabled = 0 and id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from amazon_template_site_mapping
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateSiteMapping">
+        insert into amazon_template_site_mapping (id, site, model_file, 
+            template_parent, template_child, create_time, 
+            update_time)
+        values (#{id,jdbcType=INTEGER}, #{site,jdbcType=VARCHAR}, #{modelFile,jdbcType=VARCHAR}, 
+            #{templateParent,jdbcType=VARCHAR}, #{templateChild,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+            #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateSiteMapping">
+        insert into amazon_template_site_mapping
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="site != null">
+                site,
+            </if>
+            <if test="modelFile != null">
+                model_file,
+            </if>
+            <if test="templateParent != null">
+                template_parent,
+            </if>
+            <if test="templateChild != null">
+                template_child,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="site != null">
+                #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="modelFile != null">
+                #{modelFile,jdbcType=VARCHAR},
+            </if>
+            <if test="templateParent != null">
+                #{templateParent,jdbcType=VARCHAR},
+            </if>
+            <if test="templateChild != null">
+                #{templateChild,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateSiteMapping">
+        update amazon_template_site_mapping
+        <set>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="modelFile != null">
+                model_file = #{modelFile,jdbcType=VARCHAR},
+            </if>
+            <if test="templateParent != null">
+                template_parent = #{templateParent,jdbcType=VARCHAR},
+            </if>
+            <if test="templateChild != null">
+                template_child = #{templateChild,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDisabled != null">
+                is_disabled = #{isDisabled,jdbcType=INTEGER},
+            </if>
+                update_time = now()
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateSiteMapping">
+        update amazon_template_site_mapping
+        set site = #{site,jdbcType=VARCHAR},
+            model_file = #{modelFile,jdbcType=VARCHAR},
+            template_parent = #{templateParent,jdbcType=VARCHAR},
+            template_child = #{templateChild,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateSiteMapping" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from amazon_template_site_mapping 
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="site != null and site != ''">
+                 and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="modelFile != null and modelFile != ''">
+                 and model_file = #{modelFile,jdbcType=VARCHAR}
+            </if>
+            <if test="templateParent != null and templateParent != ''">
+                 and template_parent = #{templateParent,jdbcType=VARCHAR}
+            </if>
+            <if test="templateChild != null and templateChild != ''">
+                 and template_child = #{templateChild,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            and is_disabled = 0
+        </trim>
+    </select>
+
+    <select id="newPage" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateSiteMapping" resultMap="BaseResultMap" >
+        select
+        map.id, map.site, map.model_file, map.template_parent, map.template_child, map.create_time, map.update_time,map.is_disabled
+        from amazon_template_site_mapping map left join amazon_template_attribute att on att.site = map.site and att.template_parent = map.template_parent and att.template_child = att.template_child
+        <trim prefix="where" prefixOverrides="and">
+            map.id > 0
+            <if test="id != null and id != ''">
+                and map.id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="site != null and site != ''">
+                and map.site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="modelFile != null and modelFile != ''">
+                and map.model_file = #{modelFile,jdbcType=VARCHAR}
+            </if>
+            <if test="templateParent != null and templateParent != ''">
+                and map.template_parent = #{templateParent,jdbcType=VARCHAR}
+            </if>
+            <if test="templateChild != null and templateChild != ''">
+                and map.template_child = #{templateChild,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and map.create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and map.update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="attribute != null and attribute != ''">
+                and att.attribute_name = #{attribute}
+            </if>
+            <if test="isDisabled != null and isDisabled != '' or isDisabled == '0'.toString() ">
+               and  map.is_disabled = #{isDisabled,jdbcType=INTEGER}
+            </if>
+        </trim>
+        group by  map.id order by map.template_parent
+    </select>
+
+
+
+
+
+</mapper>

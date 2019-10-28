@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.Menu">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="platform_type" jdbcType="INTEGER" property="platformType"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="parent_ids" jdbcType="VARCHAR" property="parentIds"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sort" jdbcType="VARCHAR" property="sort"/>
+        <result column="href" jdbcType="VARCHAR" property="href"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="vshow" jdbcType="CHAR" property="vshow"/>
+        <result column="permission" jdbcType="VARCHAR" property="permission"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id,platform_type,parent_id,parent_ids,name,sort,href,icon,level,vshow,permission,remarks,
+    	create_date,update_date,del_flag
+    </sql>
+
+    <!-- 根据menuid获取menu信息 -->
+    <select id="getMenuByMenuId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_menu
+        where id = #{menuId, jdbcType= INTEGER }
+    </select>
+
+    <!-- 通条件查询菜单列表 -->
+    <select id="findAll" parameterType="com.rondaful.cloud.user.entity.Menu" resultMap="BaseResultMap">
+        SELECT
+            m.id,
+            m.platform_type,
+            m.parent_id,
+            m.parent_ids,
+            m.NAME,
+            m.sort,
+            m.href,
+            m.icon,
+            m.LEVEL,
+            m.vshow,
+            m.permission,
+            m.remarks,
+            m.create_date,
+            m.update_date,
+            m.del_flag
+        FROM sys_menu m LEFT JOIN sys_role_menu rm ON rm.menu_id = m.id
+        <where>
+            <if test="platformType != null">AND m.platform_type = #{platformType,jdbcType= INTEGER }</if>
+            <if test="delFlag != null">AND m.del_flag = #{delFlag,jdbcType= INTEGER }</if>
+            <if test="vshow != null">AND m.vshow = #{vshow,jdbcType= INTEGER }</if>
+            <if test="parentId != null">AND parent_id = #{parentId,jdbcType= INTEGER}</if>
+            <if test="roleIds != null">
+                AND rm.role_id IN
+                <foreach collection="roleIds" item="rId" open="(" close=")" separator=",">
+                    #{rId,jdbcType= INTEGER}
+                </foreach>
+            </if>
+            <if test="userId != null">
+                AND rm.role_id IN (SELECT ur.role_id FROM sys_user_role ur WHERE ur.user_id =
+                #{userId,jdbcType= INTEGER})
+            </if>
+            GROUP BY id
+        </where>
+    </select>
+
+    <insert id="addMenu" parameterType="com.rondaful.cloud.user.entity.Menu" useGeneratedKeys="true" keyColumn="id"
+            keyProperty="id">
+       INSERT INTO `sys_menu` ( `platform_type`, `parent_id`, `parent_ids`, `name`, `sort`, `href`, `icon`, `level`, `vshow`, `permission`, `remarks`, `create_date`, `update_date`, `del_flag`)
+       VALUES ( #{platformType}, #{parentId}, #{parentIds}, #{name}, #{sort}, #{href}, #{icon}, #{level}, #{vshow}, #{permission}, #{remarks},now(), now(), 0);
+    </insert>
+
+    <update id="updateMenu" parameterType="com.rondaful.cloud.user.entity.Menu">
+        update sys_menu
+        <set>
+            <if test="platformType != null">platform_type = #{platformType},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="parentIds != null">parent_ids = #{parentIds},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            href = #{href},
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="level != null">`level` = #{level},</if>
+            <if test="vshow != null">vshow = #{vshow},</if>
+            permission = #{permission},
+            remarks = #{remarks},
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            update_date = now()
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMenu" parameterType="Integer" >
+       delete from sys_menu where id = #{id}
+    </delete>
+
+    <select id="getsByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_menu
+        where id in
+        <foreach collection="menuIds" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getsAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_menu
+        where platform_type = #{platformType, jdbcType= INTEGER } and del_flag = 0
+        <!--<if test="remove==true">
+            and id != 34
+        </if>-->
+    </select>
+
+</mapper>

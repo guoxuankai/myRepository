@@ -24,7 +24,7 @@ public class RetryMessageTasker {
 	@Autowired
 	private BrokerMessageLogMapper brokerMessageLogMapper;
 	
-	@Scheduled(initialDelay = 3000, fixedDelay = 10000)
+//	@Scheduled(initialDelay = 3000, fixedDelay = 10000)
 	public void reSend(){
 		System.err.println("---------------定时任务开始---------------");
 		//pull status = 0 and timeout message 

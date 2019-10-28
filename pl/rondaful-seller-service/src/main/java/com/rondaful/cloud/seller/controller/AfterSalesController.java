@@ -1,0 +1,125 @@
+package com.rondaful.cloud.seller.controller;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
+import com.rondaful.cloud.common.aspect.AspectContrLog;
+import com.rondaful.cloud.common.constant.SystemConstants;
+import com.rondaful.cloud.common.entity.Page;
+import com.rondaful.cloud.common.enums.ResponseCodeEnum;
+import com.rondaful.cloud.common.enums.SysLogActionType;
+import com.rondaful.cloud.common.exception.GlobalException;
+import com.rondaful.cloud.common.utils.Utils;
+import com.rondaful.cloud.seller.entity.AfterSalesApprovalModel;
+import com.rondaful.cloud.seller.entity.OrderAfterSalesModel;
+import com.rondaful.cloud.seller.remote.RemoteAfterSalesService;
+import com.rondaful.cloud.seller.vo.OrderAfterSalesSerchVo;
+import com.rondaful.cloud.seller.vo.OrderAfterSalesVo;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+@Api(description = "卖家售后查询(已废弃，联调完后会删除)")
+@RestController
+@RequestMapping("afterSales/discard")
+public class AfterSalesController {
+
+	@Resource
+	private RemoteAfterSalesService remoteAfterSalesService;
+
+	public String[] refundType = { "refund", "refundAndReturnedPurchase" };
+
+	private String message = "服务异常";
+
+	@AspectContrLog(descrption = "分页查询售后订单", actionType = SysLogActionType.QUERY)
+	@SuppressWarnings("unchecked")
+	@ApiOperation(value = "分页查询售后订单")
+	@GetMapping("/findAfterSalesPage")
+	public Page<OrderAfterSalesModel> findOrderBySupplier(OrderAfterSalesSerchVo oassv) {
+		JSONObject json = (JSONObject) JSONObject.toJSON(oassv);
+		String data = remoteAfterSalesService.findAfterSalesPage(json);
+		data = Utils.getResultData(data, SystemConstants.nameType.SYS_CMS, message);
+		return new Page<OrderAfterSalesModel>(JSONObject.parseObject(JSONObject.parseObject(data).getJSONObject("pageInfo").toJSONString(), PageInfo.class));
+	}
+
+	@AspectContrLog(descrption = "根据售后编号ID查询详情", actionType = SysLogActionType.QUERY)
+	@GetMapping("/getOrderAfterSales/{numberingId}")
+	@ApiOperation(value = "根据售后编号ID查询详情")
+	public OrderAfterSalesModel getOrderAfterSalesById(@ApiParam(value = "售后编号ID", name = "numberingId") @PathVariable String numberingId) {
+		String data = remoteAfterSalesService.findAfterSalesOrderByNumberingId(numberingId);
+		data = Utils.getResultData(data, SystemConstants.nameType.SYS_CMS, message);
+		return JSONObject.parseObject(data, OrderAfterSalesModel.class);
+	}
+
+	@AspectContrLog(descrption = "新增售后退款退货订单", actionType = SysLogActionType.ADD)
+	@PostMapping("/addRefund/{type}")
+	@ApiOperation(value = "新增售后退款退货订单")
+	public void addRefund(@RequestBody OrderAfterSalesVo oasv, @ApiParam(value = "[refund、refundAndReturnedPurchase][退款、退款+退货]", name = "type", required = true) @PathVariable String type) {
+		checkParam(oasv, type);
+		String data = remoteAfterSalesService.addRefund(oasv);
+		Utils.getResultData(data, SystemConstants.nameType.SYS_CMS, message);
+	}
+
+	@AspectContrLog(descrption = "修改售后退款退货订单", actionType = SysLogActionType.UDPATE)
+	@PutMapping("/updateRefund/{type}/{numberingId}")
+	@ApiOperation(value = "修改售后退款退货订单")
+	public void updateRefund(@RequestBody OrderAfterSalesVo oasv, @ApiParam(value = "[refund、refundAndReturnedPurchase][退款、退款+退货]", name = "type", required = true) @PathVariable String type, @ApiParam(value = "售后编码ID", name = "numberingId", required = true) @PathVariable String numberingId) {
+		checkParam(oasv, type);
+		String data = remoteAfterSalesService.updateRefund(oasv, numberingId);
+		Utils.getResultData(data, SystemConstants.nameType.SYS_CMS, message);
+	}
+
+	@AspectContrLog(descrption = "售后退款退货订单状态修改", actionType = SysLogActionType.UDPATE)
+	@PutMapping("/updateRefundStatus/{type}/{numberingId}/{status}")
+	@ApiOperation(value = "售后退款退货订单状态修改")
+	public void updateRefundStatus(@ApiParam(value = "售后编号ID", name = "numberingId") @PathVariable String numberingId, @ApiParam(value = "[refund、refundAndReturnedPurchase][退款、退款+退货]", name = "type", required = true) @PathVariable String type,
+			@ApiParam(value = "状态", name = "status") @PathVariable int status, @RequestBody AfterSalesApprovalModel asam) {
+		if(status != 17 && status != 11) //17、提交物流信息; 11、已取消; 
+			throw new GlobalException(ResponseCodeEnum.RETURN_CODE_100400, "参数有误!");
+		String data = remoteAfterSalesService.updateRefundStatus(asam, status, numberingId);
+		Utils.getResultData(data, SystemConstants.nameType.SYS_CMS, message);
+	}
+
+	/**
+	 * 根据不同场景校验
+	 * 
+	 * @param type 仅退款、退款+退货
+	 */
+	private void checkParam(OrderAfterSalesVo oasv, String type) {
+		boolean status = false;
+		for (String t : refundType) {
+			if (type.equalsIgnoreCase(t)) {
+				status = true;
+				break;
+			}
+		}
+		if (!status)
+			throw new GlobalException(ResponseCodeEnum.RETURN_CODE_100400, "请求接口类型不匹配!");
+		if (StringUtils.isBlank(oasv.getOrderId()))
+			throw new GlobalException(ResponseCodeEnum.RETURN_CODE_100400, "订单号不能为空!");
+		if (StringUtils.isBlank(oasv.getSeller()))
+			throw new GlobalException(ResponseCodeEnum.RETURN_CODE_100400, "卖家品连账号不能为空!");
+		if (StringUtils.isBlank(oasv.getOrderDetails()))
+			throw new GlobalException(ResponseCodeEnum.RETURN_CODE_100400, "订单详情不能为空!");
+		if (StringUtils.isBlank(oasv.getPostage()))
+			throw new GlobalException(ResponseCodeEnum.RETURN_CODE_100400, "订单邮费不能为空!");
+		if (StringUtils.isBlank(oasv.getTrackingId()))
+			throw new GlobalException(ResponseCodeEnum.RETURN_CODE_100400, "系统订单参考号不能为空!");
+		if (StringUtils.isBlank(oasv.getRefundReason()))
+			throw new GlobalException(ResponseCodeEnum.RETURN_CODE_100400, "退款原因不能为空!");
+		if (oasv.getOrderCommodity().size() < 1)
+			throw new GlobalException(ResponseCodeEnum.RETURN_CODE_100400, "退款商品不能为空!");
+	}
+
+}

@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.seller.EmpowerMapper">
+
+    <select id="getDispatchTimeMax" resultType="java.util.Map">
+        SELECT itemId, dispatch_time_max as maxTime FROM `ebay_publish_listing`
+        WHERE 1=1
+        <if test="empowerId != null">
+            and empower_id = #{empowerId,jdbcType=INTEGER}
+        </if>
+        and itemid in
+        <foreach collection="itemIDList" item="itemId" index="index" separator="," open="(" close=")">
+            #{itemId,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.seller.Empower">
+        <id column="empowerId" jdbcType="INTEGER" property="empowerid"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="platform" jdbcType="TINYINT" property="platform"/>
+        <result column="token" jdbcType="VARCHAR" property="token"/>
+        <result column="thirdPartyName" jdbcType="VARCHAR" property="thirdpartyname"/>
+        <result column="webName" jdbcType="VARCHAR" property="webname"/>
+        <result column="paypalAccount01" jdbcType="VARCHAR" property="paypalaccount01"/>
+        <result column="paypalAccount02" jdbcType="VARCHAR" property="paypalaccount02"/>
+        <result column="autoTime" jdbcType="TIMESTAMP" property="autotime"/>
+        <result column="endTime" jdbcType="TIMESTAMP" property="endtime"/>
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="pinlianAccount" jdbcType="VARCHAR" property="pinlianaccount"/>
+        <result column="pinlianId" jdbcType="INTEGER" property="pinlianid"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="parentAccount" jdbcType="VARCHAR" property="parentaccount"/>
+        <result column="refreshToken" jdbcType="VARCHAR" property="refreshtoken"/>
+        <result column="rentStatus" jdbcType="INTEGER" property="rentstatus"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        empowerId, account, status, platform, token, thirdPartyName, webName, paypalAccount01,
+        paypalAccount02, autoTime, endTime, updateTime, createTime, pinlianAccount, pinlianId,
+        nickname, parentAccount, refreshToken, rentStatus
+    </sql>
+
+    <!--查询ebay平台所有可用授权token(注意将status改为有效)-->
+    <select id="selectEbayAvailableToken" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM seller.empower
+        WHERE status = "1"
+        AND platform = "1"
+    </select>
+
+    <!--根据品连账号查询此账号对应的eBay平台Token-->
+    <select id="selectTokenByPLAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        token
+        from empower
+        where pinlianAccount = #{sellerAccount,jdbcType=VARCHAR}
+        and status = "1"
+        and platform = "1"
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        where empowerId = #{empowerid,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from empower
+        where empowerId = #{empowerid,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.order.seller.Empower">
+        insert into empower (empowerId, account, status, 
+            platform, token, thirdPartyName, 
+            webName, paypalAccount01, paypalAccount02, 
+            autoTime, endTime, updateTime, 
+            createTime, pinlianAccount, pinlianId, 
+            nickname, parentAccount, refreshToken, 
+            rentStatus)
+        values (#{empowerid,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+            #{platform,jdbcType=TINYINT}, #{token,jdbcType=VARCHAR}, #{thirdpartyname,jdbcType=VARCHAR}, 
+            #{webname,jdbcType=VARCHAR}, #{paypalaccount01,jdbcType=VARCHAR}, #{paypalaccount02,jdbcType=VARCHAR}, 
+            #{autotime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
+            #{createtime,jdbcType=TIMESTAMP}, #{pinlianaccount,jdbcType=VARCHAR}, #{pinlianid,jdbcType=INTEGER}, 
+            #{nickname,jdbcType=VARCHAR}, #{parentaccount,jdbcType=VARCHAR}, #{refreshtoken,jdbcType=VARCHAR}, 
+            #{rentstatus,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.seller.Empower">
+        insert into empower
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="empowerid != null">
+                empowerId,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="platform != null">
+                platform,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+            <if test="thirdpartyname != null">
+                thirdPartyName,
+            </if>
+            <if test="webname != null">
+                webName,
+            </if>
+            <if test="paypalaccount01 != null">
+                paypalAccount01,
+            </if>
+            <if test="paypalaccount02 != null">
+                paypalAccount02,
+            </if>
+            <if test="autotime != null">
+                autoTime,
+            </if>
+            <if test="endtime != null">
+                endTime,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+            <if test="pinlianaccount != null">
+                pinlianAccount,
+            </if>
+            <if test="pinlianid != null">
+                pinlianId,
+            </if>
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="parentaccount != null">
+                parentAccount,
+            </if>
+            <if test="refreshtoken != null">
+                refreshToken,
+            </if>
+            <if test="rentstatus != null">
+                rentStatus,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="empowerid != null">
+                #{empowerid,jdbcType=INTEGER},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="platform != null">
+                #{platform,jdbcType=TINYINT},
+            </if>
+            <if test="token != null">
+                #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdpartyname != null">
+                #{thirdpartyname,jdbcType=VARCHAR},
+            </if>
+            <if test="webname != null">
+                #{webname,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalaccount01 != null">
+                #{paypalaccount01,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalaccount02 != null">
+                #{paypalaccount02,jdbcType=VARCHAR},
+            </if>
+            <if test="autotime != null">
+                #{autotime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endtime != null">
+                #{endtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pinlianaccount != null">
+                #{pinlianaccount,jdbcType=VARCHAR},
+            </if>
+            <if test="pinlianid != null">
+                #{pinlianid,jdbcType=INTEGER},
+            </if>
+            <if test="nickname != null">
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="parentaccount != null">
+                #{parentaccount,jdbcType=VARCHAR},
+            </if>
+            <if test="refreshtoken != null">
+                #{refreshtoken,jdbcType=VARCHAR},
+            </if>
+            <if test="rentstatus != null">
+                #{rentstatus,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.seller.Empower">
+        update empower
+        <set>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="platform != null">
+                platform = #{platform,jdbcType=TINYINT},
+            </if>
+            <if test="token != null">
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdpartyname != null">
+                thirdPartyName = #{thirdpartyname,jdbcType=VARCHAR},
+            </if>
+            <if test="webname != null">
+                webName = #{webname,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalaccount01 != null">
+                paypalAccount01 = #{paypalaccount01,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalaccount02 != null">
+                paypalAccount02 = #{paypalaccount02,jdbcType=VARCHAR},
+            </if>
+            <if test="autotime != null">
+                autoTime = #{autotime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endtime != null">
+                endTime = #{endtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pinlianaccount != null">
+                pinlianAccount = #{pinlianaccount,jdbcType=VARCHAR},
+            </if>
+            <if test="pinlianid != null">
+                pinlianId = #{pinlianid,jdbcType=INTEGER},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="parentaccount != null">
+                parentAccount = #{parentaccount,jdbcType=VARCHAR},
+            </if>
+            <if test="refreshtoken != null">
+                refreshToken = #{refreshtoken,jdbcType=VARCHAR},
+            </if>
+            <if test="rentstatus != null">
+                rentStatus = #{rentstatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where empowerId = #{empowerid,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.seller.Empower">
+        update empower
+        set account = #{account,jdbcType=VARCHAR},
+            status = #{status,jdbcType=TINYINT},
+            platform = #{platform,jdbcType=TINYINT},
+            token = #{token,jdbcType=VARCHAR},
+            thirdPartyName = #{thirdpartyname,jdbcType=VARCHAR},
+            webName = #{webname,jdbcType=VARCHAR},
+            paypalAccount01 = #{paypalaccount01,jdbcType=VARCHAR},
+            paypalAccount02 = #{paypalaccount02,jdbcType=VARCHAR},
+            autoTime = #{autotime,jdbcType=TIMESTAMP},
+            endTime = #{endtime,jdbcType=TIMESTAMP},
+            updateTime = #{updatetime,jdbcType=TIMESTAMP},
+            createTime = #{createtime,jdbcType=TIMESTAMP},
+            pinlianAccount = #{pinlianaccount,jdbcType=VARCHAR},
+            pinlianId = #{pinlianid,jdbcType=INTEGER},
+            nickname = #{nickname,jdbcType=VARCHAR},
+            parentAccount = #{parentaccount,jdbcType=VARCHAR},
+            refreshToken = #{refreshtoken,jdbcType=VARCHAR},
+            rentStatus = #{rentstatus,jdbcType=INTEGER}
+        where empowerId = #{empowerid,jdbcType=INTEGER}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.order.seller.Empower" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        <trim prefix="where" prefixOverrides="and">
+            <if test="empowerid != null and empowerid != ''">
+                and empowerId = #{empowerid,jdbcType=INTEGER}
+            </if>
+            <if test="account != null and account != ''">
+                and account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="platform != null and platform != ''">
+                and platform = #{platform,jdbcType=TINYINT}
+            </if>
+            <if test="token != null and token != ''">
+                and token = #{token,jdbcType=VARCHAR}
+            </if>
+            <if test="thirdpartyname != null and thirdpartyname != ''">
+                and thirdPartyName = #{thirdpartyname,jdbcType=VARCHAR}
+            </if>
+            <if test="webname != null and webname != ''">
+                and webName = #{webname,jdbcType=VARCHAR}
+            </if>
+            <if test="paypalaccount01 != null and paypalaccount01 != ''">
+                and paypalAccount01 = #{paypalaccount01,jdbcType=VARCHAR}
+            </if>
+            <if test="paypalaccount02 != null and paypalaccount02 != ''">
+                and paypalAccount02 = #{paypalaccount02,jdbcType=VARCHAR}
+            </if>
+            <if test="autotime != null and autotime != ''">
+                and autoTime = #{autotime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endtime != null and endtime != ''">
+                and endTime = #{endtime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatetime != null and updatetime != ''">
+                and updateTime = #{updatetime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createtime != null and createtime != ''">
+                and createTime = #{createtime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="pinlianaccount != null and pinlianaccount != ''">
+                and pinlianAccount = #{pinlianaccount,jdbcType=VARCHAR}
+            </if>
+            <if test="pinlianid != null and pinlianid != ''">
+                and pinlianId = #{pinlianid,jdbcType=INTEGER}
+            </if>
+            <if test="nickname != null and nickname != ''">
+                and nickname = #{nickname,jdbcType=VARCHAR}
+            </if>
+            <if test="parentaccount != null and parentaccount != ''">
+                and parentAccount = #{parentaccount,jdbcType=VARCHAR}
+            </if>
+            <if test="refreshtoken != null and refreshtoken != ''">
+                and refreshToken = #{refreshtoken,jdbcType=VARCHAR}
+            </if>
+            <if test="rentstatus != null and rentstatus != ''">
+                and rentStatus = #{rentstatus,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+</mapper>

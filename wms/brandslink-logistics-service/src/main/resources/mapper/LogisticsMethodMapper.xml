@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.logistics.mapper.LogisticsMethodMapper">
+
+    <insert id="insertUpdateSelective" useGeneratedKeys="true" keyProperty="id">
+        insert into t_logistics_method
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="logisticsMethodName != null">
+                logistics_method_name,
+            </if>
+            <if test="logisticsMethodCode != null">
+                logistics_method_code,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="clearingForm != null">
+                clearing_form,
+            </if>
+            <if test="maxAddressLength != null">
+                max_address_length,
+            </if>
+            <if test="haveTrackNum != null">
+                have_track_num,
+            </if>
+            <if test="providerId != null">
+                provider_id,
+            </if>
+            <if test="supportPlatform != null">
+                support_platform,
+            </if>
+            <if test="senderId != null">
+                sender_id,
+            </if>
+            <if test="collectManId != null">
+                collect_man_id,
+            </if>
+            <if test="refunderId != null">
+                refunder_id,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="logisticsMethodName != null">
+                #{logisticsMethodName,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsMethodCode != null">
+                #{logisticsMethodCode,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="clearingForm != null">
+                #{clearingForm,jdbcType=TINYINT},
+            </if>
+            <if test="maxAddressLength != null">
+                #{maxAddressLength,jdbcType=SMALLINT},
+            </if>
+            <if test="haveTrackNum != null">
+                #{haveTrackNum,jdbcType=TINYINT},
+            </if>
+            <if test="providerId != null">
+                #{providerId,jdbcType=BIGINT},
+            </if>
+            <if test="supportPlatform != null">
+                #{supportPlatform,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="senderId != null">
+                #{senderId,jdbcType=BIGINT},
+            </if>
+            <if test="collectManId != null">
+                #{collectManId,jdbcType=BIGINT},
+            </if>
+            <if test="refunderId != null">
+                #{refunderId,jdbcType=BIGINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        logistics_method_name = VALUES(logistics_method_name),
+        logistics_method_code = VALUES(logistics_method_code),
+        is_valid = VALUES(is_valid),
+        clearing_form = VALUES(clearing_form),
+        max_address_length = VALUES(max_address_length),
+        have_track_num = VALUES(have_track_num),
+        provider_id = VALUES(provider_id),
+        support_platform = VALUES(support_platform),
+        sender_id = VALUES(sender_id),
+        collect_man_id = VALUES(collect_man_id),
+        refunder_id = VALUES(refunder_id),
+        update_by = VALUES(update_by)
+    </insert>
+
+    <resultMap id="MethodResultMap" type="com.brandslink.cloud.logistics.model.LogisticsMethodModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="logistics_method_name" jdbcType="VARCHAR" property="logisticsMethodName"/>
+        <result column="logistics_method_code" jdbcType="VARCHAR" property="logisticsMethodCode"/>
+        <result column="is_valid" jdbcType="TINYINT" property="isValid"/>
+        <result column="clearing_form" jdbcType="TINYINT" property="clearingForm"/>
+        <result column="max_address_length" jdbcType="SMALLINT" property="maxAddressLength"/>
+        <result column="have_track_num" jdbcType="TINYINT" property="haveTrackNum"/>
+        <result column="provider_id" jdbcType="BIGINT" property="providerId"/>
+        <result column="support_platform" jdbcType="OTHER" property="supportPlatform"
+                typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        <!--<result column="sender_id" jdbcType="BIGINT" property="senderId"/>-->
+        <!--<result column="collect_man_id" jdbcType="BIGINT" property="collectManId"/>-->
+        <!--<result column="refunder_id" jdbcType="BIGINT" property="refunderId"/>-->
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+
+        <result column="logistics_shortened" jdbcType="VARCHAR" property="logisticsShortened"/>
+        <result column="logistics_code" jdbcType="VARCHAR" property="logisticsCode"/>
+
+        <association property="sender" column="senderId"
+                     select="com.brandslink.cloud.logistics.mapper.LogisticsMethodAddressMapper.selectByID">
+        </association>
+        <association property="collectMan" column="collectManId"
+                     select="com.brandslink.cloud.logistics.mapper.LogisticsMethodAddressMapper.selectByID">
+        </association>
+        <association property="refunder" column="refunderId"
+                     select="com.brandslink.cloud.logistics.mapper.LogisticsMethodAddressMapper.selectByID">
+        </association>
+
+        <collection property="relationList" javaType="ArrayList"
+                    ofType="com.brandslink.cloud.logistics.model.MethodCollectorRelationModel"
+                    column="id">
+            <id column="rid" property="id"/>
+            <result column="collector_id" property="collectorId"/>
+            <result column="collector_code" property="collectorCode"/>
+            <result column="collector_name" property="collectorName"/>
+            <result column="warehouse" property="warehouse"/>
+            <result column="warehouse_name" property="warehouseName"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectMethodBasicInfoByID" parameterType="long" resultMap="MethodResultMap">
+        select
+        m.id,
+        m.logistics_method_name,
+        m.logistics_method_code,
+        m.is_valid,
+        m.clearing_form,
+        m.max_address_length,
+        m.have_track_num,
+        m.provider_id,
+        m.support_platform,
+        m.sender_id AS senderId,
+        m.collect_man_id AS collectManId,
+        m.refunder_id AS refunderId,
+        m.create_date,
+        m.create_by,
+        m.update_date,
+        m.update_by,
+        p.logistics_shortened,
+        p.logistics_code,
+        r.id AS rid,
+        r.collector_id,
+        r.collector_code,
+        r.collector_name,
+        r.warehouse,
+        r.warehouse_name
+        from t_logistics_method m
+        left join t_logistics_provider p on m.provider_id = p.id
+        left join t_method_collector_relation r on m.id = r.method_id
+        where m.id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAllUsedSequence" resultType="java.lang.String">
+      select
+      s.express_sheet_sequence sequence
+      from t_logistics_method m left join t_invoice_specification s on m.id = s.method_id
+      where m.provider_id = #{providerId,jdbcType=BIGINT}
+    </select>
+
+    <resultMap id="SelectLogisticsMethodResultMap" type="com.brandslink.cloud.logistics.entity.centre.MethodVO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="logistics_method_name" jdbcType="VARCHAR" property="methodName"/>
+        <result column="logistics_method_code" jdbcType="VARCHAR" property="methodCode"/>
+        <!--<result column="is_valid" jdbcType="TINYINT" property="isValid"/>-->
+        <result column="provider_id" jdbcType="BIGINT" property="providerId"/>
+        <result column="logistics_shortened" jdbcType="VARCHAR" property="providerShortened"/>
+        <result column="logistics_code" jdbcType="VARCHAR" property="providerCode"/>
+        <result column="support_platform" jdbcType="OTHER" property="supportPlatform"
+                typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        <collection property="warehouseList" javaType="ArrayList"
+                    ofType="com.brandslink.cloud.logistics.entity.common.CommonBean"
+                    column="id">
+            <!--<result column="collector_id" property="collectorId"/>
+            <result column="collector_code" property="collectorCode"/>
+            <result column="collector_name" property="collectorName"/>-->
+            <result column="warehouse" property="code"/>
+            <result column="warehouse_name" property="name"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="selectLogisticsMethod" parameterType="java.lang.String" resultMap="SelectLogisticsMethodResultMap">
+        select
+        m.id,
+        m.logistics_method_name,
+        m.logistics_method_code,
+        m.provider_id,
+        p.logistics_shortened,
+        p.logistics_code,
+        m.support_platform,
+        r.warehouse,
+        r.warehouse_name
+        from t_logistics_method m left join t_method_collector_relation r on m.id = r.method_id
+        left join t_logistics_provider p on m.provider_id = p.id
+        where 1=1
+        and m.is_valid = 1
+        and p.is_valid = 1
+        <if test="warehouse != null and warehouse != ''">
+            and r.warehouse = #{warehouse,jdbcType=VARCHAR}
+        </if>
+        group by m.id
+    </select>
+
+    <resultMap id="selectMethodFreightByMultiConditionResultMap" type="com.brandslink.cloud.logistics.entity.centre.LogisticsFreightCallBack">
+        <!--<id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="method_id" jdbcType="BIGINT" property="methodId"/>-->
+        <result column="logistics_shortened" jdbcType="VARCHAR" property="logisticsShortened"/>
+        <result column="logistics_code" jdbcType="VARCHAR" property="logisticsCode"/>
+        <result column="method_name" jdbcType="VARCHAR" property="methodName"/>
+        <result column="method_code" jdbcType="VARCHAR" property="methodCode"/>
+        <result column="support_platform" jdbcType="OTHER" property="supportPlatform" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        <!--<result column="country_id" jdbcType="BIGINT" property="countryId"/>-->
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <!--<result column="is_remote_fee" jdbcType="TINYINT" property="isRemoteFee"/>-->
+        <result column="unsupport_cargo" jdbcType="OTHER" property="unsupportCargo" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        <result column="promise_days" jdbcType="OTHER" property="promiseDays" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+        <result column="weight_range" jdbcType="OTHER" property="weightRange" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+        <result column="limit_length" jdbcType="OTHER" property="limitLength" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+        <!--<result column="is_count_bulk" jdbcType="BIGINT" property="isCountBulk"/>
+        <result column="count_bulk_rule" jdbcType="OTHER" property="countBulkRule" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+        <result column="charge_mode" jdbcType="TINYINT" property="chargeMode"/>
+        <result column="rule_first_renew" jdbcType="OTHER" property="ruleFirstRenew" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+        <result column="rule_subsection" jdbcType="OTHER" property="ruleSubsection" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        <result column="after_charge" jdbcType="DECIMAL" property="afterCharge"/>-->
+        <result column="prediscount_fee" jdbcType="DECIMAL" property="prediscountFee"/>
+        <result column="discounted_charge" jdbcType="DECIMAL" property="discountedCharge"/>
+        <result column="handling_charge" jdbcType="DECIMAL" property="handlingCharge"/>
+        <result column="total_fee" jdbcType="DECIMAL" property="totalFee"/>
+        <result column="after_charge_fee" jdbcType="DECIMAL" property="afterChargeFee"/>
+        <result column="remote_fee" jdbcType="DECIMAL" property="remoteFee"/>
+        <result column="all_fee" jdbcType="DECIMAL" property="allFee"/>
+    </resultMap>
+    <select id="selectMethodFreightByMultiCondition" parameterType="com.brandslink.cloud.logistics.entity.centre.LogisticsFreight"
+            resultMap="selectMethodFreightByMultiConditionResultMap" statementType="CALLABLE">
+        call freight_multi_condition(
+        #{warehouse,jdbcType=VARCHAR,mode=IN},
+        #{country,jdbcType=VARCHAR,mode=IN},
+        #{city,jdbcType=VARCHAR,mode=IN},
+        #{method,jdbcType=VARCHAR,mode=IN},
+        #{platform,jdbcType=VARCHAR,mode=IN},
+        #{length,jdbcType=INTEGER,mode=IN},
+        #{wide,jdbcType=INTEGER,mode=IN},
+        #{height,jdbcType=INTEGER,mode=IN},
+        #{weight,jdbcType=INTEGER,mode=IN})
+    </select>
+
+    <update id="updateMethodInfoByProviderID" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodModel">
+        update t_logistics_method
+        <set>
+            <if test="logisticsMethodName != null">
+                logistics_method_name = #{logisticsMethodName,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsMethodCode != null">
+                logistics_method_code = #{logisticsMethodCode,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                is_valid = #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="clearingForm != null">
+                clearing_form = #{clearingForm,jdbcType=TINYINT},
+            </if>
+            <if test="maxAddressLength != null">
+                max_address_length = #{maxAddressLength,jdbcType=SMALLINT},
+            </if>
+            <if test="haveTrackNum != null">
+                have_track_num = #{haveTrackNum,jdbcType=TINYINT},
+            </if>
+            <if test="providerId != null">
+                provider_id = #{providerId,jdbcType=BIGINT},
+            </if>
+            <if test="supportPlatform != null">
+                support_platform = #{supportPlatform,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="senderId != null">
+                sender_id = #{senderId,jdbcType=BIGINT},
+            </if>
+            <if test="collectManId != null">
+                collect_man_id = #{collectManId,jdbcType=BIGINT},
+            </if>
+            <if test="refunderId != null">
+                refunder_id = #{refunderId,jdbcType=BIGINT},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where provider_id = #{providerId,jdbcType=BIGINT}
+    </update>
+
+    <!--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.logistics.model.LogisticsMethodModel">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="logistics_method_name" jdbcType="VARCHAR" property="logisticsMethodName" />
+        <result column="logistics_method_code" jdbcType="VARCHAR" property="logisticsMethodCode" />
+        <result column="is_valid" jdbcType="TINYINT" property="isValid" />
+        <result column="clearing_form" jdbcType="TINYINT" property="clearingForm" />
+        <result column="max_address_length" jdbcType="SMALLINT" property="maxAddressLength" />
+        <result column="have_track_num" jdbcType="TINYINT" property="haveTrackNum" />
+        <result column="provider_id" jdbcType="BIGINT" property="providerId" />
+        <result column="support_platform" jdbcType="OTHER" property="supportPlatform" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler" />
+        <result column="sender_id" jdbcType="BIGINT" property="senderId" />
+        <result column="collect_man_id" jdbcType="BIGINT" property="collectManId" />
+        <result column="refunder_id" jdbcType="BIGINT" property="refunderId" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, logistics_method_name, logistics_method_code, is_valid, clearing_form, max_address_length, 
+        have_track_num, provider_id, support_platform, sender_id,
+        collect_man_id, refunder_id, create_date, create_by, update_date, update_by
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_logistics_method
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_logistics_method
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodModel">
+        insert into t_logistics_method (id, logistics_method_name, logistics_method_code, 
+            is_valid, clearing_form, max_address_length, 
+            have_track_num, provider_id,
+            support_platform, 
+            sender_id, collect_man_id, refunder_id, 
+            create_date, create_by, update_date, 
+            update_by)
+        values (#{id,jdbcType=BIGINT}, #{logisticsMethodName,jdbcType=VARCHAR}, #{logisticsMethodCode,jdbcType=VARCHAR}, 
+            #{isValid,jdbcType=TINYINT}, #{clearingForm,jdbcType=TINYINT}, #{maxAddressLength,jdbcType=SMALLINT}, 
+            #{haveTrackNum,jdbcType=TINYINT}, #{providerId,jdbcType=BIGINT},
+            #{supportPlatform,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler}, 
+            #{senderId,jdbcType=BIGINT}, #{collectManId,jdbcType=BIGINT}, #{refunderId,jdbcType=BIGINT}, 
+            #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+            #{updateBy,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodModel">
+        insert into t_logistics_method
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="logisticsMethodName != null">
+                logistics_method_name,
+            </if>
+            <if test="logisticsMethodCode != null">
+                logistics_method_code,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="clearingForm != null">
+                clearing_form,
+            </if>
+            <if test="maxAddressLength != null">
+                max_address_length,
+            </if>
+            <if test="haveTrackNum != null">
+                have_track_num,
+            </if>
+            <if test="providerId != null">
+                provider_id,
+            </if>
+            <if test="supportPlatform != null">
+                support_platform,
+            </if>
+            <if test="senderId != null">
+                sender_id,
+            </if>
+            <if test="collectManId != null">
+                collect_man_id,
+            </if>
+            <if test="refunderId != null">
+                refunder_id,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="logisticsMethodName != null">
+                #{logisticsMethodName,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsMethodCode != null">
+                #{logisticsMethodCode,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="clearingForm != null">
+                #{clearingForm,jdbcType=TINYINT},
+            </if>
+            <if test="maxAddressLength != null">
+                #{maxAddressLength,jdbcType=SMALLINT},
+            </if>
+            <if test="haveTrackNum != null">
+                #{haveTrackNum,jdbcType=TINYINT},
+            </if>
+            <if test="providerId != null">
+                #{providerId,jdbcType=BIGINT},
+            </if>
+            <if test="supportPlatform != null">
+                #{supportPlatform,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="senderId != null">
+                #{senderId,jdbcType=BIGINT},
+            </if>
+            <if test="collectManId != null">
+                #{collectManId,jdbcType=BIGINT},
+            </if>
+            <if test="refunderId != null">
+                #{refunderId,jdbcType=BIGINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodModel">
+        update t_logistics_method
+        <set>
+            <if test="logisticsMethodName != null">
+                logistics_method_name = #{logisticsMethodName,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsMethodCode != null">
+                logistics_method_code = #{logisticsMethodCode,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                is_valid = #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="clearingForm != null">
+                clearing_form = #{clearingForm,jdbcType=TINYINT},
+            </if>
+            <if test="maxAddressLength != null">
+                max_address_length = #{maxAddressLength,jdbcType=SMALLINT},
+            </if>
+            <if test="haveTrackNum != null">
+                have_track_num = #{haveTrackNum,jdbcType=TINYINT},
+            </if>
+            <if test="providerId != null">
+                provider_id = #{providerId,jdbcType=BIGINT},
+            </if>
+            <if test="supportPlatform != null">
+                support_platform = #{supportPlatform,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="senderId != null">
+                sender_id = #{senderId,jdbcType=BIGINT},
+            </if>
+            <if test="collectManId != null">
+                collect_man_id = #{collectManId,jdbcType=BIGINT},
+            </if>
+            <if test="refunderId != null">
+                refunder_id = #{refunderId,jdbcType=BIGINT},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodModel">
+        update t_logistics_method
+        set logistics_method_name = #{logisticsMethodName,jdbcType=VARCHAR},
+            logistics_method_code = #{logisticsMethodCode,jdbcType=VARCHAR},
+            is_valid = #{isValid,jdbcType=TINYINT},
+            clearing_form = #{clearingForm,jdbcType=TINYINT},
+            max_address_length = #{maxAddressLength,jdbcType=SMALLINT},
+            have_track_num = #{haveTrackNum,jdbcType=TINYINT},
+            provider_id = #{providerId,jdbcType=BIGINT},
+            support_platform = #{supportPlatform,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            sender_id = #{senderId,jdbcType=BIGINT},
+            collect_man_id = #{collectManId,jdbcType=BIGINT},
+            refunder_id = #{refunderId,jdbcType=BIGINT},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodModel" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_logistics_method
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="logisticsMethodName != null and logisticsMethodName != ''">
+                 and logistics_method_name = #{logisticsMethodName,jdbcType=VARCHAR}
+            </if>
+            <if test="logisticsMethodCode != null and logisticsMethodCode != ''">
+                 and logistics_method_code = #{logisticsMethodCode,jdbcType=VARCHAR}
+            </if>
+            <if test="isValid != null and isValid != ''">
+                 and is_valid = #{isValid,jdbcType=TINYINT}
+            </if>
+            <if test="clearingForm != null and clearingForm != ''">
+                 and clearing_form = #{clearingForm,jdbcType=TINYINT}
+            </if>
+            <if test="maxAddressLength != null and maxAddressLength != ''">
+                 and max_address_length = #{maxAddressLength,jdbcType=SMALLINT}
+            </if>
+            <if test="haveTrackNum != null and haveTrackNum != ''">
+                 and have_track_num = #{haveTrackNum,jdbcType=TINYINT}
+            </if>
+            <if test="providerId != null and providerId != ''">
+                 and provider_id = #{providerId,jdbcType=BIGINT}
+            </if>
+            <if test="supportPlatform != null and supportPlatform != ''">
+                 and support_platform = #{supportPlatform,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler}
+            </if>
+            <if test="senderId != null and senderId != ''">
+                 and sender_id = #{senderId,jdbcType=BIGINT}
+            </if>
+            <if test="collectManId != null and collectManId != ''">
+                 and collect_man_id = #{collectManId,jdbcType=BIGINT}
+            </if>
+            <if test="refunderId != null and refunderId != ''">
+                 and refunder_id = #{refunderId,jdbcType=BIGINT}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

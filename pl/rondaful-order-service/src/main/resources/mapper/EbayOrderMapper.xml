@@ -1,0 +1,1073 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.EbayOrderMapper">
+
+    <resultMap id="PreConvertResultMap" type="com.rondaful.cloud.order.model.dto.syncorder.PreCovertEbayOrderDTO">
+        <result column="order_id" property="sourceOrderId"/>
+        <result column="total" property="platformTotal"/>
+        <result column="created_time" property="orderTime"/>
+        <result column="empower_id" property="empowerId"/>
+        <result column="seller_pl_shop_account" property="platformSellerAccount"/>
+        <result column="record_number" property="recordNumber"/>
+        <result column="buyer_user_id" property="buyerUserId"/>
+        <result column="buyer_email" property="shipToEmail"/>
+        <result column="shipping_service_cost" property="shippingServiceCostStr"/>
+        <result column="reference_id" property="referenceId"/>
+        <result column="buyer_checkout_message" property="buyerCheckoutMessage"/>
+        <result column="name" property="shipToName"/>
+        <result column="phone" property="shipToPhone"/>
+        <result column="country" property="shipToCountry"/>
+        <result column="country_name" property="shipToCountryName"/>
+        <result column="state_or_province" property="shipToState"/>
+        <result column="city_name" property="shipToCity"/>
+        <result column="street1" property="shipToAddrStreet1"/>
+        <result column="street2" property="shipToAddrStreet2"/>
+        <result column="postal_code" property="shipToPostalCode"/>
+        <result column="seller_pl_id" property="sellerPlId"/>
+        <result column="seller_pl_account" property="sellerPlAccount"/>
+        <result column="handle_by_time" property="deliverDeadline"/>
+
+        <collection property="preCovertEbayOrderDetailDTOList"
+                    ofType="com.rondaful.cloud.order.model.dto.syncorder.PreCovertEbayOrderDetailDTO"
+                    javaType="java.util.ArrayList"
+                    column="order_id">
+            <result column="order_id" property="sourceOrderId"/>
+            <result column="order_line_item_id" property="sourceOrderLineItemId"/>
+            <result column="sku" property="itemSku"/>
+            <result column="variation_sku" property="variationSku"/>
+            <result column="transaction_price" property="platformSKUPriceStr"/>
+            <result column="quantity_purchased" property="skuQuantity"/>
+            <result column="handle_by_time" property="deliverDeadline"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Pre_Convert_Column_List">
+          t1.order_id ,
+          t1.total ,
+          t1.created_time ,
+          t2.empower_id ,
+          t2.seller_pl_shop_account  ,
+          t1.record_number  ,
+          t1.buyer_user_id  ,
+          t1.buyer_email ,
+          t1.shipping_service_cost ,
+          t1.reference_id ,
+          t1.buyer_checkout_message ,
+          t1.name ,
+          t1.phone ,
+          t1.country ,
+          t1.country_name ,
+          t1.state_or_province ,
+          t1.city_name ,
+          t1.street1 ,
+          t1.street2 ,
+          t1.postal_code ,
+          t2.seller_pl_id ,
+          t2.seller_pl_account ,
+          t2.handle_by_time ,
+          t3.order_id ,
+          t3.order_line_item_id ,
+          t3.sku ,
+          t3.variation_sku ,
+          t3.transaction_price ,
+          t3.quantity_purchased ,
+          t2.handle_by_time
+    </sql>
+
+    <!--根据修改开始时间和结束时间查询这段时间内变动的订单(自动转单)_chenjiangxin-->
+    <select id="selectPreConvertEbayOrder" resultMap="PreConvertResultMap">
+        select
+        <include refid="Pre_Convert_Column_List"/>
+        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id
+        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where 1 = 1
+        and t3.conver_sys_status in ('0','2')
+        and t2.order_status = 'Completed'
+    </select>
+<!--    &lt;!&ndash;根据修改开始时间和结束时间查询这段时间内变动的订单(自动转单)_chenjiangxin&ndash;&gt;-->
+<!--    <select id="selectPreConvertEbayOrder" resultMap="PreConvertResultMap">-->
+<!--        select-->
+<!--        <include refid="Pre_Convert_Column_List"/>-->
+<!--        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id-->
+<!--        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id-->
+<!--        where 1 = 1-->
+<!--        and t3.conver_sys_status in ('0','2')-->
+<!--        and t2.order_status = 'Completed'-->
+<!--        and t3.update_date <![CDATA[ >= ]]> #{startTime}-->
+<!--        and t3.update_date <![CDATA[ <= ]]> #{endTime}-->
+<!--    </select>-->
+
+
+    <!--根据条件查询待转化的ebay订单_chenjiangxin-->
+    <select id="getPendingConvertEbayBySKU" resultMap="PreConvertResultMap">
+        select
+        <include refid="Pre_Convert_Column_List"/>
+        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id
+        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where t2.empower_id = #{empowerID}
+        and t3.sku = #{platformSku}
+        and t3.conver_sys_status in ('0','2')
+        and t2.order_status = 'Completed'
+    </select>
+
+    <!--根据条件查询待转化的ebay订单_chenjiangxin-->
+    <select id="getPendingConvertEbayByVariationSKU" resultMap="PreConvertResultMap">
+        select
+        <include refid="Pre_Convert_Column_List"/>
+        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id
+        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where t2.empower_id = #{empowerID}
+        and t3.variation_sku = #{platformSku}
+        and t3.conver_sys_status in ('0','2')
+        and t2.order_status = 'Completed'
+    </select>
+
+    <!--根据平台orderId查出转系统订单数据(手动转单)_chenjiangxin-->
+    <select id="selectConvertDataSysOrderByOrderId" parameterType="com.rondaful.cloud.order.model.dto.syncorder.PreCovertEbayOrderDTO"
+            resultMap="PreConvertResultMap">
+        select
+        <include refid="Pre_Convert_Column_List"/>
+        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id
+        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where t1.order_id = #{orderId}
+        and t3.conver_sys_status in ('0','2')
+    </select>
+    <!--根据平台orderId查出转系统订单数据(手动转单)-wujiachuang-->
+    <select id="MappingConvertDataSysOrderByOrderId" parameterType="java.lang.String"
+            resultMap="PreConvertResultMap">
+        select
+        <include refid="Pre_Convert_Column_List"/>
+        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id
+        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where t1.order_id = #{orderId,jdbcType=VARCHAR}
+        and t3.conver_sys_status in ('0','2')
+    </select>
+    <!--======================================================================================-->
+
+    <resultMap id="ConverResultMap" type="com.rondaful.cloud.order.entity.SysOrder">
+        <result column="order_id" property="sourceOrderId"/>
+        <result column="total" property="platformTotal"/>
+        <result column="created_time" property="orderTime"/>
+        <result column="empower_id" property="platformShopId"/>
+        <result column="seller_user_id" property="platformSellerAccount"/>
+        <result column="record_number" property="recordNumber"/>
+        <result column="buyer_user_id" property="buyerUserId"/>
+        <result column="buyer_email" property="shipToEmail"/>
+        <result column="shipping_service_cost" property="shippingServiceCostStr"/>
+        <result column="reference_id" property="referenceId"/>
+        <result column="buyer_checkout_message" property="buyerCheckoutMessage"/>
+        <result column="name" property="shipToName"/>
+        <result column="phone" property="shipToPhone"/>
+        <result column="country" property="shipToCountry"/>
+        <result column="country_name" property="shipToCountryName"/>
+        <result column="state_or_province" property="shipToState"/>
+        <result column="city_name" property="shipToCity"/>
+        <result column="street1" property="shipToAddrStreet1"/>
+        <result column="street2" property="shipToAddrStreet2"/>
+        <result column="postal_code" property="shipToPostalCode"/>
+        <result column="seller_pl_id" property="sellerPlId"/>
+        <result column="seller_pl_account" property="sellerPlAccount"/>
+        <result column="handle_by_time" property="deliverDeadline"/>
+
+        <collection property="sysOrderDetails"
+                    ofType="com.rondaful.cloud.order.entity.SysOrderDetail"
+                    javaType="java.util.ArrayList"
+                    column="order_id">
+            <result column="order_id" property="sourceOrderId"/>
+            <result column="order_line_item_id" property="sourceOrderLineItemId"/>
+            <result column="sku" property="itemSku"/>
+            <result column="variation_sku" property="variationSku"/>
+            <result column="transaction_price" property="platformSKUPriceStr"/>
+            <result column="quantity_purchased" property="skuQuantity"/>
+            <result column="handle_by_time" property="deliverDeadline"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Conver_Column_List">
+          t1.order_id ,
+          t1.total ,
+          t1.created_time ,
+          t2.empower_id ,
+          t1.seller_user_id  ,
+          t1.record_number  ,
+          t1.buyer_user_id  ,
+          t1.buyer_email ,
+          t1.shipping_service_cost ,
+          t1.reference_id ,
+          t1.buyer_checkout_message ,
+          t1.name ,
+          t1.phone ,
+          t1.country ,
+          t1.country_name ,
+          t1.state_or_province ,
+          t1.city_name ,
+          t1.street1 ,
+          t1.street2 ,
+          t1.postal_code ,
+          t2.seller_pl_id ,
+          t2.seller_pl_account ,
+          t2.handle_by_time ,
+          t3.order_id ,
+          t3.order_line_item_id ,
+          t3.sku ,
+          t3.variation_sku ,
+          t3.transaction_price ,
+          t3.quantity_purchased ,
+          t2.handle_by_time
+    </sql>
+
+    <!--根据修改开始时间和结束时间查询这段时间内变动的订单(自动转单)_ZJL-->
+    <select id="selectEbayOrderInterval" parameterType="java.util.Map" resultMap="ConverResultMap">
+        select
+        <include refid="Conver_Column_List"/>
+        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id
+        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where 1 = 1
+        and t3.conver_sys_status in ('0','2')
+        and t2.order_status = 'Completed'
+        and t3.update_date <![CDATA[ >= ]]> #{modTimeFrom}
+        and t3.update_date <![CDATA[ <= ]]> #{modTimeTo}
+    </select>
+
+    <!--根据平台orderId查出转系统订单数据，直接用SysOrder接收(手动转单)_ZJL-->
+    <select id="selectConverDataSysOrderByOrderId" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrder"
+            resultMap="ConverResultMap">
+        select
+        <include refid="Conver_Column_List"/>
+        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id
+        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where t1.order_id = #{orderId}
+        and t3.conver_sys_status in ('0','2')
+        and t2.order_status = 'Completed'
+    </select>
+
+    <!-- 获取不在ebay订单列表中展示的订单 -->
+    <select id="getNoShowEbayOrderIds" parameterType="list" resultType="java.lang.String">
+        SELECT order_id FROM tb_ebay_order WHERE is_show_on_list = "0"
+        <if test="ebayOrderIdList != null and ebayOrderIdList.size()>0">
+            AND order_id IN
+            <foreach collection="ebayOrderIdList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 不在ebay订单列表展示的订单变为展示订单 -->
+    <update id="updateNoShowOrderToShow" parameterType="list">
+        UPDATE tb_ebay_order SET is_show_on_list = "1"
+        WHERE order_id IN
+        <foreach collection="ebayNoShowOrderIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 在ebay订单列表展示的订单变为不展示订单 -->
+    <update id="updateShowOrderToNoShow" parameterType="list">
+        UPDATE tb_ebay_order SET is_show_on_list = "0"
+        WHERE order_id IN
+        <foreach collection="ebayNoShowOrderIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--根据条件查询待转化的ebay订单_ZJL-->
+    <select id="getPendingConverEbayBySKU" resultMap="ConverResultMap">
+        select
+        <include refid="Conver_Column_List"/>
+        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id
+        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where t2.empower_id = #{empowerID}
+        and t3.sku = #{platformSku}
+        and t3.conver_sys_status in ('0','2')
+        and t2.order_status = 'Completed'
+    </select>
+
+    <!--根据条件查询待转化的ebay订单_ZJL-->
+    <select id="getPendingConverEbayByVariationSKU" resultMap="ConverResultMap">
+        select
+        <include refid="Conver_Column_List"/>
+        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id
+        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where t2.empower_id = #{empowerID}
+        and t3.variation_sku = #{platformSku}
+        and t3.conver_sys_status in ('0','2')
+        and t2.order_status = 'Completed'
+    </select>
+
+    <resultMap id="ebayOrderListResultMap" type="com.rondaful.cloud.order.entity.eBay.EbayOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="total" jdbcType="VARCHAR" property="total"/>
+        <result column="created_time" jdbcType="VARCHAR" property="createdTime"/>
+        <result column="paid_time" jdbcType="VARCHAR" property="paidTime"/>
+        <result column="seller_user_id" jdbcType="VARCHAR" property="sellerUserId"/>
+        <result column="record_number" jdbcType="VARCHAR" property="recordNumber"/>
+        <result column="buyer_user_id" jdbcType="VARCHAR" property="buyerUserId"/>
+        <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail"/>
+        <result column="shipped_time" jdbcType="VARCHAR" property="shippedTime"/>
+        <result column="shipping_service_cost" jdbcType="VARCHAR" property="shippingServiceCost"/>
+        <result column="amount_paid" jdbcType="VARCHAR" property="amountPaid"/>
+        <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus"/>
+        <result column="payment_method" jdbcType="VARCHAR" property="paymentMethod"/>
+        <result column="reference_id" jdbcType="VARCHAR" property="referenceId"/>
+        <result column="last_modified_time" jdbcType="VARCHAR" property="lastModifiedTime"/>
+        <result column="seller_email" jdbcType="VARCHAR" property="sellerEmail"/>
+        <result column="buyer_checkout_message" jdbcType="VARCHAR" property="buyerCheckoutMessage"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="country_name" jdbcType="VARCHAR" property="countryName"/>
+        <result column="state_or_province" jdbcType="VARCHAR" property="stateOrProvince"/>
+        <result column="city_name" jdbcType="VARCHAR" property="cityName"/>
+        <result column="street1" jdbcType="VARCHAR" property="street1"/>
+        <result column="street2" jdbcType="VARCHAR" property="street2"/>
+        <result column="postal_code" jdbcType="VARCHAR" property="postalCode"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="seller_pl_id" jdbcType="INTEGER" property="sellerPlId"/>
+        <result column="seller_pl_account" jdbcType="VARCHAR" property="sellerPlAccount"/>
+        <result column="conver_sys_status" jdbcType="TINYINT" property="converSysStatus"/>
+        <result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
+        <result column="cancel_status" jdbcType="VARCHAR" property="cancelStatus"/>
+        <result column="refund_status" jdbcType="VARCHAR" property="refundStatus"/>
+        <result column="seller_pl_shop_account" jdbcType="VARCHAR" property="sellerPlShopAccount"/>
+
+        <collection property="ebayOrderDetails"
+                    ofType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail"
+                    select="getEbayOrderDetail"
+                    column="order_id">
+        </collection>
+    </resultMap>
+    <sql id="EbayOrderList_Column_List">
+        t1.order_id, total, created_time, paid_time, t1.seller_user_id, buyer_user_id, buyer_email,
+        shipping_service_cost, amount_paid, t1.payment_status, payment_method, reference_id,
+        t1.last_modified_time, seller_email, buyer_checkout_message, name, phone, country, country_name,
+        state_or_province, city_name, street1, street2, postal_code, t2.seller_pl_id,
+        t2.seller_pl_account, t2.conver_sys_status,t2.order_status, t2.cancel_status, t2.refund_status
+    </sql>
+
+    <!--eBay订单列表查询-->
+    <select id="queryEbayOrderList" parameterType="java.util.Map" resultMap="ebayOrderListResultMap">
+        select
+        t1.*, t2.seller_pl_id, t2.seller_pl_account, t2.conver_sys_status, t2.order_status, t2.cancel_status,
+        t2.refund_status,t2.seller_pl_shop_account
+        from tb_ebay_order_status t2 left join tb_ebay_order t1 on t1.order_id=t2.order_id
+        where 1=1
+        <!-- 7.2版本: 转换失败的订单不显示
+        2019-07-25 由于一些问题，暂时先屏蔽掉这个需求
+        t2.conver_sys_status != 2 -->
+        <if test="orderStatus != null and orderStatus != ''">
+            and t2.order_status = #{orderStatus}
+        </if>
+        <if test="converSysStatus != null and converSysStatus != ''">
+            and t2.conver_sys_status = #{converSysStatus}
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            and str_to_date(t1.created_time,'%Y-%m-%d %H:%i:%s') <![CDATA[>=]]> str_to_date(#{beginDate},'%Y-%m-%d
+            %H:%i:%s')
+        </if>
+        <if test="endDate != null and endDate != ''">
+            and str_to_date(t1.created_time,'%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> str_to_date(#{endDate},'%Y-%m-%d
+            %H:%i:%s')
+        </if>
+        <if test="empowerIDList != null and empowerIDList.size()>0 ">
+            and t2.empower_id in
+            <foreach collection="empowerIDList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="plIDList != null and plIDList.size()>0">
+            and t2.seller_pl_id in
+            <foreach collection="plIDList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="recordNumber != null and recordNumber != ''">
+            and t1.record_number = #{recordNumber}
+        </if>
+        <if test="orderId != null and orderId != ''">
+            and t1.order_id = #{orderId}
+        </if>
+        order by str_to_date( t1.created_time, '%Y-%m-%d %H:%i:%s') DESC
+    </select>
+
+    <resultMap id="ebayOrderDetailResultMap" type="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_line_item_id" jdbcType="VARCHAR" property="orderLineItemId"/>
+        <result column="transaction_id" jdbcType="VARCHAR" property="transactionId"/>
+        <result column="conver_sys_status" jdbcType="TINYINT" property="converSysStatus"/>
+        <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail"/>
+        <result column="transaction_price" jdbcType="VARCHAR" property="transactionPrice"/>
+        <result column="quantity_purchased" jdbcType="INTEGER" property="quantityPurchased"/>
+        <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
+        <result column="item_title" jdbcType="VARCHAR" property="itemTitle"/>
+        <result column="sku" jdbcType="VARCHAR" property="sku"/>
+        <result column="variation_sku" jdbcType="VARCHAR" property="variationSku"/>
+        <result column="variation_title" jdbcType="VARCHAR" property="variationTitle"/>
+        <result column="variation_view_item_url" jdbcType="VARCHAR" property="variationViewItemUrl"/>
+        <result column="delivery_time" jdbcType="VARCHAR" property="deliveryTime"/>
+        <result column="shipping_carrier_used" jdbcType="VARCHAR" property="shippingCarrierUsed"/>
+        <result column="shipment_tracking_number" jdbcType="VARCHAR" property="shipmentTrackingNumber"/>
+        <result column="mark_deliver_status" jdbcType="VARCHAR" property="markDeliverStatus"/>
+        <result column="record_number" jdbcType="INTEGER" property="recordNumber"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+    </resultMap>
+
+    <sql id="EbayOrderDetail_Column_List">
+        id, order_id, order_line_item_id, transaction_id, conver_sys_status, buyer_email,
+        transaction_price, quantity_purchased, item_id,item_title, sku, variation_sku, variation_title,
+        variation_view_item_url, delivery_time, shipping_carrier_used, shipment_tracking_number,mark_deliver_status,
+        record_number, create_date, update_date
+    </sql>
+
+    <!--查询订单项子查询-->
+    <select id="getEbayOrderDetail" parameterType="java.lang.String" resultMap="ebayOrderDetailResultMap">
+        SELECT
+        <include refid="EbayOrderDetail_Column_List"/>
+        FROM tb_ebay_order_detail
+        WHERE order_id = #{order_id,jdbcType=VARCHAR}
+    </select>
+
+    <resultMap id="queryEbayOrderDetailResultMap" type="com.rondaful.cloud.order.entity.eBay.EbayOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="created_time" jdbcType="BIGINT" property="createdTime"/>
+        <result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
+        <result column="shipping_service_cost" jdbcType="TINYINT" property="shippingServiceCost"/>
+        <result column="amount_paid" jdbcType="VARCHAR" property="amountPaid"/>
+        <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus"/>
+        <result column="payment_method" jdbcType="VARCHAR" property="paymentMethod"/>
+        <result column="paid_time" jdbcType="BIGINT" property="paidTime"/>
+        <result column="record_number" jdbcType="BIGINT" property="recordNumber"/>
+        <result column="seller_user_id" jdbcType="VARCHAR" property="sellerUserId"/>
+        <result column="shipped_time" jdbcType="VARCHAR" property="shippedTime"/>
+        <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail"/>
+        <result column="last_modified_time" jdbcType="BIGINT" property="lastModifiedTime"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="country_name" jdbcType="VARCHAR" property="countryName"/>
+        <result column="state_or_province" jdbcType="VARCHAR" property="stateOrProvince"/>
+        <result column="city_name" jdbcType="VARCHAR" property="cityName"/>
+        <result column="street1" jdbcType="VARCHAR" property="street1"/>
+        <result column="street2" jdbcType="VARCHAR" property="street2"/>
+        <result column="postal_code" jdbcType="VARCHAR" property="postalCode"/>
+        <result column="conver_sys_status" jdbcType="TINYINT" property="converSysStatus"/>
+
+        <collection property="ebayOrderDetails"
+                    ofType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail"
+                    javaType="java.util.ArrayList"
+                    column="order_id">
+            <result column="order_id" property="orderId"/>
+            <result column="order_line_item_id" property="orderLineItemId"/>
+            <result column="item_id" property="itemId"/>
+            <result column="item_title" property="itemTitle"/>
+            <result column="sku" property="sku"/>
+            <result column="variation_sku" property="variationSku"/>
+            <result column="variation_title" property="variationTitle"/>
+            <result column="variation_view_item_url" property="variationViewItemUrl"/>
+            <result column="delivery_time" property="deliveryTime"/>
+            <result column="shipping_carrier_used" property="shippingCarrierUsed"/>
+            <result column="shipment_tracking_number" property="shipmentTrackingNumber"/>
+            <result column="transaction_id" property="transactionId"/>
+            <result column="transaction_price" property="transactionPrice"/>
+            <result column="quantity_purchased" property="quantityPurchased"/>
+            <result column="conver_sys_status" property="converSysStatus"/>
+
+            <result column="delivery_time" jdbcType="BIGINT" property="deliveryTime"/>
+        </collection>
+    </resultMap>
+
+    <!--根据订单号orderid查询订单详情-->
+    <select id="queryEbayOrderDetail" parameterType="java.lang.String" resultMap="queryEbayOrderDetailResultMap">
+        select
+        t1.id ,
+        t1.order_id ,
+        t1.create_date ,
+        t1.created_time ,
+        t2.order_status ,
+        t1.shipping_service_cost ,
+        t1.amount_paid ,
+        t1.payment_status ,
+        t1.payment_method ,
+        t1.paid_time ,
+        t1.record_number ,
+        t1.seller_user_id ,
+        t1.shipped_time ,
+        t1.buyer_email ,
+        t1.name ,
+        t1.phone ,
+        t1.country ,
+        t1.country_name ,
+        t1.state_or_province ,
+        t1.city_name ,
+        t1.street1 ,
+        t1.street2 ,
+        t1.postal_code ,
+        t1.last_modified_time ,
+        t3.order_id ,
+        t3.order_line_item_id ,
+        t3.item_id ,
+        t3.item_title ,
+        t3.sku ,
+        t3.variation_sku ,
+        t3.variation_title ,
+        t3.variation_view_item_url ,
+        t3.delivery_time ,
+        t3.shipping_carrier_used ,
+        t3.shipment_tracking_number ,
+        t3.transaction_id ,
+        t3.transaction_price ,
+        t3.quantity_purchased ,
+        t3.conver_sys_status ,
+        t3.delivery_time
+        from tb_ebay_order t1 left join tb_ebay_order_status t2 on t1.order_id=t2.order_id
+        left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where 1 = 1
+        and t1.order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <resultMap id="BatchEbayOrderResultMap" type="com.rondaful.cloud.order.entity.eBay.EbayOrder">
+        <id column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <collection property="ebayOrderDetails"
+                    ofType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail"
+                    javaType="java.util.ArrayList"
+                    column="order_id">
+            <result column="order_line_item_id" property="orderLineItemId"/>
+            <result column="conver_sys_status" property="converSysStatus"/>
+        </collection>
+    </resultMap>
+
+    <!--根据ebay平台订单号批量查询ebay订单对象集合-->
+    <select id="selectBatchSysOrderByOrderId" parameterType="list" resultMap="BatchEbayOrderResultMap">
+        select
+        t1.order_id ,
+        t3.order_line_item_id ,
+        t3.conver_sys_status
+        from tb_ebay_order t1 left join tb_ebay_order_detail t3 on t1.order_id=t3.order_id
+        where 1 = 1
+        and t1.order_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <!--查询转换失败的ebay订单-->
+    <select id="selectCovertFailEbayOrder" resultMap="ebayOrderListResultMap">
+        select
+        t1.*, t2.seller_pl_id, t2.seller_pl_account, t2.conver_sys_status, t2.order_status, t2.cancel_status,
+        t2.refund_status
+        from tb_ebay_order_status t2 left join tb_ebay_order t1 on t1.order_id=t2.order_id
+        where t2.conver_sys_status = 2
+    </select>
+
+    <!--=========================================================================================-->
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.eBay.EbayOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="total" jdbcType="VARCHAR" property="total"/>
+        <result column="created_time" jdbcType="VARCHAR" property="createdTime"/>
+        <result column="paid_time" jdbcType="VARCHAR" property="paidTime"/>
+        <result column="seller_user_id" jdbcType="VARCHAR" property="sellerUserId"/>
+        <result column="record_number" jdbcType="VARCHAR" property="recordNumber"/>
+        <result column="buyer_user_id" jdbcType="VARCHAR" property="buyerUserId"/>
+        <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail"/>
+        <result column="shipped_time" jdbcType="VARCHAR" property="shippedTime"/>
+        <result column="shipping_service_cost" jdbcType="VARCHAR" property="shippingServiceCost"/>
+        <result column="amount_paid" jdbcType="VARCHAR" property="amountPaid"/>
+        <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus"/>
+        <result column="payment_method" jdbcType="VARCHAR" property="paymentMethod"/>
+        <result column="reference_id" jdbcType="VARCHAR" property="referenceId"/>
+        <result column="last_modified_time" jdbcType="VARCHAR" property="lastModifiedTime"/>
+        <result column="seller_email" jdbcType="VARCHAR" property="sellerEmail"/>
+        <result column="buyer_checkout_message" jdbcType="VARCHAR" property="buyerCheckoutMessage"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="country_name" jdbcType="VARCHAR" property="countryName"/>
+        <result column="state_or_province" jdbcType="VARCHAR" property="stateOrProvince"/>
+        <result column="city_name" jdbcType="VARCHAR" property="cityName"/>
+        <result column="street1" jdbcType="VARCHAR" property="street1"/>
+        <result column="street2" jdbcType="VARCHAR" property="street2"/>
+        <result column="postal_code" jdbcType="VARCHAR" property="postalCode"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, order_id, total, created_time, paid_time, seller_user_id, record_number, buyer_user_id, 
+        buyer_email, shipped_time, shipping_service_cost, amount_paid, payment_status, payment_method, 
+        reference_id, last_modified_time, seller_email, buyer_checkout_message, name, phone, 
+        country, country_name, state_or_province, city_name, street1, street2, postal_code, 
+        create_date, create_by, update_date, update_by
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_ebay_order
+        where id = #{id,jdbcType=INTEGER}
+        and order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete from tb_ebay_order
+        where id = #{id,jdbcType=INTEGER}
+          and order_id = #{orderId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrder">
+        insert into tb_ebay_order (id, order_id, total, 
+            created_time, paid_time, seller_user_id, 
+            record_number, buyer_user_id, buyer_email, 
+            shipped_time, shipping_service_cost, amount_paid, 
+            payment_status, payment_method, reference_id, 
+            last_modified_time, seller_email, buyer_checkout_message, 
+            name, phone, country, 
+            country_name, state_or_province, city_name, 
+            street1, street2, postal_code, 
+            create_date, create_by, update_date, 
+            update_by)
+        values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{total,jdbcType=VARCHAR}, 
+            #{createdTime,jdbcType=VARCHAR}, #{paidTime,jdbcType=VARCHAR}, #{sellerUserId,jdbcType=VARCHAR}, 
+            #{recordNumber,jdbcType=VARCHAR}, #{buyerUserId,jdbcType=VARCHAR}, #{buyerEmail,jdbcType=VARCHAR}, 
+            #{shippedTime,jdbcType=VARCHAR}, #{shippingServiceCost,jdbcType=VARCHAR}, #{amountPaid,jdbcType=VARCHAR}, 
+            #{paymentStatus,jdbcType=VARCHAR}, #{paymentMethod,jdbcType=VARCHAR}, #{referenceId,jdbcType=VARCHAR}, 
+            #{lastModifiedTime,jdbcType=VARCHAR}, #{sellerEmail,jdbcType=VARCHAR}, #{buyerCheckoutMessage,jdbcType=VARCHAR}, 
+            #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, 
+            #{countryName,jdbcType=VARCHAR}, #{stateOrProvince,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, 
+            #{street1,jdbcType=VARCHAR}, #{street2,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, 
+            #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+            #{updateBy,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrder">
+        insert into tb_ebay_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="total != null">
+                total,
+            </if>
+            <if test="createdTime != null">
+                created_time,
+            </if>
+            <if test="paidTime != null">
+                paid_time,
+            </if>
+            <if test="sellerUserId != null">
+                seller_user_id,
+            </if>
+            <if test="recordNumber != null">
+                record_number,
+            </if>
+            <if test="buyerUserId != null">
+                buyer_user_id,
+            </if>
+            <if test="buyerEmail != null">
+                buyer_email,
+            </if>
+            <if test="shippedTime != null">
+                shipped_time,
+            </if>
+            <if test="shippingServiceCost != null">
+                shipping_service_cost,
+            </if>
+            <if test="amountPaid != null">
+                amount_paid,
+            </if>
+            <if test="paymentStatus != null">
+                payment_status,
+            </if>
+            <if test="paymentMethod != null">
+                payment_method,
+            </if>
+            <if test="referenceId != null">
+                reference_id,
+            </if>
+            <if test="lastModifiedTime != null">
+                last_modified_time,
+            </if>
+            <if test="sellerEmail != null">
+                seller_email,
+            </if>
+            <if test="buyerCheckoutMessage != null">
+                buyer_checkout_message,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="countryName != null">
+                country_name,
+            </if>
+            <if test="stateOrProvince != null">
+                state_or_province,
+            </if>
+            <if test="cityName != null">
+                city_name,
+            </if>
+            <if test="street1 != null">
+                street1,
+            </if>
+            <if test="street2 != null">
+                street2,
+            </if>
+            <if test="postalCode != null">
+                postal_code,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="total != null">
+                #{total,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=VARCHAR},
+            </if>
+            <if test="paidTime != null">
+                #{paidTime,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerUserId != null">
+                #{sellerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordNumber != null">
+                #{recordNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerUserId != null">
+                #{buyerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerEmail != null">
+                #{buyerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="shippedTime != null">
+                #{shippedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingServiceCost != null">
+                #{shippingServiceCost,jdbcType=VARCHAR},
+            </if>
+            <if test="amountPaid != null">
+                #{amountPaid,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentStatus != null">
+                #{paymentStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentMethod != null">
+                #{paymentMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="referenceId != null">
+                #{referenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifiedTime != null">
+                #{lastModifiedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerEmail != null">
+                #{sellerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerCheckoutMessage != null">
+                #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="countryName != null">
+                #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="stateOrProvince != null">
+                #{stateOrProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="cityName != null">
+                #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="street1 != null">
+                #{street1,jdbcType=VARCHAR},
+            </if>
+            <if test="street2 != null">
+                #{street2,jdbcType=VARCHAR},
+            </if>
+            <if test="postalCode != null">
+                #{postalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrder">
+        update tb_ebay_order
+        <set>
+            <if test="total != null">
+                total = #{total,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=VARCHAR},
+            </if>
+            <if test="paidTime != null">
+                paid_time = #{paidTime,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerUserId != null">
+                seller_user_id = #{sellerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordNumber != null">
+                record_number = #{recordNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerUserId != null">
+                buyer_user_id = #{buyerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerEmail != null">
+                buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="shippedTime != null">
+                shipped_time = #{shippedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingServiceCost != null">
+                shipping_service_cost = #{shippingServiceCost,jdbcType=VARCHAR},
+            </if>
+            <if test="amountPaid != null">
+                amount_paid = #{amountPaid,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentStatus != null">
+                payment_status = #{paymentStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentMethod != null">
+                payment_method = #{paymentMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="referenceId != null">
+                reference_id = #{referenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifiedTime != null">
+                last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerEmail != null">
+                seller_email = #{sellerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerCheckoutMessage != null">
+                buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="countryName != null">
+                country_name = #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="stateOrProvince != null">
+                state_or_province = #{stateOrProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="cityName != null">
+                city_name = #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="street1 != null">
+                street1 = #{street1,jdbcType=VARCHAR},
+            </if>
+            <if test="street2 != null">
+                street2 = #{street2,jdbcType=VARCHAR},
+            </if>
+            <if test="postalCode != null">
+                postal_code = #{postalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrder">
+        update tb_ebay_order
+        set total = #{total,jdbcType=VARCHAR},
+            created_time = #{createdTime,jdbcType=VARCHAR},
+            paid_time = #{paidTime,jdbcType=VARCHAR},
+            seller_user_id = #{sellerUserId,jdbcType=VARCHAR},
+            record_number = #{recordNumber,jdbcType=VARCHAR},
+            buyer_user_id = #{buyerUserId,jdbcType=VARCHAR},
+            buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+            shipped_time = #{shippedTime,jdbcType=VARCHAR},
+            shipping_service_cost = #{shippingServiceCost,jdbcType=VARCHAR},
+            amount_paid = #{amountPaid,jdbcType=VARCHAR},
+            payment_status = #{paymentStatus,jdbcType=VARCHAR},
+            payment_method = #{paymentMethod,jdbcType=VARCHAR},
+            reference_id = #{referenceId,jdbcType=VARCHAR},
+            last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR},
+            seller_email = #{sellerEmail,jdbcType=VARCHAR},
+            buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            name = #{name,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            country = #{country,jdbcType=VARCHAR},
+            country_name = #{countryName,jdbcType=VARCHAR},
+            state_or_province = #{stateOrProvince,jdbcType=VARCHAR},
+            city_name = #{cityName,jdbcType=VARCHAR},
+            street1 = #{street1,jdbcType=VARCHAR},
+            street2 = #{street2,jdbcType=VARCHAR},
+            postal_code = #{postalCode,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+          and order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrder" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_ebay_order
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="total != null and total != ''">
+                and total = #{total,jdbcType=VARCHAR}
+            </if>
+            <if test="createdTime != null and createdTime != ''">
+                and created_time = #{createdTime,jdbcType=VARCHAR}
+            </if>
+            <if test="paidTime != null and paidTime != ''">
+                and paid_time = #{paidTime,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerUserId != null and sellerUserId != ''">
+                and seller_user_id = #{sellerUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="recordNumber != null and recordNumber != ''">
+                and record_number = #{recordNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerUserId != null and buyerUserId != ''">
+                and buyer_user_id = #{buyerUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerEmail != null and buyerEmail != ''">
+                and buyer_email = #{buyerEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="shippedTime != null and shippedTime != ''">
+                and shipped_time = #{shippedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="shippingServiceCost != null and shippingServiceCost != ''">
+                and shipping_service_cost = #{shippingServiceCost,jdbcType=VARCHAR}
+            </if>
+            <if test="amountPaid != null and amountPaid != ''">
+                and amount_paid = #{amountPaid,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentStatus != null and paymentStatus != ''">
+                and payment_status = #{paymentStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentMethod != null and paymentMethod != ''">
+                and payment_method = #{paymentMethod,jdbcType=VARCHAR}
+            </if>
+            <if test="referenceId != null and referenceId != ''">
+                and reference_id = #{referenceId,jdbcType=VARCHAR}
+            </if>
+            <if test="lastModifiedTime != null and lastModifiedTime != ''">
+                and last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerEmail != null and sellerEmail != ''">
+                and seller_email = #{sellerEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerCheckoutMessage != null and buyerCheckoutMessage != ''">
+                and buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="countryName != null and countryName != ''">
+                and country_name = #{countryName,jdbcType=VARCHAR}
+            </if>
+            <if test="stateOrProvince != null and stateOrProvince != ''">
+                and state_or_province = #{stateOrProvince,jdbcType=VARCHAR}
+            </if>
+            <if test="cityName != null and cityName != ''">
+                and city_name = #{cityName,jdbcType=VARCHAR}
+            </if>
+            <if test="street1 != null and street1 != ''">
+                and street1 = #{street1,jdbcType=VARCHAR}
+            </if>
+            <if test="street2 != null and street2 != ''">
+                and street2 = #{street2,jdbcType=VARCHAR}
+            </if>
+            <if test="postalCode != null and postalCode != ''">
+                and postal_code = #{postalCode,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

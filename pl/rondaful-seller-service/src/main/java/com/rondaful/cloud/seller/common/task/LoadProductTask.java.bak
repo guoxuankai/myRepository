@@ -1,0 +1,274 @@
+package com.rondaful.cloud.seller.common.task;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import com.alibaba.fastjson.JSON;
+import com.rondaful.cloud.common.utils.RedissLockUtil;
+import com.rondaful.cloud.seller.common.mws.intface.SubmitFeedCallable;
+import com.rondaful.cloud.seller.common.mws.model.SubmitFeedResponse;
+import com.rondaful.cloud.seller.common.spring.ApplicationContextProvider;
+import com.rondaful.cloud.seller.constants.AmazonConstants;
+import com.rondaful.cloud.seller.constants.AmazonPostMethod;
+import com.rondaful.cloud.seller.entity.AmazonPublishListing;
+import com.rondaful.cloud.seller.entity.AmazonPublishSubListing;
+import com.rondaful.cloud.seller.entity.amazon.AmazonPublishListStatus;
+import com.rondaful.cloud.seller.entity.amazon.AmazonRequestProduct;
+import com.rondaful.cloud.seller.service.AmazonPublishListingService;
+import com.rondaful.cloud.seller.service.AmazonPublishSubListingService;
+import com.rondaful.cloud.seller.service.AuthorizationSellerService;
+
+/**
+ * 开始刊登
+ * @author ouxiangfeng
+ *
+ */
+@Component
+public class LoadProductTask implements Runnable {
+	
+	private final Logger logger = LoggerFactory.getLogger(LoadProductTask.class);
+	private final String lockKey = "redis_lock_key_LoadProductTaskScheduler1";
+	
+	@Autowired
+	RedissLockUtil redissLockUtil;
+	
+	public  LoadProductTask get()
+	{
+		return this;
+	}
+	
+	//@Scheduled(initialDelay=1, fixedRate=330000)//第一次延迟1秒后执行，之后按fixedRate的规则每5.5分钟执行一次。
+	private void process(){
+		
+		
+		logger.debug("process......LoadProductTask.....");
+	/*	if(true)
+		{
+			return;
+		}*/
+		if(!redissLockUtil.tryLock(lockKey, 10, 60 * 10)) //等待10秒，10分放开锁
+		{
+			logger.debug("redis_lock_key_LoadProductTaskScheduler 其它服务正在执行。locking....");
+			return ;
+		}
+		try
+		{
+			logger.debug("开始执行刊登..............");
+			AmazonPublishSubListingService amazonPublishsubListingService  = (AmazonPublishSubListingService) ApplicationContextProvider.getBean("amazonPublishSubListingServiceImpl");
+			AmazonPublishListingService amazonPublishListingService  = (AmazonPublishListingService) ApplicationContextProvider.getBean("amazonPublishListingServiceImpl");
+			// AuthorizationSellerService authorizationSellerService  = (AuthorizationSellerService) ApplicationContextProvider.getApplicationContext().getBean("authorizationSellerServiceImpl");
+			SubmitFeedCallable submitFeed = (SubmitFeedCallable) ApplicationContextProvider.getBean("submitFeed");
+			// 取出主数据(刊登中的数据)
+			AmazonPublishListing mainQuery = new AmazonPublishListing();
+			mainQuery.setPublishStatus(AmazonPublishListStatus.AMAZON_PUBLISH_STATUS_AWAIT); // 刊登状态 1: 草稿  2: 刊登中 3: 在线 4: 刊登失败 5: 已下线 6:等待
+			mainQuery = amazonPublishListingService.selectOne(mainQuery);
+			logger.debug("查询等待publishStatus=6的刊登数据");
+			if(mainQuery == null)
+			{
+				logger.debug("LoadProductTaskScheduler amazon 暂无可刊登的数据(main)");
+				return;
+			}
+			
+			AmazonRequestProduct requestProduct = JSON.parseObject(mainQuery.getPublishMessage(), AmazonRequestProduct.class);
+			
+			
+			// 找出已生成好的数据
+			AmazonPublishSubListing subQuery = new AmazonPublishSubListing();
+			subQuery.setListingId(mainQuery.getId());
+			List<AmazonPublishSubListing> subList1 = amazonPublishsubListingService.selectPage(subQuery);
+			if(CollectionUtils.isEmpty(subList1)){ //如果没有子数据，则说明数据错误，放弃
+				logger.debug("LoadProductTaskScheduler amazon 刊登数据丢失或错误(sub)");
+				AmazonPublishListing mainUpdateObj = new AmazonPublishListing();
+				mainUpdateObj.setId(mainQuery.getId());
+				mainUpdateObj.setUpdateTime(new Date());
+				mainUpdateObj.setPublishStatus(AmazonPublishListStatus.AMAZON_PUBLISH_STATUS_FAIL);
+				amazonPublishListingService.updateByPrimaryKeySelective(mainUpdateObj);
+				redissLockUtil.unlock(lockKey);
+				process();
+				return;
+			}
+			
+//			if(true)
+//			{
+//				return;
+//			}
+			logger.debug("当前主id:{}下有{}个子数据",mainQuery.getId(),subList1.size());
+			
+			//TODO subList 需要排序，将商品排在前面
+			AmazonPublishSubListing[] tempArray = sortSubListing(subList1);
+			logger.debug("转换商品数在第一个，转换后数据个数：{},原数据数量：{}",tempArray.length,subList1.size());
+			
+			for(int i=0 ; i< tempArray.length; i++) //AmazonPublishSubListing sub : tempArray)
+			{
+				
+				AmazonPublishSubListing sub = tempArray[i];  // 确保第0个下标是商品的数据
+				logger.debug("开始刊登第{}条数据,sub id:{}",i,sub.getId());
+				try
+				{
+					
+					if(StringUtils.isNotBlank(sub.getSubmitfeedId())) 
+					{
+						logger.debug("开始上报sub id:{},这个数据已被刊登过，跳过了",sub.getId());
+						continue;
+					}
+					
+					logger.debug("开始上报第{}条数据,sub id:{},start....",i,sub.getId());
+					// 调用上报数据接口
+				/*	SubmitFeedResponse response = submitFeed.invoke(mainQuery.getPublishSite(), 
+							requestProduct.getMerchantIdentifier(), sub.getXmls(), sub.getMsgType(),mainQuery.getAmwToken());
+					*/
+					SubmitFeedResponse response = null;
+					// 增加延时
+					if(AmazonConstants.RESPORT_RESULT_ERROR.equals(
+							response.getSubmitFeedResult().getFeedSubmissionInfo().getFeedSubmissionId()))
+					{
+						int  reqCount = 2;
+						Thread.currentThread().sleep(60 * 1000 * reqCount);
+						for(; reqCount<= 4 ; reqCount++)
+						{
+							/*response = submitFeed.invoke(mainQuery.getPublishSite(), 
+									requestProduct.getMerchantIdentifier(), sub.getXmls(), sub.getMsgType(),mainQuery.getAmwToken());*/
+							if(AmazonConstants.RESPORT_RESULT_ERROR.equals(
+									response.getSubmitFeedResult().getFeedSubmissionInfo().getFeedSubmissionId()))
+							{
+								Thread.currentThread().sleep(60 * 1000 * reqCount); // 每一次加一分钟。
+							}else
+							{
+								break; //如果成功就退出
+							}
+						}
+					}
+					
+					
+					
+					if(response == null 
+							|| AmazonConstants.RESPORT_RESULT_ERROR.equals(
+							response.getSubmitFeedResult().getFeedSubmissionInfo().getFeedSubmissionId()))
+					{
+						sub.setResultMessage(response.getSubmitFeedResult().getFeedSubmissionInfo().getFeedType());
+						sub.setCompleteStatus(AmazonConstants.COMPLETE_STATUS_FAILED);
+						
+						// 更新状态
+						// mainUpdateObj.setPublishStatus(AmazonPublishListStatus.AMAZON_PUBLISH_STATUS_FAIL);
+						logger.error("请求amazon接口异常,原因:{}",response.getSubmitFeedResult().getFeedSubmissionInfo().getFeedType());
+					}else
+					{
+						sub.setProcessStatus(response.getSubmitFeedResult().getFeedSubmissionInfo().getFeedProcessingStatus());
+						sub.setSubmitfeedId(response.getSubmitFeedResult().getFeedSubmissionInfo().getFeedSubmissionId());
+						sub.setCompleteStatus(AmazonConstants.COMPLETE_STATUS_PRESSING);
+						sub.setResultMessage(AmazonConstants.RESPORT_RESULT_PUBLISHING);
+						logger.debug("请求amazon接口成功");
+						// 更新状态
+						// mainUpdateObj.setPublishStatus(AmazonPublishListStatus.AMAZON_PUBLISH_STATUS_PUBLISHING);
+					}
+					logger.debug("更新amazonPublishSubListing状态为:{}",sub.getCompleteStatus());
+					sub.setUpdateTime(new Date());
+					sub.setCurrInterface("SubmitFeed");
+					sub.setProcessStatus(AmazonConstants.RESPORT_RESULT_COMPLETE);
+					amazonPublishsubListingService.update(sub);
+					logger.debug("等待1分钟.....");
+					Thread.currentThread().sleep(60*1000*2); // 1分钟，漏桶算法
+					
+					// 更新状态到数据库
+					// logger.debug("更新amazonPublishListingService:{}",JSON.toJSONString(mainUpdateObj));
+					//amazonPublishListingService.updateByPrimaryKey(mainUpdateObj);
+				}catch(Exception e)
+				{
+					logger.error("检查上报数据出异常了。",e);
+				}
+			}
+			
+			// 检查是否全部都上报数据了。
+			AmazonPublishSubListing subQueryTemp = new AmazonPublishSubListing();
+			subQueryTemp.setListingId(mainQuery.getId());
+			List<AmazonPublishSubListing> subListTemp = amazonPublishsubListingService.selectPage(subQueryTemp);
+			int count = 0;
+			int failCount = 0;
+			for(AmazonPublishSubListing t : subListTemp)
+			{
+				if(StringUtils.isNotBlank(t.getSubmitfeedId()))
+				{
+					count++;
+				}
+				if(t.getCompleteStatus() ==AmazonConstants.COMPLETE_STATUS_FAILED)
+				{
+					failCount++;
+				}
+			}
+			logger.debug("子数据中已有{}条刊登了",count);
+			logger.debug("子数据中已刊登count:{}条,实际数据tempArray:{}条",count,tempArray.length);
+			if(failCount > 0)
+			{
+				logger.error("因为没有找到子数据，可能是Feed rejected状态，需要将这条数据库更新为失败");
+				AmazonPublishListing mainUpdateObj = new AmazonPublishListing();
+				mainUpdateObj.setId(mainQuery.getId());
+				mainUpdateObj.setUpdateTime(new Date());
+				mainUpdateObj.setPublishStatus(AmazonPublishListStatus.AMAZON_PUBLISH_STATUS_FAIL);
+				amazonPublishListingService.updateByPrimaryKeySelective(mainUpdateObj);
+			}
+			
+			// 如果都上报了，则改主表状态
+			if(count == tempArray.length)
+			{
+				logger.debug("检查所有数据已刊登，变更主数据为 刊登中 2 的状态");
+				AmazonPublishListing mainUpdateObj = new AmazonPublishListing();
+				mainUpdateObj.setId(mainQuery.getId());
+				mainUpdateObj.setUpdateTime(new Date());
+				mainUpdateObj.setPublishStatus(AmazonPublishListStatus.AMAZON_PUBLISH_STATUS_PUBLISHING);
+				amazonPublishListingService.updateByPrimaryKeySelective(mainUpdateObj);
+			}
+			logger.debug("本次上报完毕>>>>>");
+
+		} catch (Exception e) {
+			logger.error("",e);
+		}finally
+		{
+			logger.debug("释放同步锁.");
+			redissLockUtil.unlock(lockKey); // 解放锁
+		}
+	}
+
+	/**
+	 * 	上报顺序
+	 * @param subList1
+	 * @return
+	 */
+	private AmazonPublishSubListing[] sortSubListing(List<AmazonPublishSubListing> subList1) {
+		AmazonPublishSubListing [] tempArray = new AmazonPublishSubListing[subList1.size()];
+		for(AmazonPublishSubListing sub : subList1)
+		{
+			if(AmazonPostMethod.POST_PRODUCT_DATA.equals(sub.getMsgType())) // 确保第0个下标是商品的数据
+			{
+				tempArray [0] = sub;
+			}else if(AmazonPostMethod.POST_INVENTORY_DATA.equals(sub.getMsgType()))
+			{
+				tempArray [1] = sub;
+			}else if(AmazonPostMethod.POST_PRICING_DATA.equals(sub.getMsgType()))
+			{
+				tempArray [2] = sub;
+			}else if(AmazonPostMethod.POST_IMAGE_DATA.equals(sub.getMsgType()))
+			{
+				tempArray [3] = sub;
+			}else  if(AmazonPostMethod.POST_RELATIONSHIP_DATA.equals(sub.getMsgType()))// 确保最后一个下标是关系的数据
+			{
+				tempArray [4] = sub;
+			}
+		}
+		return tempArray;
+	}
+
+	@Override
+	public void run() {
+		process();
+	}
+}

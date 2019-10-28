@@ -1,0 +1,2411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.RateMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.Rate">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="AED" jdbcType="VARCHAR" property="aed" />
+        <result column="AFN" jdbcType="VARCHAR" property="afn" />
+        <result column="ALLS" jdbcType="VARCHAR" property="alls" />
+        <result column="AMD" jdbcType="VARCHAR" property="amd" />
+        <result column="ANG" jdbcType="VARCHAR" property="ang" />
+        <result column="AOA" jdbcType="VARCHAR" property="aoa" />
+        <result column="ARS" jdbcType="VARCHAR" property="ars" />
+        <result column="AUD" jdbcType="VARCHAR" property="aud" />
+        <result column="AWG" jdbcType="VARCHAR" property="awg" />
+        <result column="AZN" jdbcType="VARCHAR" property="azn" />
+        <result column="BAM" jdbcType="VARCHAR" property="bam" />
+        <result column="BBD" jdbcType="VARCHAR" property="bbd" />
+        <result column="BDT" jdbcType="VARCHAR" property="bdt" />
+        <result column="BGN" jdbcType="VARCHAR" property="bgn" />
+        <result column="BHD" jdbcType="VARCHAR" property="bhd" />
+        <result column="BIF" jdbcType="VARCHAR" property="bif" />
+        <result column="BMD" jdbcType="VARCHAR" property="bmd" />
+        <result column="BND" jdbcType="VARCHAR" property="bnd" />
+        <result column="BOB" jdbcType="VARCHAR" property="bob" />
+        <result column="BRL" jdbcType="VARCHAR" property="brl" />
+        <result column="BSD" jdbcType="VARCHAR" property="bsd" />
+        <result column="BTN" jdbcType="VARCHAR" property="btn" />
+        <result column="BWP" jdbcType="VARCHAR" property="bwp" />
+        <result column="BYR" jdbcType="VARCHAR" property="byr" />
+        <result column="BZD" jdbcType="VARCHAR" property="bzd" />
+        <result column="CAD" jdbcType="VARCHAR" property="cad" />
+        <result column="CDF" jdbcType="VARCHAR" property="cdf" />
+        <result column="CHF" jdbcType="VARCHAR" property="chf" />
+        <result column="CLF" jdbcType="VARCHAR" property="clf" />
+        <result column="CLP" jdbcType="VARCHAR" property="clp" />
+        <result column="CNH" jdbcType="VARCHAR" property="cnh" />
+        <result column="CNY" jdbcType="VARCHAR" property="cny" />
+        <result column="COP" jdbcType="VARCHAR" property="cop" />
+        <result column="CRC" jdbcType="VARCHAR" property="crc" />
+        <result column="CUP" jdbcType="VARCHAR" property="cup" />
+        <result column="CVE" jdbcType="VARCHAR" property="cve" />
+        <result column="CZK" jdbcType="VARCHAR" property="czk" />
+        <result column="DJF" jdbcType="VARCHAR" property="djf" />
+        <result column="DKK" jdbcType="VARCHAR" property="dkk" />
+        <result column="DOP" jdbcType="VARCHAR" property="dop" />
+        <result column="DZD" jdbcType="VARCHAR" property="dzd" />
+        <result column="EGP" jdbcType="VARCHAR" property="egp" />
+        <result column="ERN" jdbcType="VARCHAR" property="ern" />
+        <result column="ETB" jdbcType="VARCHAR" property="etb" />
+        <result column="EUR" jdbcType="VARCHAR" property="eur" />
+        <result column="FJD" jdbcType="VARCHAR" property="fjd" />
+        <result column="FKP" jdbcType="VARCHAR" property="fkp" />
+        <result column="GBP" jdbcType="VARCHAR" property="gbp" />
+        <result column="GEL" jdbcType="VARCHAR" property="gel" />
+        <result column="GHS" jdbcType="VARCHAR" property="ghs" />
+        <result column="GIP" jdbcType="VARCHAR" property="gip" />
+        <result column="GMD" jdbcType="VARCHAR" property="gmd" />
+        <result column="GNF" jdbcType="VARCHAR" property="gnf" />
+        <result column="GTQ" jdbcType="VARCHAR" property="gtq" />
+        <result column="GYD" jdbcType="VARCHAR" property="gyd" />
+        <result column="HKD" jdbcType="VARCHAR" property="hkd" />
+        <result column="HNL" jdbcType="VARCHAR" property="hnl" />
+        <result column="HRK" jdbcType="VARCHAR" property="hrk" />
+        <result column="HTG" jdbcType="VARCHAR" property="htg" />
+        <result column="HUF" jdbcType="VARCHAR" property="huf" />
+        <result column="IDR" jdbcType="VARCHAR" property="idr" />
+        <result column="ILS" jdbcType="VARCHAR" property="ils" />
+        <result column="INR" jdbcType="VARCHAR" property="inr" />
+        <result column="IQD" jdbcType="VARCHAR" property="iqd" />
+        <result column="IRR" jdbcType="VARCHAR" property="irr" />
+        <result column="ISK" jdbcType="VARCHAR" property="isk" />
+        <result column="JMD" jdbcType="VARCHAR" property="jmd" />
+        <result column="JOD" jdbcType="VARCHAR" property="jod" />
+        <result column="JPY" jdbcType="VARCHAR" property="jpy" />
+        <result column="KES" jdbcType="VARCHAR" property="kes" />
+        <result column="KGS" jdbcType="VARCHAR" property="kgs" />
+        <result column="KHR" jdbcType="VARCHAR" property="khr" />
+        <result column="KMF" jdbcType="VARCHAR" property="kmf" />
+        <result column="KPW" jdbcType="VARCHAR" property="kpw" />
+        <result column="KRW" jdbcType="VARCHAR" property="krw" />
+        <result column="KWD" jdbcType="VARCHAR" property="kwd" />
+        <result column="KYD" jdbcType="VARCHAR" property="kyd" />
+        <result column="KZT" jdbcType="VARCHAR" property="kzt" />
+        <result column="LAK" jdbcType="VARCHAR" property="lak" />
+        <result column="LBP" jdbcType="VARCHAR" property="lbp" />
+        <result column="LKR" jdbcType="VARCHAR" property="lkr" />
+        <result column="LRD" jdbcType="VARCHAR" property="lrd" />
+        <result column="LSL" jdbcType="VARCHAR" property="lsl" />
+        <result column="LTL" jdbcType="VARCHAR" property="ltl" />
+        <result column="LVL" jdbcType="VARCHAR" property="lvl" />
+        <result column="LYD" jdbcType="VARCHAR" property="lyd" />
+        <result column="MAD" jdbcType="VARCHAR" property="mad" />
+        <result column="MDL" jdbcType="VARCHAR" property="mdl" />
+        <result column="MGA" jdbcType="VARCHAR" property="mga" />
+        <result column="MKD" jdbcType="VARCHAR" property="mkd" />
+        <result column="MMK" jdbcType="VARCHAR" property="mmk" />
+        <result column="MNT" jdbcType="VARCHAR" property="mnt" />
+        <result column="MOP" jdbcType="VARCHAR" property="mop" />
+        <result column="MRO" jdbcType="VARCHAR" property="mro" />
+        <result column="MUR" jdbcType="VARCHAR" property="mur" />
+        <result column="MVR" jdbcType="VARCHAR" property="mvr" />
+        <result column="MWK" jdbcType="VARCHAR" property="mwk" />
+        <result column="MXN" jdbcType="VARCHAR" property="mxn" />
+        <result column="MYR" jdbcType="VARCHAR" property="myr" />
+        <result column="MZN" jdbcType="VARCHAR" property="mzn" />
+        <result column="NAD" jdbcType="VARCHAR" property="nad" />
+        <result column="NGN" jdbcType="VARCHAR" property="ngn" />
+        <result column="NIO" jdbcType="VARCHAR" property="nio" />
+        <result column="NOK" jdbcType="VARCHAR" property="nok" />
+        <result column="NPR" jdbcType="VARCHAR" property="npr" />
+        <result column="NZD" jdbcType="VARCHAR" property="nzd" />
+        <result column="OMR" jdbcType="VARCHAR" property="omr" />
+        <result column="PAB" jdbcType="VARCHAR" property="pab" />
+        <result column="PEN" jdbcType="VARCHAR" property="pen" />
+        <result column="PGK" jdbcType="VARCHAR" property="pgk" />
+        <result column="PHP" jdbcType="VARCHAR" property="php" />
+        <result column="PKR" jdbcType="VARCHAR" property="pkr" />
+        <result column="PLN" jdbcType="VARCHAR" property="pln" />
+        <result column="PYG" jdbcType="VARCHAR" property="pyg" />
+        <result column="QAR" jdbcType="VARCHAR" property="qar" />
+        <result column="RON" jdbcType="VARCHAR" property="ron" />
+        <result column="RSD" jdbcType="VARCHAR" property="rsd" />
+        <result column="RUB" jdbcType="VARCHAR" property="rub" />
+        <result column="RWF" jdbcType="VARCHAR" property="rwf" />
+        <result column="SAR" jdbcType="VARCHAR" property="sar" />
+        <result column="SBD" jdbcType="VARCHAR" property="sbd" />
+        <result column="SCR" jdbcType="VARCHAR" property="scr" />
+        <result column="SDG" jdbcType="VARCHAR" property="sdg" />
+        <result column="SEK" jdbcType="VARCHAR" property="sek" />
+        <result column="SGD" jdbcType="VARCHAR" property="sgd" />
+        <result column="SHP" jdbcType="VARCHAR" property="shp" />
+        <result column="SLL" jdbcType="VARCHAR" property="sll" />
+        <result column="SOS" jdbcType="VARCHAR" property="sos" />
+        <result column="SRD" jdbcType="VARCHAR" property="srd" />
+        <result column="STDS" jdbcType="VARCHAR" property="stds" />
+        <result column="SVC" jdbcType="VARCHAR" property="svc" />
+        <result column="SYP" jdbcType="VARCHAR" property="syp" />
+        <result column="SZL" jdbcType="VARCHAR" property="szl" />
+        <result column="THB" jdbcType="VARCHAR" property="thb" />
+        <result column="TJS" jdbcType="VARCHAR" property="tjs" />
+        <result column="TMT" jdbcType="VARCHAR" property="tmt" />
+        <result column="TND" jdbcType="VARCHAR" property="tnd" />
+        <result column="TOP" jdbcType="VARCHAR" property="top" />
+        <result column="TRYS" jdbcType="VARCHAR" property="trys" />
+        <result column="TTD" jdbcType="VARCHAR" property="ttd" />
+        <result column="TWD" jdbcType="VARCHAR" property="twd" />
+        <result column="TZS" jdbcType="VARCHAR" property="tzs" />
+        <result column="UAH" jdbcType="VARCHAR" property="uah" />
+        <result column="UGX" jdbcType="VARCHAR" property="ugx" />
+        <result column="USD" jdbcType="VARCHAR" property="usd" />
+        <result column="UYU" jdbcType="VARCHAR" property="uyu" />
+        <result column="UZS" jdbcType="VARCHAR" property="uzs" />
+        <result column="VEF" jdbcType="VARCHAR" property="vef" />
+        <result column="VND" jdbcType="VARCHAR" property="vnd" />
+        <result column="VUV" jdbcType="VARCHAR" property="vuv" />
+        <result column="WST" jdbcType="VARCHAR" property="wst" />
+        <result column="XAF" jdbcType="VARCHAR" property="xaf" />
+        <result column="XAU" jdbcType="VARCHAR" property="xau" />
+        <result column="XCD" jdbcType="VARCHAR" property="xcd" />
+        <result column="XDR" jdbcType="VARCHAR" property="xdr" />
+        <result column="XOF" jdbcType="VARCHAR" property="xof" />
+        <result column="XPF" jdbcType="VARCHAR" property="xpf" />
+        <result column="YER" jdbcType="VARCHAR" property="yer" />
+        <result column="ZAR" jdbcType="VARCHAR" property="zar" />
+        <result column="ZMW" jdbcType="VARCHAR" property="zmw" />
+        <result column="ZWL" jdbcType="VARCHAR" property="zwl" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, AED, AFN, ALLS, AMD, ANG, AOA, ARS, AUD, AWG, AZN, BAM, BBD, BDT, BGN, BHD, BIF, 
+        BMD, BND, BOB, BRL, BSD, BTN, BWP, BYR, BZD, CAD, CDF, CHF, CLF, CLP, CNH, CNY, COP, 
+        CRC, CUP, CVE, CZK, DJF, DKK, DOP, DZD, EGP, ERN, ETB, EUR, FJD, FKP, GBP, GEL, GHS, 
+        GIP, GMD, GNF, GTQ, GYD, HKD, HNL, HRK, HTG, HUF, IDR, ILS, INR, IQD, IRR, ISK, JMD, 
+        JOD, JPY, KES, KGS, KHR, KMF, KPW, KRW, KWD, KYD, KZT, LAK, LBP, LKR, LRD, LSL, LTL, 
+        LVL, LYD, MAD, MDL, MGA, MKD, MMK, MNT, MOP, MRO, MUR, MVR, MWK, MXN, MYR, MZN, NAD, 
+        NGN, NIO, NOK, NPR, NZD, OMR, PAB, PEN, PGK, PHP, PKR, PLN, PYG, QAR, RON, RSD, RUB, 
+        RWF, SAR, SBD, SCR, SDG, SEK, SGD, SHP, SLL, SOS, SRD, STDS, SVC, SYP, SZL, THB, 
+        TJS, TMT, TND, TOP, TRYS, TTD, TWD, TZS, UAH, UGX, USD, UYU, UZS, VEF, VND, VUV, 
+        WST, XAF, XAU, XCD, XDR, XOF, XPF, YER, ZAR, ZMW, ZWL
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tb_rate
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tb_rate
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.Rate">
+        insert into tb_rate (id, AED, AFN, 
+            ALLS, AMD, ANG, AOA, 
+            ARS, AUD, AWG, AZN, 
+            BAM, BBD, BDT, BGN, 
+            BHD, BIF, BMD, BND, 
+            BOB, BRL, BSD, BTN, 
+            BWP, BYR, BZD, CAD, 
+            CDF, CHF, CLF, CLP, 
+            CNH, CNY, COP, CRC, 
+            CUP, CVE, CZK, DJF, 
+            DKK, DOP, DZD, EGP, 
+            ERN, ETB, EUR, FJD, 
+            FKP, GBP, GEL, GHS, 
+            GIP, GMD, GNF, GTQ, 
+            GYD, HKD, HNL, HRK, 
+            HTG, HUF, IDR, ILS, 
+            INR, IQD, IRR, ISK, 
+            JMD, JOD, JPY, KES, 
+            KGS, KHR, KMF, KPW, 
+            KRW, KWD, KYD, KZT, 
+            LAK, LBP, LKR, LRD, 
+            LSL, LTL, LVL, LYD, 
+            MAD, MDL, MGA, MKD, 
+            MMK, MNT, MOP, MRO, 
+            MUR, MVR, MWK, MXN, 
+            MYR, MZN, NAD, NGN, 
+            NIO, NOK, NPR, NZD, 
+            OMR, PAB, PEN, PGK, 
+            PHP, PKR, PLN, PYG, 
+            QAR, RON, RSD, RUB, 
+            RWF, SAR, SBD, SCR, 
+            SDG, SEK, SGD, SHP, 
+            SLL, SOS, SRD, STDS, 
+            SVC, SYP, SZL, THB, 
+            TJS, TMT, TND, TOP, 
+            TRYS, TTD, TWD, TZS, 
+            UAH, UGX, USD, UYU, 
+            UZS, VEF, VND, VUV, 
+            WST, XAF, XAU, XCD, 
+            XDR, XOF, XPF, YER, 
+            ZAR, ZMW, ZWL)
+        values (#{id,jdbcType=BIGINT}, #{aed,jdbcType=VARCHAR}, #{afn,jdbcType=VARCHAR}, 
+            #{alls,jdbcType=VARCHAR}, #{amd,jdbcType=VARCHAR}, #{ang,jdbcType=VARCHAR}, #{aoa,jdbcType=VARCHAR}, 
+            #{ars,jdbcType=VARCHAR}, #{aud,jdbcType=VARCHAR}, #{awg,jdbcType=VARCHAR}, #{azn,jdbcType=VARCHAR}, 
+            #{bam,jdbcType=VARCHAR}, #{bbd,jdbcType=VARCHAR}, #{bdt,jdbcType=VARCHAR}, #{bgn,jdbcType=VARCHAR}, 
+            #{bhd,jdbcType=VARCHAR}, #{bif,jdbcType=VARCHAR}, #{bmd,jdbcType=VARCHAR}, #{bnd,jdbcType=VARCHAR}, 
+            #{bob,jdbcType=VARCHAR}, #{brl,jdbcType=VARCHAR}, #{bsd,jdbcType=VARCHAR}, #{btn,jdbcType=VARCHAR}, 
+            #{bwp,jdbcType=VARCHAR}, #{byr,jdbcType=VARCHAR}, #{bzd,jdbcType=VARCHAR}, #{cad,jdbcType=VARCHAR}, 
+            #{cdf,jdbcType=VARCHAR}, #{chf,jdbcType=VARCHAR}, #{clf,jdbcType=VARCHAR}, #{clp,jdbcType=VARCHAR}, 
+            #{cnh,jdbcType=VARCHAR}, #{cny,jdbcType=VARCHAR}, #{cop,jdbcType=VARCHAR}, #{crc,jdbcType=VARCHAR}, 
+            #{cup,jdbcType=VARCHAR}, #{cve,jdbcType=VARCHAR}, #{czk,jdbcType=VARCHAR}, #{djf,jdbcType=VARCHAR}, 
+            #{dkk,jdbcType=VARCHAR}, #{dop,jdbcType=VARCHAR}, #{dzd,jdbcType=VARCHAR}, #{egp,jdbcType=VARCHAR}, 
+            #{ern,jdbcType=VARCHAR}, #{etb,jdbcType=VARCHAR}, #{eur,jdbcType=VARCHAR}, #{fjd,jdbcType=VARCHAR}, 
+            #{fkp,jdbcType=VARCHAR}, #{gbp,jdbcType=VARCHAR}, #{gel,jdbcType=VARCHAR}, #{ghs,jdbcType=VARCHAR}, 
+            #{gip,jdbcType=VARCHAR}, #{gmd,jdbcType=VARCHAR}, #{gnf,jdbcType=VARCHAR}, #{gtq,jdbcType=VARCHAR}, 
+            #{gyd,jdbcType=VARCHAR}, #{hkd,jdbcType=VARCHAR}, #{hnl,jdbcType=VARCHAR}, #{hrk,jdbcType=VARCHAR}, 
+            #{htg,jdbcType=VARCHAR}, #{huf,jdbcType=VARCHAR}, #{idr,jdbcType=VARCHAR}, #{ils,jdbcType=VARCHAR}, 
+            #{inr,jdbcType=VARCHAR}, #{iqd,jdbcType=VARCHAR}, #{irr,jdbcType=VARCHAR}, #{isk,jdbcType=VARCHAR}, 
+            #{jmd,jdbcType=VARCHAR}, #{jod,jdbcType=VARCHAR}, #{jpy,jdbcType=VARCHAR}, #{kes,jdbcType=VARCHAR}, 
+            #{kgs,jdbcType=VARCHAR}, #{khr,jdbcType=VARCHAR}, #{kmf,jdbcType=VARCHAR}, #{kpw,jdbcType=VARCHAR}, 
+            #{krw,jdbcType=VARCHAR}, #{kwd,jdbcType=VARCHAR}, #{kyd,jdbcType=VARCHAR}, #{kzt,jdbcType=VARCHAR}, 
+            #{lak,jdbcType=VARCHAR}, #{lbp,jdbcType=VARCHAR}, #{lkr,jdbcType=VARCHAR}, #{lrd,jdbcType=VARCHAR}, 
+            #{lsl,jdbcType=VARCHAR}, #{ltl,jdbcType=VARCHAR}, #{lvl,jdbcType=VARCHAR}, #{lyd,jdbcType=VARCHAR}, 
+            #{mad,jdbcType=VARCHAR}, #{mdl,jdbcType=VARCHAR}, #{mga,jdbcType=VARCHAR}, #{mkd,jdbcType=VARCHAR}, 
+            #{mmk,jdbcType=VARCHAR}, #{mnt,jdbcType=VARCHAR}, #{mop,jdbcType=VARCHAR}, #{mro,jdbcType=VARCHAR}, 
+            #{mur,jdbcType=VARCHAR}, #{mvr,jdbcType=VARCHAR}, #{mwk,jdbcType=VARCHAR}, #{mxn,jdbcType=VARCHAR}, 
+            #{myr,jdbcType=VARCHAR}, #{mzn,jdbcType=VARCHAR}, #{nad,jdbcType=VARCHAR}, #{ngn,jdbcType=VARCHAR}, 
+            #{nio,jdbcType=VARCHAR}, #{nok,jdbcType=VARCHAR}, #{npr,jdbcType=VARCHAR}, #{nzd,jdbcType=VARCHAR}, 
+            #{omr,jdbcType=VARCHAR}, #{pab,jdbcType=VARCHAR}, #{pen,jdbcType=VARCHAR}, #{pgk,jdbcType=VARCHAR}, 
+            #{php,jdbcType=VARCHAR}, #{pkr,jdbcType=VARCHAR}, #{pln,jdbcType=VARCHAR}, #{pyg,jdbcType=VARCHAR}, 
+            #{qar,jdbcType=VARCHAR}, #{ron,jdbcType=VARCHAR}, #{rsd,jdbcType=VARCHAR}, #{rub,jdbcType=VARCHAR}, 
+            #{rwf,jdbcType=VARCHAR}, #{sar,jdbcType=VARCHAR}, #{sbd,jdbcType=VARCHAR}, #{scr,jdbcType=VARCHAR}, 
+            #{sdg,jdbcType=VARCHAR}, #{sek,jdbcType=VARCHAR}, #{sgd,jdbcType=VARCHAR}, #{shp,jdbcType=VARCHAR}, 
+            #{sll,jdbcType=VARCHAR}, #{sos,jdbcType=VARCHAR}, #{srd,jdbcType=VARCHAR}, #{stds,jdbcType=VARCHAR}, 
+            #{svc,jdbcType=VARCHAR}, #{syp,jdbcType=VARCHAR}, #{szl,jdbcType=VARCHAR}, #{thb,jdbcType=VARCHAR}, 
+            #{tjs,jdbcType=VARCHAR}, #{tmt,jdbcType=VARCHAR}, #{tnd,jdbcType=VARCHAR}, #{top,jdbcType=VARCHAR}, 
+            #{trys,jdbcType=VARCHAR}, #{ttd,jdbcType=VARCHAR}, #{twd,jdbcType=VARCHAR}, #{tzs,jdbcType=VARCHAR}, 
+            #{uah,jdbcType=VARCHAR}, #{ugx,jdbcType=VARCHAR}, #{usd,jdbcType=VARCHAR}, #{uyu,jdbcType=VARCHAR}, 
+            #{uzs,jdbcType=VARCHAR}, #{vef,jdbcType=VARCHAR}, #{vnd,jdbcType=VARCHAR}, #{vuv,jdbcType=VARCHAR}, 
+            #{wst,jdbcType=VARCHAR}, #{xaf,jdbcType=VARCHAR}, #{xau,jdbcType=VARCHAR}, #{xcd,jdbcType=VARCHAR}, 
+            #{xdr,jdbcType=VARCHAR}, #{xof,jdbcType=VARCHAR}, #{xpf,jdbcType=VARCHAR}, #{yer,jdbcType=VARCHAR}, 
+            #{zar,jdbcType=VARCHAR}, #{zmw,jdbcType=VARCHAR}, #{zwl,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.Rate">
+        insert into tb_rate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="aed != null">
+                AED,
+            </if>
+            <if test="afn != null">
+                AFN,
+            </if>
+            <if test="alls != null">
+                ALLS,
+            </if>
+            <if test="amd != null">
+                AMD,
+            </if>
+            <if test="ang != null">
+                ANG,
+            </if>
+            <if test="aoa != null">
+                AOA,
+            </if>
+            <if test="ars != null">
+                ARS,
+            </if>
+            <if test="aud != null">
+                AUD,
+            </if>
+            <if test="awg != null">
+                AWG,
+            </if>
+            <if test="azn != null">
+                AZN,
+            </if>
+            <if test="bam != null">
+                BAM,
+            </if>
+            <if test="bbd != null">
+                BBD,
+            </if>
+            <if test="bdt != null">
+                BDT,
+            </if>
+            <if test="bgn != null">
+                BGN,
+            </if>
+            <if test="bhd != null">
+                BHD,
+            </if>
+            <if test="bif != null">
+                BIF,
+            </if>
+            <if test="bmd != null">
+                BMD,
+            </if>
+            <if test="bnd != null">
+                BND,
+            </if>
+            <if test="bob != null">
+                BOB,
+            </if>
+            <if test="brl != null">
+                BRL,
+            </if>
+            <if test="bsd != null">
+                BSD,
+            </if>
+            <if test="btn != null">
+                BTN,
+            </if>
+            <if test="bwp != null">
+                BWP,
+            </if>
+            <if test="byr != null">
+                BYR,
+            </if>
+            <if test="bzd != null">
+                BZD,
+            </if>
+            <if test="cad != null">
+                CAD,
+            </if>
+            <if test="cdf != null">
+                CDF,
+            </if>
+            <if test="chf != null">
+                CHF,
+            </if>
+            <if test="clf != null">
+                CLF,
+            </if>
+            <if test="clp != null">
+                CLP,
+            </if>
+            <if test="cnh != null">
+                CNH,
+            </if>
+            <if test="cny != null">
+                CNY,
+            </if>
+            <if test="cop != null">
+                COP,
+            </if>
+            <if test="crc != null">
+                CRC,
+            </if>
+            <if test="cup != null">
+                CUP,
+            </if>
+            <if test="cve != null">
+                CVE,
+            </if>
+            <if test="czk != null">
+                CZK,
+            </if>
+            <if test="djf != null">
+                DJF,
+            </if>
+            <if test="dkk != null">
+                DKK,
+            </if>
+            <if test="dop != null">
+                DOP,
+            </if>
+            <if test="dzd != null">
+                DZD,
+            </if>
+            <if test="egp != null">
+                EGP,
+            </if>
+            <if test="ern != null">
+                ERN,
+            </if>
+            <if test="etb != null">
+                ETB,
+            </if>
+            <if test="eur != null">
+                EUR,
+            </if>
+            <if test="fjd != null">
+                FJD,
+            </if>
+            <if test="fkp != null">
+                FKP,
+            </if>
+            <if test="gbp != null">
+                GBP,
+            </if>
+            <if test="gel != null">
+                GEL,
+            </if>
+            <if test="ghs != null">
+                GHS,
+            </if>
+            <if test="gip != null">
+                GIP,
+            </if>
+            <if test="gmd != null">
+                GMD,
+            </if>
+            <if test="gnf != null">
+                GNF,
+            </if>
+            <if test="gtq != null">
+                GTQ,
+            </if>
+            <if test="gyd != null">
+                GYD,
+            </if>
+            <if test="hkd != null">
+                HKD,
+            </if>
+            <if test="hnl != null">
+                HNL,
+            </if>
+            <if test="hrk != null">
+                HRK,
+            </if>
+            <if test="htg != null">
+                HTG,
+            </if>
+            <if test="huf != null">
+                HUF,
+            </if>
+            <if test="idr != null">
+                IDR,
+            </if>
+            <if test="ils != null">
+                ILS,
+            </if>
+            <if test="inr != null">
+                INR,
+            </if>
+            <if test="iqd != null">
+                IQD,
+            </if>
+            <if test="irr != null">
+                IRR,
+            </if>
+            <if test="isk != null">
+                ISK,
+            </if>
+            <if test="jmd != null">
+                JMD,
+            </if>
+            <if test="jod != null">
+                JOD,
+            </if>
+            <if test="jpy != null">
+                JPY,
+            </if>
+            <if test="kes != null">
+                KES,
+            </if>
+            <if test="kgs != null">
+                KGS,
+            </if>
+            <if test="khr != null">
+                KHR,
+            </if>
+            <if test="kmf != null">
+                KMF,
+            </if>
+            <if test="kpw != null">
+                KPW,
+            </if>
+            <if test="krw != null">
+                KRW,
+            </if>
+            <if test="kwd != null">
+                KWD,
+            </if>
+            <if test="kyd != null">
+                KYD,
+            </if>
+            <if test="kzt != null">
+                KZT,
+            </if>
+            <if test="lak != null">
+                LAK,
+            </if>
+            <if test="lbp != null">
+                LBP,
+            </if>
+            <if test="lkr != null">
+                LKR,
+            </if>
+            <if test="lrd != null">
+                LRD,
+            </if>
+            <if test="lsl != null">
+                LSL,
+            </if>
+            <if test="ltl != null">
+                LTL,
+            </if>
+            <if test="lvl != null">
+                LVL,
+            </if>
+            <if test="lyd != null">
+                LYD,
+            </if>
+            <if test="mad != null">
+                MAD,
+            </if>
+            <if test="mdl != null">
+                MDL,
+            </if>
+            <if test="mga != null">
+                MGA,
+            </if>
+            <if test="mkd != null">
+                MKD,
+            </if>
+            <if test="mmk != null">
+                MMK,
+            </if>
+            <if test="mnt != null">
+                MNT,
+            </if>
+            <if test="mop != null">
+                MOP,
+            </if>
+            <if test="mro != null">
+                MRO,
+            </if>
+            <if test="mur != null">
+                MUR,
+            </if>
+            <if test="mvr != null">
+                MVR,
+            </if>
+            <if test="mwk != null">
+                MWK,
+            </if>
+            <if test="mxn != null">
+                MXN,
+            </if>
+            <if test="myr != null">
+                MYR,
+            </if>
+            <if test="mzn != null">
+                MZN,
+            </if>
+            <if test="nad != null">
+                NAD,
+            </if>
+            <if test="ngn != null">
+                NGN,
+            </if>
+            <if test="nio != null">
+                NIO,
+            </if>
+            <if test="nok != null">
+                NOK,
+            </if>
+            <if test="npr != null">
+                NPR,
+            </if>
+            <if test="nzd != null">
+                NZD,
+            </if>
+            <if test="omr != null">
+                OMR,
+            </if>
+            <if test="pab != null">
+                PAB,
+            </if>
+            <if test="pen != null">
+                PEN,
+            </if>
+            <if test="pgk != null">
+                PGK,
+            </if>
+            <if test="php != null">
+                PHP,
+            </if>
+            <if test="pkr != null">
+                PKR,
+            </if>
+            <if test="pln != null">
+                PLN,
+            </if>
+            <if test="pyg != null">
+                PYG,
+            </if>
+            <if test="qar != null">
+                QAR,
+            </if>
+            <if test="ron != null">
+                RON,
+            </if>
+            <if test="rsd != null">
+                RSD,
+            </if>
+            <if test="rub != null">
+                RUB,
+            </if>
+            <if test="rwf != null">
+                RWF,
+            </if>
+            <if test="sar != null">
+                SAR,
+            </if>
+            <if test="sbd != null">
+                SBD,
+            </if>
+            <if test="scr != null">
+                SCR,
+            </if>
+            <if test="sdg != null">
+                SDG,
+            </if>
+            <if test="sek != null">
+                SEK,
+            </if>
+            <if test="sgd != null">
+                SGD,
+            </if>
+            <if test="shp != null">
+                SHP,
+            </if>
+            <if test="sll != null">
+                SLL,
+            </if>
+            <if test="sos != null">
+                SOS,
+            </if>
+            <if test="srd != null">
+                SRD,
+            </if>
+            <if test="stds != null">
+                STDS,
+            </if>
+            <if test="svc != null">
+                SVC,
+            </if>
+            <if test="syp != null">
+                SYP,
+            </if>
+            <if test="szl != null">
+                SZL,
+            </if>
+            <if test="thb != null">
+                THB,
+            </if>
+            <if test="tjs != null">
+                TJS,
+            </if>
+            <if test="tmt != null">
+                TMT,
+            </if>
+            <if test="tnd != null">
+                TND,
+            </if>
+            <if test="top != null">
+                TOP,
+            </if>
+            <if test="trys != null">
+                TRYS,
+            </if>
+            <if test="ttd != null">
+                TTD,
+            </if>
+            <if test="twd != null">
+                TWD,
+            </if>
+            <if test="tzs != null">
+                TZS,
+            </if>
+            <if test="uah != null">
+                UAH,
+            </if>
+            <if test="ugx != null">
+                UGX,
+            </if>
+            <if test="usd != null">
+                USD,
+            </if>
+            <if test="uyu != null">
+                UYU,
+            </if>
+            <if test="uzs != null">
+                UZS,
+            </if>
+            <if test="vef != null">
+                VEF,
+            </if>
+            <if test="vnd != null">
+                VND,
+            </if>
+            <if test="vuv != null">
+                VUV,
+            </if>
+            <if test="wst != null">
+                WST,
+            </if>
+            <if test="xaf != null">
+                XAF,
+            </if>
+            <if test="xau != null">
+                XAU,
+            </if>
+            <if test="xcd != null">
+                XCD,
+            </if>
+            <if test="xdr != null">
+                XDR,
+            </if>
+            <if test="xof != null">
+                XOF,
+            </if>
+            <if test="xpf != null">
+                XPF,
+            </if>
+            <if test="yer != null">
+                YER,
+            </if>
+            <if test="zar != null">
+                ZAR,
+            </if>
+            <if test="zmw != null">
+                ZMW,
+            </if>
+            <if test="zwl != null">
+                ZWL,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="aed != null">
+                #{aed,jdbcType=VARCHAR},
+            </if>
+            <if test="afn != null">
+                #{afn,jdbcType=VARCHAR},
+            </if>
+            <if test="alls != null">
+                #{alls,jdbcType=VARCHAR},
+            </if>
+            <if test="amd != null">
+                #{amd,jdbcType=VARCHAR},
+            </if>
+            <if test="ang != null">
+                #{ang,jdbcType=VARCHAR},
+            </if>
+            <if test="aoa != null">
+                #{aoa,jdbcType=VARCHAR},
+            </if>
+            <if test="ars != null">
+                #{ars,jdbcType=VARCHAR},
+            </if>
+            <if test="aud != null">
+                #{aud,jdbcType=VARCHAR},
+            </if>
+            <if test="awg != null">
+                #{awg,jdbcType=VARCHAR},
+            </if>
+            <if test="azn != null">
+                #{azn,jdbcType=VARCHAR},
+            </if>
+            <if test="bam != null">
+                #{bam,jdbcType=VARCHAR},
+            </if>
+            <if test="bbd != null">
+                #{bbd,jdbcType=VARCHAR},
+            </if>
+            <if test="bdt != null">
+                #{bdt,jdbcType=VARCHAR},
+            </if>
+            <if test="bgn != null">
+                #{bgn,jdbcType=VARCHAR},
+            </if>
+            <if test="bhd != null">
+                #{bhd,jdbcType=VARCHAR},
+            </if>
+            <if test="bif != null">
+                #{bif,jdbcType=VARCHAR},
+            </if>
+            <if test="bmd != null">
+                #{bmd,jdbcType=VARCHAR},
+            </if>
+            <if test="bnd != null">
+                #{bnd,jdbcType=VARCHAR},
+            </if>
+            <if test="bob != null">
+                #{bob,jdbcType=VARCHAR},
+            </if>
+            <if test="brl != null">
+                #{brl,jdbcType=VARCHAR},
+            </if>
+            <if test="bsd != null">
+                #{bsd,jdbcType=VARCHAR},
+            </if>
+            <if test="btn != null">
+                #{btn,jdbcType=VARCHAR},
+            </if>
+            <if test="bwp != null">
+                #{bwp,jdbcType=VARCHAR},
+            </if>
+            <if test="byr != null">
+                #{byr,jdbcType=VARCHAR},
+            </if>
+            <if test="bzd != null">
+                #{bzd,jdbcType=VARCHAR},
+            </if>
+            <if test="cad != null">
+                #{cad,jdbcType=VARCHAR},
+            </if>
+            <if test="cdf != null">
+                #{cdf,jdbcType=VARCHAR},
+            </if>
+            <if test="chf != null">
+                #{chf,jdbcType=VARCHAR},
+            </if>
+            <if test="clf != null">
+                #{clf,jdbcType=VARCHAR},
+            </if>
+            <if test="clp != null">
+                #{clp,jdbcType=VARCHAR},
+            </if>
+            <if test="cnh != null">
+                #{cnh,jdbcType=VARCHAR},
+            </if>
+            <if test="cny != null">
+                #{cny,jdbcType=VARCHAR},
+            </if>
+            <if test="cop != null">
+                #{cop,jdbcType=VARCHAR},
+            </if>
+            <if test="crc != null">
+                #{crc,jdbcType=VARCHAR},
+            </if>
+            <if test="cup != null">
+                #{cup,jdbcType=VARCHAR},
+            </if>
+            <if test="cve != null">
+                #{cve,jdbcType=VARCHAR},
+            </if>
+            <if test="czk != null">
+                #{czk,jdbcType=VARCHAR},
+            </if>
+            <if test="djf != null">
+                #{djf,jdbcType=VARCHAR},
+            </if>
+            <if test="dkk != null">
+                #{dkk,jdbcType=VARCHAR},
+            </if>
+            <if test="dop != null">
+                #{dop,jdbcType=VARCHAR},
+            </if>
+            <if test="dzd != null">
+                #{dzd,jdbcType=VARCHAR},
+            </if>
+            <if test="egp != null">
+                #{egp,jdbcType=VARCHAR},
+            </if>
+            <if test="ern != null">
+                #{ern,jdbcType=VARCHAR},
+            </if>
+            <if test="etb != null">
+                #{etb,jdbcType=VARCHAR},
+            </if>
+            <if test="eur != null">
+                #{eur,jdbcType=VARCHAR},
+            </if>
+            <if test="fjd != null">
+                #{fjd,jdbcType=VARCHAR},
+            </if>
+            <if test="fkp != null">
+                #{fkp,jdbcType=VARCHAR},
+            </if>
+            <if test="gbp != null">
+                #{gbp,jdbcType=VARCHAR},
+            </if>
+            <if test="gel != null">
+                #{gel,jdbcType=VARCHAR},
+            </if>
+            <if test="ghs != null">
+                #{ghs,jdbcType=VARCHAR},
+            </if>
+            <if test="gip != null">
+                #{gip,jdbcType=VARCHAR},
+            </if>
+            <if test="gmd != null">
+                #{gmd,jdbcType=VARCHAR},
+            </if>
+            <if test="gnf != null">
+                #{gnf,jdbcType=VARCHAR},
+            </if>
+            <if test="gtq != null">
+                #{gtq,jdbcType=VARCHAR},
+            </if>
+            <if test="gyd != null">
+                #{gyd,jdbcType=VARCHAR},
+            </if>
+            <if test="hkd != null">
+                #{hkd,jdbcType=VARCHAR},
+            </if>
+            <if test="hnl != null">
+                #{hnl,jdbcType=VARCHAR},
+            </if>
+            <if test="hrk != null">
+                #{hrk,jdbcType=VARCHAR},
+            </if>
+            <if test="htg != null">
+                #{htg,jdbcType=VARCHAR},
+            </if>
+            <if test="huf != null">
+                #{huf,jdbcType=VARCHAR},
+            </if>
+            <if test="idr != null">
+                #{idr,jdbcType=VARCHAR},
+            </if>
+            <if test="ils != null">
+                #{ils,jdbcType=VARCHAR},
+            </if>
+            <if test="inr != null">
+                #{inr,jdbcType=VARCHAR},
+            </if>
+            <if test="iqd != null">
+                #{iqd,jdbcType=VARCHAR},
+            </if>
+            <if test="irr != null">
+                #{irr,jdbcType=VARCHAR},
+            </if>
+            <if test="isk != null">
+                #{isk,jdbcType=VARCHAR},
+            </if>
+            <if test="jmd != null">
+                #{jmd,jdbcType=VARCHAR},
+            </if>
+            <if test="jod != null">
+                #{jod,jdbcType=VARCHAR},
+            </if>
+            <if test="jpy != null">
+                #{jpy,jdbcType=VARCHAR},
+            </if>
+            <if test="kes != null">
+                #{kes,jdbcType=VARCHAR},
+            </if>
+            <if test="kgs != null">
+                #{kgs,jdbcType=VARCHAR},
+            </if>
+            <if test="khr != null">
+                #{khr,jdbcType=VARCHAR},
+            </if>
+            <if test="kmf != null">
+                #{kmf,jdbcType=VARCHAR},
+            </if>
+            <if test="kpw != null">
+                #{kpw,jdbcType=VARCHAR},
+            </if>
+            <if test="krw != null">
+                #{krw,jdbcType=VARCHAR},
+            </if>
+            <if test="kwd != null">
+                #{kwd,jdbcType=VARCHAR},
+            </if>
+            <if test="kyd != null">
+                #{kyd,jdbcType=VARCHAR},
+            </if>
+            <if test="kzt != null">
+                #{kzt,jdbcType=VARCHAR},
+            </if>
+            <if test="lak != null">
+                #{lak,jdbcType=VARCHAR},
+            </if>
+            <if test="lbp != null">
+                #{lbp,jdbcType=VARCHAR},
+            </if>
+            <if test="lkr != null">
+                #{lkr,jdbcType=VARCHAR},
+            </if>
+            <if test="lrd != null">
+                #{lrd,jdbcType=VARCHAR},
+            </if>
+            <if test="lsl != null">
+                #{lsl,jdbcType=VARCHAR},
+            </if>
+            <if test="ltl != null">
+                #{ltl,jdbcType=VARCHAR},
+            </if>
+            <if test="lvl != null">
+                #{lvl,jdbcType=VARCHAR},
+            </if>
+            <if test="lyd != null">
+                #{lyd,jdbcType=VARCHAR},
+            </if>
+            <if test="mad != null">
+                #{mad,jdbcType=VARCHAR},
+            </if>
+            <if test="mdl != null">
+                #{mdl,jdbcType=VARCHAR},
+            </if>
+            <if test="mga != null">
+                #{mga,jdbcType=VARCHAR},
+            </if>
+            <if test="mkd != null">
+                #{mkd,jdbcType=VARCHAR},
+            </if>
+            <if test="mmk != null">
+                #{mmk,jdbcType=VARCHAR},
+            </if>
+            <if test="mnt != null">
+                #{mnt,jdbcType=VARCHAR},
+            </if>
+            <if test="mop != null">
+                #{mop,jdbcType=VARCHAR},
+            </if>
+            <if test="mro != null">
+                #{mro,jdbcType=VARCHAR},
+            </if>
+            <if test="mur != null">
+                #{mur,jdbcType=VARCHAR},
+            </if>
+            <if test="mvr != null">
+                #{mvr,jdbcType=VARCHAR},
+            </if>
+            <if test="mwk != null">
+                #{mwk,jdbcType=VARCHAR},
+            </if>
+            <if test="mxn != null">
+                #{mxn,jdbcType=VARCHAR},
+            </if>
+            <if test="myr != null">
+                #{myr,jdbcType=VARCHAR},
+            </if>
+            <if test="mzn != null">
+                #{mzn,jdbcType=VARCHAR},
+            </if>
+            <if test="nad != null">
+                #{nad,jdbcType=VARCHAR},
+            </if>
+            <if test="ngn != null">
+                #{ngn,jdbcType=VARCHAR},
+            </if>
+            <if test="nio != null">
+                #{nio,jdbcType=VARCHAR},
+            </if>
+            <if test="nok != null">
+                #{nok,jdbcType=VARCHAR},
+            </if>
+            <if test="npr != null">
+                #{npr,jdbcType=VARCHAR},
+            </if>
+            <if test="nzd != null">
+                #{nzd,jdbcType=VARCHAR},
+            </if>
+            <if test="omr != null">
+                #{omr,jdbcType=VARCHAR},
+            </if>
+            <if test="pab != null">
+                #{pab,jdbcType=VARCHAR},
+            </if>
+            <if test="pen != null">
+                #{pen,jdbcType=VARCHAR},
+            </if>
+            <if test="pgk != null">
+                #{pgk,jdbcType=VARCHAR},
+            </if>
+            <if test="php != null">
+                #{php,jdbcType=VARCHAR},
+            </if>
+            <if test="pkr != null">
+                #{pkr,jdbcType=VARCHAR},
+            </if>
+            <if test="pln != null">
+                #{pln,jdbcType=VARCHAR},
+            </if>
+            <if test="pyg != null">
+                #{pyg,jdbcType=VARCHAR},
+            </if>
+            <if test="qar != null">
+                #{qar,jdbcType=VARCHAR},
+            </if>
+            <if test="ron != null">
+                #{ron,jdbcType=VARCHAR},
+            </if>
+            <if test="rsd != null">
+                #{rsd,jdbcType=VARCHAR},
+            </if>
+            <if test="rub != null">
+                #{rub,jdbcType=VARCHAR},
+            </if>
+            <if test="rwf != null">
+                #{rwf,jdbcType=VARCHAR},
+            </if>
+            <if test="sar != null">
+                #{sar,jdbcType=VARCHAR},
+            </if>
+            <if test="sbd != null">
+                #{sbd,jdbcType=VARCHAR},
+            </if>
+            <if test="scr != null">
+                #{scr,jdbcType=VARCHAR},
+            </if>
+            <if test="sdg != null">
+                #{sdg,jdbcType=VARCHAR},
+            </if>
+            <if test="sek != null">
+                #{sek,jdbcType=VARCHAR},
+            </if>
+            <if test="sgd != null">
+                #{sgd,jdbcType=VARCHAR},
+            </if>
+            <if test="shp != null">
+                #{shp,jdbcType=VARCHAR},
+            </if>
+            <if test="sll != null">
+                #{sll,jdbcType=VARCHAR},
+            </if>
+            <if test="sos != null">
+                #{sos,jdbcType=VARCHAR},
+            </if>
+            <if test="srd != null">
+                #{srd,jdbcType=VARCHAR},
+            </if>
+            <if test="stds != null">
+                #{stds,jdbcType=VARCHAR},
+            </if>
+            <if test="svc != null">
+                #{svc,jdbcType=VARCHAR},
+            </if>
+            <if test="syp != null">
+                #{syp,jdbcType=VARCHAR},
+            </if>
+            <if test="szl != null">
+                #{szl,jdbcType=VARCHAR},
+            </if>
+            <if test="thb != null">
+                #{thb,jdbcType=VARCHAR},
+            </if>
+            <if test="tjs != null">
+                #{tjs,jdbcType=VARCHAR},
+            </if>
+            <if test="tmt != null">
+                #{tmt,jdbcType=VARCHAR},
+            </if>
+            <if test="tnd != null">
+                #{tnd,jdbcType=VARCHAR},
+            </if>
+            <if test="top != null">
+                #{top,jdbcType=VARCHAR},
+            </if>
+            <if test="trys != null">
+                #{trys,jdbcType=VARCHAR},
+            </if>
+            <if test="ttd != null">
+                #{ttd,jdbcType=VARCHAR},
+            </if>
+            <if test="twd != null">
+                #{twd,jdbcType=VARCHAR},
+            </if>
+            <if test="tzs != null">
+                #{tzs,jdbcType=VARCHAR},
+            </if>
+            <if test="uah != null">
+                #{uah,jdbcType=VARCHAR},
+            </if>
+            <if test="ugx != null">
+                #{ugx,jdbcType=VARCHAR},
+            </if>
+            <if test="usd != null">
+                #{usd,jdbcType=VARCHAR},
+            </if>
+            <if test="uyu != null">
+                #{uyu,jdbcType=VARCHAR},
+            </if>
+            <if test="uzs != null">
+                #{uzs,jdbcType=VARCHAR},
+            </if>
+            <if test="vef != null">
+                #{vef,jdbcType=VARCHAR},
+            </if>
+            <if test="vnd != null">
+                #{vnd,jdbcType=VARCHAR},
+            </if>
+            <if test="vuv != null">
+                #{vuv,jdbcType=VARCHAR},
+            </if>
+            <if test="wst != null">
+                #{wst,jdbcType=VARCHAR},
+            </if>
+            <if test="xaf != null">
+                #{xaf,jdbcType=VARCHAR},
+            </if>
+            <if test="xau != null">
+                #{xau,jdbcType=VARCHAR},
+            </if>
+            <if test="xcd != null">
+                #{xcd,jdbcType=VARCHAR},
+            </if>
+            <if test="xdr != null">
+                #{xdr,jdbcType=VARCHAR},
+            </if>
+            <if test="xof != null">
+                #{xof,jdbcType=VARCHAR},
+            </if>
+            <if test="xpf != null">
+                #{xpf,jdbcType=VARCHAR},
+            </if>
+            <if test="yer != null">
+                #{yer,jdbcType=VARCHAR},
+            </if>
+            <if test="zar != null">
+                #{zar,jdbcType=VARCHAR},
+            </if>
+            <if test="zmw != null">
+                #{zmw,jdbcType=VARCHAR},
+            </if>
+            <if test="zwl != null">
+                #{zwl,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.Rate">
+        update tb_rate
+        <set>
+            <if test="aed != null">
+                AED = #{aed,jdbcType=VARCHAR},
+            </if>
+            <if test="afn != null">
+                AFN = #{afn,jdbcType=VARCHAR},
+            </if>
+            <if test="alls != null">
+                ALLS = #{alls,jdbcType=VARCHAR},
+            </if>
+            <if test="amd != null">
+                AMD = #{amd,jdbcType=VARCHAR},
+            </if>
+            <if test="ang != null">
+                ANG = #{ang,jdbcType=VARCHAR},
+            </if>
+            <if test="aoa != null">
+                AOA = #{aoa,jdbcType=VARCHAR},
+            </if>
+            <if test="ars != null">
+                ARS = #{ars,jdbcType=VARCHAR},
+            </if>
+            <if test="aud != null">
+                AUD = #{aud,jdbcType=VARCHAR},
+            </if>
+            <if test="awg != null">
+                AWG = #{awg,jdbcType=VARCHAR},
+            </if>
+            <if test="azn != null">
+                AZN = #{azn,jdbcType=VARCHAR},
+            </if>
+            <if test="bam != null">
+                BAM = #{bam,jdbcType=VARCHAR},
+            </if>
+            <if test="bbd != null">
+                BBD = #{bbd,jdbcType=VARCHAR},
+            </if>
+            <if test="bdt != null">
+                BDT = #{bdt,jdbcType=VARCHAR},
+            </if>
+            <if test="bgn != null">
+                BGN = #{bgn,jdbcType=VARCHAR},
+            </if>
+            <if test="bhd != null">
+                BHD = #{bhd,jdbcType=VARCHAR},
+            </if>
+            <if test="bif != null">
+                BIF = #{bif,jdbcType=VARCHAR},
+            </if>
+            <if test="bmd != null">
+                BMD = #{bmd,jdbcType=VARCHAR},
+            </if>
+            <if test="bnd != null">
+                BND = #{bnd,jdbcType=VARCHAR},
+            </if>
+            <if test="bob != null">
+                BOB = #{bob,jdbcType=VARCHAR},
+            </if>
+            <if test="brl != null">
+                BRL = #{brl,jdbcType=VARCHAR},
+            </if>
+            <if test="bsd != null">
+                BSD = #{bsd,jdbcType=VARCHAR},
+            </if>
+            <if test="btn != null">
+                BTN = #{btn,jdbcType=VARCHAR},
+            </if>
+            <if test="bwp != null">
+                BWP = #{bwp,jdbcType=VARCHAR},
+            </if>
+            <if test="byr != null">
+                BYR = #{byr,jdbcType=VARCHAR},
+            </if>
+            <if test="bzd != null">
+                BZD = #{bzd,jdbcType=VARCHAR},
+            </if>
+            <if test="cad != null">
+                CAD = #{cad,jdbcType=VARCHAR},
+            </if>
+            <if test="cdf != null">
+                CDF = #{cdf,jdbcType=VARCHAR},
+            </if>
+            <if test="chf != null">
+                CHF = #{chf,jdbcType=VARCHAR},
+            </if>
+            <if test="clf != null">
+                CLF = #{clf,jdbcType=VARCHAR},
+            </if>
+            <if test="clp != null">
+                CLP = #{clp,jdbcType=VARCHAR},
+            </if>
+            <if test="cnh != null">
+                CNH = #{cnh,jdbcType=VARCHAR},
+            </if>
+            <if test="cny != null">
+                CNY = #{cny,jdbcType=VARCHAR},
+            </if>
+            <if test="cop != null">
+                COP = #{cop,jdbcType=VARCHAR},
+            </if>
+            <if test="crc != null">
+                CRC = #{crc,jdbcType=VARCHAR},
+            </if>
+            <if test="cup != null">
+                CUP = #{cup,jdbcType=VARCHAR},
+            </if>
+            <if test="cve != null">
+                CVE = #{cve,jdbcType=VARCHAR},
+            </if>
+            <if test="czk != null">
+                CZK = #{czk,jdbcType=VARCHAR},
+            </if>
+            <if test="djf != null">
+                DJF = #{djf,jdbcType=VARCHAR},
+            </if>
+            <if test="dkk != null">
+                DKK = #{dkk,jdbcType=VARCHAR},
+            </if>
+            <if test="dop != null">
+                DOP = #{dop,jdbcType=VARCHAR},
+            </if>
+            <if test="dzd != null">
+                DZD = #{dzd,jdbcType=VARCHAR},
+            </if>
+            <if test="egp != null">
+                EGP = #{egp,jdbcType=VARCHAR},
+            </if>
+            <if test="ern != null">
+                ERN = #{ern,jdbcType=VARCHAR},
+            </if>
+            <if test="etb != null">
+                ETB = #{etb,jdbcType=VARCHAR},
+            </if>
+            <if test="eur != null">
+                EUR = #{eur,jdbcType=VARCHAR},
+            </if>
+            <if test="fjd != null">
+                FJD = #{fjd,jdbcType=VARCHAR},
+            </if>
+            <if test="fkp != null">
+                FKP = #{fkp,jdbcType=VARCHAR},
+            </if>
+            <if test="gbp != null">
+                GBP = #{gbp,jdbcType=VARCHAR},
+            </if>
+            <if test="gel != null">
+                GEL = #{gel,jdbcType=VARCHAR},
+            </if>
+            <if test="ghs != null">
+                GHS = #{ghs,jdbcType=VARCHAR},
+            </if>
+            <if test="gip != null">
+                GIP = #{gip,jdbcType=VARCHAR},
+            </if>
+            <if test="gmd != null">
+                GMD = #{gmd,jdbcType=VARCHAR},
+            </if>
+            <if test="gnf != null">
+                GNF = #{gnf,jdbcType=VARCHAR},
+            </if>
+            <if test="gtq != null">
+                GTQ = #{gtq,jdbcType=VARCHAR},
+            </if>
+            <if test="gyd != null">
+                GYD = #{gyd,jdbcType=VARCHAR},
+            </if>
+            <if test="hkd != null">
+                HKD = #{hkd,jdbcType=VARCHAR},
+            </if>
+            <if test="hnl != null">
+                HNL = #{hnl,jdbcType=VARCHAR},
+            </if>
+            <if test="hrk != null">
+                HRK = #{hrk,jdbcType=VARCHAR},
+            </if>
+            <if test="htg != null">
+                HTG = #{htg,jdbcType=VARCHAR},
+            </if>
+            <if test="huf != null">
+                HUF = #{huf,jdbcType=VARCHAR},
+            </if>
+            <if test="idr != null">
+                IDR = #{idr,jdbcType=VARCHAR},
+            </if>
+            <if test="ils != null">
+                ILS = #{ils,jdbcType=VARCHAR},
+            </if>
+            <if test="inr != null">
+                INR = #{inr,jdbcType=VARCHAR},
+            </if>
+            <if test="iqd != null">
+                IQD = #{iqd,jdbcType=VARCHAR},
+            </if>
+            <if test="irr != null">
+                IRR = #{irr,jdbcType=VARCHAR},
+            </if>
+            <if test="isk != null">
+                ISK = #{isk,jdbcType=VARCHAR},
+            </if>
+            <if test="jmd != null">
+                JMD = #{jmd,jdbcType=VARCHAR},
+            </if>
+            <if test="jod != null">
+                JOD = #{jod,jdbcType=VARCHAR},
+            </if>
+            <if test="jpy != null">
+                JPY = #{jpy,jdbcType=VARCHAR},
+            </if>
+            <if test="kes != null">
+                KES = #{kes,jdbcType=VARCHAR},
+            </if>
+            <if test="kgs != null">
+                KGS = #{kgs,jdbcType=VARCHAR},
+            </if>
+            <if test="khr != null">
+                KHR = #{khr,jdbcType=VARCHAR},
+            </if>
+            <if test="kmf != null">
+                KMF = #{kmf,jdbcType=VARCHAR},
+            </if>
+            <if test="kpw != null">
+                KPW = #{kpw,jdbcType=VARCHAR},
+            </if>
+            <if test="krw != null">
+                KRW = #{krw,jdbcType=VARCHAR},
+            </if>
+            <if test="kwd != null">
+                KWD = #{kwd,jdbcType=VARCHAR},
+            </if>
+            <if test="kyd != null">
+                KYD = #{kyd,jdbcType=VARCHAR},
+            </if>
+            <if test="kzt != null">
+                KZT = #{kzt,jdbcType=VARCHAR},
+            </if>
+            <if test="lak != null">
+                LAK = #{lak,jdbcType=VARCHAR},
+            </if>
+            <if test="lbp != null">
+                LBP = #{lbp,jdbcType=VARCHAR},
+            </if>
+            <if test="lkr != null">
+                LKR = #{lkr,jdbcType=VARCHAR},
+            </if>
+            <if test="lrd != null">
+                LRD = #{lrd,jdbcType=VARCHAR},
+            </if>
+            <if test="lsl != null">
+                LSL = #{lsl,jdbcType=VARCHAR},
+            </if>
+            <if test="ltl != null">
+                LTL = #{ltl,jdbcType=VARCHAR},
+            </if>
+            <if test="lvl != null">
+                LVL = #{lvl,jdbcType=VARCHAR},
+            </if>
+            <if test="lyd != null">
+                LYD = #{lyd,jdbcType=VARCHAR},
+            </if>
+            <if test="mad != null">
+                MAD = #{mad,jdbcType=VARCHAR},
+            </if>
+            <if test="mdl != null">
+                MDL = #{mdl,jdbcType=VARCHAR},
+            </if>
+            <if test="mga != null">
+                MGA = #{mga,jdbcType=VARCHAR},
+            </if>
+            <if test="mkd != null">
+                MKD = #{mkd,jdbcType=VARCHAR},
+            </if>
+            <if test="mmk != null">
+                MMK = #{mmk,jdbcType=VARCHAR},
+            </if>
+            <if test="mnt != null">
+                MNT = #{mnt,jdbcType=VARCHAR},
+            </if>
+            <if test="mop != null">
+                MOP = #{mop,jdbcType=VARCHAR},
+            </if>
+            <if test="mro != null">
+                MRO = #{mro,jdbcType=VARCHAR},
+            </if>
+            <if test="mur != null">
+                MUR = #{mur,jdbcType=VARCHAR},
+            </if>
+            <if test="mvr != null">
+                MVR = #{mvr,jdbcType=VARCHAR},
+            </if>
+            <if test="mwk != null">
+                MWK = #{mwk,jdbcType=VARCHAR},
+            </if>
+            <if test="mxn != null">
+                MXN = #{mxn,jdbcType=VARCHAR},
+            </if>
+            <if test="myr != null">
+                MYR = #{myr,jdbcType=VARCHAR},
+            </if>
+            <if test="mzn != null">
+                MZN = #{mzn,jdbcType=VARCHAR},
+            </if>
+            <if test="nad != null">
+                NAD = #{nad,jdbcType=VARCHAR},
+            </if>
+            <if test="ngn != null">
+                NGN = #{ngn,jdbcType=VARCHAR},
+            </if>
+            <if test="nio != null">
+                NIO = #{nio,jdbcType=VARCHAR},
+            </if>
+            <if test="nok != null">
+                NOK = #{nok,jdbcType=VARCHAR},
+            </if>
+            <if test="npr != null">
+                NPR = #{npr,jdbcType=VARCHAR},
+            </if>
+            <if test="nzd != null">
+                NZD = #{nzd,jdbcType=VARCHAR},
+            </if>
+            <if test="omr != null">
+                OMR = #{omr,jdbcType=VARCHAR},
+            </if>
+            <if test="pab != null">
+                PAB = #{pab,jdbcType=VARCHAR},
+            </if>
+            <if test="pen != null">
+                PEN = #{pen,jdbcType=VARCHAR},
+            </if>
+            <if test="pgk != null">
+                PGK = #{pgk,jdbcType=VARCHAR},
+            </if>
+            <if test="php != null">
+                PHP = #{php,jdbcType=VARCHAR},
+            </if>
+            <if test="pkr != null">
+                PKR = #{pkr,jdbcType=VARCHAR},
+            </if>
+            <if test="pln != null">
+                PLN = #{pln,jdbcType=VARCHAR},
+            </if>
+            <if test="pyg != null">
+                PYG = #{pyg,jdbcType=VARCHAR},
+            </if>
+            <if test="qar != null">
+                QAR = #{qar,jdbcType=VARCHAR},
+            </if>
+            <if test="ron != null">
+                RON = #{ron,jdbcType=VARCHAR},
+            </if>
+            <if test="rsd != null">
+                RSD = #{rsd,jdbcType=VARCHAR},
+            </if>
+            <if test="rub != null">
+                RUB = #{rub,jdbcType=VARCHAR},
+            </if>
+            <if test="rwf != null">
+                RWF = #{rwf,jdbcType=VARCHAR},
+            </if>
+            <if test="sar != null">
+                SAR = #{sar,jdbcType=VARCHAR},
+            </if>
+            <if test="sbd != null">
+                SBD = #{sbd,jdbcType=VARCHAR},
+            </if>
+            <if test="scr != null">
+                SCR = #{scr,jdbcType=VARCHAR},
+            </if>
+            <if test="sdg != null">
+                SDG = #{sdg,jdbcType=VARCHAR},
+            </if>
+            <if test="sek != null">
+                SEK = #{sek,jdbcType=VARCHAR},
+            </if>
+            <if test="sgd != null">
+                SGD = #{sgd,jdbcType=VARCHAR},
+            </if>
+            <if test="shp != null">
+                SHP = #{shp,jdbcType=VARCHAR},
+            </if>
+            <if test="sll != null">
+                SLL = #{sll,jdbcType=VARCHAR},
+            </if>
+            <if test="sos != null">
+                SOS = #{sos,jdbcType=VARCHAR},
+            </if>
+            <if test="srd != null">
+                SRD = #{srd,jdbcType=VARCHAR},
+            </if>
+            <if test="stds != null">
+                STDS = #{stds,jdbcType=VARCHAR},
+            </if>
+            <if test="svc != null">
+                SVC = #{svc,jdbcType=VARCHAR},
+            </if>
+            <if test="syp != null">
+                SYP = #{syp,jdbcType=VARCHAR},
+            </if>
+            <if test="szl != null">
+                SZL = #{szl,jdbcType=VARCHAR},
+            </if>
+            <if test="thb != null">
+                THB = #{thb,jdbcType=VARCHAR},
+            </if>
+            <if test="tjs != null">
+                TJS = #{tjs,jdbcType=VARCHAR},
+            </if>
+            <if test="tmt != null">
+                TMT = #{tmt,jdbcType=VARCHAR},
+            </if>
+            <if test="tnd != null">
+                TND = #{tnd,jdbcType=VARCHAR},
+            </if>
+            <if test="top != null">
+                TOP = #{top,jdbcType=VARCHAR},
+            </if>
+            <if test="trys != null">
+                TRYS = #{trys,jdbcType=VARCHAR},
+            </if>
+            <if test="ttd != null">
+                TTD = #{ttd,jdbcType=VARCHAR},
+            </if>
+            <if test="twd != null">
+                TWD = #{twd,jdbcType=VARCHAR},
+            </if>
+            <if test="tzs != null">
+                TZS = #{tzs,jdbcType=VARCHAR},
+            </if>
+            <if test="uah != null">
+                UAH = #{uah,jdbcType=VARCHAR},
+            </if>
+            <if test="ugx != null">
+                UGX = #{ugx,jdbcType=VARCHAR},
+            </if>
+            <if test="usd != null">
+                USD = #{usd,jdbcType=VARCHAR},
+            </if>
+            <if test="uyu != null">
+                UYU = #{uyu,jdbcType=VARCHAR},
+            </if>
+            <if test="uzs != null">
+                UZS = #{uzs,jdbcType=VARCHAR},
+            </if>
+            <if test="vef != null">
+                VEF = #{vef,jdbcType=VARCHAR},
+            </if>
+            <if test="vnd != null">
+                VND = #{vnd,jdbcType=VARCHAR},
+            </if>
+            <if test="vuv != null">
+                VUV = #{vuv,jdbcType=VARCHAR},
+            </if>
+            <if test="wst != null">
+                WST = #{wst,jdbcType=VARCHAR},
+            </if>
+            <if test="xaf != null">
+                XAF = #{xaf,jdbcType=VARCHAR},
+            </if>
+            <if test="xau != null">
+                XAU = #{xau,jdbcType=VARCHAR},
+            </if>
+            <if test="xcd != null">
+                XCD = #{xcd,jdbcType=VARCHAR},
+            </if>
+            <if test="xdr != null">
+                XDR = #{xdr,jdbcType=VARCHAR},
+            </if>
+            <if test="xof != null">
+                XOF = #{xof,jdbcType=VARCHAR},
+            </if>
+            <if test="xpf != null">
+                XPF = #{xpf,jdbcType=VARCHAR},
+            </if>
+            <if test="yer != null">
+                YER = #{yer,jdbcType=VARCHAR},
+            </if>
+            <if test="zar != null">
+                ZAR = #{zar,jdbcType=VARCHAR},
+            </if>
+            <if test="zmw != null">
+                ZMW = #{zmw,jdbcType=VARCHAR},
+            </if>
+            <if test="zwl != null">
+                ZWL = #{zwl,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.Rate">
+        update tb_rate
+        set AED = #{aed,jdbcType=VARCHAR},
+            AFN = #{afn,jdbcType=VARCHAR},
+            ALLS = #{alls,jdbcType=VARCHAR},
+            AMD = #{amd,jdbcType=VARCHAR},
+            ANG = #{ang,jdbcType=VARCHAR},
+            AOA = #{aoa,jdbcType=VARCHAR},
+            ARS = #{ars,jdbcType=VARCHAR},
+            AUD = #{aud,jdbcType=VARCHAR},
+            AWG = #{awg,jdbcType=VARCHAR},
+            AZN = #{azn,jdbcType=VARCHAR},
+            BAM = #{bam,jdbcType=VARCHAR},
+            BBD = #{bbd,jdbcType=VARCHAR},
+            BDT = #{bdt,jdbcType=VARCHAR},
+            BGN = #{bgn,jdbcType=VARCHAR},
+            BHD = #{bhd,jdbcType=VARCHAR},
+            BIF = #{bif,jdbcType=VARCHAR},
+            BMD = #{bmd,jdbcType=VARCHAR},
+            BND = #{bnd,jdbcType=VARCHAR},
+            BOB = #{bob,jdbcType=VARCHAR},
+            BRL = #{brl,jdbcType=VARCHAR},
+            BSD = #{bsd,jdbcType=VARCHAR},
+            BTN = #{btn,jdbcType=VARCHAR},
+            BWP = #{bwp,jdbcType=VARCHAR},
+            BYR = #{byr,jdbcType=VARCHAR},
+            BZD = #{bzd,jdbcType=VARCHAR},
+            CAD = #{cad,jdbcType=VARCHAR},
+            CDF = #{cdf,jdbcType=VARCHAR},
+            CHF = #{chf,jdbcType=VARCHAR},
+            CLF = #{clf,jdbcType=VARCHAR},
+            CLP = #{clp,jdbcType=VARCHAR},
+            CNH = #{cnh,jdbcType=VARCHAR},
+            CNY = #{cny,jdbcType=VARCHAR},
+            COP = #{cop,jdbcType=VARCHAR},
+            CRC = #{crc,jdbcType=VARCHAR},
+            CUP = #{cup,jdbcType=VARCHAR},
+            CVE = #{cve,jdbcType=VARCHAR},
+            CZK = #{czk,jdbcType=VARCHAR},
+            DJF = #{djf,jdbcType=VARCHAR},
+            DKK = #{dkk,jdbcType=VARCHAR},
+            DOP = #{dop,jdbcType=VARCHAR},
+            DZD = #{dzd,jdbcType=VARCHAR},
+            EGP = #{egp,jdbcType=VARCHAR},
+            ERN = #{ern,jdbcType=VARCHAR},
+            ETB = #{etb,jdbcType=VARCHAR},
+            EUR = #{eur,jdbcType=VARCHAR},
+            FJD = #{fjd,jdbcType=VARCHAR},
+            FKP = #{fkp,jdbcType=VARCHAR},
+            GBP = #{gbp,jdbcType=VARCHAR},
+            GEL = #{gel,jdbcType=VARCHAR},
+            GHS = #{ghs,jdbcType=VARCHAR},
+            GIP = #{gip,jdbcType=VARCHAR},
+            GMD = #{gmd,jdbcType=VARCHAR},
+            GNF = #{gnf,jdbcType=VARCHAR},
+            GTQ = #{gtq,jdbcType=VARCHAR},
+            GYD = #{gyd,jdbcType=VARCHAR},
+            HKD = #{hkd,jdbcType=VARCHAR},
+            HNL = #{hnl,jdbcType=VARCHAR},
+            HRK = #{hrk,jdbcType=VARCHAR},
+            HTG = #{htg,jdbcType=VARCHAR},
+            HUF = #{huf,jdbcType=VARCHAR},
+            IDR = #{idr,jdbcType=VARCHAR},
+            ILS = #{ils,jdbcType=VARCHAR},
+            INR = #{inr,jdbcType=VARCHAR},
+            IQD = #{iqd,jdbcType=VARCHAR},
+            IRR = #{irr,jdbcType=VARCHAR},
+            ISK = #{isk,jdbcType=VARCHAR},
+            JMD = #{jmd,jdbcType=VARCHAR},
+            JOD = #{jod,jdbcType=VARCHAR},
+            JPY = #{jpy,jdbcType=VARCHAR},
+            KES = #{kes,jdbcType=VARCHAR},
+            KGS = #{kgs,jdbcType=VARCHAR},
+            KHR = #{khr,jdbcType=VARCHAR},
+            KMF = #{kmf,jdbcType=VARCHAR},
+            KPW = #{kpw,jdbcType=VARCHAR},
+            KRW = #{krw,jdbcType=VARCHAR},
+            KWD = #{kwd,jdbcType=VARCHAR},
+            KYD = #{kyd,jdbcType=VARCHAR},
+            KZT = #{kzt,jdbcType=VARCHAR},
+            LAK = #{lak,jdbcType=VARCHAR},
+            LBP = #{lbp,jdbcType=VARCHAR},
+            LKR = #{lkr,jdbcType=VARCHAR},
+            LRD = #{lrd,jdbcType=VARCHAR},
+            LSL = #{lsl,jdbcType=VARCHAR},
+            LTL = #{ltl,jdbcType=VARCHAR},
+            LVL = #{lvl,jdbcType=VARCHAR},
+            LYD = #{lyd,jdbcType=VARCHAR},
+            MAD = #{mad,jdbcType=VARCHAR},
+            MDL = #{mdl,jdbcType=VARCHAR},
+            MGA = #{mga,jdbcType=VARCHAR},
+            MKD = #{mkd,jdbcType=VARCHAR},
+            MMK = #{mmk,jdbcType=VARCHAR},
+            MNT = #{mnt,jdbcType=VARCHAR},
+            MOP = #{mop,jdbcType=VARCHAR},
+            MRO = #{mro,jdbcType=VARCHAR},
+            MUR = #{mur,jdbcType=VARCHAR},
+            MVR = #{mvr,jdbcType=VARCHAR},
+            MWK = #{mwk,jdbcType=VARCHAR},
+            MXN = #{mxn,jdbcType=VARCHAR},
+            MYR = #{myr,jdbcType=VARCHAR},
+            MZN = #{mzn,jdbcType=VARCHAR},
+            NAD = #{nad,jdbcType=VARCHAR},
+            NGN = #{ngn,jdbcType=VARCHAR},
+            NIO = #{nio,jdbcType=VARCHAR},
+            NOK = #{nok,jdbcType=VARCHAR},
+            NPR = #{npr,jdbcType=VARCHAR},
+            NZD = #{nzd,jdbcType=VARCHAR},
+            OMR = #{omr,jdbcType=VARCHAR},
+            PAB = #{pab,jdbcType=VARCHAR},
+            PEN = #{pen,jdbcType=VARCHAR},
+            PGK = #{pgk,jdbcType=VARCHAR},
+            PHP = #{php,jdbcType=VARCHAR},
+            PKR = #{pkr,jdbcType=VARCHAR},
+            PLN = #{pln,jdbcType=VARCHAR},
+            PYG = #{pyg,jdbcType=VARCHAR},
+            QAR = #{qar,jdbcType=VARCHAR},
+            RON = #{ron,jdbcType=VARCHAR},
+            RSD = #{rsd,jdbcType=VARCHAR},
+            RUB = #{rub,jdbcType=VARCHAR},
+            RWF = #{rwf,jdbcType=VARCHAR},
+            SAR = #{sar,jdbcType=VARCHAR},
+            SBD = #{sbd,jdbcType=VARCHAR},
+            SCR = #{scr,jdbcType=VARCHAR},
+            SDG = #{sdg,jdbcType=VARCHAR},
+            SEK = #{sek,jdbcType=VARCHAR},
+            SGD = #{sgd,jdbcType=VARCHAR},
+            SHP = #{shp,jdbcType=VARCHAR},
+            SLL = #{sll,jdbcType=VARCHAR},
+            SOS = #{sos,jdbcType=VARCHAR},
+            SRD = #{srd,jdbcType=VARCHAR},
+            STDS = #{stds,jdbcType=VARCHAR},
+            SVC = #{svc,jdbcType=VARCHAR},
+            SYP = #{syp,jdbcType=VARCHAR},
+            SZL = #{szl,jdbcType=VARCHAR},
+            THB = #{thb,jdbcType=VARCHAR},
+            TJS = #{tjs,jdbcType=VARCHAR},
+            TMT = #{tmt,jdbcType=VARCHAR},
+            TND = #{tnd,jdbcType=VARCHAR},
+            TOP = #{top,jdbcType=VARCHAR},
+            TRYS = #{trys,jdbcType=VARCHAR},
+            TTD = #{ttd,jdbcType=VARCHAR},
+            TWD = #{twd,jdbcType=VARCHAR},
+            TZS = #{tzs,jdbcType=VARCHAR},
+            UAH = #{uah,jdbcType=VARCHAR},
+            UGX = #{ugx,jdbcType=VARCHAR},
+            USD = #{usd,jdbcType=VARCHAR},
+            UYU = #{uyu,jdbcType=VARCHAR},
+            UZS = #{uzs,jdbcType=VARCHAR},
+            VEF = #{vef,jdbcType=VARCHAR},
+            VND = #{vnd,jdbcType=VARCHAR},
+            VUV = #{vuv,jdbcType=VARCHAR},
+            WST = #{wst,jdbcType=VARCHAR},
+            XAF = #{xaf,jdbcType=VARCHAR},
+            XAU = #{xau,jdbcType=VARCHAR},
+            XCD = #{xcd,jdbcType=VARCHAR},
+            XDR = #{xdr,jdbcType=VARCHAR},
+            XOF = #{xof,jdbcType=VARCHAR},
+            XPF = #{xpf,jdbcType=VARCHAR},
+            YER = #{yer,jdbcType=VARCHAR},
+            ZAR = #{zar,jdbcType=VARCHAR},
+            ZMW = #{zmw,jdbcType=VARCHAR},
+            ZWL = #{zwl,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.Rate" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tb_rate
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="aed != null">
+                 and AED = #{aed,jdbcType=VARCHAR}
+            </if>
+            <if test="afn != null">
+                 and AFN = #{afn,jdbcType=VARCHAR}
+            </if>
+            <if test="alls != null">
+                 and ALLS = #{alls,jdbcType=VARCHAR}
+            </if>
+            <if test="amd != null">
+                 and AMD = #{amd,jdbcType=VARCHAR}
+            </if>
+            <if test="ang != null">
+                 and ANG = #{ang,jdbcType=VARCHAR}
+            </if>
+            <if test="aoa != null">
+                 and AOA = #{aoa,jdbcType=VARCHAR}
+            </if>
+            <if test="ars != null">
+                 and ARS = #{ars,jdbcType=VARCHAR}
+            </if>
+            <if test="aud != null">
+                 and AUD = #{aud,jdbcType=VARCHAR}
+            </if>
+            <if test="awg != null">
+                 and AWG = #{awg,jdbcType=VARCHAR}
+            </if>
+            <if test="azn != null">
+                 and AZN = #{azn,jdbcType=VARCHAR}
+            </if>
+            <if test="bam != null">
+                 and BAM = #{bam,jdbcType=VARCHAR}
+            </if>
+            <if test="bbd != null">
+                 and BBD = #{bbd,jdbcType=VARCHAR}
+            </if>
+            <if test="bdt != null">
+                 and BDT = #{bdt,jdbcType=VARCHAR}
+            </if>
+            <if test="bgn != null">
+                 and BGN = #{bgn,jdbcType=VARCHAR}
+            </if>
+            <if test="bhd != null">
+                 and BHD = #{bhd,jdbcType=VARCHAR}
+            </if>
+            <if test="bif != null">
+                 and BIF = #{bif,jdbcType=VARCHAR}
+            </if>
+            <if test="bmd != null">
+                 and BMD = #{bmd,jdbcType=VARCHAR}
+            </if>
+            <if test="bnd != null">
+                 and BND = #{bnd,jdbcType=VARCHAR}
+            </if>
+            <if test="bob != null">
+                 and BOB = #{bob,jdbcType=VARCHAR}
+            </if>
+            <if test="brl != null">
+                 and BRL = #{brl,jdbcType=VARCHAR}
+            </if>
+            <if test="bsd != null">
+                 and BSD = #{bsd,jdbcType=VARCHAR}
+            </if>
+            <if test="btn != null">
+                 and BTN = #{btn,jdbcType=VARCHAR}
+            </if>
+            <if test="bwp != null">
+                 and BWP = #{bwp,jdbcType=VARCHAR}
+            </if>
+            <if test="byr != null">
+                 and BYR = #{byr,jdbcType=VARCHAR}
+            </if>
+            <if test="bzd != null">
+                 and BZD = #{bzd,jdbcType=VARCHAR}
+            </if>
+            <if test="cad != null">
+                 and CAD = #{cad,jdbcType=VARCHAR}
+            </if>
+            <if test="cdf != null">
+                 and CDF = #{cdf,jdbcType=VARCHAR}
+            </if>
+            <if test="chf != null">
+                 and CHF = #{chf,jdbcType=VARCHAR}
+            </if>
+            <if test="clf != null">
+                 and CLF = #{clf,jdbcType=VARCHAR}
+            </if>
+            <if test="clp != null">
+                 and CLP = #{clp,jdbcType=VARCHAR}
+            </if>
+            <if test="cnh != null">
+                 and CNH = #{cnh,jdbcType=VARCHAR}
+            </if>
+            <if test="cny != null">
+                 and CNY = #{cny,jdbcType=VARCHAR}
+            </if>
+            <if test="cop != null">
+                 and COP = #{cop,jdbcType=VARCHAR}
+            </if>
+            <if test="crc != null">
+                 and CRC = #{crc,jdbcType=VARCHAR}
+            </if>
+            <if test="cup != null">
+                 and CUP = #{cup,jdbcType=VARCHAR}
+            </if>
+            <if test="cve != null">
+                 and CVE = #{cve,jdbcType=VARCHAR}
+            </if>
+            <if test="czk != null">
+                 and CZK = #{czk,jdbcType=VARCHAR}
+            </if>
+            <if test="djf != null">
+                 and DJF = #{djf,jdbcType=VARCHAR}
+            </if>
+            <if test="dkk != null">
+                 and DKK = #{dkk,jdbcType=VARCHAR}
+            </if>
+            <if test="dop != null">
+                 and DOP = #{dop,jdbcType=VARCHAR}
+            </if>
+            <if test="dzd != null">
+                 and DZD = #{dzd,jdbcType=VARCHAR}
+            </if>
+            <if test="egp != null">
+                 and EGP = #{egp,jdbcType=VARCHAR}
+            </if>
+            <if test="ern != null">
+                 and ERN = #{ern,jdbcType=VARCHAR}
+            </if>
+            <if test="etb != null">
+                 and ETB = #{etb,jdbcType=VARCHAR}
+            </if>
+            <if test="eur != null">
+                 and EUR = #{eur,jdbcType=VARCHAR}
+            </if>
+            <if test="fjd != null">
+                 and FJD = #{fjd,jdbcType=VARCHAR}
+            </if>
+            <if test="fkp != null">
+                 and FKP = #{fkp,jdbcType=VARCHAR}
+            </if>
+            <if test="gbp != null">
+                 and GBP = #{gbp,jdbcType=VARCHAR}
+            </if>
+            <if test="gel != null">
+                 and GEL = #{gel,jdbcType=VARCHAR}
+            </if>
+            <if test="ghs != null">
+                 and GHS = #{ghs,jdbcType=VARCHAR}
+            </if>
+            <if test="gip != null">
+                 and GIP = #{gip,jdbcType=VARCHAR}
+            </if>
+            <if test="gmd != null">
+                 and GMD = #{gmd,jdbcType=VARCHAR}
+            </if>
+            <if test="gnf != null">
+                 and GNF = #{gnf,jdbcType=VARCHAR}
+            </if>
+            <if test="gtq != null">
+                 and GTQ = #{gtq,jdbcType=VARCHAR}
+            </if>
+            <if test="gyd != null">
+                 and GYD = #{gyd,jdbcType=VARCHAR}
+            </if>
+            <if test="hkd != null">
+                 and HKD = #{hkd,jdbcType=VARCHAR}
+            </if>
+            <if test="hnl != null">
+                 and HNL = #{hnl,jdbcType=VARCHAR}
+            </if>
+            <if test="hrk != null">
+                 and HRK = #{hrk,jdbcType=VARCHAR}
+            </if>
+            <if test="htg != null">
+                 and HTG = #{htg,jdbcType=VARCHAR}
+            </if>
+            <if test="huf != null">
+                 and HUF = #{huf,jdbcType=VARCHAR}
+            </if>
+            <if test="idr != null">
+                 and IDR = #{idr,jdbcType=VARCHAR}
+            </if>
+            <if test="ils != null">
+                 and ILS = #{ils,jdbcType=VARCHAR}
+            </if>
+            <if test="inr != null">
+                 and INR = #{inr,jdbcType=VARCHAR}
+            </if>
+            <if test="iqd != null">
+                 and IQD = #{iqd,jdbcType=VARCHAR}
+            </if>
+            <if test="irr != null">
+                 and IRR = #{irr,jdbcType=VARCHAR}
+            </if>
+            <if test="isk != null">
+                 and ISK = #{isk,jdbcType=VARCHAR}
+            </if>
+            <if test="jmd != null">
+                 and JMD = #{jmd,jdbcType=VARCHAR}
+            </if>
+            <if test="jod != null">
+                 and JOD = #{jod,jdbcType=VARCHAR}
+            </if>
+            <if test="jpy != null">
+                 and JPY = #{jpy,jdbcType=VARCHAR}
+            </if>
+            <if test="kes != null">
+                 and KES = #{kes,jdbcType=VARCHAR}
+            </if>
+            <if test="kgs != null">
+                 and KGS = #{kgs,jdbcType=VARCHAR}
+            </if>
+            <if test="khr != null">
+                 and KHR = #{khr,jdbcType=VARCHAR}
+            </if>
+            <if test="kmf != null">
+                 and KMF = #{kmf,jdbcType=VARCHAR}
+            </if>
+            <if test="kpw != null">
+                 and KPW = #{kpw,jdbcType=VARCHAR}
+            </if>
+            <if test="krw != null">
+                 and KRW = #{krw,jdbcType=VARCHAR}
+            </if>
+            <if test="kwd != null">
+                 and KWD = #{kwd,jdbcType=VARCHAR}
+            </if>
+            <if test="kyd != null">
+                 and KYD = #{kyd,jdbcType=VARCHAR}
+            </if>
+            <if test="kzt != null">
+                 and KZT = #{kzt,jdbcType=VARCHAR}
+            </if>
+            <if test="lak != null">
+                 and LAK = #{lak,jdbcType=VARCHAR}
+            </if>
+            <if test="lbp != null">
+                 and LBP = #{lbp,jdbcType=VARCHAR}
+            </if>
+            <if test="lkr != null">
+                 and LKR = #{lkr,jdbcType=VARCHAR}
+            </if>
+            <if test="lrd != null">
+                 and LRD = #{lrd,jdbcType=VARCHAR}
+            </if>
+            <if test="lsl != null">
+                 and LSL = #{lsl,jdbcType=VARCHAR}
+            </if>
+            <if test="ltl != null">
+                 and LTL = #{ltl,jdbcType=VARCHAR}
+            </if>
+            <if test="lvl != null">
+                 and LVL = #{lvl,jdbcType=VARCHAR}
+            </if>
+            <if test="lyd != null">
+                 and LYD = #{lyd,jdbcType=VARCHAR}
+            </if>
+            <if test="mad != null">
+                 and MAD = #{mad,jdbcType=VARCHAR}
+            </if>
+            <if test="mdl != null">
+                 and MDL = #{mdl,jdbcType=VARCHAR}
+            </if>
+            <if test="mga != null">
+                 and MGA = #{mga,jdbcType=VARCHAR}
+            </if>
+            <if test="mkd != null">
+                 and MKD = #{mkd,jdbcType=VARCHAR}
+            </if>
+            <if test="mmk != null">
+                 and MMK = #{mmk,jdbcType=VARCHAR}
+            </if>
+            <if test="mnt != null">
+                 and MNT = #{mnt,jdbcType=VARCHAR}
+            </if>
+            <if test="mop != null">
+                 and MOP = #{mop,jdbcType=VARCHAR}
+            </if>
+            <if test="mro != null">
+                 and MRO = #{mro,jdbcType=VARCHAR}
+            </if>
+            <if test="mur != null">
+                 and MUR = #{mur,jdbcType=VARCHAR}
+            </if>
+            <if test="mvr != null">
+                 and MVR = #{mvr,jdbcType=VARCHAR}
+            </if>
+            <if test="mwk != null">
+                 and MWK = #{mwk,jdbcType=VARCHAR}
+            </if>
+            <if test="mxn != null">
+                 and MXN = #{mxn,jdbcType=VARCHAR}
+            </if>
+            <if test="myr != null">
+                 and MYR = #{myr,jdbcType=VARCHAR}
+            </if>
+            <if test="mzn != null">
+                 and MZN = #{mzn,jdbcType=VARCHAR}
+            </if>
+            <if test="nad != null">
+                 and NAD = #{nad,jdbcType=VARCHAR}
+            </if>
+            <if test="ngn != null">
+                 and NGN = #{ngn,jdbcType=VARCHAR}
+            </if>
+            <if test="nio != null">
+                 and NIO = #{nio,jdbcType=VARCHAR}
+            </if>
+            <if test="nok != null">
+                 and NOK = #{nok,jdbcType=VARCHAR}
+            </if>
+            <if test="npr != null">
+                 and NPR = #{npr,jdbcType=VARCHAR}
+            </if>
+            <if test="nzd != null">
+                 and NZD = #{nzd,jdbcType=VARCHAR}
+            </if>
+            <if test="omr != null">
+                 and OMR = #{omr,jdbcType=VARCHAR}
+            </if>
+            <if test="pab != null">
+                 and PAB = #{pab,jdbcType=VARCHAR}
+            </if>
+            <if test="pen != null">
+                 and PEN = #{pen,jdbcType=VARCHAR}
+            </if>
+            <if test="pgk != null">
+                 and PGK = #{pgk,jdbcType=VARCHAR}
+            </if>
+            <if test="php != null">
+                 and PHP = #{php,jdbcType=VARCHAR}
+            </if>
+            <if test="pkr != null">
+                 and PKR = #{pkr,jdbcType=VARCHAR}
+            </if>
+            <if test="pln != null">
+                 and PLN = #{pln,jdbcType=VARCHAR}
+            </if>
+            <if test="pyg != null">
+                 and PYG = #{pyg,jdbcType=VARCHAR}
+            </if>
+            <if test="qar != null">
+                 and QAR = #{qar,jdbcType=VARCHAR}
+            </if>
+            <if test="ron != null">
+                 and RON = #{ron,jdbcType=VARCHAR}
+            </if>
+            <if test="rsd != null">
+                 and RSD = #{rsd,jdbcType=VARCHAR}
+            </if>
+            <if test="rub != null">
+                 and RUB = #{rub,jdbcType=VARCHAR}
+            </if>
+            <if test="rwf != null">
+                 and RWF = #{rwf,jdbcType=VARCHAR}
+            </if>
+            <if test="sar != null">
+                 and SAR = #{sar,jdbcType=VARCHAR}
+            </if>
+            <if test="sbd != null">
+                 and SBD = #{sbd,jdbcType=VARCHAR}
+            </if>
+            <if test="scr != null">
+                 and SCR = #{scr,jdbcType=VARCHAR}
+            </if>
+            <if test="sdg != null">
+                 and SDG = #{sdg,jdbcType=VARCHAR}
+            </if>
+            <if test="sek != null">
+                 and SEK = #{sek,jdbcType=VARCHAR}
+            </if>
+            <if test="sgd != null">
+                 and SGD = #{sgd,jdbcType=VARCHAR}
+            </if>
+            <if test="shp != null">
+                 and SHP = #{shp,jdbcType=VARCHAR}
+            </if>
+            <if test="sll != null">
+                 and SLL = #{sll,jdbcType=VARCHAR}
+            </if>
+            <if test="sos != null">
+                 and SOS = #{sos,jdbcType=VARCHAR}
+            </if>
+            <if test="srd != null">
+                 and SRD = #{srd,jdbcType=VARCHAR}
+            </if>
+            <if test="stds != null">
+                 and STDS = #{stds,jdbcType=VARCHAR}
+            </if>
+            <if test="svc != null">
+                 and SVC = #{svc,jdbcType=VARCHAR}
+            </if>
+            <if test="syp != null">
+                 and SYP = #{syp,jdbcType=VARCHAR}
+            </if>
+            <if test="szl != null">
+                 and SZL = #{szl,jdbcType=VARCHAR}
+            </if>
+            <if test="thb != null">
+                 and THB = #{thb,jdbcType=VARCHAR}
+            </if>
+            <if test="tjs != null">
+                 and TJS = #{tjs,jdbcType=VARCHAR}
+            </if>
+            <if test="tmt != null">
+                 and TMT = #{tmt,jdbcType=VARCHAR}
+            </if>
+            <if test="tnd != null">
+                 and TND = #{tnd,jdbcType=VARCHAR}
+            </if>
+            <if test="top != null">
+                 and TOP = #{top,jdbcType=VARCHAR}
+            </if>
+            <if test="trys != null">
+                 and TRYS = #{trys,jdbcType=VARCHAR}
+            </if>
+            <if test="ttd != null">
+                 and TTD = #{ttd,jdbcType=VARCHAR}
+            </if>
+            <if test="twd != null">
+                 and TWD = #{twd,jdbcType=VARCHAR}
+            </if>
+            <if test="tzs != null">
+                 and TZS = #{tzs,jdbcType=VARCHAR}
+            </if>
+            <if test="uah != null">
+                 and UAH = #{uah,jdbcType=VARCHAR}
+            </if>
+            <if test="ugx != null">
+                 and UGX = #{ugx,jdbcType=VARCHAR}
+            </if>
+            <if test="usd != null">
+                 and USD = #{usd,jdbcType=VARCHAR}
+            </if>
+            <if test="uyu != null">
+                 and UYU = #{uyu,jdbcType=VARCHAR}
+            </if>
+            <if test="uzs != null">
+                 and UZS = #{uzs,jdbcType=VARCHAR}
+            </if>
+            <if test="vef != null">
+                 and VEF = #{vef,jdbcType=VARCHAR}
+            </if>
+            <if test="vnd != null">
+                 and VND = #{vnd,jdbcType=VARCHAR}
+            </if>
+            <if test="vuv != null">
+                 and VUV = #{vuv,jdbcType=VARCHAR}
+            </if>
+            <if test="wst != null">
+                 and WST = #{wst,jdbcType=VARCHAR}
+            </if>
+            <if test="xaf != null">
+                 and XAF = #{xaf,jdbcType=VARCHAR}
+            </if>
+            <if test="xau != null">
+                 and XAU = #{xau,jdbcType=VARCHAR}
+            </if>
+            <if test="xcd != null">
+                 and XCD = #{xcd,jdbcType=VARCHAR}
+            </if>
+            <if test="xdr != null">
+                 and XDR = #{xdr,jdbcType=VARCHAR}
+            </if>
+            <if test="xof != null">
+                 and XOF = #{xof,jdbcType=VARCHAR}
+            </if>
+            <if test="xpf != null">
+                 and XPF = #{xpf,jdbcType=VARCHAR}
+            </if>
+            <if test="yer != null">
+                 and YER = #{yer,jdbcType=VARCHAR}
+            </if>
+            <if test="zar != null">
+                 and ZAR = #{zar,jdbcType=VARCHAR}
+            </if>
+            <if test="zmw != null">
+                 and ZMW = #{zmw,jdbcType=VARCHAR}
+            </if>
+            <if test="zwl != null">
+                 and ZWL = #{zwl,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

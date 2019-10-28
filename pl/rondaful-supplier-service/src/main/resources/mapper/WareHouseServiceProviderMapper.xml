@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WareHouseServiceProviderMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.WareHouseServiceProvider">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="supply_chain_id" jdbcType="INTEGER" property="supplyChainId" />
+        <result column="supply_chain_company" jdbcType="VARCHAR" property="supplyChainCompany" />
+        <result column="service_provider_name" jdbcType="VARCHAR" property="serviceProviderName" />
+        <result column="service_provider_status" jdbcType="TINYINT" property="serviceProviderStatus" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, supply_chain_id,supply_chain_company,service_provider_name, service_provider_status, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from warehouse_service_provider
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from warehouse_service_provider
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.WareHouseServiceProvider">
+        insert into warehouse_service_provider (id, service_provider_name, service_provider_status, 
+            create_time)
+        values (#{id,jdbcType=INTEGER}, #{serviceProviderName,jdbcType=VARCHAR}, #{serviceProviderStatus,jdbcType=TINYINT}, 
+            #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.WareHouseServiceProvider">
+        insert into warehouse_service_provider
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="serviceProviderName != null">
+                service_provider_name,
+            </if>
+            <if test="serviceProviderStatus != null">
+                service_provider_status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="serviceProviderName != null">
+                #{serviceProviderName,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceProviderStatus != null">
+                #{serviceProviderStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.WareHouseServiceProvider">
+        update warehouse_service_provider
+        <set>
+            <if test="serviceProviderName != null">
+                service_provider_name = #{serviceProviderName,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceProviderStatus != null">
+                service_provider_status = #{serviceProviderStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.WareHouseServiceProvider">
+        update warehouse_service_provider
+        set  supply_chain_id = #{supplyChainId,jdbcType=INTEGER},
+         supply_chain_company = #{supplyChainCompany,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    
+    <select id="selectByParamValue" parameterType="com.rondaful.cloud.supplier.entity.WareHouseServiceProvider" resultMap="BaseResultMap">
+     	select
+        <include refid="Base_Column_List" />
+        from warehouse_service_provider
+        <trim prefix="where" prefixOverrides="and">
+        		service_provider_status = 1
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="serviceProviderName != null and serviceProviderName != ''">
+                 and service_provider_name = #{serviceProviderName,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+    
+  </mapper>

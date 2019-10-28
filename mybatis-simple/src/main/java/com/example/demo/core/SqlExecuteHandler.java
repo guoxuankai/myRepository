@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 public class SqlExecuteHandler implements InvocationHandler {
 
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // get mapper info

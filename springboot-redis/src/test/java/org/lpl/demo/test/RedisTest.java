@@ -39,20 +39,20 @@ public class RedisTest {
 	* @date 2018年2月24日
 	* @throws
 	 */
-	@Test
-	public void singleTestUser(){
-
-		List<Map<String,Object>> mList = new ArrayList<Map<String,Object>>();
-		for(int i = 0;i<10;i++){
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("mapId", i);
-			mList.add(map);
-		}
-		
-		User user = new User(15231L,"zhangsan","李四",15,1,"15217411234","392926441@qq.com",
-				"1520","三年级一班","私立一中","河北省","石家庄","张三的呵呵呵呵呵","内容还是很好的饿哦",
-				"120000","/user/hhh/s.jpg","5","java","英语","zhangsan","111",mList);
-		redisUtil.set("user1", user);
-	}
+//	@Test
+//	public void singleTestUser(){
+//
+//		List<Map<String,Object>> mList = new ArrayList<Map<String,Object>>();
+//		for(int i = 0;i<10;i++){
+//			Map<String,Object> map = new HashMap<String,Object>();
+//			map.put("mapId", i);
+//			mList.add(map);
+//		}
+//
+//		User user = new User(15231L,"zhangsan","李四",15,1,"15217411234","392926441@qq.com",
+//				"1520","三年级一班","私立一中","河北省","石家庄","张三的呵呵呵呵呵","内容还是很好的饿哦",
+//				"120000","/user/hhh/s.jpg","5","java","英语","zhangsan","111",mList);
+//		redisUtil.set("user1", user);
+//	}
 	
 }

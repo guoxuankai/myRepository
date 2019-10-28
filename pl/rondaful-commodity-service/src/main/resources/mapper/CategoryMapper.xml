@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.CategoryMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.Category">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+        <result column="category_name_en" jdbcType="VARCHAR" property="categoryNameEn" />
+        <result column="category_level" jdbcType="INTEGER" property="categoryLevel" />
+        <result column="category_parent_id" jdbcType="BIGINT" property="categoryParentId" />
+        <result column="is_bind_attribute" jdbcType="INTEGER" property="isBindAttribute" />
+        <result column="bind_attribute_ids" jdbcType="VARCHAR" property="bindAttributeIds" />
+        <result column="is_bind_warehouse" jdbcType="INTEGER" property="isBindWarehouse" />
+        <result column="describe" jdbcType="VARCHAR" property="describe" />
+        <result column="category_code" jdbcType="VARCHAR" property="categoryCode" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="sort_num" jdbcType="INTEGER" property="sortNum" />
+        <result column="fee_rate" jdbcType="INTEGER" property="feeRate" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, category_name, category_name_en, category_level, category_parent_id, is_bind_attribute, bind_attribute_ids,
+        is_bind_warehouse, `describe`, category_code, version, `status`, sort_num, fee_rate
+    </sql>
+
+    <select id="findFindInSet" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT * FROM t_category WHERE FIND_IN_SET(#{0},bind_attribute_ids)
+    </select>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_category
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_category
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteCategoryByIds" parameterType="java.util.List">
+        delete from t_category
+        where category_level = 3 and category_parent_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+         </foreach>
+    </delete>
+
+
+    <select id="selectCategoryListByParentId" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_category
+        where category_level = 3 and category_parent_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.Category">
+        insert into t_category (id, category_name, category_name_en, category_level,
+            category_parent_id, is_bind_attribute, bind_attribute_ids, 
+            is_bind_warehouse, `describe`, category_code,
+            version,`status`,sort_num,fee_rate)
+        values (#{id,jdbcType=BIGINT}, #{categoryName,jdbcType=VARCHAR}, #{categoryNameEn,jdbcType=VARCHAR}, #{categoryLevel,jdbcType=INTEGER},
+            #{categoryParentId,jdbcType=BIGINT}, #{isBindAttribute,jdbcType=INTEGER}, #{bindAttributeIds,jdbcType=VARCHAR}, 
+            #{isBindWarehouse,jdbcType=INTEGER}, #{describe,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, 
+            #{version,jdbcType=BIGINT},#{status,jdbcType=INTEGER},#{sortNum,jdbcType=INTEGER},#{feeRate,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.Category" useGeneratedKeys="true" keyProperty="id">
+        insert into t_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="categoryName != null">
+                category_name,
+            </if>
+            <if test="categoryNameEn != null">
+                category_name_en,
+            </if>
+            <if test="categoryLevel != null">
+                category_level,
+            </if>
+            <if test="categoryParentId != null">
+                category_parent_id,
+            </if>
+            <if test="isBindAttribute != null">
+                is_bind_attribute,
+            </if>
+            <if test="bindAttributeIds != null">
+                bind_attribute_ids,
+            </if>
+            <if test="isBindWarehouse != null">
+                is_bind_warehouse,
+            </if>
+            <if test="describe != null">
+                `describe`,
+            </if>
+            <if test="categoryCode != null">
+                category_code,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="sortNum != null">
+                sort_num,
+            </if>
+            <if test="feeRate != null">
+                fee_rate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="categoryName != null">
+                #{categoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryNameEn != null">
+                #{categoryNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryLevel != null">
+                #{categoryLevel,jdbcType=INTEGER},
+            </if>
+            <if test="categoryParentId != null">
+                #{categoryParentId,jdbcType=BIGINT},
+            </if>
+            <if test="isBindAttribute != null">
+                #{isBindAttribute,jdbcType=INTEGER},
+            </if>
+            <if test="bindAttributeIds != null">
+                #{bindAttributeIds,jdbcType=VARCHAR},
+            </if>
+            <if test="isBindWarehouse != null">
+                #{isBindWarehouse,jdbcType=INTEGER},
+            </if>
+            <if test="describe != null">
+                #{describe,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryCode != null">
+                #{categoryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sortNum != null">
+                #{sortNum,jdbcType=INTEGER},
+            </if>
+            <if test="feeRate != null">
+                #{feeRate,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.Category">
+        update t_category set sort_num = #{sortNum,jdbcType=INTEGER}
+        <if test="categoryName != null">
+            ,category_name = #{categoryName,jdbcType=VARCHAR}
+        </if>
+        <if test="categoryNameEn != null">
+            ,category_name_en = #{categoryNameEn,jdbcType=VARCHAR}
+        </if>
+        <if test="categoryLevel != null">
+            ,category_level = #{categoryLevel,jdbcType=INTEGER}
+        </if>
+        <if test="categoryParentId != null">
+            ,category_parent_id = #{categoryParentId,jdbcType=BIGINT}
+        </if>
+        <if test="isBindAttribute != null">
+            ,is_bind_attribute = #{isBindAttribute,jdbcType=INTEGER}
+        </if>
+        <if test="bindAttributeIds != null">
+            ,bind_attribute_ids = #{bindAttributeIds,jdbcType=VARCHAR}
+        </if>
+        <if test="isBindWarehouse != null">
+            ,is_bind_warehouse = #{isBindWarehouse,jdbcType=INTEGER}
+        </if>
+        <if test="describe != null">
+            ,`describe` = #{describe,jdbcType=VARCHAR}
+        </if>
+        <if test="categoryCode != null">
+            ,category_code = #{categoryCode,jdbcType=VARCHAR}
+        </if>
+        <if test="version != null">
+            ,version = #{version,jdbcType=BIGINT} + 1
+        </if>
+        <if test="status != null">
+            ,status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="feeRate != null">
+            ,fee_rate = #{feeRate,jdbcType=INTEGER}
+        </if>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.Category">
+        update t_category
+        set category_name = #{categoryName,jdbcType=VARCHAR},
+            category_name_en = #{categoryNameEn,jdbcType=VARCHAR},
+            category_level = #{categoryLevel,jdbcType=INTEGER},
+            category_parent_id = #{categoryParentId,jdbcType=BIGINT},
+            is_bind_attribute = #{isBindAttribute,jdbcType=INTEGER},
+            bind_attribute_ids = #{bindAttributeIds,jdbcType=VARCHAR},
+            is_bind_warehouse = #{isBindWarehouse,jdbcType=INTEGER},
+            describe = #{describe,jdbcType=VARCHAR},
+            category_code = #{categoryCode,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            sort_num = #{sortNum,jdbcType=INTEGER},
+            version = #{version,jdbcType=BIGINT} + 1,
+            fee_rate = #{feeRate,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectCategory1ByCategoryName" resultMap="BaseResultMap">
+        SELECT  t1.* FROM t_category t1 
+        WHERE EXISTS (
+        	SELECT 1 FROM t_category t2, t_category t3
+        	WHERE t2.id=t3.category_parent_id 
+        	AND t2.category_parent_id=t1.id 
+        	AND t3.category_name like CONCAT(CONCAT('%', #{name}), '%')
+        	<if test="status != null">
+        		AND t2.`status`=t3.`status`=#{status}
+        	</if>
+        )
+        <if test="status != null">
+        	and t1.`status`=#{status}
+        </if>
+    </select>
+
+    <select id="selectCategory1ByCategoryName3" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT  t1.* FROM t_category t1 WHERE EXISTS (SELECT 1 FROM t_category t2, t_category t3
+        WHERE t2.id=t3.category_parent_id AND t2.category_parent_id=t1.id AND t3.category_name = #{0})
+    </select>
+
+
+    <select id="findCategoryList" parameterType="com.rondaful.cloud.commodity.entity.Category" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_category
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="categoryName != null">
+                and category_name = #{categoryName,jdbcType=VARCHAR}
+            </if>
+            <if test="categoryLevel != null">
+                and category_level = #{categoryLevel,jdbcType=INTEGER}
+            </if>
+            <if test="categoryParentId != null">
+                and category_parent_id = #{categoryParentId,jdbcType=BIGINT}
+            </if>
+            <if test="isBindAttribute != null">
+                and is_bind_attribute = #{isBindAttribute,jdbcType=INTEGER}
+            </if>
+            <if test="bindAttributeIds != null">
+                and bind_attribute_ids = #{bindAttributeIds,jdbcType=VARCHAR}
+            </if>
+            <if test="isBindWarehouse != null">
+                and is_bind_warehouse = #{isBindWarehouse,jdbcType=INTEGER}
+            </if>
+            <if test="describe != null">
+                and describe = #{describe,jdbcType=VARCHAR}
+            </if>
+            <if test="categoryCode != null">
+                and category_code = #{categoryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null">
+                and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="status != null">
+                and status = #{status,jdbcType=INTEGER}
+            </if>
+        </trim>
+        order by sort_num is null ,sort_num asc,id desc
+    </select>
+
+
+    <select id="page" parameterType="com.rondaful.cloud.commodity.entity.Category" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_category
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="categoryName != null and categoryName != ''">
+                 and category_name like CONCAT(CONCAT('%', #{categoryName}), '%')
+            </if>
+            <if test="categoryLevel != null">
+                 and category_level = #{categoryLevel,jdbcType=INTEGER}
+            </if>
+            <if test="categoryParentId != null">
+                 and category_parent_id = #{categoryParentId,jdbcType=BIGINT}
+            </if>
+            <if test="isBindAttribute != null">
+                 and is_bind_attribute = #{isBindAttribute,jdbcType=INTEGER}
+            </if>
+            <if test="bindAttributeIds != null">
+                 and bind_attribute_ids = #{bindAttributeIds,jdbcType=VARCHAR}
+            </if>
+            <if test="isBindWarehouse != null">
+                 and is_bind_warehouse = #{isBindWarehouse,jdbcType=INTEGER}
+            </if>
+            <if test="describe != null">
+                 and describe = #{describe,jdbcType=VARCHAR}
+            </if>
+            <if test="categoryCode != null">
+                 and category_code = #{categoryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="status != null">
+                and status = #{status,jdbcType=INTEGER}
+            </if>
+        </trim>
+        <choose>
+        	<when test="sort != null and sortKey != null">
+        		order by ${sortKey} ${sort}
+        	</when>
+        	<otherwise>
+        		order by sort_num is null ,sort_num asc,id desc
+        	</otherwise>
+        </choose>
+    </select>
+    
+    <select id="selectCategoryByName" resultMap="BaseResultMap">
+        SELECT  * FROM t_category 
+        WHERE category_name=#{categoryName}
+        and category_level=#{categoryLevel}
+    </select>
+    
+    <update id="updateStatusByParentId" parameterType="java.util.HashMap">
+    	update t_category t set t.`status`=#{status} where t.category_parent_id in
+    	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+    
+    <select id="selectHasProductCategory" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        SELECT
+			t1.*
+		FROM
+			t_category t1
+		WHERE
+			t1.`status` = 1
+		AND category_level = 1
+		AND EXISTS (
+			SELECT
+				1
+			FROM
+				t_commodity_base t2
+			WHERE
+				t2.category_level_1 = t1.id
+			AND t2.id IN (
+				SELECT
+					t3.commodity_id
+				FROM
+					t_commodity_promotion t3
+				WHERE
+					t3.sale_type = #{saleType}
+			)
+			AND EXISTS (
+				SELECT
+					1
+				FROM
+					t_commodity_spec t4
+				WHERE
+					t4.commodity_id = t2.id
+				AND t4.state = 3
+			)
+			<if test="limitIds != null">
+				AND t2.id NOT IN
+				<foreach collection="limitIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+			</if>
+		)
+		ORDER BY
+			t1.sort_num IS NULL,
+			t1.sort_num ASC,
+			t1.id DESC
+    </select>
+    
+    
+    <select id="getForApi" resultType="com.rondaful.cloud.commodity.vo.ApiCategoryResponseVo" parameterType="java.util.HashMap">
+        select 
+        	id, category_name categoryName, category_name_en categoryNameEn, category_level categoryLevel, category_parent_id categoryParentId
+        from t_category
+       	<trim prefix="where" prefixOverrides="and">
+	        <if test="categoryLevel != null">
+	        	and category_level = #{categoryLevel,jdbcType=INTEGER}
+	        </if>
+       	</trim>
+        order by id asc
+    </select>
+</mapper>

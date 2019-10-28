@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.CommodityMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.inventory.Commodity">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+        <result column="pinlian_sku" jdbcType="VARCHAR" property="pinlianSku" />
+        <result column="supplier_sku" jdbcType="VARCHAR" property="supplierSku" />
+        <result column="commodity_name" jdbcType="VARCHAR" property="commodityName" />
+        <result column="commodity_name_en" jdbcType="VARCHAR" property="commodityNameEn" />
+        <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, supplier_id, pinlian_sku, supplier_sku, commodity_name, commodity_name_en, picture_url, 
+        create_date, version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_commodity
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.inventory.Commodity">
+        insert into t_commodity (id, supplier_id, pinlian_sku, 
+            supplier_sku, commodity_name, commodity_name_en, 
+            picture_url, create_date, version
+            )
+        values (#{id,jdbcType=INTEGER}, #{supplierId,jdbcType=INTEGER}, #{pinlianSku,jdbcType=VARCHAR}, 
+            #{supplierSku,jdbcType=VARCHAR}, #{commodityName,jdbcType=VARCHAR}, #{commodityNameEn,jdbcType=VARCHAR}, 
+            #{pictureUrl,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.inventory.Commodity">
+        insert into t_commodity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="pinlianSku != null">
+                pinlian_sku,
+            </if>
+            <if test="supplierSku != null">
+                supplier_sku,
+            </if>
+            <if test="commodityName != null">
+                commodity_name,
+            </if>
+            <if test="commodityNameEn != null">
+                commodity_name_en,
+            </if>
+            <if test="pictureUrl != null">
+                picture_url,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="pinlianSku != null">
+                #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSku != null">
+                #{supplierSku,jdbcType=VARCHAR},
+            </if>
+            <if test="commodityName != null">
+                #{commodityName,jdbcType=VARCHAR},
+            </if>
+            <if test="commodityNameEn != null">
+                #{commodityNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="pictureUrl != null">
+                #{pictureUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.inventory.Commodity">
+        update t_commodity
+        <set>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="pinlianSku != null">
+                pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSku != null">
+                supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+            </if>
+            <if test="commodityName != null">
+                commodity_name = #{commodityName,jdbcType=VARCHAR},
+            </if>
+            <if test="commodityNameEn != null">
+                commodity_name_en = #{commodityNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="pictureUrl != null">
+                picture_url = #{pictureUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.inventory.Commodity">
+        update t_commodity
+        set supplier_id = #{supplierId,jdbcType=INTEGER},
+            pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+            commodity_name = #{commodityName,jdbcType=VARCHAR},
+            commodity_name_en = #{commodityNameEn,jdbcType=VARCHAR},
+            picture_url = #{pictureUrl,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            version = #{version,jdbcType=INTEGER} + 1
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.inventory.Commodity" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                 and supplier_id = #{supplierId,jdbcType=INTEGER}
+            </if>
+            <if test="pinlianSku != null and pinlianSku != ''">
+                 and pinlian_sku = #{pinlianSku,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierSku != null and supplierSku != ''">
+                 and supplier_sku = #{supplierSku,jdbcType=VARCHAR}
+            </if>
+            <if test="commodityName != null and commodityName != ''">
+                 and commodity_name = #{commodityName,jdbcType=VARCHAR}
+            </if>
+            <if test="commodityNameEn != null and commodityNameEn != ''">
+                 and commodity_name_en = #{commodityNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="pictureUrl != null and pictureUrl != ''">
+                 and picture_url = #{pictureUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getsOldPage" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+        select
+        supplier_id,pinlian_sku,supplier_sku,commodity_name,commodity_name_en,picture_url
+        from t_supplier_commodity limit #{currentPage,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+    </select>
+
+    <select id="getsOldCount"  resultType="java.lang.Integer">
+        select
+        count(id)
+        from t_supplier_commodity
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_commodity (supplier_id, pinlian_sku,
+            supplier_sku, commodity_name, commodity_name_en,
+            picture_url, create_date, version
+            )
+        values 
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{item.supplierId,jdbcType=INTEGER}, #{item.pinlianSku,jdbcType=VARCHAR},
+            #{item.supplierSku,jdbcType=VARCHAR}, #{item.commodityName,jdbcType=VARCHAR}, #{item.commodityNameEn,jdbcType=VARCHAR},
+            #{item.pictureUrl,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP}, #{item.version,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <select id="getByPSku" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_commodity
+        where pinlian_sku = #{pinlianSku,jdbcType=VARCHAR}
+    </select>
+</mapper>

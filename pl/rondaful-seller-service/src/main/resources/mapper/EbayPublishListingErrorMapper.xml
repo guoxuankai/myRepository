@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishListingErrorMapper">
+    
+ <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishListingError">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="listing_id" jdbcType="INTEGER" property="listingId" />
+        <result column="error_code" jdbcType="VARCHAR" property="errorCode" />
+        <result column="short_message" jdbcType="VARCHAR" property="shortMessage" />
+        <result column="long_message" jdbcType="VARCHAR" property="longMessage" />
+        <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
+        <result column="severity_code" jdbcType="VARCHAR" property="severityCode" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.seller.entity.EbayPublishListingError">
+        <result column="msg" jdbcType="LONGVARCHAR" property="msg" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, error_code, short_message, long_message, creation_time, severity_code
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        msg
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from ebay_publish_listing_error
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_publish_listing_error
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingError">
+        insert into ebay_publish_listing_error (id, listing_id, error_code, 
+            short_message, long_message, creation_time, 
+            severity_code, msg)
+        values (#{id,jdbcType=INTEGER}, #{listingId,jdbcType=INTEGER}, #{errorCode,jdbcType=VARCHAR}, 
+            #{shortMessage,jdbcType=VARCHAR}, #{longMessage,jdbcType=VARCHAR}, #{creationTime,jdbcType=TIMESTAMP}, 
+            #{severityCode,jdbcType=VARCHAR}, #{msg,jdbcType=LONGVARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingError">
+        insert into ebay_publish_listing_error
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="errorCode != null">
+                error_code,
+            </if>
+            <if test="shortMessage != null">
+                short_message,
+            </if>
+            <if test="longMessage != null">
+                long_message,
+            </if>
+            <if test="creationTime != null">
+                creation_time,
+            </if>
+            <if test="severityCode != null">
+                severity_code,
+            </if>
+            <if test="msg != null">
+                msg,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=INTEGER},
+            </if>
+            <if test="errorCode != null">
+                #{errorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="shortMessage != null">
+                #{shortMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="longMessage != null">
+                #{longMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="creationTime != null">
+                #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="severityCode != null">
+                #{severityCode,jdbcType=VARCHAR},
+            </if>
+            <if test="msg != null">
+                #{msg,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingError">
+        update ebay_publish_listing_error
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=INTEGER},
+            </if>
+            <if test="errorCode != null">
+                error_code = #{errorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="shortMessage != null">
+                short_message = #{shortMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="longMessage != null">
+                long_message = #{longMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="creationTime != null">
+                creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="severityCode != null">
+                severity_code = #{severityCode,jdbcType=VARCHAR},
+            </if>
+            <if test="msg != null">
+                msg = #{parameter,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingError">
+        update ebay_publish_listing_error
+        set listing_id = #{listingId,jdbcType=INTEGER},
+            error_code = #{errorCode,jdbcType=VARCHAR},
+            short_message = #{shortMessage,jdbcType=VARCHAR},
+            long_message = #{longMessage,jdbcType=VARCHAR},
+            creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            severity_code = #{severityCode,jdbcType=VARCHAR},
+            msg = #{msg,jdbcType=LONGVARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingError">
+        update ebay_publish_listing_error
+        set listing_id = #{listingId,jdbcType=INTEGER},
+            error_code = #{errorCode,jdbcType=VARCHAR},
+            short_message = #{shortMessage,jdbcType=VARCHAR},
+            long_message = #{longMessage,jdbcType=VARCHAR},
+            creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            severity_code = #{severityCode,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingError" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+           ,
+        <include refid="Blob_Column_List" />
+        from ebay_publish_listing_error
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="listingId != null">
+                 and listing_id = #{listingId,jdbcType=INTEGER}
+            </if>
+            <if test="errorCode != null">
+                 and error_code = #{errorCode,jdbcType=VARCHAR}
+            </if>
+            <if test="shortMessage != null">
+                 and short_message = #{shortMessage,jdbcType=VARCHAR}
+            </if>
+            <if test="longMessage != null">
+                 and long_message = #{longMessage,jdbcType=VARCHAR}
+            </if>
+            <if test="creationTime != null">
+                 and creation_time = #{creationTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="severityCode != null">
+                 and severity_code = #{severityCode,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        order by creation_time desc
+    </select>
+    
+      <select id="batchInsert" parameterType="java.util.List">
+    	   insert into ebay_publish_listing_error (id, listing_id, error_code, 
+            short_message, long_message, creation_time, severity_code, msg
+            ) VALUES
+    <foreach collection="list" item="error" separator=",">
+   (#{error.id}, #{error.listingId}, #{error.errorCode}, #{error.shortMessage},#{error.longMessage},#{error.creationTime},#{error.severityCode},#{error.msg})
+    </foreach>
+    </select>
+    
+    
+    <delete id="deleteByListingId" parameterType="java.lang.Long">
+        delete from ebay_publish_listing_error
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </delete>
+</mapper>

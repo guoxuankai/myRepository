@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.StorageCollectingMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.storage.StorageCollecting">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="storage_id" jdbcType="BIGINT" property="storageId" />
+        <result column="ca_first_name" jdbcType="VARCHAR" property="caFirstName" />
+        <result column="ca_last_name" jdbcType="VARCHAR" property="caLastName" />
+        <result column="ca_contact_phone" jdbcType="VARCHAR" property="caContactPhone" />
+        <result column="ca_state" jdbcType="VARCHAR" property="caState" />
+        <result column="ca_city" jdbcType="VARCHAR" property="caCity" />
+        <result column="ca_country_code" jdbcType="VARCHAR" property="caCountryCode" />
+        <result column="ca_zipcode" jdbcType="VARCHAR" property="caZipcode" />
+        <result column="ca_address1" jdbcType="VARCHAR" property="caAddress1" />
+        <result column="ca_address2" jdbcType="VARCHAR" property="caAddress2" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, storage_id, ca_first_name, ca_last_name, ca_contact_phone, ca_state, ca_city, 
+        ca_country_code, ca_zipcode, ca_address1, ca_address2
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_storage_collecting
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_storage_collecting
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageCollecting">
+        insert into t_storage_collecting (id, storage_id, ca_first_name, 
+            ca_last_name, ca_contact_phone, ca_state, 
+            ca_city, ca_country_code, ca_zipcode, 
+            ca_address1, ca_address2)
+        values (#{id,jdbcType=INTEGER}, #{storageId,jdbcType=BIGINT}, #{caFirstName,jdbcType=VARCHAR}, 
+            #{caLastName,jdbcType=VARCHAR}, #{caContactPhone,jdbcType=VARCHAR}, #{caState,jdbcType=VARCHAR}, 
+            #{caCity,jdbcType=VARCHAR}, #{caCountryCode,jdbcType=VARCHAR}, #{caZipcode,jdbcType=VARCHAR}, 
+            #{caAddress1,jdbcType=VARCHAR}, #{caAddress2,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageCollecting">
+        insert into t_storage_collecting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="storageId != null">
+                storage_id,
+            </if>
+            <if test="caFirstName != null">
+                ca_first_name,
+            </if>
+            <if test="caLastName != null">
+                ca_last_name,
+            </if>
+            <if test="caContactPhone != null">
+                ca_contact_phone,
+            </if>
+            <if test="caState != null">
+                ca_state,
+            </if>
+            <if test="caCity != null">
+                ca_city,
+            </if>
+            <if test="caCountryCode != null">
+                ca_country_code,
+            </if>
+            <if test="caZipcode != null">
+                ca_zipcode,
+            </if>
+            <if test="caAddress1 != null">
+                ca_address1,
+            </if>
+            <if test="caAddress2 != null">
+                ca_address2,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="storageId != null">
+                #{storageId,jdbcType=BIGINT},
+            </if>
+            <if test="caFirstName != null">
+                #{caFirstName,jdbcType=VARCHAR},
+            </if>
+            <if test="caLastName != null">
+                #{caLastName,jdbcType=VARCHAR},
+            </if>
+            <if test="caContactPhone != null">
+                #{caContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="caState != null">
+                #{caState,jdbcType=VARCHAR},
+            </if>
+            <if test="caCity != null">
+                #{caCity,jdbcType=VARCHAR},
+            </if>
+            <if test="caCountryCode != null">
+                #{caCountryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="caZipcode != null">
+                #{caZipcode,jdbcType=VARCHAR},
+            </if>
+            <if test="caAddress1 != null">
+                #{caAddress1,jdbcType=VARCHAR},
+            </if>
+            <if test="caAddress2 != null">
+                #{caAddress2,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageCollecting">
+        update t_storage_collecting
+        <set>
+            <if test="storageId != null">
+                storage_id = #{storageId,jdbcType=BIGINT},
+            </if>
+            <if test="caFirstName != null">
+                ca_first_name = #{caFirstName,jdbcType=VARCHAR},
+            </if>
+            <if test="caLastName != null">
+                ca_last_name = #{caLastName,jdbcType=VARCHAR},
+            </if>
+            <if test="caContactPhone != null">
+                ca_contact_phone = #{caContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="caState != null">
+                ca_state = #{caState,jdbcType=VARCHAR},
+            </if>
+            <if test="caCity != null">
+                ca_city = #{caCity,jdbcType=VARCHAR},
+            </if>
+            <if test="caCountryCode != null">
+                ca_country_code = #{caCountryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="caZipcode != null">
+                ca_zipcode = #{caZipcode,jdbcType=VARCHAR},
+            </if>
+            <if test="caAddress1 != null">
+                ca_address1 = #{caAddress1,jdbcType=VARCHAR},
+            </if>
+            <if test="caAddress2 != null">
+                ca_address2 = #{caAddress2,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageCollecting">
+        update t_storage_collecting
+        set storage_id = #{storageId,jdbcType=BIGINT},
+            ca_first_name = #{caFirstName,jdbcType=VARCHAR},
+            ca_last_name = #{caLastName,jdbcType=VARCHAR},
+            ca_contact_phone = #{caContactPhone,jdbcType=VARCHAR},
+            ca_state = #{caState,jdbcType=VARCHAR},
+            ca_city = #{caCity,jdbcType=VARCHAR},
+            ca_country_code = #{caCountryCode,jdbcType=VARCHAR},
+            ca_zipcode = #{caZipcode,jdbcType=VARCHAR},
+            ca_address1 = #{caAddress1,jdbcType=VARCHAR},
+            ca_address2 = #{caAddress2,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageCollecting" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_storage_collecting
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="storageId != null and storageId != ''">
+                 and storage_id = #{storageId,jdbcType=BIGINT}
+            </if>
+            <if test="caFirstName != null and caFirstName != ''">
+                 and ca_first_name = #{caFirstName,jdbcType=VARCHAR}
+            </if>
+            <if test="caLastName != null and caLastName != ''">
+                 and ca_last_name = #{caLastName,jdbcType=VARCHAR}
+            </if>
+            <if test="caContactPhone != null and caContactPhone != ''">
+                 and ca_contact_phone = #{caContactPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="caState != null and caState != ''">
+                 and ca_state = #{caState,jdbcType=VARCHAR}
+            </if>
+            <if test="caCity != null and caCity != ''">
+                 and ca_city = #{caCity,jdbcType=VARCHAR}
+            </if>
+            <if test="caCountryCode != null and caCountryCode != ''">
+                 and ca_country_code = #{caCountryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="caZipcode != null and caZipcode != ''">
+                 and ca_zipcode = #{caZipcode,jdbcType=VARCHAR}
+            </if>
+            <if test="caAddress1 != null and caAddress1 != ''">
+                 and ca_address1 = #{caAddress1,jdbcType=VARCHAR}
+            </if>
+            <if test="caAddress2 != null and caAddress2 != ''">
+                 and ca_address2 = #{caAddress2,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_storage_collecting (storage_id, ca_first_name,
+            ca_last_name, ca_contact_phone, ca_state,
+            ca_city, ca_country_code, ca_zipcode,
+            ca_address1, ca_address2)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.storageId,jdbcType=BIGINT}, #{item.caFirstName,jdbcType=VARCHAR},
+            #{item.caLastName,jdbcType=VARCHAR}, #{item.caContactPhone,jdbcType=VARCHAR}, #{item.caState,jdbcType=VARCHAR},
+            #{item.caCity,jdbcType=VARCHAR}, #{item.caCountryCode,jdbcType=VARCHAR}, #{item.caZipcode,jdbcType=VARCHAR},
+            #{item.caAddress1,jdbcType=VARCHAR}, #{item.caAddress2,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="getsByStorageId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_storage_collecting
+        where storage_id = #{storageId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="delByStorageId" parameterType="java.lang.Long">
+        delete from t_storage_collecting where storage_id = #{storageId,jdbcType=BIGINT}
+    </delete>
+</mapper>

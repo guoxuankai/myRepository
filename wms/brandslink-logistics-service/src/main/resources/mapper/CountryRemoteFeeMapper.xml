@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.logistics.mapper.CountryRemoteFeeMapper">
+
+    <delete id="deleteByCountryId" parameterType="java.lang.Long">
+        delete from t_country_remote_fee
+        where country_id = #{countryId,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteBatchByCountryId">
+        delete from t_country_remote_fee
+        where country_id in
+        <foreach item="item" index="index" collection="list" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <insert id="insertBatch" useGeneratedKeys="true"
+            keyProperty="id" parameterType="com.brandslink.cloud.logistics.model.CountryRemoteFeeModel">
+        insert into t_country_remote_fee (country_id, country,
+        city, first_weight, first_weight_fee,
+        renew_weight, renew_weight_fee)
+        values
+        <foreach item="item" index="index" collection="list" separator="," open="(" close=")">
+            #{item.countryId,jdbcType=VARCHAR},
+            #{item.country,jdbcType=VARCHAR}, #{item.city,jdbcType=VARCHAR}, #{item.firstWeight,jdbcType=DECIMAL},
+            #{item.firstWeightFee,jdbcType=DECIMAL}, #{item.renewWeight,jdbcType=DECIMAL},
+            #{item.renewWeightFee,jdbcType=DECIMAL}
+        </foreach>
+    </insert>
+
+    <select id="selectByCountryID" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_country_remote_fee
+        where country_id = #{countryId,jdbcType=BIGINT}
+    </select>
+
+    <!--##################################################################################################-->
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.logistics.model.CountryRemoteFeeModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="country_id" jdbcType="BIGINT" property="countryId"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="first_weight" jdbcType="DECIMAL" property="firstWeight"/>
+        <result column="first_weight_fee" jdbcType="DECIMAL" property="firstWeightFee"/>
+        <result column="renew_weight" jdbcType="DECIMAL" property="renewWeight"/>
+        <result column="renew_weight_fee" jdbcType="DECIMAL" property="renewWeightFee"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, country_id, country, city, first_weight, first_weight_fee, renew_weight, renew_weight_fee
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_country_remote_fee
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_country_remote_fee
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.logistics.model.CountryRemoteFeeModel">
+        insert into t_country_remote_fee (id, country_id, country, 
+            city, first_weight, first_weight_fee, 
+            renew_weight, renew_weight_fee)
+        values (#{id,jdbcType=BIGINT}, #{countryId,jdbcType=BIGINT}, #{country,jdbcType=VARCHAR}, 
+            #{city,jdbcType=VARCHAR}, #{firstWeight,jdbcType=DECIMAL}, #{firstWeightFee,jdbcType=DECIMAL}, 
+            #{renewWeight,jdbcType=DECIMAL}, #{renewWeightFee,jdbcType=DECIMAL})
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.brandslink.cloud.logistics.model.CountryRemoteFeeModel">
+        insert into t_country_remote_fee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="countryId != null">
+                country_id,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="firstWeight != null">
+                first_weight,
+            </if>
+            <if test="firstWeightFee != null">
+                first_weight_fee,
+            </if>
+            <if test="renewWeight != null">
+                renew_weight,
+            </if>
+            <if test="renewWeightFee != null">
+                renew_weight_fee,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="countryId != null">
+                #{countryId,jdbcType=BIGINT},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="firstWeight != null">
+                #{firstWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="firstWeightFee != null">
+                #{firstWeightFee,jdbcType=DECIMAL},
+            </if>
+            <if test="renewWeight != null">
+                #{renewWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="renewWeightFee != null">
+                #{renewWeightFee,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.brandslink.cloud.logistics.model.CountryRemoteFeeModel">
+        update t_country_remote_fee
+        <set>
+            <if test="countryId != null">
+                country_id = #{countryId,jdbcType=BIGINT},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="firstWeight != null">
+                first_weight = #{firstWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="firstWeightFee != null">
+                first_weight_fee = #{firstWeightFee,jdbcType=DECIMAL},
+            </if>
+            <if test="renewWeight != null">
+                renew_weight = #{renewWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="renewWeightFee != null">
+                renew_weight_fee = #{renewWeightFee,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.logistics.model.CountryRemoteFeeModel">
+        update t_country_remote_fee
+        set country_id = #{countryId,jdbcType=BIGINT},
+            country = #{country,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            first_weight = #{firstWeight,jdbcType=DECIMAL},
+            first_weight_fee = #{firstWeightFee,jdbcType=DECIMAL},
+            renew_weight = #{renewWeight,jdbcType=DECIMAL},
+            renew_weight_fee = #{renewWeightFee,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.logistics.model.CountryRemoteFeeModel"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_country_remote_fee
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="countryId != null and countryId != ''">
+                and country_id = #{countryId,jdbcType=BIGINT}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="firstWeight != null and firstWeight != ''">
+                and first_weight = #{firstWeight,jdbcType=DECIMAL}
+            </if>
+            <if test="firstWeightFee != null and firstWeightFee != ''">
+                and first_weight_fee = #{firstWeightFee,jdbcType=DECIMAL}
+            </if>
+            <if test="renewWeight != null and renewWeight != ''">
+                and renew_weight = #{renewWeight,jdbcType=DECIMAL}
+            </if>
+            <if test="renewWeightFee != null and renewWeightFee != ''">
+                and renew_weight_fee = #{renewWeightFee,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </select>
+</mapper>

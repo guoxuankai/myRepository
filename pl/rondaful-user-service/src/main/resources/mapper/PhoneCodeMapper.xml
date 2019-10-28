@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.PhoneCodeMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.PhoneCode">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="country_name" jdbcType="VARCHAR" property="countryName" />
+        <result column="country_name_en" jdbcType="VARCHAR" property="countryNameEn" />
+        <result column="phone_code" jdbcType="INTEGER" property="phoneCode" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, country_name, country_name_en, phone_code
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_phone_code
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_phone_code
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.PhoneCode">
+        insert into t_phone_code (id, country_name, country_name_en, 
+            phone_code)
+        values (#{id,jdbcType=INTEGER}, #{countryName,jdbcType=VARCHAR}, #{countryNameEn,jdbcType=VARCHAR}, 
+            #{phoneCode,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.PhoneCode">
+        insert into t_phone_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="countryName != null">
+                country_name,
+            </if>
+            <if test="countryNameEn != null">
+                country_name_en,
+            </if>
+            <if test="phoneCode != null">
+                phone_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="countryName != null">
+                #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="countryNameEn != null">
+                #{countryNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCode != null">
+                #{phoneCode,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.PhoneCode">
+        update t_phone_code
+        <set>
+            <if test="countryName != null">
+                country_name = #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="countryNameEn != null">
+                country_name_en = #{countryNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCode != null">
+                phone_code = #{phoneCode,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.PhoneCode">
+        update t_phone_code
+        set country_name = #{countryName,jdbcType=VARCHAR},
+            country_name_en = #{countryNameEn,jdbcType=VARCHAR},
+            phone_code = #{phoneCode,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.PhoneCode" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_phone_code
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="countryName != null and countryName != ''">
+                 and country_name = #{countryName,jdbcType=VARCHAR}
+            </if>
+            <if test="countryNameEn != null and countryNameEn != ''">
+                 and country_name_en = #{countryNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="phoneCode != null and phoneCode != ''">
+                 and phone_code = #{phoneCode,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getsAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_phone_code
+    </select>
+</mapper>

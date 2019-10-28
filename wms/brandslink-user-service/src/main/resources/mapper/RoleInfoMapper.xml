@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.user.mapper.RoleInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.user.entity.RoleInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_code" jdbcType="INTEGER" property="roleCode"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="reserve2" jdbcType="VARCHAR" property="reserve2"/>
+        <result column="reserve1" jdbcType="VARCHAR" property="reserve1"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode"/>
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName"/>
+    </resultMap>
+
+    <resultMap id="RoleListMap" type="com.brandslink.cloud.user.entity.RoleWarehouseResult">
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="warehouseName"/>
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, role_code, role_name, reserve2, reserve1, create_by, create_time,
+        last_update_by, last_update_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_role_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAndWarehouseByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        r.id,r.role_name,w.warehouse_name
+        from t_role_info r
+        left join t_role_warehouse_info w
+        on w.role_id = r.id
+        where r.id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectUserCountByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        count(1)
+        from t_user_role_info
+        where role_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectMaxRoleCode" resultType="java.lang.Integer">
+        select
+        MAX(role_code)
+        from t_role_info
+    </select>
+
+    <select id="selectByRoleName" resultType="java.lang.Integer">
+        select
+        count(1)
+        from t_role_info
+        where role_name = #{roleName,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_role_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.user.entity.RoleInfo">
+        insert into t_role_info (id, role_code, role_name,
+            reserve2, reserve1, create_by,
+            create_time, last_update_by, last_update_time
+            )
+        values (#{id,jdbcType=INTEGER}, #{roleCode,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR},
+            #{reserve2,jdbcType=VARCHAR}, #{reserve1,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.user.entity.RoleInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_role_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roleCode != null">
+                role_code,
+            </if>
+            <if test="roleName != null">
+                role_name,
+            </if>
+            <if test="reserve2 != null">
+                reserve2,
+            </if>
+            <if test="reserve1 != null">
+                reserve1,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="roleCode != null">
+                #{roleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="reserve2 != null">
+                #{reserve2,jdbcType=VARCHAR},
+            </if>
+            <if test="reserve1 != null">
+                #{reserve1,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.user.entity.RoleInfo">
+        update t_role_info
+        <set>
+            <if test="roleCode != null">
+                role_code = #{roleCode,jdbcType=INTEGER},
+            </if>
+            <if test="roleName != null">
+                role_name = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="reserve2 != null">
+                reserve2 = #{reserve2,jdbcType=VARCHAR},
+            </if>
+            <if test="reserve1 != null">
+                reserve1 = #{reserve1,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.user.entity.RoleInfo">
+        update t_role_info
+        set role_code = #{roleCode,jdbcType=INTEGER},
+            role_name = #{roleName,jdbcType=VARCHAR},
+            reserve2 = #{reserve2,jdbcType=VARCHAR},
+            reserve1 = #{reserve1,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateUserRoleNameByRoleName">
+        UPDATE t_user_warehouse_info
+        SET warehouse_name = CONCAT(SUBSTRING_INDEX(warehouse_name,'-',1),'-',#{newRoleName,jdbcType=VARCHAR})
+        where SUBSTRING_INDEX(warehouse_name,'-',-1) = #{oldRoleName,jdbcType=VARCHAR}
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.user.entity.RoleInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_role_info
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                and role_code = #{roleCode,jdbcType=INTEGER}
+            </if>
+            <if test="roleName != null and roleName != ''">
+                and role_name = #{roleName,jdbcType=VARCHAR}
+            </if>
+            <if test="reserve2 != null and reserve2 != ''">
+                and reserve2 = #{reserve2,jdbcType=VARCHAR}
+            </if>
+            <if test="reserve1 != null and reserve1 != ''">
+                and reserve1 like %#{reserve1,jdbcType=VARCHAR}%
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                and create_time &gt;= #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastUpdateTime != null">
+                and create_time &lt;= #{lastUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <sql id="Portion_Column_List">
+        r.id, r.role_name, r.create_by, r.create_time,w.warehouse_name,w.warehouse_code
+    </sql>
+
+    <select id="getPage" parameterType="com.brandslink.cloud.user.dto.request.GetRoleListRequestDTO"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Portion_Column_List"/>
+        from t_role_info r
+        LEFT JOIN t_role_warehouse_info w
+        ON r.id = w.role_id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="roleName != null and roleName != ''">
+                and r.role_name like concat('%', #{roleName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="warehouseName != null and warehouseName != ''">
+                and w.warehouse_name like concat('%', #{warehouseName,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by like concat('%', #{createBy,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="createTime != null">
+                and create_time &gt;= #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastUpdateTime != null">
+                and create_time &lt;= #{lastUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectMenusByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        menu_id
+        from t_role_menu_info rm
+        left join t_menu_info m
+        on m.id = rm.menu_id
+        where role_id = #{id,jdbcType=INTEGER}
+        and m.type = 1
+        and rm.belong = #{flag,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectRoleListByWarehouseCode" parameterType="java.util.List" resultMap="RoleListMap">
+        select w.role_id,r.role_name,w.warehouse_code
+        from t_role_warehouse_info w
+        LEFT JOIN t_role_info r ON r.id = w.role_id
+        where w.warehouse_code in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="getRoleListByMenuUrl" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select
+        role_menu.role_id
+        from t_role_menu_info role_menu
+        JOIN t_menu_info menu on role_menu.menu_id = menu.id and menu.type = 1
+        WHERE menu.url like concat('%', #{requestUrl,jdbcType=VARCHAR}, '%')
+    </select>
+
+    <insert id="insertMenusByRoleId">
+        insert into t_role_menu_info(role_id,menu_id,belong)
+        values
+        <foreach collection="menuList" index="index" item="item" separator=",">
+            (#{id,jdbcType=INTEGER},#{item,jdbcType=INTEGER},#{flag,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <delete id="deleteMenusByRoleId" parameterType="java.lang.Integer">
+        delete from t_role_menu_info
+        where role_id = #{id,jdbcType=INTEGER}
+        <if test="flag != null">
+            and belong = #{flag,jdbcType=INTEGER}
+        </if>
+    </delete>
+
+    <delete id="deleteWarehouseDetailByRoleId" parameterType="java.lang.Integer">
+        delete from t_role_warehouse_info
+        where role_id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteWarehouseDetailByRoleIdAndWarehouseName" parameterType="java.util.List">
+        delete from t_user_warehouse_info
+        where warehouse_name IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
+    <select id="selectUserIdsByRoleIdAndWarehouseName" parameterType="java.util.List" resultType="java.lang.Integer">
+        select user_id from t_user_warehouse_info
+        where warehouse_name IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <insert id="insertWarehouseDetailByRoleId" parameterType="java.util.List">
+        insert into t_role_warehouse_info(role_id,warehouse_code,warehouse_name)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.roleId,jdbcType=INTEGER},#{item.warehouseCode,jdbcType=VARCHAR},#{item.warehouseName,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="selectUserIdAndRoleNamesByUserIds" parameterType="java.util.List"
+            resultType="com.brandslink.cloud.user.entity.UserAndRoleEntity">
+        select user_id userId,SUBSTRING_INDEX(warehouse_name,'-',-1) roleName
+        from t_user_warehouse_info
+        where user_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+        GROUP BY userId,roleName
+    </select>
+    <select id="selectMenuUrlByRoleList" parameterType="java.util.List" resultType="java.lang.String">
+        select menu.url
+        from t_role_menu_info role_menu
+        JOIN t_menu_info menu on role_menu.menu_id = menu.id and menu.type = 1
+        WHERE role_menu.role_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+        and menu.url like '%*%'
+    </select>
+
+    <delete id="deleteRoleByUserIds" parameterType="java.util.List">
+        delete from t_user_role_info
+        where user_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </delete>
+
+    <insert id="insertUserAndRoleByUserAndRoleEntity" parameterType="java.util.List">
+        INSERT INTO t_user_role_info(user_id,role_id)
+        VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.userId,jdbcType=INTEGER},(select id from t_role_info where role_name =
+            #{item.roleName,jdbcType=VARCHAR}))
+        </foreach>
+    </insert>
+</mapper>

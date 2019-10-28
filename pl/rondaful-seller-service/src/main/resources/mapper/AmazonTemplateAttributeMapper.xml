@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonTemplateAttributeMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AmazonTemplateAttribute">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="site" jdbcType="VARCHAR" property="site"/>
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId"/>
+        <result column="template_parent" jdbcType="VARCHAR" property="templateParent"/>
+        <result column="template_child" jdbcType="VARCHAR" property="templateChild"/>
+        <result column="attribute_name" jdbcType="VARCHAR" property="attributeName"/>
+        <result column="required" jdbcType="INTEGER" property="required"/>
+        <result column="options" jdbcType="VARCHAR" property="options"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="sign" jdbcType="VARCHAR" property="sign"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, site,marketplace_id, template_parent, template_child, attribute_name, required, options, create_time, 
+        update_time, sign
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from amazon_template_attribute
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from amazon_template_attribute
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateAttribute">
+        insert into amazon_template_attribute (id, site,marketplace_id, template_parent, 
+            template_child, attribute_name, required, 
+            options, create_time, update_time, 
+            sign)
+        values (#{id,jdbcType=INTEGER}, #{site,jdbcType=VARCHAR},#{marketplaceId,jdbcType=VARCHAR}, #{templateParent,jdbcType=VARCHAR}, 
+            #{templateChild,jdbcType=VARCHAR}, #{attributeName,jdbcType=VARCHAR}, #{required,jdbcType=INTEGER}, 
+            #{options,jdbcType=VARCHAR}, now(), now(),
+            #{sign,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateAttribute">
+        insert into amazon_template_attribute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="site != null">
+                site,
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id,
+            </if>
+            <if test="templateParent != null">
+                template_parent,
+            </if>
+            <if test="templateChild != null">
+                template_child,
+            </if>
+            <if test="attributeName != null">
+                attribute_name,
+            </if>
+            <if test="required != null">
+                required,
+            </if>
+            <if test="options != null">
+                options,
+            </if>
+            <if test="sign != null">
+                sign,
+            </if>
+                create_time,
+
+                update_time
+
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="site != null">
+                #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="templateParent != null">
+                #{templateParent,jdbcType=VARCHAR},
+            </if>
+            <if test="templateChild != null">
+                #{templateChild,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeName != null">
+                #{attributeName,jdbcType=VARCHAR},
+            </if>
+            <if test="required != null">
+                #{required,jdbcType=INTEGER},
+            </if>
+            <if test="options != null">
+                #{options,jdbcType=VARCHAR},
+            </if>
+            <if test="sign != null">
+                #{sign,jdbcType=VARCHAR},
+            </if>
+            now(),now()
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateAttribute">
+        update amazon_template_attribute
+        <set>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="templateParent != null">
+                template_parent = #{templateParent,jdbcType=VARCHAR},
+            </if>
+            <if test="templateChild != null">
+                template_child = #{templateChild,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeName != null">
+                attribute_name = #{attributeName,jdbcType=VARCHAR},
+            </if>
+            <if test="required != null">
+                required = #{required,jdbcType=INTEGER},
+            </if>
+            <if test="options != null">
+                options = #{options,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sign != null">
+                sign = #{sign,jdbcType=VARCHAR},
+            </if>
+                update_time = now()
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateAttribute">
+        update amazon_template_attribute
+        set site = #{site,jdbcType=VARCHAR},
+         marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            template_parent = #{templateParent,jdbcType=VARCHAR},
+            template_child = #{templateChild,jdbcType=VARCHAR},
+            attribute_name = #{attributeName,jdbcType=VARCHAR},
+            required = #{required,jdbcType=INTEGER},
+            options = #{options,jdbcType=VARCHAR},
+            sign = #{sign,jdbcType=VARCHAR},
+            update_time = now()
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateAttribute"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from amazon_template_attribute
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="site != null and site != ''">
+                and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null and marketplaceId != '' ">
+                and marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="templateParent != null and templateParent != ''">
+                and template_parent = #{templateParent,jdbcType=VARCHAR}
+            </if>
+            <if test="templateChild != null and templateChild != ''">
+                and template_child = #{templateChild,jdbcType=VARCHAR}
+            </if>
+            <if test="attributeName != null and attributeName != ''">
+                and attribute_name = #{attributeName,jdbcType=VARCHAR}
+            </if>
+            <if test="required != null and required != '' or required == '0'.toString() ">
+                and required = #{required,jdbcType=INTEGER}
+            </if>
+            <if test="options != null and options != ''">
+                and options = #{options,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="sign != null and sign != ''">
+                and sign = #{sign,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+
+	<select id="selectByTemplateAndMarketplaceId" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateAttribute"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from amazon_template_attribute
+        <trim prefix="where" prefixOverrides="and">
+        	marketplace_id = #{marketplaceId,jdbcType=VARCHAR} AND 
+        	template_parent = #{templateParent,jdbcType=VARCHAR}
+            <if test="templateChild != null and templateChild != ''">
+                AND template_child = #{templateChild,jdbcType=VARCHAR}
+            </if>
+         </trim>
+    </select>
+    
+    
+    <!-- 查询所有的二级模板（没有二级模板的查询一级模板） -->
+    <select id="selectAllChildTemplate" resultType="java.lang.String">
+        SELECT IFNULL(a.template_child,a.template_parent) AS template FROM amazon_template_attribute a GROUP BY template
+    </select>
+
+    <!-- 根据传入的末班名称查询所有的属性 -->
+    <select id="selectAllAttributeByTemplate" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM amazon_template_attribute a
+        WHERE (a.template_parent = #{template} AND ISNULL(a.template_child) )OR a.template_child = #{template}  GROUP BY a.attribute_name
+    </select>
+
+
+    <update id="setSign" >
+        UPDATE amazon_template_attribute SET sign = MD5(CONCAT(site,template_parent,IFNULL(template_child,'null') ));
+    </update>
+
+
+</mapper>

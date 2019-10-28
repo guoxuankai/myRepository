@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.PublishTemplateMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.PublishTemplate">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="template_type" jdbcType="INTEGER" property="templateType" />
+        <result column="site" jdbcType="VARCHAR" property="site" />
+        <result column="platform" jdbcType="INTEGER" property="platform" />
+        <result column="empower_id" jdbcType="VARCHAR" property="empowerId" />
+        <result column="empower_name" jdbcType="VARCHAR" property="empowerName" />
+        <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+        <result column="default_is" jdbcType="BIT" property="defaultIs" />
+        <result column="system_is" jdbcType="BIT" property="systemIs" />
+        <result column="content_ext" jdbcType="VARCHAR" property="contentExt" />
+        <result column="pl_account" jdbcType="VARCHAR" property="plAccount" />
+        <result column="create_id" jdbcType="BIGINT" property="createId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, template_type, site, platform, empower_id, empower_name, template_name, default_is,
+        system_is, content_ext, pl_account, create_id, create_time, update_time, status
+    </sql>
+
+    <sql id="Base_Column_List_not_content">
+        id, template_type, site, platform, empower_id, empower_name, template_name, default_is,
+        system_is, pl_account, create_id, create_time, update_time, status
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from publish_template
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from publish_template
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.PublishTemplate">
+        insert into publish_template (id, template_type, site, 
+            platform, empower_id, empower_name,
+            template_name, default_is, system_is,
+            pl_account, create_id, create_time,
+            update_time, status, content_ext
+            )
+        values (#{id,jdbcType=BIGINT}, #{templateType,jdbcType=INTEGER}, #{site,jdbcType=VARCHAR},
+            #{platform,jdbcType=INTEGER}, #{empowerId,jdbcType=VARCHAR}, #{empowerName,jdbcType=VARCHAR},
+            #{templateName,jdbcType=VARCHAR}, #{defaultIs,jdbcType=BIT}, #{systemIs,jdbcType=BIT},
+            #{plAccount,jdbcType=VARCHAR}, #{createId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{contentExt,jdbcType=LONGVARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.rondaful.cloud.seller.entity.PublishTemplate">
+        insert into publish_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="templateType != null">
+                template_type,
+            </if>
+            <if test="site != null">
+                site,
+            </if>
+            <if test="platform != null">
+                platform,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+            <if test="empowerName != null">
+                empower_name,
+            </if>
+            <if test="templateName != null">
+                template_name,
+            </if>
+            <if test="defaultIs != null">
+                default_is,
+            </if>
+            <if test="systemIs != null">
+                system_is,
+            </if>
+            <if test="plAccount != null">
+                pl_account,
+            </if>
+            <if test="createId != null">
+                create_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="contentExt != null">
+                content_ext,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="templateType != null">
+                #{templateType,jdbcType=INTEGER},
+            </if>
+            <if test="site != null">
+                #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="platform != null">
+                #{platform,jdbcType=INTEGER},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=VARCHAR},
+            </if>
+            <if test="empowerName != null">
+                #{empowerName,jdbcType=VARCHAR},
+            </if>
+            <if test="templateName != null">
+                #{templateName,jdbcType=VARCHAR},
+            </if>
+            <if test="defaultIs != null">
+                #{defaultIs,jdbcType=BIT},
+            </if>
+            <if test="systemIs != null">
+                #{systemIs,jdbcType=BIT},
+            </if>
+            <if test="plAccount != null">
+                #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="createId != null">
+                #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="contentExt != null">
+                #{contentExt,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.PublishTemplate">
+        update publish_template
+        <set>
+            <if test="templateType != null">
+                template_type = #{templateType,jdbcType=INTEGER},
+            </if>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="platform != null">
+                platform = #{platform,jdbcType=INTEGER},
+            </if>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=VARCHAR},
+            </if>
+            <if test="empowerName != null">
+                empower_name = #{empowerName,jdbcType=VARCHAR},
+            </if>
+            <if test="templateName != null">
+                template_name = #{templateName,jdbcType=VARCHAR},
+            </if>
+            <if test="defaultIs != null">
+                default_is = #{defaultIs,jdbcType=BIT},
+            </if>
+            <if test="systemIs != null">
+                system_is = #{systemIs,jdbcType=BIT},
+            </if>
+            <if test="plAccount != null">
+                pl_account = #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="createId != null">
+                create_id = #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="contentExt != null">
+                content_ext = #{contentExt,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.PublishTemplate">
+        update publish_template
+        set template_type = #{templateType,jdbcType=INTEGER},
+            site = #{site,jdbcType=VARCHAR},
+            platform = #{platform,jdbcType=INTEGER},
+            empower_id = #{empowerId,jdbcType=VARCHAR},
+            empower_name = #{empowerName,jdbcType=VARCHAR},
+            template_name = #{templateName,jdbcType=VARCHAR},
+            default_is = #{defaultIs,jdbcType=BIT},
+            system_is = #{systemIs,jdbcType=BIT},
+            pl_account = #{plAccount,jdbcType=VARCHAR},
+            create_id = #{createId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            status = #{status,jdbcType=INTEGER},
+            content_ext = #{contentExt,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.PublishTemplate" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from publish_template
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="templateType != null and templateType != ''">
+                 and template_type = #{templateType,jdbcType=INTEGER}
+            </if>
+            <if test="site != null and site != ''">
+                 and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="platform != null and platform != ''">
+                 and platform = #{platform,jdbcType=INTEGER}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                and empower_id = #{empowerId,jdbcType=VARCHAR}
+            </if>
+            <if test="empowerName != null and empowerName != ''">
+                and empower_name = #{empowerName,jdbcType=VARCHAR}
+            </if>
+            <if test="templateName != null and templateName != ''">
+                 and template_name = #{templateName,jdbcType=VARCHAR}
+            </if>
+            <if test="defaultIs != null and defaultIs != ''">
+                 and default_is = #{defaultIs,jdbcType=BIT}
+            </if>
+            <if test="systemIs != null and systemIs != ''">
+                 and system_is = #{systemIs,jdbcType=BIT}
+            </if>
+            <if test="contentExt != null and contentExt != ''">
+                 and content_ext = #{contentExt,jdbcType=VARCHAR}
+            </if>
+            <if test="plAccount != null and plAccount != ''">
+                 and pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="createId != null and createId != ''">
+                 and create_id = #{createId,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+    <select id="findPage" parameterType="com.rondaful.cloud.seller.vo.PublishTemplateSearchVO" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List_not_content" />
+        from publish_template
+        <trim prefix="where" prefixOverrides="and">
+            and status = 0
+            <if test="templateType != null and templateType != ''">
+                and template_type = #{templateType,jdbcType=INTEGER}
+            </if>
+            <if test="site != null and site != ''">
+                and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="platform != null and platform != ''">
+                and platform = #{platform,jdbcType=INTEGER}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                and empower_id = #{empowerId,jdbcType=VARCHAR}
+            </if>
+
+            <if test="defaultIs != null and defaultIs != ''">
+                and default_is = #{defaultIs,jdbcType=BIT}
+            </if>
+            <if test="systemIs != null and systemIs != ''">
+                and system_is = #{systemIs,jdbcType=BIT}
+            </if>
+
+            <if test="plAccount != null and plAccount != ''">
+                and (pl_account = #{plAccount,jdbcType=VARCHAR} or system_is=1)
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(cStartTime )">
+                and create_time >= DATE_FORMAT( #{cStartTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(cEndTime )">
+                and create_time &lt;= DATE_FORMAT( #{cEndTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(uStartTime )">
+                and update_time >= DATE_FORMAT( #{uStartTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(uEndTime )">
+                and update_time &lt;= DATE_FORMAT( #{uEndTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="templateName != null and templateName != ''">
+                and template_name like CONCAT('%',#{templateName,jdbcType=VARCHAR},'%')
+            </if>
+        </trim>
+        order by create_time desc
+    </select>
+    <select id="getPublishTemplateALLList" resultMap="BaseResultMap">
+        select
+        id, template_type, site, template_name,default_is
+        from publish_template
+        <trim prefix="where" prefixOverrides="and">
+            and status = 0
+            and platform = #{platform,jdbcType=INTEGER}
+            <if test="empowerId != null and empowerId != ''">
+                and empower_id = #{empowerId,jdbcType=VARCHAR}
+            </if>
+            and (pl_account = #{plAccount,jdbcType=VARCHAR} or system_is=1)
+            <if test="templateType != null and templateType != ''">
+                and template_type = #{templateType,jdbcType=INTEGER}
+            </if>
+            <if test="defaultIs != null and defaultIs != ''">
+                and default_is = #{defaultIs,jdbcType=BIT}
+            </if>
+            <if test="site != null and site != ''">
+                and (site = #{site,jdbcType=VARCHAR} or site='all')
+            </if>
+
+        </trim>
+    </select>
+
+
+    <update id="updatePublishTemplateDefault">
+        update publish_template
+        set default_is = 0
+        where id != #{id,jdbcType=BIGINT}
+        and template_type = #{templateType,jdbcType=INTEGER}
+        and pl_account = #{plAccount,jdbcType=VARCHAR}
+        <if test="site != null and site != ''">
+            and site = #{site,jdbcType=VARCHAR}
+        </if>
+    </update>
+    <select id="checktemplateName" resultType="java.lang.Integer">
+        select count(1) from publish_template where status=0
+        <if test="id != null and id != ''">
+            and id != #{id,jdbcType=BIGINT}
+        </if>
+        and pl_account = #{plAccount,jdbcType=VARCHAR}
+        and template_name = #{templateName,jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.SysOrderLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.SysOrderLog">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="order_status" jdbcType="TINYINT" property="orderStatus"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, sys_order_id, content, order_status, operator, create_date,speed
+    </sql>
+
+    <!--通过订单ID和内容查询订单操作日志-->
+    <select id="findSysOrderLogByMessage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_sys_order_log
+        where sys_order_id = #{sysOrderId} and content = #{content}
+    </select>
+
+    <!--通过订单ID查询订单操作日志-->
+    <select id="selectSysOrderLogByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_sys_order_log
+        where sys_order_id = #{sysOrderId,jdbcType=INTEGER} ORDER BY id DESC
+    </select>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_sys_order_log
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tbl_sys_order_log
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.SysOrderLog">
+        insert into tbl_sys_order_log (id, sys_order_id, content, 
+            order_status, operator, create_date
+            )
+        values (#{id,jdbcType=INTEGER}, #{sysOrderId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+            #{orderStatus,jdbcType=TINYINT}, #{operator,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.SysOrderLog">
+        insert into tbl_sys_order_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysOrderId != null">
+                sys_order_id,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="orderStatus != null">
+                order_status,
+            </if>
+            <if test="operator != null">
+                operator,
+            </if>
+            <if test="speed != null">
+                speed,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="sysOrderId != null">
+                #{sysOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus,jdbcType=TINYINT},
+            </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="speed != null">
+                #{speed,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.SysOrderLog">
+        update tbl_sys_order_log
+        <set>
+            <if test="sysOrderId != null">
+                sys_order_id = #{sysOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus,jdbcType=TINYINT},
+            </if>
+            <if test="operator != null">
+                operator = #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.SysOrderLog">
+        update tbl_sys_order_log
+        set sys_order_id = #{sysOrderId,jdbcType=VARCHAR},
+            content = #{content,jdbcType=VARCHAR},
+            order_status = #{orderStatus,jdbcType=TINYINT},
+            operator = #{operator,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.SysOrderLog" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_sys_order_log
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="sysOrderId != null">
+                and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="content != null">
+                and content = #{content,jdbcType=VARCHAR}
+            </if>
+            <if test="orderStatus != null">
+                and order_status = #{orderStatus,jdbcType=TINYINT}
+            </if>
+            <if test="operator != null">
+                and operator = #{operator,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+    <insert id="inserts" parameterType="java.util.List">
+        insert into tbl_sys_order_log (sys_order_id, content,order_status, operator, create_date)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.sysOrderId}, #{item.content},
+            #{item.orderStatus}, #{item.operator}, #{item.createDate}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据订单号查询日志信息  -->
+    <select id="getOrderLogByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
+      select
+        <include refid="Base_Column_List"/>
+        from tbl_sys_order_log
+        where sys_order_id = #{orderId}
+        ORDER BY create_date DESC
+        LIMIT  0,1
+    </select>
+</mapper>

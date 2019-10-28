@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!-- mybatis逆向生成xml配置 -->
+<generatorConfiguration>
+
+    <context id="sqlserverTables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 生成的pojo，将implements Serializable-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+        <commentGenerator>
+            <!-- 是否禁止显示日期 true：是 ： false:否 -->
+            <property name="suppressDate" value="false"/>
+            <!-- 是否去除自动生成的所有注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="false"/>
+            <!-- 是否添加字段注释 true:是 false：否 -->
+            <property name="addRemarkComments" value="true"/>
+            <!-- 自定义属性 作者名称 -->
+            <property name="author" value="zhangjinglei"/>
+        </commentGenerator>
+
+        <!-- 数据库链接URL、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://172.19.43.93:3306/wms_logistics"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+
+        <!--
+        默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
+            true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal
+        -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <!--
+        生成model模型，对应的包路径，以及文件存放路径(targetProject)，targetProject可以指定具体的路径,如./src/main/java，
+        也可以使用“MAVEN”来自动生成，这样生成的代码会在target/generatord-source目录下
+        -->
+        <!--<javaModelGenerator targetPackage="com.joey.mybaties.test.pojo" targetProject="MAVEN">-->
+        <javaModelGenerator targetPackage="com.brandslink.cloud.logistics.entity" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <!-- 从数据库返回的值被清理前后的空格  -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--对应的mapper.xml文件  -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 对应的Mapper接口类文件 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.brandslink.cloud.logistics.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+
+        <!-- 列出要生成代码的所有表，这里配置的是不生成Example文件 -->
+
+        <!--含有JSON格式数据库字段处理Array,JavaBean字段类型设置为JSONArray-->
+        <!--<table tableName="t_logistics_collector" domainObjectName="LogisticsCollector"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="warehouse_collect_type" jdbcType="OTHER" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        </table>-->
+        <!--<table tableName="t_logistics_method" domainObjectName="LogisticsMethod"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="support_platform" jdbcType="OTHER" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        </table>-->
+
+        <!--<table tableName="t_method_collector_relation" domainObjectName="MethodCollectorRelation"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table tableName="t_invoice_specification" domainObjectName="InvoiceSpecification"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            &lt;!&ndash;<columnOverride column="coordinate" jdbcType="OTHER" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>&ndash;&gt;
+        </table>-->
+        <!--<table tableName="t_logistics_cargo_prop" domainObjectName="LogisticsCargoProp"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table tableName="t_country_remote_fee" domainObjectName="CountryRemoteFee"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table tableName="t_method_zone_country" domainObjectName="MethodZoneCountry"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table tableName="t_method_zone_freight" domainObjectName="MethodZoneFreight"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="unsupport_cargo" jdbcType="OTHER" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+            <columnOverride column="promise_days" jdbcType="OTHER" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+            <columnOverride column="weight_range" jdbcType="OTHER" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+            <columnOverride column="limit_length" jdbcType="OTHER" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+            <columnOverride column="count_bulk_rule" jdbcType="OTHER" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+            <columnOverride column="rule_first_renew" jdbcType="OTHER" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+            <columnOverride column="rule_subsection" jdbcType="OTHER" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        </table>-->
+        <!--<table tableName="t_logistics_method_address" domainObjectName="LogisticsMethodAddress"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table tableName="t_logistics_provider" domainObjectName="LogisticsProvider"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+        <!--<table tableName="t_platform_info" domainObjectName="PlatformInfo"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false" >
+            <property name="useActualColumnNames" value="false"/>
+        </table>-->
+    </context>
+</generatorConfiguration>

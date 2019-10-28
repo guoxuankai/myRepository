@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressPhotoBankinfoMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressPhotoBankinfo">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="capicity" jdbcType="BIGINT" property="capicity" />
+        <result column="useage" jdbcType="BIGINT" property="useage" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="empower_id" jdbcType="BIGINT" property="empowerId" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, capicity, useage, create_time, empower_id
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_photo_bankinfo
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_photo_bankinfo
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressPhotoBankinfo">
+        insert into aliexpress_photo_bankinfo (id, capicity, useage, 
+            create_time, empower_id)
+        values (#{id,jdbcType=BIGINT}, #{capicity,jdbcType=BIGINT}, #{useage,jdbcType=BIGINT}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{empowerId,jdbcType=BIGINT})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPhotoBankinfo">
+        insert into aliexpress_photo_bankinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="capicity != null">
+                capicity,
+            </if>
+            <if test="useage != null">
+                useage,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="capicity != null">
+                #{capicity,jdbcType=BIGINT},
+            </if>
+            <if test="useage != null">
+                #{useage,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPhotoBankinfo">
+        update aliexpress_photo_bankinfo
+        <set>
+            <if test="capicity != null">
+                capicity = #{capicity,jdbcType=BIGINT},
+            </if>
+            <if test="useage != null">
+                useage = #{useage,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressPhotoBankinfo">
+        update aliexpress_photo_bankinfo
+        set capicity = #{capicity,jdbcType=BIGINT},
+            useage = #{useage,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            empower_id = #{empowerId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressPhotoBankinfo" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_photo_bankinfo
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="capicity != null and capicity != ''">
+                 and capicity = #{capicity,jdbcType=BIGINT}
+            </if>
+            <if test="useage != null and useage != ''">
+                 and useage = #{useage,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                 and empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+    <select id="getAliexpressPhotoBankinfoByEmpowerId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_photo_bankinfo
+        where empower_id = #{empowerId,jdbcType=BIGINT}
+    </select>
+
+</mapper>

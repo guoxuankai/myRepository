@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.UserOrgMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.UserOrg">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="user_platform" jdbcType="TINYINT" property="userPlatform" />
+        <result column="bind_type" jdbcType="TINYINT" property="bindType" />
+        <result column="bind_code" jdbcType="VARCHAR" property="bindCode" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, user_id, user_platform, bind_type, bind_code
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_user_org
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_user_org
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.UserOrg">
+        insert into t_user_org (id, user_id, user_platform, 
+            bind_type, bind_code)
+        values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userPlatform,jdbcType=TINYINT}, 
+            #{bindType,jdbcType=TINYINT}, #{bindCode,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.UserOrg">
+        insert into t_user_org
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userPlatform != null">
+                user_platform,
+            </if>
+            <if test="bindType != null">
+                bind_type,
+            </if>
+            <if test="bindCode != null">
+                bind_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="userPlatform != null">
+                #{userPlatform,jdbcType=TINYINT},
+            </if>
+            <if test="bindType != null">
+                #{bindType,jdbcType=TINYINT},
+            </if>
+            <if test="bindCode != null">
+                #{bindCode,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.UserOrg">
+        update t_user_org
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="userPlatform != null">
+                user_platform = #{userPlatform,jdbcType=TINYINT},
+            </if>
+            <if test="bindType != null">
+                bind_type = #{bindType,jdbcType=TINYINT},
+            </if>
+            <if test="bindCode != null">
+                bind_code = #{bindCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.UserOrg">
+        update t_user_org
+        set user_id = #{userId,jdbcType=INTEGER},
+            user_platform = #{userPlatform,jdbcType=TINYINT},
+            bind_type = #{bindType,jdbcType=TINYINT},
+            bind_code = #{bindCode,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.UserOrg" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_user_org
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+                 and user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="userPlatform != null and userPlatform != ''">
+                 and user_platform = #{userPlatform,jdbcType=TINYINT}
+            </if>
+            <if test="bindType != null and bindType != ''">
+                 and bind_type = #{bindType,jdbcType=TINYINT}
+            </if>
+            <if test="bindCode != null and bindCode != ''">
+                 and bind_code = #{bindCode,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_user_org (user_id, user_platform,
+            bind_type, bind_code)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.userId,jdbcType=INTEGER}, #{item.userPlatform,jdbcType=TINYINT},
+            #{item.bindType,jdbcType=TINYINT}, #{item.bindCode,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <delete id="deleteByUserId" parameterType="java.lang.Integer">
+        delete from t_user_org
+        where user_platform = #{userPlatform,jdbcType=TINYINT} and user_id = #{userId,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getAccount" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_user_org
+        where user_id = #{userId,jdbcType=INTEGER} and user_platform = #{userPlatform,jdbcType=TINYINT}
+    </select>
+
+    <select id="getsByBindCode"  resultType="java.lang.Integer">
+        select
+        user_id
+        from t_user_org
+        where user_platform = #{userPlatform,jdbcType=INTEGER}
+        <if test="bindType !=null and bindType !=''">
+            and bind_type = #{bindType,jdbcType=TINYINT}
+        </if>
+        and bind_code = #{bindCode,jdbcType=TINYINT}
+    </select>
+
+</mapper>

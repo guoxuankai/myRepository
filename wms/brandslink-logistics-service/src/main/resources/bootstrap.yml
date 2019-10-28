@@ -1,0 +1,92 @@
+#应用名称
+spring:
+  application:
+    name: brandslink-logistics-service
+
+
+#应用端口
+server:
+  port: 8193
+
+scheduler:
+  executor:
+    port: 7773
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://brandslink:brandslink123@172.19.43.62:8100/eureka/
+#      defaultZone: http://brandslink:brandslink123@localhost:8100/eureka/
+
+
+
+system:
+  ignore:
+    login:
+      url: /demo, /basic/**, /centre/**, /getSKUInfo/**, /internal/**, /assist/**,
+        /yuntu/**, /miaoxin/**, /sunyou/**,
+    response:
+      advice: /rest/api/doc, /actuator/service-registry
+
+
+
+#apollo
+app:
+  id: wms-config-service
+apollo:
+  meta: http://120.78.154.137:8145
+  cluster:
+  bootstrap:
+    namespaces:
+    enabled: true
+    eagerLoad:
+      enabled: true
+
+logistics:
+  yuntu:
+    serverAddress: http://test.api.yunexpress.com/api
+    authorization: Basic QzAwNzQ1JitUVnUyRWZZajI4PQ==
+  miaoxin:
+    url1: http://211.159.182.134:8082
+#    url2: http://211.159.182.134
+    url2: http://211.159.182.134:8089
+  sunyou:
+    apiDevUserToken: AB3B718F71DF0A06BFFBADAD23169F0C
+    apiLogUsertoken: 564A4AD96361332B646B8FA25540084A807B6F8A8F1E43679DDBFC319A5C8907
+    url: http://api.sandbox.sypost.com/logistics
+
+
+
+---
+spring:
+  profiles: test
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://brandslink:brandslink123@172.16.2.214:8100/eureka/
+
+
+apollo:
+  meta: http://120.78.154.137:8146
+
+
+---
+spring:
+  profiles: prod
+
+
+#应用端口
+server:
+  port: 50108
+
+
+apollo:
+  meta: http://120.78.154.137:8147
+
+
+
+---
+

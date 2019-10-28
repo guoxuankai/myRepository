@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonPublishReportMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AmazonPublishReport">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="merchant_id" jdbcType="VARCHAR" property="merchantId" />
+        <result column="MWSAuth_token" jdbcType="VARCHAR" property="mwsauthToken" />
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId" />
+        <result column="report_type" jdbcType="VARCHAR" property="reportType" />
+        <result column="report_status" jdbcType="INTEGER" property="reportStatus" />
+        <result column="report_request_id" jdbcType="VARCHAR" property="reportRequestId" />
+        <result column="generated_report_id" jdbcType="VARCHAR" property="generatedReportId" />
+        <result column="error_message" jdbcType="LONGVARCHAR" property="errorMessage" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="begin_time" jdbcType="VARCHAR" property="beginTime" />
+        <result column="end_time" jdbcType="VARCHAR" property="endTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, merchant_id, MWSAuth_token, marketplace_id, report_type, report_status, report_request_id, 
+        generated_report_id,error_message, create_time, update_time,begin_time,end_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from amazon_publish_report
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from amazon_publish_report
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReport">
+        insert into amazon_publish_report ( merchant_id, MWSAuth_token,
+            marketplace_id, report_type, report_status, 
+            report_request_id, generated_report_id,error_message, create_time,
+            update_time,begin_time,end_time)
+        values (#{merchantId,jdbcType=VARCHAR}, #{mwsauthToken,jdbcType=VARCHAR},
+            #{marketplaceId,jdbcType=VARCHAR}, #{reportType,jdbcType=VARCHAR}, #{reportStatus,jdbcType=INTEGER}, 
+            #{reportRequestId,jdbcType=VARCHAR}, #{generatedReportId,jdbcType=VARCHAR}, #{errorMessage,jdbcType=LONGVARCHAR}, now(),
+            now(),#{beginTime,jdbcType=VARCHAR},#{endTime,jdbcType=VARCHAR})
+    </insert>
+
+
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReport">
+        insert into amazon_publish_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(merchantId)">
+                merchant_id,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(mwsauthToken)">
+                MWSAuth_token,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(marketplaceId)">
+                marketplace_id,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(reportType)">
+                report_type,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(reportStatus )">
+                report_status,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(reportRequestId)">
+                report_request_id,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(generatedReportId )">
+                generated_report_id,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(errorMessage )">
+                error_message,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(createTime )">
+                create_time,
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(updateTime )">
+                update_time,
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(beginTime )">
+                begin_time,
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(endTime )">
+                end_time,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(merchantId )">
+                #{merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(mwsauthToken )">
+                #{mwsauthToken,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(marketplaceId )">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(reportType )">
+                #{reportType,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(reportStatus )">
+                #{reportStatus,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(reportRequestId )">
+                #{reportRequestId,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(generatedReportId )">
+                #{generatedReportId,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(errorMessage )">
+                #{errorMessage,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(createTime )">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(updateTime )">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(beginTime )">
+                #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(endTime )">
+                #{endTime,jdbcType=VARCHAR},
+            </if>
+
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReport">
+        update amazon_publish_report
+        <set>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(merchantId )">
+                merchant_id = #{merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(mwsauthToken )">
+                MWSAuth_token = #{mwsauthToken,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(marketplaceId )">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(reportType )">
+                report_type = #{reportType,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(reportStatus)">
+                report_status = #{reportStatus,jdbcType=INTEGER},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(reportRequestId )">
+                report_request_id = #{reportRequestId,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(errorMessage )">
+                error_message = #{errorMessage,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(generatedReportId )">
+                generated_report_id = #{generatedReportId,jdbcType=VARCHAR},
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(beginTime )">
+                begin_time = #{beginTime,jdbcType=VARCHAR},
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(endTime )">
+                end_time = #{endTime,jdbcType=VARCHAR},
+            </if>
+
+                update_time = now()
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!-- begin_time beginTime end_time endTime -->
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReport">
+        update amazon_publish_report
+        set merchant_id = #{merchantId,jdbcType=VARCHAR},
+            MWSAuth_token = #{mwsauthToken,jdbcType=VARCHAR},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            report_type = #{reportType,jdbcType=VARCHAR},
+            report_status = #{reportStatus,jdbcType=INTEGER},
+            report_request_id = #{reportRequestId,jdbcType=VARCHAR},
+            generated_report_id = #{generatedReportId,jdbcType=VARCHAR},
+             begin_time = #{beginTime,jdbcType=VARCHAR},
+             end_time = #{endTime,jdbcType=VARCHAR},
+            update_time =now()
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReport" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from amazon_publish_report
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="merchantId != null and merchantId != ''">
+                 and merchant_id = #{merchantId,jdbcType=VARCHAR}
+            </if>
+            <if test="mwsauthToken != null and mwsauthToken != ''">
+                 and MWSAuth_token = #{mwsauthToken,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null and marketplaceId != ''">
+                 and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="reportType != null and reportType != ''">
+                 and report_type = #{reportType,jdbcType=VARCHAR}
+            </if>
+            <if test="reportStatus != null and reportStatus != ''">
+                 and report_status = #{reportStatus,jdbcType=INTEGER}
+            </if>
+            <if test="reportRequestId != null and reportRequestId != ''">
+                 and report_request_id = #{reportRequestId,jdbcType=VARCHAR}
+            </if>
+            <if test="generatedReportId != null and generatedReportId != ''">
+                 and generated_report_id = #{generatedReportId,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        order by create_time
+    </select>
+
+    <!-- 根据条件选出更新时间最前面的数据 -->
+    <select id="selectFirstOne" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReport" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from amazon_publish_report
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="merchantId != null and merchantId != ''">
+                and merchant_id = #{merchantId,jdbcType=VARCHAR}
+            </if>
+            <if test="mwsauthToken != null and mwsauthToken != ''">
+                and MWSAuth_token = #{mwsauthToken,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null and marketplaceId != ''">
+                and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="reportType != null and reportType != ''">
+                and report_type = #{reportType,jdbcType=VARCHAR}
+            </if>
+            <if test="reportStatus != null and reportStatus != ''">
+                and report_status = #{reportStatus,jdbcType=INTEGER}
+            </if>
+            <if test="reportRequestId != null and reportRequestId != ''">
+                and report_request_id = #{reportRequestId,jdbcType=VARCHAR}
+            </if>
+            <if test="generatedReportId != null and generatedReportId != ''">
+                and generated_report_id = #{generatedReportId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        order by create_time limit 1
+    </select>
+
+
+    <select id="selectNotFinishMessage" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from amazon_publish_report
+        where report_status in (1,2,3,4)
+        and report_type = #{reportType}
+    </select>
+
+
+
+
+</mapper>

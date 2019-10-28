@@ -1,0 +1,947 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.CommodityBaseMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.CommodityBase">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="creat_time" jdbcType="VARCHAR" property="creatTime" />
+        <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
+        <result column="category_level_1" jdbcType="BIGINT" property="categoryLevel1" />
+        <result column="category_level_2" jdbcType="BIGINT" property="categoryLevel2" />
+        <result column="category_level_3" jdbcType="BIGINT" property="categoryLevel3" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="producer" jdbcType="VARCHAR" property="producer" />
+        <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="default_repository" jdbcType="VARCHAR" property="defaultRepository" />
+        <result column="is_private_model" jdbcType="BIT" property="isPrivateModel" />
+        <result column="product_market_time" jdbcType="VARCHAR" property="productMarketTime" />
+        <result column="product_logistics_attributes" jdbcType="VARCHAR" property="productLogisticsAttributes" />
+        <result column="vendibility_platform" jdbcType="VARCHAR" property="vendibilityPlatform" />
+        <result column="master_picture" jdbcType="VARCHAR" property="masterPicture" />
+        <result column="additional_picture" jdbcType="VARCHAR" property="additionalPicture" />
+        <result column="commodity_desc" jdbcType="VARCHAR" property="commodityDesc" />
+        <result column="search_keywords" jdbcType="VARCHAR" property="searchKeywords" />
+        <result column="brandName" jdbcType="VARCHAR" property="brandName" />
+        <result column="SPU" jdbcType="VARCHAR" property="SPU" />
+        <result column="categoryName1" jdbcType="VARCHAR" property="categoryName1" />
+        <result column="categoryName2" jdbcType="VARCHAR" property="categoryName2" />
+        <result column="categoryName3" jdbcType="VARCHAR" property="categoryName3" />
+        <result column="spu_id" jdbcType="BIGINT" property="spuId" />
+        <result column="focusId" jdbcType="BIGINT" property="focusId" />
+        <result column="packing_list" jdbcType="VARCHAR" property="packingList" />
+        <result column="strength_1" jdbcType="VARCHAR" property="strength1" />
+        <result column="strength_2" jdbcType="VARCHAR" property="strength2" />
+        <result column="strength_3" jdbcType="VARCHAR" property="strength3" />
+        <result column="strength_4" jdbcType="VARCHAR" property="strength4" />
+        <result column="strength_5" jdbcType="VARCHAR" property="strength5" />
+        <result column="prove_picture" jdbcType="VARCHAR" property="provePicture" />
+        <result column="category_attr" jdbcType="VARCHAR" property="categoryAttr" />
+        <result column="custom_attr" jdbcType="VARCHAR" property="customAttr" />
+        <result column="supplier_spu" jdbcType="VARCHAR" property="supplierSpu" />
+        <result column="commodity_name_cn" jdbcType="VARCHAR" property="commodityNameCn" />
+        <result column="commodity_name_en" jdbcType="VARCHAR" property="commodityNameEn" />
+        <result column="sale_type" jdbcType="TINYINT" property="saleType" />
+        <result column="create_date"  property="promotionCreateDate"/>
+        <result column="promotion_id"  property="promotionId"/>
+        <result column="suggest_sale_price" property="suggestSalePrice" javaType="DECIMAL"/>
+        <result column="lowest_sale_price" property="lowestSalePrice" javaType="DECIMAL"/>
+        <result column="free_freight" jdbcType="INTEGER" property="freeFreight" />
+        <result column="amazon_site" jdbcType="VARCHAR" property="amazonSite" />
+        <result column="ebay_site" jdbcType="VARCHAR" property="ebaySite" />
+        <result column="belong_seller_id" jdbcType="BIGINT" property="belongSellerId" />
+        <collection property="limitCountry"  column="id" select="selectLimitSaleCountry"></collection>
+        <collection property="belongSeller"  column="id" select="selectBelongSeller"></collection>
+    </resultMap>
+    
+    
+    <sql id="Base_Column_List">
+        id, update_time, version, creat_time, supplier_id, category_level_1, category_level_2, 
+        category_level_3, title, producer, brand_id, default_repository, is_private_model, 
+        product_market_time, product_logistics_attributes, vendibility_platform, spu_id,category_attr,custom_attr,supplier_spu,
+        suggest_sale_price,lowest_sale_price,free_freight,amazon_site,ebay_site
+    </sql>
+    
+    
+    <select id="selectLimitSaleCountry" parameterType="java.lang.Long" resultType="String">
+        select code
+        from t_commodity_limit_sale
+        where commodity_id = #{commodityId,jdbcType=BIGINT}
+        and code_type=1
+    </select>
+    
+    <select id="selectLimitSaleSeller" parameterType="java.lang.Long" resultType="String">
+        select code
+        from t_commodity_limit_sale
+        where commodity_id = #{commodityId,jdbcType=BIGINT}
+        and code_type=2
+    </select>
+    
+    <select id="selectBelongSeller" parameterType="java.lang.Long" resultType="String">
+        select seller_id
+        from t_commodity_belong_seller
+        where commodity_id = #{commodityId,jdbcType=BIGINT}
+    </select>
+    
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_base
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="selectCommodityDetailsById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select t1.*,t2.brand_name brandName,t8.spu_value SPU,
+        concat(t5.category_name,'>>',t6.category_name,'>>',t7.category_name) categoryName1,
+		concat(t5.category_name_en,'>>',t6.category_name_en,'>>',t7.category_name_en) categoryName2,
+		t9.sale_type
+        from t_commodity_base t1 LEFT JOIN t_commodity_details t3 ON t1.id=t3.commodity_id
+        left join t_system_spu t4 on t1.spu_id=t4.id
+        left join t_category t5 on t1.category_level_1=t5.id
+        left join t_category t6 on t1.category_level_2=t6.id
+        left join t_category t7 on t1.category_level_3=t7.id
+        LEFT JOIN t_brand t2 ON t1.brand_id=t2.id
+        LEFT JOIN t_system_spu t8 ON t1.spu_id=t8.id
+        LEFT JOIN t_commodity_promotion t9 ON t1.id=t9.commodity_id
+        where t1.id = #{id,jdbcType=BIGINT}
+        GROUP BY t1.id
+    </select>
+
+
+	<select id="selectBySupplierAndSpu"  resultMap="BaseResultMap">
+         SELECT t1.*,t2.spu_value SPU FROM t_commodity_base t1,t_system_spu t2 
+         WHERE t1.spu_id=t2.id and t1.supplier_id=#{supplierId} AND t1.supplier_spu=#{supplierSpu}
+    </select>
+
+    <select id="selectBySupplierAndSku"  resultMap="BaseResultMap">
+        SELECT t1.* FROM t_commodity_base t1, t_commodity_spec t2 
+        WHERE t1.id=t2.commodity_id 
+        AND t1.supplier_id=#{supplier_id} 
+        AND t2.supplier_sku=#{supplier_sku}
+    </select>
+    
+    <select id="queryBySupplierAndSku"  resultMap="BaseResultMap">
+        SELECT t1.* FROM t_commodity_base t1, t_commodity_spec t2 
+        WHERE t1.id=t2.commodity_id 
+        AND t1.supplier_id=#{supplierId} 
+        AND t2.supplier_sku like CONCAT(CONCAT('%', #{supplierSku}), '%')
+    </select>
+
+    <select id="selectBySPUS" resultMap="BaseResultMap">
+       SELECT
+			t1.*,
+			t2.spu_value SPU,
+			t3.commodity_name_cn,
+			t3.commodity_name_en
+		FROM
+			t_commodity_base t1
+		LEFT JOIN t_system_spu t2 ON t1.spu_id=t2.id
+		LEFT JOIN t_commodity_spec t3 ON t3.commodity_id=t1.id
+		WHERE t2.spu_value IN 
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY t1.id
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_commodity_base
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.CommodityBase">
+        insert into t_commodity_base (id, update_time, version, 
+            creat_time, supplier_id, category_level_1, 
+            category_level_2, category_level_3, title, 
+            producer, brand_id, default_repository, 
+            is_private_model, product_market_time, product_logistics_attributes, 
+            vendibility_platform, spu_id,category_attr,custom_attr,
+            supplier_spu,suggest_sale_price,lowest_sale_price,free_freight,amazon_site,ebay_site
+            )
+        values (#{id,jdbcType=BIGINT}, #{updateTime,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, 
+            #{creatTime,jdbcType=VARCHAR}, #{supplierId,jdbcType=BIGINT}, #{categoryLevel1,jdbcType=BIGINT}, 
+            #{categoryLevel2,jdbcType=BIGINT}, #{categoryLevel3,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+            #{producer,jdbcType=VARCHAR}, #{brandId,jdbcType=BIGINT}, #{defaultRepository,jdbcType=VARCHAR}, 
+            #{isPrivateModel,jdbcType=BIT}, #{productMarketTime,jdbcType=VARCHAR}, #{productLogisticsAttributes,jdbcType=VARCHAR}, 
+            #{vendibilityPlatform,jdbcType=VARCHAR}, #{spuId,jdbcType=BIGINT},#{categoryAttr,jdbcType=VARCHAR},#{customAttr,jdbcType=VARCHAR}
+            #{supplierSpu},#{suggestSalePrice},#{lowestSalePrice},#{freeFreight},#{amazonSite},#{ebaySite}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityBase" useGeneratedKeys="true" keyProperty="id">
+        insert into t_commodity_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="categoryLevel1 != null">
+                category_level_1,
+            </if>
+            <if test="categoryLevel2 != null">
+                category_level_2,
+            </if>
+            <if test="categoryLevel3 != null">
+                category_level_3,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="producer != null">
+                producer,
+            </if>
+            <if test="brandId != null">
+                brand_id,
+            </if>
+            <if test="defaultRepository != null and defaultRepository != ''">
+                default_repository,
+            </if>
+            <if test="isPrivateModel != null">
+                is_private_model,
+            </if>
+            <if test="productMarketTime != null">
+                product_market_time,
+            </if>
+            <if test="productLogisticsAttributes != null">
+                product_logistics_attributes,
+            </if>
+            <if test="vendibilityPlatform != null and vendibilityPlatform != ''">
+                vendibility_platform,
+            </if>
+            <if test="spuId != null">
+                spu_id,
+            </if>
+            <if test="categoryAttr != null and categoryAttr != ''">
+                category_attr,
+            </if>
+            <if test="customAttr != null and customAttr != ''">
+                custom_attr,
+            </if>
+            <if test="supplierSpu != null">
+                supplier_spu,
+            </if>
+            <if test="suggestSalePrice != null">
+                suggest_sale_price,
+            </if>
+            <if test="lowestSalePrice != null">
+                lowest_sale_price,
+            </if>
+            <if test="freeFreight != null">
+                free_freight,
+            </if>
+            <if test="amazonSite != null and amazonSite != ''">
+                amazon_site,
+            </if>
+            <if test="ebaySite != null and ebaySite != ''">
+                ebay_site,
+            </if>
+            <if test="multiWarehouse != null">
+            	multi_warehouse,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel1 != null">
+                #{categoryLevel1,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel2 != null">
+                #{categoryLevel2,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel3 != null">
+                #{categoryLevel3,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="producer != null">
+                #{producer,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                #{brandId,jdbcType=BIGINT},
+            </if>
+            <if test="defaultRepository != null and defaultRepository != ''">
+                #{defaultRepository,jdbcType=VARCHAR},
+            </if>
+            <if test="isPrivateModel != null">
+                #{isPrivateModel,jdbcType=BIT},
+            </if>
+            <if test="productMarketTime != null">
+                #{productMarketTime,jdbcType=VARCHAR},
+            </if>
+            <if test="productLogisticsAttributes != null">
+                #{productLogisticsAttributes,jdbcType=VARCHAR},
+            </if>
+            <if test="vendibilityPlatform != null and vendibilityPlatform != ''">
+                #{vendibilityPlatform,jdbcType=VARCHAR},
+            </if>
+            <if test="spuId != null">
+                #{spuId,jdbcType=BIGINT},
+            </if>
+            <if test="categoryAttr != null and categoryAttr != ''">
+                #{categoryAttr,jdbcType=VARCHAR},
+            </if>
+            <if test="customAttr != null and customAttr != ''">
+                #{customAttr,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSpu != null">
+                #{supplierSpu,jdbcType=VARCHAR},
+            </if>
+            <if test="suggestSalePrice != null">
+                #{suggestSalePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="lowestSalePrice != null">
+                #{lowestSalePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="freeFreight != null">
+            	#{freeFreight,jdbcType=INTEGER},
+            </if>
+            <if test="amazonSite != null and amazonSite != ''">
+                #{amazonSite},
+            </if>
+            <if test="ebaySite != null and ebaySite != ''">
+                #{ebaySite},
+            </if>
+            <if test="multiWarehouse != null">
+            	#{multiWarehouse,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityBase">
+        update t_commodity_base set
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel1 != null">
+                category_level_1 = #{categoryLevel1,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel2 != null">
+                category_level_2 = #{categoryLevel2,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel3 != null">
+                category_level_3 = #{categoryLevel3,jdbcType=BIGINT},
+            </if>
+            <if test="producer != null">
+                producer = #{producer,jdbcType=VARCHAR},
+            </if>
+            <if test="brandId != null">
+                brand_id = #{brandId,jdbcType=BIGINT},
+            </if>
+            <if test="defaultRepository != null">
+                default_repository = #{defaultRepository,jdbcType=VARCHAR},
+            </if>
+            <if test="isPrivateModel != null">
+                is_private_model = #{isPrivateModel,jdbcType=BIT},
+            </if>
+            <if test="productMarketTime != null">
+                product_market_time = #{productMarketTime,jdbcType=VARCHAR},
+            </if>
+            <if test="productLogisticsAttributes != null">
+                product_logistics_attributes = #{productLogisticsAttributes,jdbcType=VARCHAR},
+            </if>
+            <if test="vendibilityPlatform != null">
+                vendibility_platform = #{vendibilityPlatform,jdbcType=VARCHAR},
+            </if>
+            <if test="spuId != null">
+                spu_id = #{spuId,jdbcType=BIGINT},
+            </if>
+            <if test="categoryAttr != null">
+                category_attr = #{categoryAttr,jdbcType=VARCHAR},
+            </if>
+            <if test="customAttr != null">
+                custom_attr = #{customAttr,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSpu != null">
+                supplier_spu = #{supplierSpu,jdbcType=VARCHAR},
+            </if>
+            <if test="freeFreight != null">
+            	free_freight = #{freeFreight,jdbcType=INTEGER},
+            </if>
+            <if test="amazonSite != null and amazonSite != ''">
+                amazon_site = #{amazonSite},
+            </if>
+            <if test="ebaySite != null and ebaySite != ''">
+                ebay_site = #{ebaySite},
+            </if>
+            <if test="multiWarehouse != null">
+            	multi_warehouse = #{multiWarehouse,jdbcType=INTEGER},
+            </if>
+                suggest_sale_price = #{suggestSalePrice,jdbcType=DECIMAL},
+                lowest_sale_price = #{lowestSalePrice,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.CommodityBase">
+        update t_commodity_base
+        set update_time = #{updateTime,jdbcType=VARCHAR},
+            version = #{version,jdbcType=BIGINT} + 1,
+            creat_time = #{creatTime,jdbcType=VARCHAR},
+            supplier_id = #{supplierId,jdbcType=BIGINT},
+            category_level_1 = #{categoryLevel1,jdbcType=BIGINT},
+            category_level_2 = #{categoryLevel2,jdbcType=BIGINT},
+            category_level_3 = #{categoryLevel3,jdbcType=BIGINT},
+            title = #{title,jdbcType=VARCHAR},
+            producer = #{producer,jdbcType=VARCHAR},
+            brand_id = #{brandId,jdbcType=BIGINT},
+            default_repository = #{defaultRepository,jdbcType=VARCHAR},
+            is_private_model = #{isPrivateModel,jdbcType=BIT},
+            product_market_time = #{productMarketTime,jdbcType=VARCHAR},
+            product_logistics_attributes = #{productLogisticsAttributes,jdbcType=VARCHAR},
+            vendibility_platform = #{vendibilityPlatform,jdbcType=VARCHAR},
+            spu_id = #{spuId,jdbcType=BIGINT},
+            category_attr = #{categoryAttr,jdbcType=VARCHAR},
+            custom_attr = #{customAttr,jdbcType=VARCHAR},
+            supplier_spu = #{supplierSpu,jdbcType=VARCHAR},
+            suggest_sale_price = #{suggestSalePrice,jdbcType=DECIMAL},
+            lowest_sale_price = #{lowestSalePrice,jdbcType=DECIMAL},
+            free_freight = #{freeFreight,jdbcType=INTEGER},
+            amazon_site = #{amazonSite},
+            ebay_site = #{amazonSite}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.commodity.entity.CommodityBase" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_base
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="updateTime != null">
+                 and update_time = #{updateTime,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="creatTime != null">
+                 and creat_time = #{creatTime,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierId != null">
+                 and supplier_id = #{supplierId,jdbcType=BIGINT}
+            </if>
+            <if test="categoryLevel1 != null">
+                 and category_level_1 = #{categoryLevel1,jdbcType=BIGINT}
+            </if>
+            <if test="categoryLevel2 != null">
+                 and category_level_2 = #{categoryLevel2,jdbcType=BIGINT}
+            </if>
+            <if test="categoryLevel3 != null">
+                 and category_level_3 = #{categoryLevel3,jdbcType=BIGINT}
+            </if>
+            <if test="title != null">
+                 and title = #{title,jdbcType=VARCHAR}
+            </if>
+            <if test="producer != null">
+                 and producer = #{producer,jdbcType=VARCHAR}
+            </if>
+            <if test="brandId != null">
+                 and brand_id = #{brandId,jdbcType=BIGINT}
+            </if>
+            <if test="defaultRepository != null">
+                 and default_repository = #{defaultRepository,jdbcType=VARCHAR}
+            </if>
+            <if test="isPrivateModel != null">
+                 and is_private_model = #{isPrivateModel,jdbcType=BIT}
+            </if>
+            <if test="productMarketTime != null">
+                 and product_market_time = #{productMarketTime,jdbcType=VARCHAR}
+            </if>
+            <if test="productLogisticsAttributes != null">
+                 and product_logistics_attributes = #{productLogisticsAttributes,jdbcType=VARCHAR}
+            </if>
+            <if test="vendibilityPlatform != null">
+                 and vendibility_platform = #{vendibilityPlatform,jdbcType=VARCHAR}
+            </if>
+            <if test="spuId != null">
+                 and spu_id = #{spuId,jdbcType=BIGINT}
+            </if>
+            <if test="ids != null">
+                and id in
+                <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <!--  查询商品列表管理 -->
+    <select id="selectCommodityListBySpec" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT t1.*, 
+        t3.master_picture, t3.additional_picture,t3.commodity_desc,t3.search_keywords,
+        t3.strength_1,t3.strength_2,t3.strength_3,t3.strength_4,t3.strength_5,t3.packing_list,
+        t4.spu_value SPU,
+        t9.brand_name brandName,
+        <if test="promotion != null">
+            t10.sale_type,t10.create_date,t10.promotion_id,
+        </if>
+        <if test="sellerId != null">
+            t8.id focusId,
+        </if>
+        concat(t5.category_name,'>>',t6.category_name,'>>',t7.category_name) categoryName1,
+		concat(t5.category_name_en,'>>',t6.category_name_en,'>>',t7.category_name_en) categoryName2
+        from t_commodity_base t1 
+        left join t_commodity_details t3 ON t1.id=t3.commodity_id
+        left join t_system_spu t4 on t1.spu_id=t4.id
+        left join t_category t5 on t1.category_level_1=t5.id
+        left join t_category t6 on t1.category_level_2=t6.id
+        left join t_category t7 on t1.category_level_3=t7.id
+        left join t_brand t9 on t1.brand_id=t9.id
+        <if test="sellerId != null">
+            left join t_commodity_focus t8 on t1.id=t8.commodity_id
+        </if>
+        <if test="promotion != null">
+            LEFT JOIN t_commodity_promotion t10 ON t1.id=t10.commodity_id
+        </if>
+        <trim prefix="where" prefixOverrides="and">
+        	<if test="id != null">
+                and t1.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="sellerId != null">
+                and t8.seller_id = #{sellerId,jdbcType=BIGINT}
+            </if>
+            <if test="SPU != null and SPU != ''">
+                and t4.spu_value=#{SPU}
+            </if>
+            <if test="startTime != null">
+                AND  str_to_date( t1.creat_time, '%Y-%m-%d') &gt;= DATE_FORMAT( #{startTime}, '%Y-%m-%d')
+            </if>
+            <if test="endTime != null">
+                AND  str_to_date( t1.creat_time, '%Y-%m-%d') &lt;= DATE_FORMAT( #{endTime}, '%Y-%m-%d')
+            </if>
+            <if test="version != null">
+                and t1.version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="supplierId != null">
+                and t1.supplier_id = #{supplierId,jdbcType=BIGINT}
+            </if>
+            <if test="category_level_1 != null">
+                and t1.category_level_1 = #{category_level_1,jdbcType=BIGINT}
+            </if>
+            <if test="category_level_2 != null">
+                and t1.category_level_2 = #{category_level_2,jdbcType=BIGINT}
+            </if>
+            <if test="category_level_3 != null">
+                and t1.category_level_3 = #{category_level_3,jdbcType=BIGINT}
+            </if>
+            <if test="title != null">
+                and t1.title = #{title,jdbcType=VARCHAR}
+            </if>
+            <if test="producer != null and producer != ''">
+                and t1.producer like CONCAT(CONCAT('%', #{producer}), '%')
+            </if>
+            <if test="brandId != null">
+                and t1.brand_id = #{brandId,jdbcType=BIGINT}
+            </if>
+            <if test="defaultRepository != null">
+                and t1.default_repository = #{defaultRepository,jdbcType=VARCHAR}
+            </if>
+            <if test="isPrivateModel != null">
+                and t1.is_private_model = #{isPrivateModel,jdbcType=BIT}
+            </if>
+            <if test="productMarketTime != null">
+                and t1.product_market_time = #{productMarketTime,jdbcType=VARCHAR}
+            </if>
+            <if test="productLogisticsAttributes != null">
+                and t1.product_logistics_attributes = #{productLogisticsAttributes,jdbcType=VARCHAR}
+            </if>
+            <if test="vendibilityPlatform != null and vendibilityPlatform != ''">
+                and t1.vendibility_platform like CONCAT(CONCAT('%', #{vendibilityPlatform}), '%')
+            </if>
+            <if test="spuId != null">
+                and t1.spu_id = #{spuId,jdbcType=BIGINT}
+            </if>
+            <if test="freeFreight != null">
+                and t1.free_freight = #{freeFreight}
+            </if>
+            <if test="saleType != null">
+                and t10.sale_type = #{saleType,jdbcType=BIGINT}
+            </if>
+            <if test="belongSellerId != null and belongSellerId != 981">
+                and t1.belong_seller_id = 0
+            </if>
+            <if test="focusList != null">
+                and t1.id not in
+                <foreach collection="focusList" index="index" item="item" open="(" separator="," close=")">
+                    #{item.id}
+                </foreach>
+            </if>
+            <if test="spus != null">
+                and t4.spu_value  in
+                <foreach collection="spus" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="ids != null">
+                and t1.id in
+                <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="limitIds != null">
+                and t1.id not in
+                <foreach collection="limitIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="categoryIds != null">
+                and t1.category_level_2  in
+                <foreach collection="categoryIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="supplierIds != null">
+                and t1.supplier_id in
+                <foreach collection="supplierIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="categoryLevelList1 != null">
+                and t1.category_level_1  in
+                <foreach collection="categoryLevelList1" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="categoryLevelList2 != null">
+                and t1.category_level_2  in
+                <foreach collection="categoryLevelList2" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="categoryLevelList3 != null">
+                and t1.category_level_3  in
+                <foreach collection="categoryLevelList3" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and EXISTS (
+            	select 1 from t_commodity_spec t2 where t2.commodity_id=t1.id
+           	 	<if test="commodityNameEn != null and commodityNameEn != ''">
+                	<![CDATA[ and t2.commodity_name_en like CONCAT(CONCAT('%', #{commodityNameEn}), '%') ]]>
+           	 	</if>
+           	 	<if test="commodityNameCn != null and commodityNameCn != ''">
+                	<![CDATA[ and t2.commodity_name_cn like CONCAT(CONCAT('%', #{commodityNameCn}), '%') ]]>
+           	 	</if>
+                <if test="autiState != null">
+                    and t2.state = #{autiState,jdbcType=BIGINT}
+                </if>
+                <if test="systemSku != null and systemSku != ''">
+                    and t2.system_sku like CONCAT(CONCAT('%', #{systemSku}), '%')
+                </if>
+                <if test="supplierSku != null and supplierSku != ''">
+                    and t2.supplier_sku like CONCAT(CONCAT('%', #{supplierSku}), '%')
+                </if>
+                <if test="isUp != null">
+                	<choose>
+	            		<when test="isUp == 1">
+	            			and t2.state=3
+	            		</when>
+	            		<otherwise>
+	            			and t2.state != 3
+	            		</otherwise>
+            		</choose>
+                </if>
+                <if test="sellerId != null">
+            		and t2.state=3
+        		</if>
+        		<if test="skuIds != null">
+	                and t2.id in
+	                <foreach collection="skuIds" index="index" item="item" open="(" separator="," close=")">
+	                    #{item}
+	                </foreach>
+            	</if>
+			)
+        </trim>
+        <choose>
+        	<when test="sortKey != null and sortKey != ''">
+        		order by ${sortKey} ${sort}
+        	</when>
+        	<otherwise>
+        		order by t1.creat_time DESC
+        	</otherwise>
+        </choose>
+    </select>
+    
+    
+    <select id="selectExportCount" parameterType="java.util.Map" resultType="int">
+        SELECT 
+        	count(*)
+        from t_commodity_base t1 
+        left join t_system_spu t4 on t1.spu_id=t4.id
+        LEFT JOIN t_category t5 ON t1.category_level_1 = t5.id
+		LEFT JOIN t_category t6 ON t1.category_level_2 = t6.id
+		LEFT JOIN t_category t7 ON t1.category_level_3 = t7.id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="SPU != null and SPU != ''">
+                and t4.spu_value=#{SPU}
+            </if>
+            <if test="startTime != null">
+                AND  str_to_date( t1.creat_time, '%Y-%m-%d') &gt;= DATE_FORMAT( #{startTime}, '%Y-%m-%d')
+            </if>
+            <if test="endTime != null">
+                AND  str_to_date( t1.creat_time, '%Y-%m-%d') &lt;= DATE_FORMAT( #{endTime}, '%Y-%m-%d')
+            </if>
+            <if test="supplierId != null">
+                and t1.supplier_id = #{supplierId,jdbcType=BIGINT}
+            </if>
+            <if test="category_level_1 != null">
+                and t1.category_level_1 = #{category_level_1,jdbcType=BIGINT}
+            </if>
+            <if test="category_level_2 != null">
+                and t1.category_level_2 = #{category_level_2,jdbcType=BIGINT}
+            </if>
+            <if test="category_level_3 != null">
+                and t1.category_level_3 = #{category_level_3,jdbcType=BIGINT}
+            </if>
+            <if test="brandId != null">
+                and t1.brand_id = #{brandId,jdbcType=BIGINT}
+            </if>
+            <if test="vendibilityPlatform != null and vendibilityPlatform != ''">
+                and t1.vendibility_platform like CONCAT(CONCAT('%', #{vendibilityPlatform}), '%')
+            </if>
+            <if test="freeFreight != null">
+                and t1.free_freight = #{freeFreight}
+            </if>
+            <if test="belongSellerId != null and belongSellerId != 981">
+                and t1.belong_seller_id = 0
+            </if>
+            <if test="ids != null">
+                and t1.id in
+                <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="supplierIds != null">
+                and t1.supplier_id in
+                <foreach collection="supplierIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="limitIds != null">
+                and t1.id not in
+                <foreach collection="limitIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and EXISTS (select 1 from t_commodity_spec t2 where t2.commodity_id=t1.id
+           	 	<if test="commodityNameEn != null and commodityNameEn != ''">
+                	<![CDATA[ and t2.commodity_name_en like CONCAT(CONCAT('%', #{commodityNameEn}), '%') ]]>
+           	 	</if>
+           	 	<if test="commodityNameCn != null and commodityNameCn != ''">
+                	<![CDATA[ and t2.commodity_name_cn like CONCAT(CONCAT('%', #{commodityNameCn}), '%') ]]>
+           	 	</if>
+                <if test="autiState != null">
+                    and t2.state = #{autiState,jdbcType=BIGINT}
+                </if>
+                <if test="systemSku != null and systemSku != ''">
+                    and t2.system_sku like CONCAT(CONCAT('%', #{systemSku}), '%')
+                </if>
+                <if test="supplierSku != null and supplierSku != ''">
+                    and t2.supplier_sku like CONCAT(CONCAT('%', #{supplierSku}), '%')
+                </if>
+                <if test="isUp != null">
+                	<choose>
+	            		<when test="isUp == 1">
+	            			and t2.state=3
+	            		</when>
+	            		<otherwise>
+	            			and t2.state != 3
+	            		</otherwise>
+            		</choose>
+                </if>
+                <if test="skuIds != null">
+	                and t2.id in
+	                <foreach collection="skuIds" index="index" item="item" open="(" separator="," close=")">
+	                    #{item}
+	                </foreach>
+            	</if>
+              )
+        </trim>
+        <choose>
+        	<when test="sortKey != null and sortKey != ''">
+        		order by ${sortKey} ${sort}
+        	</when>
+        	<otherwise>
+        		order by t1.creat_time DESC
+        	</otherwise>
+        </choose>
+    </select>
+    
+    
+    
+    <resultMap id="ApiResultMap" type="com.rondaful.cloud.commodity.vo.ApiSpuResponse">
+    	<id column="id" jdbcType="BIGINT" property="id" />
+    	<result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="category_level_1" jdbcType="BIGINT" property="categoryLevel1" />
+        <result column="category_level_2" jdbcType="BIGINT" property="categoryLevel2" />
+        <result column="category_level_3" jdbcType="BIGINT" property="categoryLevel3" />
+        <result column="product_logistics_attributes" jdbcType="VARCHAR" property="productLogisticsAttributes" />
+        <result column="vendibility_platform" jdbcType="VARCHAR" property="vendibilityPlatform" />
+        <result column="master_picture" jdbcType="VARCHAR" property="masterPicture" />
+        <result column="additional_picture" jdbcType="VARCHAR" property="additionalPicture" />
+        <result column="commodity_desc" jdbcType="VARCHAR" property="commodityDesc" />
+        <result column="search_keywords" jdbcType="VARCHAR" property="searchKeywords" />
+        <result column="brandName" jdbcType="VARCHAR" property="brandName" />
+        <result column="spu_value" jdbcType="VARCHAR" property="spu" />
+        <result column="categoryPathCn" jdbcType="VARCHAR" property="categoryPathCn" />
+        <result column="categoryPathEn" jdbcType="VARCHAR" property="categoryPathEn" />
+        <result column="packing_list" jdbcType="VARCHAR" property="packingList" />
+        <result column="strength_1" jdbcType="VARCHAR" property="strength1" />
+        <result column="free_freight" jdbcType="INTEGER" property="freeFreight" />
+        <collection property="limitCountry"  column="id" select="selectLimitSaleCountry"></collection>
+    </resultMap>
+    
+    <select id="selectApiSpu" parameterType="java.util.Map" resultMap="ApiResultMap">
+        select 
+	        t1.id, t1.brand_id,t1.category_level_1,t1.category_level_2,t1.category_level_3,
+	        t1.product_logistics_attributes,
+	        t1.vendibility_platform,
+	        t3.master_picture, t3.additional_picture,t3.commodity_desc,t3.search_keywords,
+	        t3.strength_1,t3.packing_list,
+	        t4.spu_value,
+	        t9.brand_name brandName,
+	        concat(t5.category_name,'>>',t6.category_name,'>>',t7.category_name) categoryPathCn,
+			concat(t5.category_name_en,'>>',t6.category_name_en,'>>',t7.category_name_en) categoryPathEn
+        from t_commodity_base t1 
+        left join t_commodity_details t3 ON t1.id=t3.commodity_id
+        left join t_system_spu t4 on t1.spu_id=t4.id
+        left join t_category t5 on t1.category_level_1=t5.id
+        left join t_category t6 on t1.category_level_2=t6.id
+        left join t_category t7 on t1.category_level_3=t7.id
+        left join t_brand t9 on t1.brand_id=t9.id
+       	where
+       	EXISTS (
+            	select 1 from t_commodity_spec t2
+            	where t2.state=3 and t2.commodity_id=t1.id
+	           	 	<if test="commodityNameEn != null and commodityNameEn != ''">
+	                	<![CDATA[ and t2.commodity_name_en like CONCAT(CONCAT('%', #{commodityNameEn}), '%') ]]>
+	           	 	</if>
+	           	 	<if test="commodityNameCn != null and commodityNameCn != ''">
+	                	<![CDATA[ and t2.commodity_name_cn like CONCAT(CONCAT('%', #{commodityNameCn}), '%') ]]>
+	           	 	</if>
+	                <if test="systemSku != null and systemSku != ''">
+	                    and t2.system_sku like CONCAT(CONCAT('%', #{systemSku}), '%')
+	                </if>
+               )	
+       
+        <if test="SPU != null and SPU != ''">
+            and t4.spu_value=#{SPU}
+        </if>
+        <if test="category_level_1 != null">
+            and t1.category_level_1 = #{category_level_1,jdbcType=BIGINT}
+        </if>
+        <if test="category_level_2 != null">
+            and t1.category_level_2 = #{category_level_2,jdbcType=BIGINT}
+        </if>
+        <if test="category_level_3 != null">
+            and t1.category_level_3 = #{category_level_3,jdbcType=BIGINT}
+        </if>
+        <if test="vendibilityPlatform != null and vendibilityPlatform != ''">
+            and t1.vendibility_platform like CONCAT(CONCAT('%', #{vendibilityPlatform}), '%')
+        </if>
+        <if test="freeFreight != null">
+            and t1.free_freight = #{freeFreight}
+        </if>
+        <if test="limitIds != null">
+            and t1.id not in
+            <foreach collection="limitIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="belongSellerId != null and belongSellerId != 981">
+            and t1.belong_seller_id = 0
+        </if>
+       order by t1.creat_time DESC
+    </select>
+    
+    
+    
+    <resultMap id="EsResultMap" type="com.rondaful.cloud.commodity.entity.CommodityBase">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="creat_time" jdbcType="VARCHAR" property="creatTime" />
+        <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
+        <result column="category_level_1" jdbcType="BIGINT" property="categoryLevel1" />
+        <result column="category_level_2" jdbcType="BIGINT" property="categoryLevel2" />
+        <result column="category_level_3" jdbcType="BIGINT" property="categoryLevel3" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="producer" jdbcType="VARCHAR" property="producer" />
+        <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="default_repository" jdbcType="VARCHAR" property="defaultRepository" />
+        <result column="is_private_model" jdbcType="BIT" property="isPrivateModel" />
+        <result column="product_market_time" jdbcType="VARCHAR" property="productMarketTime" />
+        <result column="product_logistics_attributes" jdbcType="VARCHAR" property="productLogisticsAttributes" />
+        <result column="vendibility_platform" jdbcType="VARCHAR" property="vendibilityPlatform" />
+        <result column="SPU" jdbcType="VARCHAR" property="SPU" />
+        <result column="spu_id" jdbcType="BIGINT" property="spuId" />
+        <result column="category_attr" jdbcType="VARCHAR" property="categoryAttr" />
+        <result column="custom_attr" jdbcType="VARCHAR" property="customAttr" />
+        <result column="supplier_spu" jdbcType="VARCHAR" property="supplierSpu" />
+        <result column="suggest_sale_price" property="suggestSalePrice" javaType="DECIMAL"/>
+        <result column="lowest_sale_price" property="lowestSalePrice" javaType="DECIMAL"/>
+        <result column="free_freight" jdbcType="INTEGER" property="freeFreight" />
+        <result column="amazon_site" jdbcType="VARCHAR" property="amazonSite" />
+        <result column="ebay_site" jdbcType="VARCHAR" property="ebaySite" />
+        <result column="belong_seller_id" jdbcType="BIGINT" property="belongSellerId" />
+    </resultMap>
+    
+    
+    <select id="selectListForEs" parameterType="java.util.Map" resultMap="EsResultMap">
+        SELECT t1.*, 
+        t4.spu_value SPU
+        from t_commodity_base t1 
+        left join t_system_spu t4 on t1.spu_id=t4.id
+        where EXISTS (select 1 from t_commodity_spec t2 where t2.state=3 and t2.commodity_id=t1.id)
+       	<if test="id != null">
+            and t1.id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="ids != null">
+            and t1.id in
+            <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    
+    
+</mapper>

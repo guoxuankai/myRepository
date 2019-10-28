@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishListingIntelligentMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishListingIntelligent">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="listing_id" jdbcType="BIGINT" property="listingId" />
+        <result column="style_id" jdbcType="BIGINT" property="styleId" />
+        <result column="template_ids" jdbcType="VARCHAR" property="templateIds" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="switch_country" jdbcType="VARCHAR" property="switchCountry" />
+        <result column="exchange_rates" jdbcType="DECIMAL" property="exchangeRates" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, style_id, template_ids, create_time, switch_country, exchange_rates
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_intelligent
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from ebay_publish_listing_intelligent
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingIntelligent">
+        insert into ebay_publish_listing_intelligent (id, listing_id, style_id, 
+            template_ids, create_time, switch_country, 
+            exchange_rates)
+        values (#{id,jdbcType=BIGINT}, #{listingId,jdbcType=BIGINT}, #{styleId,jdbcType=BIGINT}, 
+            #{templateIds,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{switchCountry,jdbcType=VARCHAR}, 
+            #{exchangeRates,jdbcType=DECIMAL})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingIntelligent">
+        insert into ebay_publish_listing_intelligent
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="styleId != null">
+                style_id,
+            </if>
+            <if test="templateIds != null">
+                template_ids,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="switchCountry != null">
+                switch_country,
+            </if>
+            <if test="exchangeRates != null">
+                exchange_rates,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="styleId != null">
+                #{styleId,jdbcType=BIGINT},
+            </if>
+            <if test="templateIds != null">
+                #{templateIds,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="switchCountry != null">
+                #{switchCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="exchangeRates != null">
+                #{exchangeRates,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingIntelligent">
+        update ebay_publish_listing_intelligent
+        <set>
+            <if test="styleId != null">
+                style_id = #{styleId,jdbcType=BIGINT},
+            </if>
+            <if test="templateIds != null">
+                template_ids = #{templateIds,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="switchCountry != null">
+                switch_country = #{switchCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="exchangeRates != null">
+                exchange_rates = #{exchangeRates,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingIntelligent">
+        update ebay_publish_listing_intelligent
+        set listing_id = #{listingId,jdbcType=BIGINT},
+            style_id = #{styleId,jdbcType=BIGINT},
+            template_ids = #{templateIds,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            switch_country = #{switchCountry,jdbcType=VARCHAR},
+            exchange_rates = #{exchangeRates,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingIntelligent" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_intelligent
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="listingId != null and listingId != ''">
+                 and listing_id = #{listingId,jdbcType=BIGINT}
+            </if>
+            <if test="styleId != null and styleId != ''">
+                 and style_id = #{styleId,jdbcType=BIGINT}
+            </if>
+            <if test="templateIds != null and templateIds != ''">
+                 and template_ids = #{templateIds,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="switchCountry != null and switchCountry != ''">
+                 and switch_country = #{switchCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="exchangeRates != null and exchangeRates != ''">
+                 and exchange_rates = #{exchangeRates,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </select>
+</mapper>

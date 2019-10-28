@@ -1,0 +1,183 @@
+#应用名称
+spring:
+  application:
+           name: rondaful-commodity-service
+  #配置中心
+  cloud:
+    config:
+      profile: dev
+      name: config,default
+      username: rondaful
+      password: rondaful123
+      discovery:
+        enabled: true
+        service-id: rondaful-config-service
+      label: master
+
+  messages:
+    basename: i18n/message
+  
+  elasticsearch:
+    jest:
+      uris: http://47.107.181.119:9200
+      read-timeout: 5000
+      connection-timeout: 5000
+
+rondaful:
+   system: 
+      env: env
+
+#应用端口
+server:
+    port: 8103
+
+
+
+#服务发现
+eureka:
+  client:
+    serviceUrl:
+        defaultZone: http://rondaful:rondaful123@localhost:8000/eureka/
+    #刷新本地缓存时间
+    registryFetchIntervalSeconds: 5
+  instance:
+     status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/rest/api/doc/index.html
+     instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+     prefer-ip-address: true
+     #服务过期时间配置,超过这个时间没有接收到心跳EurekaServer就会将这个实例剔除
+     lease-expiration-duration-in-seconds: 15
+     #服务刷新时间配置，每隔这个时间会主动心跳一次
+     lease-renewal-interval-in-seconds: 5
+
+
+
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: rondaful
+    password: rondaful123
+
+
+#免登陆请求
+system:
+  ignore:
+    login:
+      url: /**
+
+
+#ERP运费试算开发地址 http://172.18.8.242
+erp:
+  freight_trial: http://14.118.130.18:9001
+
+#es 开关
+es:
+  enabled: true
+
+#通途接口地址
+tongtool:
+  url: https://open.tongtool.com
+
+#卖家首页域名  
+domain:
+  url: https://testseller.brandslink.com
+---
+spring:
+  profiles: test
+  cloud:
+    config:
+      profile: test
+      
+  elasticsearch:
+    jest:
+      uris: http://47.107.181.119:9200
+      read-timeout: 5000
+      connection-timeout: 5000
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://rondaful:rondaful123@172.16.2.203:8000/eureka/
+
+
+#ERP运费试算测试地址 http://sso.f3322.net:4500
+erp:
+  freight_trial: http://14.118.130.18:9001
+  
+es:
+  enabled: true
+  
+rondaful:
+   system: 
+      env: test
+
+#通途接口地址
+tongtool:
+  url: https://open.tongtool.com
+
+#卖家首页域名  
+domain:
+  url: https://testseller.brandslink.com
+    
+#免登陆请求
+system:
+  ignore:
+    login:
+      url: /third/**,/offline,/rest/**,/micro/**,/common/**,/operate/commodity/download/publish,/operate/category/hasProductCategory,/operate/category/list,/operate/category/**,/operate/commodity/details/**,/operate/commodity/search,/operate/brand/list,/operate/commodity/list/manager,/promotion/searchPromotion,/promotion/getCommodityByCategoryId,/task/**,/other/reSendMq,/other/reSendAllSkuMq,/file/**
+
+
+
+---
+spring:
+  profiles: prod
+  cloud:
+    config:
+      profile: prod
+
+  elasticsearch:
+    jest:
+      uris: http://192.168.0.19:9200
+      read-timeout: 5000
+      connection-timeout: 5000
+
+#应用端口
+server:
+  port: 50108
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://rondaful:rondaful123@192.168.0.4:50105/eureka/
+
+
+#ERP运费试算生产地址
+erp:
+  freight_trial: http://api.rondaful.com:8081
+
+es:
+  enabled: true
+
+rondaful:
+   system: 
+      env: prod
+      
+#通途接口地址
+tongtool:
+  url: https://open.tongtool.com
+
+#卖家首页域名  
+domain:
+  url: https://seller.brandslink.com
+  
+    
+#免登陆请求
+system:
+  ignore:
+    login:
+      url: /third/**,/offline,/rest/**,/micro/**,/common/**,/operate/commodity/download/publish,/operate/category/hasProductCategory,/operate/category/list,/operate/category/**,/operate/commodity/details/**,/operate/commodity/search,/operate/brand/list,/operate/commodity/list/manager,/promotion/searchPromotion,/promotion/getCommodityByCategoryId,/task/**,/other/reSendMq,/other/reSendAllSkuMq,/file/**
+
+
+---
+

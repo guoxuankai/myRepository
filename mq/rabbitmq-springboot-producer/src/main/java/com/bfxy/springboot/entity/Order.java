@@ -4,13 +4,14 @@ import java.io.Serializable;
 
 public class Order implements Serializable {
 
-	private static final long serialVersionUID = 9111357402963030257L;
+    private static final long serialVersionUID = 9111357402963030257L;
 
-	private String id;
+    private String id;
 
     private String name;
 
     private String messageId;
+
 
     public String getId() {
         return id;

@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.ProviderMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.procurement.Provider">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+        <result column="provider_name" jdbcType="VARCHAR" property="providerName" />
+        <result column="credit_code" jdbcType="VARCHAR" property="creditCode" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="is_back" jdbcType="BIT" property="isBack" />
+        <result column="level_one" jdbcType="VARCHAR" property="levelOne" />
+        <result column="level_two" jdbcType="VARCHAR" property="levelTwo" />
+        <result column="level_three" jdbcType="VARCHAR" property="levelThree" />
+        <result column="delivery_time" jdbcType="INTEGER" property="deliveryTime" />
+        <result column="buyer" jdbcType="VARCHAR" property="buyer" />
+        <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
+        <result column="business_scope" jdbcType="VARCHAR" property="businessScope" />
+        <result column="_name" jdbcType="VARCHAR" property="name" />
+        <result column="representative" jdbcType="VARCHAR" property="representative" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="send_address" jdbcType="VARCHAR" property="sendAddress" />
+        <result column="wang_wang" jdbcType="VARCHAR" property="wangWang" />
+        <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+        <result column="other_papers" jdbcType="VARCHAR" property="otherPapers" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="remake" jdbcType="VARCHAR" property="remake" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime" />
+        <result column="audit_by" jdbcType="VARCHAR" property="auditBy" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, supplier_id, provider_name, credit_code, type, url, is_back, level_one, level_two, 
+        level_three, delivery_time, buyer, company_address, business_scope, _name, representative, 
+        phone, send_address, wang_wang, business_license, other_papers, create_by, create_time, 
+        update_by, update_time, status, remake, version, audit_time, audit_by
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_provider
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_provider
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.procurement.Provider">
+        insert into t_provider (id, supplier_id, provider_name, 
+            credit_code, type, url, 
+            is_back, level_one, level_two, 
+            level_three, delivery_time, buyer, 
+            company_address, business_scope, _name, 
+            representative, phone, send_address, 
+            wang_wang, business_license, other_papers, 
+            create_by, create_time, update_by, 
+            update_time, status, remake, 
+            version, audit_time, audit_by
+            )
+        values (#{id,jdbcType=INTEGER}, #{supplierId,jdbcType=INTEGER}, #{providerName,jdbcType=VARCHAR}, 
+            #{creditCode,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
+            #{isBack,jdbcType=BIT}, #{levelOne,jdbcType=VARCHAR}, #{levelTwo,jdbcType=VARCHAR}, 
+            #{levelThree,jdbcType=VARCHAR}, #{deliveryTime,jdbcType=INTEGER}, #{buyer,jdbcType=VARCHAR}, 
+            #{companyAddress,jdbcType=VARCHAR}, #{businessScope,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+            #{representative,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{sendAddress,jdbcType=VARCHAR}, 
+            #{wangWang,jdbcType=VARCHAR}, #{businessLicense,jdbcType=VARCHAR}, #{otherPapers,jdbcType=VARCHAR}, 
+            #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+            #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{remake,jdbcType=VARCHAR}, 
+            #{version,jdbcType=INTEGER}, #{auditTime,jdbcType=TIMESTAMP}, #{auditBy,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.procurement.Provider">
+        insert into t_provider
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="providerName != null">
+                provider_name,
+            </if>
+            <if test="creditCode != null">
+                credit_code,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="isBack != null">
+                is_back,
+            </if>
+            <if test="levelOne != null">
+                level_one,
+            </if>
+            <if test="levelTwo != null">
+                level_two,
+            </if>
+            <if test="levelThree != null">
+                level_three,
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time,
+            </if>
+            <if test="buyer != null">
+                buyer,
+            </if>
+            <if test="companyAddress != null">
+                company_address,
+            </if>
+            <if test="businessScope != null">
+                business_scope,
+            </if>
+            <if test="name != null">
+                _name,
+            </if>
+            <if test="representative != null">
+                representative,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="sendAddress != null">
+                send_address,
+            </if>
+            <if test="wangWang != null">
+                wang_wang,
+            </if>
+            <if test="businessLicense != null">
+                business_license,
+            </if>
+            <if test="otherPapers != null">
+                other_papers,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="remake != null">
+                remake,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="auditTime != null">
+                audit_time,
+            </if>
+            <if test="auditBy != null">
+                audit_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="providerName != null">
+                #{providerName,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="isBack != null">
+                #{isBack,jdbcType=BIT},
+            </if>
+            <if test="levelOne != null">
+                #{levelOne,jdbcType=VARCHAR},
+            </if>
+            <if test="levelTwo != null">
+                #{levelTwo,jdbcType=VARCHAR},
+            </if>
+            <if test="levelThree != null">
+                #{levelThree,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                #{deliveryTime,jdbcType=INTEGER},
+            </if>
+            <if test="buyer != null">
+                #{buyer,jdbcType=VARCHAR},
+            </if>
+            <if test="companyAddress != null">
+                #{companyAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="businessScope != null">
+                #{businessScope,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="representative != null">
+                #{representative,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="sendAddress != null">
+                #{sendAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="wangWang != null">
+                #{wangWang,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="otherPapers != null">
+                #{otherPapers,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="remake != null">
+                #{remake,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="auditTime != null">
+                #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditBy != null">
+                #{auditBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.procurement.Provider">
+        update t_provider
+        <set>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="providerName != null">
+                provider_name = #{providerName,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                credit_code = #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="isBack != null">
+                is_back = #{isBack,jdbcType=BIT},
+            </if>
+            <if test="levelOne != null">
+                level_one = #{levelOne,jdbcType=VARCHAR},
+            </if>
+            <if test="levelTwo != null">
+                level_two = #{levelTwo,jdbcType=VARCHAR},
+            </if>
+            <if test="levelThree != null">
+                level_three = #{levelThree,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=INTEGER},
+            </if>
+            <if test="buyer != null">
+                buyer = #{buyer,jdbcType=VARCHAR},
+            </if>
+            <if test="companyAddress != null">
+                company_address = #{companyAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="businessScope != null">
+                business_scope = #{businessScope,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                _name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="representative != null">
+                representative = #{representative,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="sendAddress != null">
+                send_address = #{sendAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="wangWang != null">
+                wang_wang = #{wangWang,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                business_license = #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="otherPapers != null">
+                other_papers = #{otherPapers,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="remake != null">
+                remake = #{remake,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditBy != null">
+                audit_by = #{auditBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.procurement.Provider">
+        update t_provider
+        set supplier_id = #{supplierId,jdbcType=INTEGER},
+            provider_name = #{providerName,jdbcType=VARCHAR},
+            credit_code = #{creditCode,jdbcType=VARCHAR},
+            type = #{type,jdbcType=INTEGER},
+            url = #{url,jdbcType=VARCHAR},
+            is_back = #{isBack,jdbcType=BIT},
+            level_one = #{levelOne,jdbcType=VARCHAR},
+            level_two = #{levelTwo,jdbcType=VARCHAR},
+            level_three = #{levelThree,jdbcType=VARCHAR},
+            delivery_time = #{deliveryTime,jdbcType=INTEGER},
+            buyer = #{buyer,jdbcType=VARCHAR},
+            company_address = #{companyAddress,jdbcType=VARCHAR},
+            business_scope = #{businessScope,jdbcType=VARCHAR},
+            _name = #{name,jdbcType=VARCHAR},
+            representative = #{representative,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            send_address = #{sendAddress,jdbcType=VARCHAR},
+            wang_wang = #{wangWang,jdbcType=VARCHAR},
+            business_license = #{businessLicense,jdbcType=VARCHAR},
+            other_papers = #{otherPapers,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            status = #{status,jdbcType=INTEGER},
+            remake = #{remake,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1,
+            audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            audit_by = #{auditBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.procurement.Provider" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_provider
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                 and supplier_id = #{supplierId,jdbcType=INTEGER}
+            </if>
+            <if test="providerName != null and providerName != ''">
+                 and provider_name = #{providerName,jdbcType=VARCHAR}
+            </if>
+            <if test="creditCode != null and creditCode != ''">
+                 and credit_code = #{creditCode,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null and type != ''">
+                 and type = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="url != null and url != ''">
+                 and url = #{url,jdbcType=VARCHAR}
+            </if>
+            <if test="isBack != null and isBack != ''">
+                 and is_back = #{isBack,jdbcType=BIT}
+            </if>
+            <if test="levelOne != null and levelOne != ''">
+                 and level_one = #{levelOne,jdbcType=VARCHAR}
+            </if>
+            <if test="levelTwo != null and levelTwo != ''">
+                 and level_two = #{levelTwo,jdbcType=VARCHAR}
+            </if>
+            <if test="levelThree != null and levelThree != ''">
+                 and level_three = #{levelThree,jdbcType=VARCHAR}
+            </if>
+            <if test="deliveryTime != null and deliveryTime != ''">
+                 and delivery_time = #{deliveryTime,jdbcType=INTEGER}
+            </if>
+            <if test="buyer != null and buyer != ''">
+                 and buyer = #{buyer,jdbcType=VARCHAR}
+            </if>
+            <if test="companyAddress != null and companyAddress != ''">
+                 and company_address = #{companyAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="businessScope != null and businessScope != ''">
+                 and business_scope = #{businessScope,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null and name != ''">
+                 and _name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="representative != null and representative != ''">
+                 and representative = #{representative,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != ''">
+                 and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="sendAddress != null and sendAddress != ''">
+                 and send_address = #{sendAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="wangWang != null and wangWang != ''">
+                 and wang_wang = #{wangWang,jdbcType=VARCHAR}
+            </if>
+            <if test="businessLicense != null and businessLicense != ''">
+                 and business_license = #{businessLicense,jdbcType=VARCHAR}
+            </if>
+            <if test="otherPapers != null and otherPapers != ''">
+                 and other_papers = #{otherPapers,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="remake != null and remake != ''">
+                 and remake = #{remake,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+            <if test="auditTime != null and auditTime != ''">
+                 and audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="auditBy != null and auditBy != ''">
+                 and audit_by = #{auditBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getsPage"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_provider
+        where supplier_id = #{supplierId,jdbcType=INTEGER}
+        <if test="id !=null">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="status !=null or status==0">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="startTime !=null and endTime!=null">
+            and audit_by between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <select id="getsName"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_provider
+        <where>
+            <if test="supplierId !=null">
+                supplier_id = #{supplierId,jdbcType=INTEGER}
+            </if>
+            <if test="levelThree !=null">
+                and level_three = #{levelThree,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

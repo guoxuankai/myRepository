@@ -1,0 +1,102 @@
+package com.rondaful.cloud.seller.common.task;
+
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import com.rondaful.cloud.common.utils.RedissLockUtil;
+import com.rondaful.cloud.seller.common.spring.ApplicationContextProvider;
+import com.rondaful.cloud.seller.constants.AmazonConstants;
+import com.rondaful.cloud.seller.constants.AmazonPostMethod;
+import com.rondaful.cloud.seller.entity.AmazonPublishSubListing;
+import com.rondaful.cloud.seller.service.AmazonPublishListingService;
+import com.rondaful.cloud.seller.service.AmazonPublishSubListingService;
+
+@Component
+// @EnableScheduling
+public class SubmissionScheduler {
+
+	private final Logger logger = LoggerFactory.getLogger(SubmissionScheduler.class);
+	private final String lockKey = "redis_lock_key_SubmissionScheduler";
+	
+	
+	@Autowired
+	RedissLockUtil redissLockUtil;
+	
+	
+	// @Scheduled(initialDelay=1200, fixedRate=60000)//第一次延迟120秒后执行，之后按fixedRate的规则每60秒执行一次。
+	private void process(){
+		
+		
+		if(!redissLockUtil.tryLock(lockKey, 10, 30)) //等待10秒，30秒放开锁
+		{
+			logger.debug("其它服务正在执行:{}。lock....",lockKey);
+			return ;
+		}
+		logger.debug("SubmissionScheduler 检查是否有上报的数据开始...");
+		try
+		{
+			AmazonPublishSubListingService subListingService  = (AmazonPublishSubListingService) ApplicationContextProvider.getBean("amazonPublishSubListingServiceImpl");
+			AmazonPublishListingService listingService  = (AmazonPublishListingService) ApplicationContextProvider.getBean("amazonPublishListingServiceImpl");
+			
+			AmazonPublishSubListing sub = new AmazonPublishSubListing();
+			// 提交并完成的数据(针对已上报完成的商品)
+			sub.setCurrInterface("GetFeedSubmissionResult");
+			sub.setMsgType(AmazonPostMethod.POST_PRODUCT_DATA);
+			sub.setCompleteStatus(AmazonConstants.COMPLETE_STATUS_COMPLETE); // 完成
+			sub.setProcessStatus(AmazonConstants.RESPORT_RESULT_COMPLETE);
+			List<AmazonPublishSubListing> list = subListingService.selectPage(sub);
+			logger.debug("本次检查报告数量：{}",list.size());
+			
+			if(CollectionUtils.isEmpty(list)) return;
+			
+			AmazonPublishSubListing productObj = list.get(0);// 商品数据
+			
+			// 查询非商品的数据
+			AmazonPublishSubListing queryParam = new AmazonPublishSubListing();
+			queryParam.setListingId(productObj.getListingId());
+			List<AmazonPublishSubListing> submissionlist = subListingService.selectPage(queryParam);
+			if(CollectionUtils.isEmpty(submissionlist)) return;
+			
+			ExecutorService executor = Executors.newFixedThreadPool(5);
+			for(AmazonPublishSubListing subObj  : submissionlist)
+			{
+				if(subObj.getId().longValue() == productObj.getId().longValue())
+				{
+					continue;
+				}
+				logger.debug("执行上报subId:{}" + subObj.getId());
+				executor.execute(new SubmitFeedTask(subObj.getId()));
+			}
+			executor.shutdown();
+			productObj.setProcessStatus(AmazonConstants.RESPORT_RESULT_OVER);
+			subListingService.update(productObj);
+			logger.debug("SubmissionScheduler 检查是否有上报的数据结束...");
+		}finally
+		{
+			redissLockUtil.unlock(lockKey); // 解放锁
+		}
+    }
+	
+	private Integer getCompleteStatus(String str)
+	{
+		if(str.equals(AmazonConstants.RESPORT_RESULT_SUCCESS))
+		{
+			return AmazonConstants.COMPLETE_STATUS_COMPLETE;
+		}else if(str.equals(AmazonConstants.RESPORT_RESULT_UPLOADING))
+		{
+			return AmazonConstants.COMPLETE_STATUS_PRESSING;
+		}else
+		{
+			return AmazonConstants.COMPLETE_STATUS_FAILED;
+		}
+	}
+}

@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.LogisticsFeesMapper">
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.LogisticsFees">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="customer_name" jdbcType="VARCHAR" property="customerName"/>
+        <result column="package_no" jdbcType="VARCHAR" property="packageNo"/>
+        <result column="warehouse" jdbcType="VARCHAR" property="warehouse"/>
+        <result column="logistics_provider" jdbcType="VARCHAR" property="logisticsProvider"/>
+        <result column="waybill" jdbcType="VARCHAR" property="waybill"/>
+        <result column="mailing_method" jdbcType="VARCHAR" property="mailingMethod"/>
+        <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="tracking_number" jdbcType="VARCHAR" property="trackingNumber"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="calculative_weight" jdbcType="DECIMAL" property="calculativeWeight"/>
+        <result column="actual_weight" jdbcType="DECIMAL" property="actualWeight"/>
+        <result column="warehouse_freight" jdbcType="DECIMAL" property="warehouseFreight"/>
+        <result column="logistic_calculative_weight" jdbcType="DECIMAL" property="logisticCalculativeWeight"/>
+        <result column="logistic_actual_weight" jdbcType="DECIMAL" property="logisticActualWeight"/>
+        <result column="logistic_freight" jdbcType="DECIMAL" property="logisticFreight"/>
+        <result column="import_people" jdbcType="VARCHAR" property="importPeople"/>
+        <result column="import_time" jdbcType="TIMESTAMP" property="importTime"/>
+        <result column="affirm_people" jdbcType="VARCHAR" property="affirmPeople"/>
+        <result column="affirm_time" jdbcType="TIMESTAMP" property="affirmTime"/>
+        <result column="delivery_platform" jdbcType="VARCHAR" property="deliveryPlatform"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, customer_name, package_no, warehouse, logistics_provider, waybill, mailing_method, 
+        delivery_time, order_no, tracking_number, country, city, status, calculative_weight, 
+        actual_weight, warehouse_freight, logistic_calculative_weight, logistic_actual_weight, 
+        logistic_freight, import_people, import_time, affirm_people, affirm_time, delivery_platform
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tf_logistics_fees
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tf_logistics_fees
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.finance.pojo.entity.LogisticsFees">
+        insert into tf_logistics_fees (id, customer_name, package_no, 
+            warehouse, logistics_provider, waybill, 
+            mailing_method, delivery_time, order_no, 
+            tracking_number, country, city, 
+            status, calculative_weight, actual_weight, 
+            warehouse_freight, logistic_calculative_weight, 
+            logistic_actual_weight, logistic_freight, 
+            import_people, import_time, affirm_people, 
+            affirm_time, delivery_platform)
+        values (#{id,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, #{packageNo,jdbcType=VARCHAR}, 
+            #{warehouse,jdbcType=VARCHAR}, #{logisticsProvider,jdbcType=VARCHAR}, #{waybill,jdbcType=VARCHAR}, 
+            #{mailingMethod,jdbcType=VARCHAR}, #{deliveryTime,jdbcType=TIMESTAMP}, #{orderNo,jdbcType=VARCHAR}, 
+            #{trackingNumber,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+            #{status,jdbcType=TINYINT}, #{calculativeWeight,jdbcType=DECIMAL}, #{actualWeight,jdbcType=DECIMAL}, 
+            #{warehouseFreight,jdbcType=DECIMAL}, #{logisticCalculativeWeight,jdbcType=DECIMAL}, 
+            #{logisticActualWeight,jdbcType=DECIMAL}, #{logisticFreight,jdbcType=DECIMAL},
+            #{importPeople,jdbcType=VARCHAR}, #{importTime,jdbcType=TIMESTAMP}, #{affirmPeople,jdbcType=VARCHAR}, 
+            #{affirmTime,jdbcType=TIMESTAMP}, #{deliveryPlatform,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.finance.pojo.entity.LogisticsFees">
+        insert into tf_logistics_fees
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="customerName != null">
+                customer_name,
+            </if>
+            <if test="packageNo != null">
+                package_no,
+            </if>
+            <if test="warehouse != null">
+                warehouse,
+            </if>
+            <if test="logisticsProvider != null">
+                logistics_provider,
+            </if>
+            <if test="waybill != null">
+                waybill,
+            </if>
+            <if test="mailingMethod != null">
+                mailing_method,
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="trackingNumber != null">
+                tracking_number,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="calculativeWeight != null">
+                calculative_weight,
+            </if>
+            <if test="actualWeight != null">
+                actual_weight,
+            </if>
+            <if test="warehouseFreight != null">
+                warehouse_freight,
+            </if>
+            <if test="logisticCalculativeWeight != null">
+                logistic_calculative_weight,
+            </if>
+            <if test="logisticActualWeight != null">
+                logistic_actual_weight,
+            </if>
+            <if test="logisticFreight != null">
+                logistic_freight,
+            </if>
+            <if test="importPeople != null">
+                import_people,
+            </if>
+            <if test="importTime != null">
+                import_time,
+            </if>
+            <if test="affirmPeople != null">
+                affirm_people,
+            </if>
+            <if test="affirmTime != null">
+                affirm_time,
+            </if>
+            <if test="deliveryPlatform != null">
+                delivery_platform,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="customerName != null">
+                #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="packageNo != null">
+                #{packageNo,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouse != null">
+                #{warehouse,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsProvider != null">
+                #{logisticsProvider,jdbcType=VARCHAR},
+            </if>
+            <if test="waybill != null">
+                #{waybill,jdbcType=VARCHAR},
+            </if>
+            <if test="mailingMethod != null">
+                #{mailingMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                #{deliveryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="trackingNumber != null">
+                #{trackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="calculativeWeight != null">
+                #{calculativeWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="actualWeight != null">
+                #{actualWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="warehouseFreight != null">
+                #{warehouseFreight,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticCalculativeWeight != null">
+                #{logisticCalculativeWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticActualWeight != null">
+                #{logisticActualWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticFreight != null">
+                #{logisticFreight,jdbcType=DECIMAL},
+            </if>
+            <if test="importPeople != null">
+                #{importPeople,jdbcType=VARCHAR},
+            </if>
+            <if test="importTime != null">
+                #{importTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="affirmPeople != null">
+                #{affirmPeople,jdbcType=VARCHAR},
+            </if>
+            <if test="affirmTime != null">
+                #{affirmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deliveryPlatform != null">
+                #{deliveryPlatform,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.finance.pojo.entity.LogisticsFees">
+        update tf_logistics_fees
+        <set>
+            <if test="customerName != null">
+                customer_name = #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="packageNo != null">
+                package_no = #{packageNo,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouse != null">
+                warehouse = #{warehouse,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsProvider != null">
+                logistics_provider = #{logisticsProvider,jdbcType=VARCHAR},
+            </if>
+            <if test="waybill != null">
+                waybill = #{waybill,jdbcType=VARCHAR},
+            </if>
+            <if test="mailingMethod != null">
+                mailing_method = #{mailingMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="trackingNumber != null">
+                tracking_number = #{trackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="calculativeWeight != null">
+                calculative_weight = #{calculativeWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="actualWeight != null">
+                actual_weight = #{actualWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="warehouseFreight != null">
+                warehouse_freight = #{warehouseFreight,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticCalculativeWeight != null">
+                logistic_calculative_weight = #{logisticCalculativeWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticActualWeight != null">
+                logistic_actual_weight = #{logisticActualWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticFreight != null">
+                logistic_freight = #{logisticFreight,jdbcType=DECIMAL},
+            </if>
+            <if test="importPeople != null">
+                import_people = #{importPeople,jdbcType=VARCHAR},
+            </if>
+            <if test="importTime != null">
+                import_time = #{importTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="affirmPeople != null">
+                affirm_people = #{affirmPeople,jdbcType=VARCHAR},
+            </if>
+            <if test="affirmTime != null">
+                affirm_time = #{affirmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deliveryPlatform != null">
+                delivery_platform = #{deliveryPlatform,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.finance.pojo.entity.LogisticsFees">
+        update tf_logistics_fees
+        set customer_name = #{customerName,jdbcType=VARCHAR},
+            package_no = #{packageNo,jdbcType=VARCHAR},
+            warehouse = #{warehouse,jdbcType=VARCHAR},
+            logistics_provider = #{logisticsProvider,jdbcType=VARCHAR},
+            waybill = #{waybill,jdbcType=VARCHAR},
+            mailing_method = #{mailingMethod,jdbcType=VARCHAR},
+            delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+            order_no = #{orderNo,jdbcType=VARCHAR},
+            tracking_number = #{trackingNumber,jdbcType=VARCHAR},
+            country = #{country,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            status = #{status,jdbcType=TINYINT},
+            calculative_weight = #{calculativeWeight,jdbcType=DECIMAL},
+            actual_weight = #{actualWeight,jdbcType=DECIMAL},
+            warehouse_freight = #{warehouseFreight,jdbcType=DECIMAL},
+            logistic_calculative_weight = #{logisticCalculativeWeight,jdbcType=DECIMAL},
+            logistic_actual_weight = #{logisticActualWeight,jdbcType=DECIMAL},
+            logistic_freight = #{logisticFreight,jdbcType=DECIMAL},
+            import_people = #{importPeople,jdbcType=VARCHAR},
+            import_time = #{importTime,jdbcType=TIMESTAMP},
+            affirm_people = #{affirmPeople,jdbcType=VARCHAR},
+            affirm_time = #{affirmTime,jdbcType=TIMESTAMP},
+            delivery_platform = #{deliveryPlatform,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.finance.pojo.entity.LogisticsFees" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tf_logistics_fees
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="customerName != null and customerName != ''">
+                and customer_name = #{customerName,jdbcType=VARCHAR}
+            </if>
+            <if test="packageNo != null and packageNo != ''">
+                and package_no = #{packageNo,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouse != null and warehouse != ''">
+                and warehouse = #{warehouse,jdbcType=VARCHAR}
+            </if>
+            <if test="logisticsProvider != null and logisticsProvider != ''">
+                and logistics_provider = #{logisticsProvider,jdbcType=VARCHAR}
+            </if>
+            <if test="waybill != null and waybill != ''">
+                and waybill = #{waybill,jdbcType=VARCHAR}
+            </if>
+            <if test="mailingMethod != null and mailingMethod != ''">
+                and mailing_method = #{mailingMethod,jdbcType=VARCHAR}
+            </if>
+            <if test="deliveryTime != null and deliveryTime != ''">
+                and delivery_time = #{deliveryTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="orderNo != null and orderNo != ''">
+                and order_no = #{orderNo,jdbcType=VARCHAR}
+            </if>
+            <if test="trackingNumber != null and trackingNumber != ''">
+                and tracking_number = #{trackingNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="calculativeWeight != null and calculativeWeight != ''">
+                and calculative_weight = #{calculativeWeight,jdbcType=DECIMAL}
+            </if>
+            <if test="actualWeight != null and actualWeight != ''">
+                and actual_weight = #{actualWeight,jdbcType=DECIMAL}
+            </if>
+            <if test="warehouseFreight != null and warehouseFreight != ''">
+                and warehouse_freight = #{warehouseFreight,jdbcType=DECIMAL}
+            </if>
+            <if test="logisticCalculativeWeight != null and logisticCalculativeWeight != ''">
+                and logistic_calculative_weight = #{logisticCalculativeWeight,jdbcType=DECIMAL}
+            </if>
+            <if test="logisticActualWeight != null and logisticActualWeight != ''">
+                and logistic_actual_weight = #{logisticActualWeight,jdbcType=DECIMAL}
+            </if>
+            <if test="logisticFreight != null and logisticFreight != ''">
+                and logistic_freight = #{logisticFreight,jdbcType=DECIMAL}
+            </if>
+            <if test="importPeople != null and importPeople != ''">
+                and import_people = #{importPeople,jdbcType=VARCHAR}
+            </if>
+            <if test="importTime != null and importTime != ''">
+                and import_time = #{importTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="affirmPeople != null and affirmPeople != ''">
+                and affirm_people = #{affirmPeople,jdbcType=VARCHAR}
+            </if>
+            <if test="affirmTime != null and affirmTime != ''">
+                and affirm_time = #{affirmTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="deliveryPlatform != null and deliveryPlatform != ''">
+                and delivery_platform = #{deliveryPlatform,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="list" parameterType="com.brandslink.cloud.finance.pojo.vo.LogisticsFeesVO"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tf_logistics_fees
+        <trim prefix="where" prefixOverrides="and">
+            <if test="customerName != null and customerName != ''">
+                and customer_name = #{customerName,jdbcType=VARCHAR}
+            </if>
+            <if test="packageNo != null and packageNo != ''">
+                and package_no = #{packageNo,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouse != null and warehouse != ''">
+                and warehouse = #{warehouse,jdbcType=VARCHAR}
+            </if>
+            <if test="waybill != null and waybill != ''">
+                and waybill = #{waybill,jdbcType=VARCHAR}
+            </if>
+            <if test="mailingMethod != null and mailingMethod != ''">
+                and mailing_method = #{mailingMethod,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null and endTime != null">
+                and delivery_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status,jdbcType=TINYINT}
+            </if>
+        </trim>
+    </select>
+
+    <update id="updateStatus">
+        update tf_logistics_fees
+        set status = #{status,jdbcType=TINYINT}
+        where id in
+        <foreach collection="ids"  item="item" open="(" separator="," close=")"  >#{item}</foreach>
+    </update>
+
+
+</mapper>

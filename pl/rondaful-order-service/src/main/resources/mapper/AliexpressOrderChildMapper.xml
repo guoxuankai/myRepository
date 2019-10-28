@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.aliexpress.AliexpressOrderChildMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrderChild">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="parent_order_id" jdbcType="VARCHAR" property="parentOrderId" />
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="order_sort_id" jdbcType="INTEGER" property="orderSortId" />
+        <result column="product_img_url" jdbcType="VARCHAR" property="productImgUrl" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="sku_code" jdbcType="VARCHAR" property="skuCode" />
+        <result column="product_attributes" jdbcType="VARCHAR" property="productAttributes" />
+        <result column="amount" jdbcType="DECIMAL" property="amount" />
+        <result column="currency_code" jdbcType="VARCHAR" property="currencyCode" />
+        <result column="product_count" jdbcType="INTEGER" property="productCount" />
+        <result column="pl_process_status" jdbcType="INTEGER" property="plProcessStatus" />
+        <result column="pl_sku_code" jdbcType="VARCHAR" property="plSkuCode" />
+        <result column="logistics_service_name" jdbcType="VARCHAR" property="logisticsServiceName" />
+        <result column="logistics_order_id" jdbcType="VARCHAR" property="logisticsOrderId" />
+        <result column="call_back" jdbcType="TINYINT" property="callBack" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="product_id" jdbcType="BIGINT" property="productId" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrderChild">
+        <result column="buyer_memo" jdbcType="LONGVARCHAR" property="buyerMemo" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, parent_order_id, order_id,order_sort_id, product_img_url, product_name, sku_code, product_attributes,
+        amount, currency_code, product_count, pl_process_status, pl_sku_code, logistics_service_name, 
+        logistics_order_id, call_back, create_time, update_time, version,product_id
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        buyer_memo
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_aliexpress_order_child
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_aliexpress_order_child
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrderChild">
+        insert into t_aliexpress_order_child (id, parent_order_id, order_id, 
+            product_img_url, product_name, sku_code, 
+            product_attributes, amount, currency_code, 
+            product_count, pl_process_status, pl_sku_code, 
+            logistics_service_name, logistics_order_id, 
+            call_back, create_time, update_time, 
+            version, buyer_memo,product_id)
+        values (#{id,jdbcType=BIGINT}, #{parentOrderId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+            #{productImgUrl,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{skuCode,jdbcType=VARCHAR}, 
+            #{productAttributes,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{currencyCode,jdbcType=VARCHAR}, 
+            #{productCount,jdbcType=INTEGER}, #{plProcessStatus,jdbcType=INTEGER}, #{plSkuCode,jdbcType=VARCHAR}, 
+            #{logisticsServiceName,jdbcType=VARCHAR}, #{logisticsOrderId,jdbcType=VARCHAR}, 
+            #{callBack,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{version,jdbcType=BIGINT}, #{buyerMemo,jdbcType=LONGVARCHAR}, #{productId,jdbcType=BIGINT})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrderChild">
+        insert into t_aliexpress_order_child
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parentOrderId != null">
+                parent_order_id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="productImgUrl != null">
+                product_img_url,
+            </if>
+            <if test="productName != null">
+                product_name,
+            </if>
+            <if test="skuCode != null">
+                sku_code,
+            </if>
+            <if test="productAttributes != null">
+                product_attributes,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="currencyCode != null">
+                currency_code,
+            </if>
+            <if test="productCount != null">
+                product_count,
+            </if>
+            <if test="plProcessStatus != null">
+                pl_process_status,
+            </if>
+            <if test="plSkuCode != null">
+                pl_sku_code,
+            </if>
+            <if test="logisticsServiceName != null">
+                logistics_service_name,
+            </if>
+            <if test="logisticsOrderId != null">
+                logistics_order_id,
+            </if>
+            <if test="callBack != null">
+                call_back,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="buyerMemo != null">
+                buyer_memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="parentOrderId != null">
+                #{parentOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="productImgUrl != null">
+                #{productImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="productName != null">
+                #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="skuCode != null">
+                #{skuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="productAttributes != null">
+                #{productAttributes,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="currencyCode != null">
+                #{currencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="productCount != null">
+                #{productCount,jdbcType=INTEGER},
+            </if>
+            <if test="plProcessStatus != null">
+                #{plProcessStatus,jdbcType=INTEGER},
+            </if>
+            <if test="plSkuCode != null">
+                #{plSkuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsServiceName != null">
+                #{logisticsServiceName,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsOrderId != null">
+                #{logisticsOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="callBack != null">
+                #{callBack,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="buyerMemo != null">
+                #{buyerMemo,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrderChild">
+        update t_aliexpress_order_child
+        <set>
+            <if test="parentOrderId != null">
+                parent_order_id = #{parentOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="productImgUrl != null">
+                product_img_url = #{productImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="productName != null">
+                product_name = #{productName,jdbcType=VARCHAR},
+            </if>
+            <if test="skuCode != null">
+                sku_code = #{skuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="productAttributes != null">
+                product_attributes = #{productAttributes,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="currencyCode != null">
+                currency_code = #{currencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="productCount != null">
+                product_count = #{productCount,jdbcType=INTEGER},
+            </if>
+            <if test="plProcessStatus != null">
+                pl_process_status = #{plProcessStatus,jdbcType=INTEGER},
+            </if>
+            <if test="plSkuCode != null">
+                pl_sku_code = #{plSkuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsServiceName != null">
+                logistics_service_name = #{logisticsServiceName,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsOrderId != null">
+                logistics_order_id = #{logisticsOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="callBack != null">
+                call_back = #{callBack,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+            <if test="buyerMemo != null">
+                buyer_memo = #{buyerMemo,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="productId != null and productId != 0">
+                product_id = #{productId,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrderChild">
+        update t_aliexpress_order_child
+        set parent_order_id = #{parentOrderId,jdbcType=VARCHAR},
+            order_id = #{orderId,jdbcType=VARCHAR},
+            product_img_url = #{productImgUrl,jdbcType=VARCHAR},
+            product_name = #{productName,jdbcType=VARCHAR},
+            sku_code = #{skuCode,jdbcType=VARCHAR},
+            product_attributes = #{productAttributes,jdbcType=VARCHAR},
+            amount = #{amount,jdbcType=DECIMAL},
+            currency_code = #{currencyCode,jdbcType=VARCHAR},
+            product_count = #{productCount,jdbcType=INTEGER},
+            pl_process_status = #{plProcessStatus,jdbcType=INTEGER},
+            pl_sku_code = #{plSkuCode,jdbcType=VARCHAR},
+            logistics_service_name = #{logisticsServiceName,jdbcType=VARCHAR},
+            logistics_order_id = #{logisticsOrderId,jdbcType=VARCHAR},
+            call_back = #{callBack,jdbcType=TINYINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            version = #{version,jdbcType=BIGINT} + 1,
+            product_id = #{productId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrderChild" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_aliexpress_order_child
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="parentOrderId != null and parentOrderId != ''">
+                 and parent_order_id = #{parentOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                 and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="productImgUrl != null and productImgUrl != ''">
+                 and product_img_url = #{productImgUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="productName != null and productName != ''">
+                 and product_name = #{productName,jdbcType=VARCHAR}
+            </if>
+            <if test="skuCode != null and skuCode != ''">
+                 and sku_code = #{skuCode,jdbcType=VARCHAR}
+            </if>
+            <if test="productAttributes != null and productAttributes != ''">
+                 and product_attributes = #{productAttributes,jdbcType=VARCHAR}
+            </if>
+            <if test="amount != null and amount != ''">
+                 and amount = #{amount,jdbcType=DECIMAL}
+            </if>
+            <if test="currencyCode != null and currencyCode != ''">
+                 and currency_code = #{currencyCode,jdbcType=VARCHAR}
+            </if>
+            <if test="productCount != null and productCount != ''">
+                 and product_count = #{productCount,jdbcType=INTEGER}
+            </if>
+            <if test="plProcessStatus != null and plProcessStatus != ''">
+                 and pl_process_status = #{plProcessStatus,jdbcType=INTEGER}
+            </if>
+            <if test="plSkuCode != null and plSkuCode != ''">
+                 and pl_sku_code = #{plSkuCode,jdbcType=VARCHAR}
+            </if>
+            <if test="logisticsServiceName != null and logisticsServiceName != ''">
+                 and logistics_service_name = #{logisticsServiceName,jdbcType=VARCHAR}
+            </if>
+            <if test="logisticsOrderId != null and logisticsOrderId != ''">
+                 and logistics_order_id = #{logisticsOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="callBack != null and callBack != ''">
+                 and call_back = #{callBack,jdbcType=TINYINT}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="buyerMemo != null and buyerMemo != ''">
+                 and buyer_memo = #{buyerMemo,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="inserts" parameterType="java.util.List" >
+        insert into t_aliexpress_order_child (parent_order_id, order_id,
+        product_img_url, product_name, pl_process_status, sku_code,
+        product_attributes, amount, currency_code,
+        product_count, pl_sku_code, logistics_service_name,
+        logistics_order_id, call_back, create_time,
+        update_time, buyer_memo,order_sort_id,product_id) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.parentOrderId,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR},
+            #{item.productImgUrl,jdbcType=VARCHAR}, #{item.productName,jdbcType=VARCHAR}, #{item.plProcessStatus,jdbcType=INTEGER}, #{item.skuCode,jdbcType=VARCHAR},
+            #{item.productAttributes,jdbcType=VARCHAR}, #{item.amount,jdbcType=DECIMAL}, #{item.currencyCode,jdbcType=VARCHAR},
+            #{item.productCount,jdbcType=INTEGER}, #{item.plSkuCode,jdbcType=VARCHAR}, #{item.logisticsServiceName,jdbcType=VARCHAR},
+            #{item.logisticsOrderId,jdbcType=VARCHAR}, #{item.callBack,jdbcType=TINYINT}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP}, #{item.buyerMemo,jdbcType=LONGVARCHAR},#{item.orderSortId,jdbcType=TINYINT}, #{item.productId,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+
+    <select id="getByParentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_aliexpress_order_child
+        where parent_order_id = #{parentId,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateBatchStatus"  parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update   t_aliexpress_order_child set  pl_process_status=#{item.plProcessStatus} where order_id = #{item.orderId}
+        </foreach>
+    </update>
+
+    <update id="updateStatusByParentId" parameterType="java.util.List">
+        update t_aliexpress_order_child set pl_process_status=2 where  pl_process_status !=1 and parent_order_id in
+        <foreach collection="list" item="item" index= "index" open="(" close=")" separator =",">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="updateBatchLog"  parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrderChild">
+        update t_aliexpress_order_child set
+        logistics_service_name = #{logisticsServiceName,jdbcType=VARCHAR},
+        logistics_order_id = #{logisticsOrderId,jdbcType=VARCHAR},
+        call_back = #{callBack,jdbcType=TINYINT}
+        where parent_order_id = #{parentOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="handInsertSku"  parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update   t_aliexpress_order_child set  pl_sku_code=#{item.plSkuCode,jdbcType=VARCHAR} where sku_code = #{item.skuCode,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <select id="getPOrderId" parameterType="java.util.List" resultType="String">
+        select
+        parent_order_id
+        from t_aliexpress_order_child
+        where
+        pl_process_status !=1
+        and
+        sku_code in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=";">
+            #{item.skuCode}
+        </foreach>
+    </select>
+
+    <update id="handUntieSku"  parameterType="java.util.List">
+        update   t_aliexpress_order_child set pl_sku_code=null where sku_code in
+        <foreach collection="skus" item="item" index="index" open="(" close=")" separator=",">
+           #{item,jdbcType=VARCHAR}
+        </foreach>
+    </update>
+
+    <select id="queryBatchAliexpressDetailByOrderItemId" parameterType="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_aliexpress_order_child
+        where order_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_aliexpress_order_child
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getOrderChildListByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_aliexpress_order_child
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+</mapper>

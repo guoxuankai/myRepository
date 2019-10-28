@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishListingVariantSkusMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishListingVariantSkus">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="listing_id" jdbcType="BIGINT" property="listingId" />
+        <result column="variant_id" jdbcType="BIGINT" property="variantId" />
+        <result column="pl_sku" jdbcType="VARCHAR" property="plSku" />
+        <result column="pl_sku_number" jdbcType="INTEGER" property="plSkuNumber" />
+        <result column="pl_sku_name" jdbcType="VARCHAR" property="plSkuName" />
+        <result column="pl_sku_attribute" jdbcType="VARCHAR" property="plSkuAttribute" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, variant_id, pl_sku, pl_sku_number, pl_sku_name, pl_sku_attribute
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_variant_skus
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from ebay_publish_listing_variant_skus
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingVariantSkus">
+        insert into ebay_publish_listing_variant_skus (id, listing_id, variant_id, 
+            pl_sku, pl_sku_number, pl_sku_name, 
+            pl_sku_attribute)
+        values (#{id,jdbcType=BIGINT}, #{listingId,jdbcType=BIGINT}, #{variantId,jdbcType=BIGINT}, 
+            #{plSku,jdbcType=VARCHAR}, #{plSkuNumber,jdbcType=INTEGER}, #{plSkuName,jdbcType=VARCHAR}, 
+            #{plSkuAttribute,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingVariantSkus">
+        insert into ebay_publish_listing_variant_skus
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="variantId != null">
+                variant_id,
+            </if>
+            <if test="plSku != null">
+                pl_sku,
+            </if>
+            <if test="plSkuNumber != null">
+                pl_sku_number,
+            </if>
+            <if test="plSkuName != null">
+                pl_sku_name,
+            </if>
+            <if test="plSkuAttribute != null">
+                pl_sku_attribute,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="variantId != null">
+                #{variantId,jdbcType=BIGINT},
+            </if>
+            <if test="plSku != null">
+                #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="plSkuNumber != null">
+                #{plSkuNumber,jdbcType=INTEGER},
+            </if>
+            <if test="plSkuName != null">
+                #{plSkuName,jdbcType=VARCHAR},
+            </if>
+            <if test="plSkuAttribute != null">
+                #{plSkuAttribute,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingVariantSkus">
+        update ebay_publish_listing_variant_skus
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="variantId != null">
+                variant_id = #{variantId,jdbcType=BIGINT},
+            </if>
+            <if test="plSku != null">
+                pl_sku = #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="plSkuNumber != null">
+                pl_sku_number = #{plSkuNumber,jdbcType=INTEGER},
+            </if>
+            <if test="plSkuName != null">
+                pl_sku_name = #{plSkuName,jdbcType=VARCHAR},
+            </if>
+            <if test="plSkuAttribute != null">
+                pl_sku_attribute = #{plSkuAttribute,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingVariantSkus">
+        update ebay_publish_listing_variant_skus
+        set listing_id = #{listingId,jdbcType=BIGINT},
+            variant_id = #{variantId,jdbcType=BIGINT},
+            pl_sku = #{plSku,jdbcType=VARCHAR},
+            pl_sku_number = #{plSkuNumber,jdbcType=INTEGER},
+            pl_sku_name = #{plSkuName,jdbcType=VARCHAR},
+            pl_sku_attribute = #{plSkuAttribute,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingVariantSkus" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_variant_skus
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="listingId != null and listingId != ''">
+                 and listing_id = #{listingId,jdbcType=BIGINT}
+            </if>
+            <if test="variantId != null and variantId != ''">
+                 and variant_id = #{variantId,jdbcType=BIGINT}
+            </if>
+            <if test="plSku != null and plSku != ''">
+                 and pl_sku = #{plSku,jdbcType=VARCHAR}
+            </if>
+            <if test="plSkuNumber != null and plSkuNumber != ''">
+                 and pl_sku_number = #{plSkuNumber,jdbcType=INTEGER}
+            </if>
+            <if test="plSkuName != null and plSkuName != ''">
+                 and pl_sku_name = #{plSkuName,jdbcType=VARCHAR}
+            </if>
+            <if test="plSkuAttribute != null and plSkuAttribute != ''">
+                 and pl_sku_attribute = #{plSkuAttribute,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <delete id="delectVariantSkus" parameterType="java.lang.Long">
+        delete from ebay_publish_listing_variant_skus
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </delete>
+
+
+    <select id="getVariantSkusByListingId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_variant_skus
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getVariantSkusByListingIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_variant_skus
+        where listing_id in
+        <foreach collection="listingIds" item="listingId" open="(" close=")" separator=",">
+            #{listingId,jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+</mapper>

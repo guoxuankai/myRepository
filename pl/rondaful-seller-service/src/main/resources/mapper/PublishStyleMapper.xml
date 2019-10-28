@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.PublishStyleMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.PublishStyle">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="style_type_id" jdbcType="BIGINT" property="styleTypeId" />
+        <result column="style_name" jdbcType="VARCHAR" property="styleName" />
+        <result column="apply_account" jdbcType="VARCHAR" property="applyAccount" />
+        <result column="apply_account_name" jdbcType="VARCHAR" property="applyAccountName" />
+        <result column="default_is" jdbcType="BIT" property="defaultIs" />
+        <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+        <result column="pl_account" jdbcType="VARCHAR" property="plAccount" />
+        <result column="create_id" jdbcType="BIGINT" property="createId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="style_type_name" jdbcType="INTEGER" property="styleTypeName" />
+
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.seller.entity.PublishStyle">
+        <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, style_type_id, style_name, apply_account, apply_account_name, default_is, img_url, 
+        pl_account, create_id, create_time, update_time, status
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        content
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from publish_style
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from publish_style
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.PublishStyle">
+        insert into publish_style (id, style_type_id, style_name, 
+            apply_account, apply_account_name, default_is, 
+            img_url, pl_account, create_id, 
+            create_time, update_time, status, 
+            content)
+        values (#{id,jdbcType=BIGINT}, #{styleTypeId,jdbcType=BIGINT}, #{styleName,jdbcType=VARCHAR}, 
+            #{applyAccount,jdbcType=VARCHAR}, #{applyAccountName,jdbcType=VARCHAR}, #{defaultIs,jdbcType=BIT}, 
+            #{imgUrl,jdbcType=VARCHAR}, #{plAccount,jdbcType=VARCHAR}, #{createId,jdbcType=BIGINT}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+            #{content,jdbcType=LONGVARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.PublishStyle">
+        insert into publish_style
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="styleTypeId != null">
+                style_type_id,
+            </if>
+            <if test="styleName != null">
+                style_name,
+            </if>
+            <if test="applyAccount != null">
+                apply_account,
+            </if>
+            <if test="applyAccountName != null">
+                apply_account_name,
+            </if>
+            <if test="defaultIs != null">
+                default_is,
+            </if>
+            <if test="imgUrl != null">
+                img_url,
+            </if>
+            <if test="plAccount != null">
+                pl_account,
+            </if>
+            <if test="createId != null">
+                create_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="styleTypeId != null">
+                #{styleTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="styleName != null">
+                #{styleName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyAccount != null">
+                #{applyAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="applyAccountName != null">
+                #{applyAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="defaultIs != null">
+                #{defaultIs,jdbcType=BIT},
+            </if>
+            <if test="imgUrl != null">
+                #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="plAccount != null">
+                #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="createId != null">
+                #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.PublishStyle">
+        update publish_style
+        <set>
+            <if test="styleTypeId != null">
+                style_type_id = #{styleTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="styleName != null">
+                style_name = #{styleName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyAccount != null">
+                apply_account = #{applyAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="applyAccountName != null">
+                apply_account_name = #{applyAccountName,jdbcType=VARCHAR},
+            </if>
+            <if test="defaultIs != null">
+                default_is = #{defaultIs,jdbcType=BIT},
+            </if>
+            <if test="imgUrl != null">
+                img_url = #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="plAccount != null">
+                pl_account = #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="createId != null">
+                create_id = #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.seller.entity.PublishStyle">
+        update publish_style
+        set style_type_id = #{styleTypeId,jdbcType=BIGINT},
+            style_name = #{styleName,jdbcType=VARCHAR},
+            apply_account = #{applyAccount,jdbcType=VARCHAR},
+            apply_account_name = #{applyAccountName,jdbcType=VARCHAR},
+            default_is = #{defaultIs,jdbcType=BIT},
+            img_url = #{imgUrl,jdbcType=VARCHAR},
+            pl_account = #{plAccount,jdbcType=VARCHAR},
+            create_id = #{createId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            status = #{status,jdbcType=INTEGER},
+            content = #{content,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.PublishStyle">
+        update publish_style
+        set style_type_id = #{styleTypeId,jdbcType=BIGINT},
+            style_name = #{styleName,jdbcType=VARCHAR},
+            apply_account = #{applyAccount,jdbcType=VARCHAR},
+            apply_account_name = #{applyAccountName,jdbcType=VARCHAR},
+            default_is = #{defaultIs,jdbcType=BIT},
+            img_url = #{imgUrl,jdbcType=VARCHAR},
+            pl_account = #{plAccount,jdbcType=VARCHAR},
+            create_id = #{createId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.PublishStyle" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from publish_style
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="styleTypeId != null and styleTypeId != ''">
+                 and style_type_id = #{styleTypeId,jdbcType=BIGINT}
+            </if>
+            <if test="styleName != null and styleName != ''">
+                 and style_name = #{styleName,jdbcType=VARCHAR}
+            </if>
+            <if test="applyAccount != null and applyAccount != ''">
+                 and apply_account = #{applyAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="applyAccountName != null and applyAccountName != ''">
+                 and apply_account_name = #{applyAccountName,jdbcType=VARCHAR}
+            </if>
+            <if test="defaultIs != null and defaultIs != ''">
+                 and default_is = #{defaultIs,jdbcType=BIT}
+            </if>
+            <if test="imgUrl != null and imgUrl != ''">
+                 and img_url = #{imgUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="plAccount != null and plAccount != ''">
+                 and pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="createId != null and createId != ''">
+                 and create_id = #{createId,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="content != null and content != ''">
+                 and content = #{content,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="findPublishStylePage" parameterType="com.rondaful.cloud.seller.vo.PublishStyleSearchVO" resultMap="BaseResultMap">
+        select
+        ps.id, ps.style_type_id, ps.style_name, ps.apply_account, ps.apply_account_name, ps.default_is, ps.img_url,
+        ps.pl_account, ps.create_id, ps.create_time, ps.update_time, ps.status,pst.style_type_name
+        from publish_style ps
+        left join publish_style_type pst on pst.id=ps.style_type_id
+        <trim prefix="where" prefixOverrides="and">
+            and ps.status = 0
+            <if test="createId != null">
+                and ps.create_id = #{createId,jdbcType=BIGINT}
+            </if>
+            <if test="styleTypeId != null">
+                and ps.style_type_id = #{styleTypeId,jdbcType=BIGINT}
+            </if>
+
+
+            <if test="defaultIs != null">
+                and ps.default_is = #{defaultIs,jdbcType=BIT}
+            </if>
+
+            <if test="plAccount != null and plAccount != ''">
+                and ps.pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(cStartTime )">
+                and ps.create_time >= DATE_FORMAT( #{cStartTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(cEndTime )">
+                and ps.create_time &lt;= DATE_FORMAT( #{cEndTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(uStartTime )">
+                and ps.update_time >= DATE_FORMAT( #{uStartTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(uEndTime )">
+                and ps.update_time &lt;= DATE_FORMAT( #{uEndTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="applyAccount != null and applyAccount != ''">
+                and (ps.apply_account='all' or CONCAT(',',ps.apply_account,',') like CONCAT('%,',#{applyAccount,jdbcType=VARCHAR},',%'))
+            </if>
+            <if test="styleName != null and styleName != ''">
+                and ps.style_name like CONCAT('%',#{styleName,jdbcType=VARCHAR},'%')
+            </if>
+
+        </trim>
+        order by create_time desc
+    </select>
+
+    <select id="checkStyleName" resultType="java.lang.Integer">
+        select count(1) from publish_style where status=0
+        <if test="id != null and id != ''">
+            and id != #{id,jdbcType=BIGINT}
+        </if>
+        and create_id = #{createId,jdbcType=BIGINT}
+        and style_name = #{styleName,jdbcType=VARCHAR}
+    </select>
+    <select id="checkStylePlCategory" resultType="java.lang.Integer">
+        select count(1) from publish_style where status=0
+        <if test="id != null and id != ''">
+            and id != #{id,jdbcType=BIGINT}
+        </if>
+        and create_id = #{createId,jdbcType=BIGINT}
+        and apply_account = #{category,jdbcType=VARCHAR}
+    </select>
+    <select id="checkPublishStyle" resultType="java.lang.Integer">
+        select count(1) from publish_style where status=0
+        and style_type_id = #{styleTypeId,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="findPublishStyle" resultMap="ResultMapWithBLOBs">
+        select
+        ps.id, ps.style_type_id, ps.style_name, ps.apply_account, ps.apply_account_name, ps.default_is, ps.img_url,
+        ps.pl_account, ps.create_id, ps.create_time, ps.update_time, ps.status, ps.content
+        from publish_style ps
+        left join publish_style_type pst on pst.id=ps.style_type_id
+        <trim prefix="where" prefixOverrides="and">
+            and ps.status = 0
+            and platform = #{platform,jdbcType=INTEGER}
+            <if test="createId != null and createId != ''">
+                and ps.create_id = #{createId,jdbcType=BIGINT}
+            </if>
+            <if test="applyAccount != null and applyAccount != ''">
+                and (ps.apply_account='all' or ps.apply_account= #{applyAccount,jdbcType=VARCHAR})
+            </if>
+        </trim>
+    </select>
+
+</mapper>

@@ -1,0 +1,94 @@
+package com.rondaful.cloud.seller.common.task;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.rondaful.cloud.seller.entity.amazon.AmazonRequestProduct;
+
+public class AmaznoExecutors {
+	// 20个线程，最大40个。
+	ExecutorService executor = Executors.newFixedThreadPool(20);
+	
+	private static AmaznoExecutors amaznoExecutors;
+	
+	 public static AmaznoExecutors getInstance()
+	 {
+		 if (amaznoExecutors == null)
+		 {
+			 synchronized(AmaznoExecutors.class)
+			 {
+				 if (amaznoExecutors == null)
+					 amaznoExecutors = new AmaznoExecutors(); 
+			 }
+		 }
+		 return amaznoExecutors;
+	 }
+	
+	/**
+	 * 增加任务
+	 * @param command
+	 */
+	public void addTask(Runnable command)
+	{
+		executor.execute(command);
+	}
+	
+	public <T> Future<T>  addTask(Callable command)
+	{
+		return executor.submit(command);
+	}
+	public void shutdown()
+	{
+		executor.shutdown();
+	}
+	
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		
+		ExecutorService executor = Executors.newFixedThreadPool(5);
+		/*executor.submit(new Callable<String>() {
+			@Override
+			public String call() throws Exception {
+				Thread.currentThread().sleep(2000L);
+				System.out.println(Thread.currentThread().getName());
+				return Thread.currentThread().getName();
+			}
+		});*/
+		executor.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					Thread.currentThread().sleep(5000L);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println(Thread.currentThread().getName());
+			}
+		});
+		
+		/*Future<String> futureResult =  executor.submit(new Callable<String>() {
+			@Override
+			public String call() throws Exception {
+				Thread.currentThread().sleep(5000L);
+				System.out.println(Thread.currentThread().getName());
+				return Thread.currentThread().getName();
+			}
+		});
+		if(StringUtils.isNotEmpty(futureResult.get()))
+		{
+			System.out.println("222222222");
+		}
+		*/
+		
+		
+		
+		executor.shutdown();
+	}
+	
+}

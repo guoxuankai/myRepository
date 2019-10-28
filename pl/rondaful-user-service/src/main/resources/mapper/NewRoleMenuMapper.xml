@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.NewRoleMenuMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.NewRoleMenu">
+        <result column="role_id" jdbcType="INTEGER" property="roleId" />
+        <result column="menu_id" jdbcType="INTEGER" property="menuId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        role_id, menu_id, is_update, is_insert, is_delete, is_select, is_export, is_audit
+    </sql>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.NewRoleMenu">
+        insert into t_role_menu (role_id, menu_id)
+        values (#{roleId,jdbcType=INTEGER}, #{menuId,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.NewRoleMenu">
+        insert into t_role_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="menuId != null">
+                menu_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="menuId != null">
+                #{menuId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_role_menu (role_id, menu_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleId,jdbcType=INTEGER}, #{item.menuId,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+        delete from t_role_menu
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getMenu" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        menu_id
+        from t_role_menu
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </select>
+    <select id="getsMenu"  resultType="java.lang.Integer">
+        select
+        menu_id
+        from t_role_menu
+        where role_id in
+        <foreach collection="roleIds" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </select>
+
+    <select id="getsByHref" resultType="java.lang.Integer">
+        SELECT role_id FROM t_role_menu WHERE menu_id IN (
+          SELECT id FROM sys_menu WHERE platform_type= #{platformType,jdbcType= INTEGER} AND href LIKE CONCAT('%', #{href,jdbcType= VARCHAR}, '%')
+        )
+        GROUP BY role_id
+    </select>
+</mapper>

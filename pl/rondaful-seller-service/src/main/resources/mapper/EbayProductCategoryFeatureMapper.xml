@@ -1,0 +1,1157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayProductCategoryFeatureMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayProductCategoryFeature">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="category_id" jdbcType="VARCHAR" property="categoryId" />
+        <result column="ad_format_enabled" jdbcType="VARCHAR" property="adFormatEnabled" />
+        <result column="ad_ditional_Compatibility_enabled" jdbcType="BIT" property="adDitionalCompatibilityEnabled" />
+        <result column="best_offer_auto_accept_enabled" jdbcType="BIT" property="bestOfferAutoAcceptEnabled" />
+        <result column="best_offer_auto_decline_enabled" jdbcType="BIT" property="bestOfferAutoDeclineEnabled" />
+        <result column="best_offer_counter_enabled" jdbcType="BIT" property="bestOfferCounterEnabled" />
+        <result column="best_offer_enabled" jdbcType="BIT" property="bestOfferEnabled" />
+        <result column="brand_mpn_identifier_enabled" jdbcType="BIT" property="brandMpnIdentifierEnabled" />
+        <result column="buyer_guarantee_enabled" jdbcType="BIT" property="buyerGuaranteeEnabled" />
+        <result column="condition_enabled" jdbcType="VARCHAR" property="conditionEnabled" />
+        <result column="condition_values" jdbcType="VARCHAR" property="conditionValues" />
+        <result column="cross_border_trade_australia_enabled" jdbcType="BIT" property="crossBorderTradeAustraliaEnabled" />
+        <result column="cross_border_trade_gb_enabled" jdbcType="BIT" property="crossBorderTradeGbEnabled" />
+        <result column="cross_border_trade_north_america_enabled" jdbcType="BIT" property="crossBorderTradeNorthAmericaEnabled" />
+        <result column="deposit_supported" jdbcType="BIT" property="depositSupported" />
+        <result column="digital_good_delivery_enabled" jdbcType="BIT" property="digitalGoodDeliveryEnabled" />
+        <result column="ean_enabled" jdbcType="VARCHAR" property="eanEnabled" />
+        <result column="free_galler_plus_enabled" jdbcType="BIT" property="freeGallerPlusEnabled" />
+        <result column="free_picture_pack_enabled" jdbcType="BIT" property="freePicturePackEnabled" />
+        <result column="gallery_featured_durations" jdbcType="VARCHAR" property="galleryFeaturedDurations" />
+        <result column="global_shipping_enabled" jdbcType="BIT" property="globalShippingEnabled" />
+        <result column="group1_max_flat_shipping_cost" jdbcType="DECIMAL" property="group1MaxFlatShippingCost" />
+        <result column="group2_max_flat_shipping_cost" jdbcType="DECIMAL" property="group2MaxFlatShippingCost" />
+        <result column="group3_max_flat_shipping_cost" jdbcType="DECIMAL" property="group3MaxFlatShippingCost" />
+        <result column="handling_time_enabled" jdbcType="BIT" property="handlingTimeEnabled" />
+        <result column="home_page_featured_enabled" jdbcType="BIT" property="homePageFeaturedEnabled" />
+        <result column="in_escrow_workflow_timeline" jdbcType="VARCHAR" property="inEscrowWorkflowTimeline" />
+        <result column="isbn_enabled" jdbcType="VARCHAR" property="isbnEnabled" />
+        <result column="item_compatibility_enabled" jdbcType="VARCHAR" property="itemCompatibilityEnabled" />
+        <result column="item_compatibility_type" jdbcType="VARCHAR" property="itemCompatibilityType" />
+        <result column="item_specifics_enabled" jdbcType="VARCHAR" property="itemSpecificsEnabled" />
+        <result column="listing_duration" jdbcType="VARCHAR" property="listingDuration" />
+        <result column="max_flat_shipping_cost" jdbcType="DECIMAL" property="maxFlatShippingCost" />
+        <result column="max_granular_fitment_count" jdbcType="VARCHAR" property="maxGranularFitmentCount" />
+        <result column="min_item_compatibility" jdbcType="INTEGER" property="minItemCompatibility" />
+        <result column="max_item_compatibility" jdbcType="INTEGER" property="maxItemCompatibility" />
+        <result column="minimum_reserve_price" jdbcType="DECIMAL" property="minimumReservePrice" />
+        <result column="non_subscription" jdbcType="VARCHAR" property="nonSubscription" />
+        <result column="paisa_pay_full_escrow_enabled" jdbcType="BIT" property="paisaPayFullEscrowEnabled" />
+        <result column="paypal_buyer_protection_enabled" jdbcType="BIT" property="paypalBuyerProtectionEnabled" />
+        <result column="paypal_required" jdbcType="BIT" property="paypalRequired" />
+        <result column="payment_methoed" jdbcType="VARCHAR" property="paymentMethoed" />
+        <result column="payment_profile_category_group" jdbcType="VARCHAR" property="paymentProfileCategoryGroup" />
+        <result column="pickup_drop_off_enabled" jdbcType="BIT" property="pickupDropOffEnabled" />
+        <result column="premium_subscription" jdbcType="VARCHAR" property="premiumSubscription" />
+        <result column="pro_pack_enabled" jdbcType="BIT" property="proPackEnabled" />
+        <result column="pro_pack_plus_enabled" jdbcType="BIT" property="proPackPlusEnabled" />
+        <result column="product_creation_enabled" jdbcType="VARCHAR" property="productCreationEnabled" />
+        <result column="regular_subscription" jdbcType="VARCHAR" property="regularSubscription" />
+        <result column="return_policy_enabled" jdbcType="BIT" property="returnPolicyEnabled" />
+        <result column="return_policy_profile_category_group" jdbcType="VARCHAR" property="returnPolicyProfileCategoryGroup" />
+        <result column="revise_price_allowed" jdbcType="BIT" property="revisePriceAllowed" />
+        <result column="revise_quantity_allowed" jdbcType="BIT" property="reviseQuantityAllowed" />
+        <result column="safe_payment_required" jdbcType="BIT" property="safePaymentRequired" />
+        <result column="seller_contact_details_enabled" jdbcType="BIT" property="sellerContactDetailsEnabled" />
+        <result column="seller_provided_title_supported" jdbcType="BIT" property="sellerProvidedTitleSupported" />
+        <result column="shipping_profile_category_group" jdbcType="VARCHAR" property="shippingProfileCategoryGroup" />
+        <result column="shipping_terms_required" jdbcType="BIT" property="shippingTermsRequired" />
+        <result column="site" jdbcType="VARCHAR" property="site" />
+        <result column="skype_me_non_transactional_enabled" jdbcType="BIT" property="skypeMeNonTransactionalEnabled" />
+        <result column="skype_me_transactional_enabled" jdbcType="BIT" property="skypeMeTransactionalEnabled" />
+        <result column="speciality_subscription" jdbcType="VARCHAR" property="specialitySubscription" />
+        <result column="store_owner_extended_listing_durations" jdbcType="VARCHAR" property="storeOwnerExtendedListingDurations" />
+        <result column="transaction_confirmation_request_enabled" jdbcType="BIT" property="transactionConfirmationRequestEnabled" />
+        <result column="upc_enabled" jdbcType="VARCHAR" property="upcEnabled" />
+        <result column="user_consent_required" jdbcType="BIT" property="userConsentRequired" />
+        <result column="value_category" jdbcType="BIT" property="valueCategory" />
+        <result column="value_pack_enabled" jdbcType="BIT" property="valuePackEnabled" />
+        <result column="variations_enabled" jdbcType="BIT" property="variationsEnabled" />
+        <result column="version" jdbcType="VARCHAR" property="version" />
+        <result column="vin_supported" jdbcType="BIT" property="vinSupported" />
+        <result column="vrm_supported" jdbcType="BIT" property="vrmSupported" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, category_id, ad_format_enabled, ad_ditional_Compatibility_enabled, best_offer_auto_accept_enabled, 
+        best_offer_auto_decline_enabled, best_offer_counter_enabled, best_offer_enabled, 
+        brand_mpn_identifier_enabled, buyer_guarantee_enabled, condition_enabled, condition_values, 
+        cross_border_trade_australia_enabled, cross_border_trade_gb_enabled, cross_border_trade_north_america_enabled, 
+        deposit_supported, digital_good_delivery_enabled, ean_enabled, free_galler_plus_enabled, 
+        free_picture_pack_enabled, gallery_featured_durations, global_shipping_enabled, group1_max_flat_shipping_cost, 
+        group2_max_flat_shipping_cost, group3_max_flat_shipping_cost, handling_time_enabled, 
+        home_page_featured_enabled, in_escrow_workflow_timeline, isbn_enabled, item_compatibility_enabled, 
+        item_compatibility_type, item_specifics_enabled, listing_duration, max_flat_shipping_cost, 
+        max_granular_fitment_count, min_item_compatibility, max_item_compatibility, minimum_reserve_price, 
+        non_subscription, paisa_pay_full_escrow_enabled, paypal_buyer_protection_enabled, 
+        paypal_required, payment_methoed, payment_profile_category_group, pickup_drop_off_enabled, 
+        premium_subscription, pro_pack_enabled, pro_pack_plus_enabled, product_creation_enabled, 
+        regular_subscription, return_policy_enabled, return_policy_profile_category_group, 
+        revise_price_allowed, revise_quantity_allowed, safe_payment_required, seller_contact_details_enabled, 
+        seller_provided_title_supported, shipping_profile_category_group, shipping_terms_required, 
+        site, skype_me_non_transactional_enabled, skype_me_transactional_enabled, speciality_subscription, 
+        store_owner_extended_listing_durations, transaction_confirmation_request_enabled, 
+        upc_enabled, user_consent_required, value_category, value_pack_enabled, variations_enabled, 
+        version, vin_supported, vrm_supported
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_product_category_feature
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_product_category_feature
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayProductCategoryFeature">
+        insert into ebay_product_category_feature (id, category_id, ad_format_enabled, 
+            ad_ditional_Compatibility_enabled, best_offer_auto_accept_enabled, 
+            best_offer_auto_decline_enabled, best_offer_counter_enabled, 
+            best_offer_enabled, brand_mpn_identifier_enabled, 
+            buyer_guarantee_enabled, condition_enabled, 
+            condition_values, cross_border_trade_australia_enabled, 
+            cross_border_trade_gb_enabled, cross_border_trade_north_america_enabled, 
+            deposit_supported, digital_good_delivery_enabled, 
+            ean_enabled, free_galler_plus_enabled, free_picture_pack_enabled, 
+            gallery_featured_durations, global_shipping_enabled, 
+            group1_max_flat_shipping_cost, group2_max_flat_shipping_cost, 
+            group3_max_flat_shipping_cost, handling_time_enabled, 
+            home_page_featured_enabled, in_escrow_workflow_timeline, 
+            isbn_enabled, item_compatibility_enabled, 
+            item_compatibility_type, item_specifics_enabled, 
+            listing_duration, max_flat_shipping_cost, 
+            max_granular_fitment_count, min_item_compatibility, 
+            max_item_compatibility, minimum_reserve_price, 
+            non_subscription, paisa_pay_full_escrow_enabled, 
+            paypal_buyer_protection_enabled, paypal_required, 
+            payment_methoed, payment_profile_category_group, 
+            pickup_drop_off_enabled, premium_subscription, 
+            pro_pack_enabled, pro_pack_plus_enabled, product_creation_enabled, 
+            regular_subscription, return_policy_enabled, 
+            return_policy_profile_category_group, revise_price_allowed, 
+            revise_quantity_allowed, safe_payment_required, seller_contact_details_enabled, 
+            seller_provided_title_supported, shipping_profile_category_group, 
+            shipping_terms_required, site, skype_me_non_transactional_enabled, 
+            skype_me_transactional_enabled, speciality_subscription, 
+            store_owner_extended_listing_durations, transaction_confirmation_request_enabled, 
+            upc_enabled, user_consent_required, value_category, 
+            value_pack_enabled, variations_enabled, version, 
+            vin_supported, vrm_supported)
+        values (#{id,jdbcType=INTEGER}, #{categoryId,jdbcType=VARCHAR}, #{adFormatEnabled,jdbcType=VARCHAR}, 
+            #{adDitionalCompatibilityEnabled,jdbcType=BIT}, #{bestOfferAutoAcceptEnabled,jdbcType=BIT}, 
+            #{bestOfferAutoDeclineEnabled,jdbcType=BIT}, #{bestOfferCounterEnabled,jdbcType=BIT}, 
+            #{bestOfferEnabled,jdbcType=BIT}, #{brandMpnIdentifierEnabled,jdbcType=BIT}, 
+            #{buyerGuaranteeEnabled,jdbcType=BIT}, #{conditionEnabled,jdbcType=VARCHAR}, 
+            #{conditionValues,jdbcType=VARCHAR}, #{crossBorderTradeAustraliaEnabled,jdbcType=BIT}, 
+            #{crossBorderTradeGbEnabled,jdbcType=BIT}, #{crossBorderTradeNorthAmericaEnabled,jdbcType=BIT}, 
+            #{depositSupported,jdbcType=BIT}, #{digitalGoodDeliveryEnabled,jdbcType=BIT}, 
+            #{eanEnabled,jdbcType=VARCHAR}, #{freeGallerPlusEnabled,jdbcType=BIT}, #{freePicturePackEnabled,jdbcType=BIT}, 
+            #{galleryFeaturedDurations,jdbcType=VARCHAR}, #{globalShippingEnabled,jdbcType=BIT}, 
+            #{group1MaxFlatShippingCost,jdbcType=DECIMAL}, #{group2MaxFlatShippingCost,jdbcType=DECIMAL}, 
+            #{group3MaxFlatShippingCost,jdbcType=DECIMAL}, #{handlingTimeEnabled,jdbcType=BIT}, 
+            #{homePageFeaturedEnabled,jdbcType=BIT}, #{inEscrowWorkflowTimeline,jdbcType=VARCHAR}, 
+            #{isbnEnabled,jdbcType=VARCHAR}, #{itemCompatibilityEnabled,jdbcType=VARCHAR}, 
+            #{itemCompatibilityType,jdbcType=VARCHAR}, #{itemSpecificsEnabled,jdbcType=VARCHAR}, 
+            #{listingDuration,jdbcType=VARCHAR}, #{maxFlatShippingCost,jdbcType=DECIMAL}, 
+            #{maxGranularFitmentCount,jdbcType=VARCHAR}, #{minItemCompatibility,jdbcType=INTEGER}, 
+            #{maxItemCompatibility,jdbcType=INTEGER}, #{minimumReservePrice,jdbcType=DECIMAL}, 
+            #{nonSubscription,jdbcType=VARCHAR}, #{paisaPayFullEscrowEnabled,jdbcType=BIT}, 
+            #{paypalBuyerProtectionEnabled,jdbcType=BIT}, #{paypalRequired,jdbcType=BIT}, 
+            #{paymentMethoed,jdbcType=VARCHAR}, #{paymentProfileCategoryGroup,jdbcType=VARCHAR}, 
+            #{pickupDropOffEnabled,jdbcType=BIT}, #{premiumSubscription,jdbcType=VARCHAR}, 
+            #{proPackEnabled,jdbcType=BIT}, #{proPackPlusEnabled,jdbcType=BIT}, #{productCreationEnabled,jdbcType=VARCHAR}, 
+            #{regularSubscription,jdbcType=VARCHAR}, #{returnPolicyEnabled,jdbcType=BIT}, 
+            #{returnPolicyProfileCategoryGroup,jdbcType=VARCHAR}, #{revisePriceAllowed,jdbcType=BIT}, 
+            #{reviseQuantityAllowed,jdbcType=BIT}, #{safePaymentRequired,jdbcType=BIT}, #{sellerContactDetailsEnabled,jdbcType=BIT}, 
+            #{sellerProvidedTitleSupported,jdbcType=BIT}, #{shippingProfileCategoryGroup,jdbcType=VARCHAR}, 
+            #{shippingTermsRequired,jdbcType=BIT}, #{site,jdbcType=VARCHAR}, #{skypeMeNonTransactionalEnabled,jdbcType=BIT}, 
+            #{skypeMeTransactionalEnabled,jdbcType=BIT}, #{specialitySubscription,jdbcType=VARCHAR}, 
+            #{storeOwnerExtendedListingDurations,jdbcType=VARCHAR}, #{transactionConfirmationRequestEnabled,jdbcType=BIT}, 
+            #{upcEnabled,jdbcType=VARCHAR}, #{userConsentRequired,jdbcType=BIT}, #{valueCategory,jdbcType=BIT}, 
+            #{valuePackEnabled,jdbcType=BIT}, #{variationsEnabled,jdbcType=BIT}, #{version,jdbcType=VARCHAR}, 
+            #{vinSupported,jdbcType=BIT}, #{vrmSupported,jdbcType=BIT})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayProductCategoryFeature">
+        insert into ebay_product_category_feature
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="adFormatEnabled != null">
+                ad_format_enabled,
+            </if>
+            <if test="adDitionalCompatibilityEnabled != null">
+                ad_ditional_Compatibility_enabled,
+            </if>
+            <if test="bestOfferAutoAcceptEnabled != null">
+                best_offer_auto_accept_enabled,
+            </if>
+            <if test="bestOfferAutoDeclineEnabled != null">
+                best_offer_auto_decline_enabled,
+            </if>
+            <if test="bestOfferCounterEnabled != null">
+                best_offer_counter_enabled,
+            </if>
+            <if test="bestOfferEnabled != null">
+                best_offer_enabled,
+            </if>
+            <if test="brandMpnIdentifierEnabled != null">
+                brand_mpn_identifier_enabled,
+            </if>
+            <if test="buyerGuaranteeEnabled != null">
+                buyer_guarantee_enabled,
+            </if>
+            <if test="conditionEnabled != null">
+                condition_enabled,
+            </if>
+            <if test="conditionValues != null">
+                condition_values,
+            </if>
+            <if test="crossBorderTradeAustraliaEnabled != null">
+                cross_border_trade_australia_enabled,
+            </if>
+            <if test="crossBorderTradeGbEnabled != null">
+                cross_border_trade_gb_enabled,
+            </if>
+            <if test="crossBorderTradeNorthAmericaEnabled != null">
+                cross_border_trade_north_america_enabled,
+            </if>
+            <if test="depositSupported != null">
+                deposit_supported,
+            </if>
+            <if test="digitalGoodDeliveryEnabled != null">
+                digital_good_delivery_enabled,
+            </if>
+            <if test="eanEnabled != null">
+                ean_enabled,
+            </if>
+            <if test="freeGallerPlusEnabled != null">
+                free_galler_plus_enabled,
+            </if>
+            <if test="freePicturePackEnabled != null">
+                free_picture_pack_enabled,
+            </if>
+            <if test="galleryFeaturedDurations != null">
+                gallery_featured_durations,
+            </if>
+            <if test="globalShippingEnabled != null">
+                global_shipping_enabled,
+            </if>
+            <if test="group1MaxFlatShippingCost != null">
+                group1_max_flat_shipping_cost,
+            </if>
+            <if test="group2MaxFlatShippingCost != null">
+                group2_max_flat_shipping_cost,
+            </if>
+            <if test="group3MaxFlatShippingCost != null">
+                group3_max_flat_shipping_cost,
+            </if>
+            <if test="handlingTimeEnabled != null">
+                handling_time_enabled,
+            </if>
+            <if test="homePageFeaturedEnabled != null">
+                home_page_featured_enabled,
+            </if>
+            <if test="inEscrowWorkflowTimeline != null">
+                in_escrow_workflow_timeline,
+            </if>
+            <if test="isbnEnabled != null">
+                isbn_enabled,
+            </if>
+            <if test="itemCompatibilityEnabled != null">
+                item_compatibility_enabled,
+            </if>
+            <if test="itemCompatibilityType != null">
+                item_compatibility_type,
+            </if>
+            <if test="itemSpecificsEnabled != null">
+                item_specifics_enabled,
+            </if>
+            <if test="listingDuration != null">
+                listing_duration,
+            </if>
+            <if test="maxFlatShippingCost != null">
+                max_flat_shipping_cost,
+            </if>
+            <if test="maxGranularFitmentCount != null">
+                max_granular_fitment_count,
+            </if>
+            <if test="minItemCompatibility != null">
+                min_item_compatibility,
+            </if>
+            <if test="maxItemCompatibility != null">
+                max_item_compatibility,
+            </if>
+            <if test="minimumReservePrice != null">
+                minimum_reserve_price,
+            </if>
+            <if test="nonSubscription != null">
+                non_subscription,
+            </if>
+            <if test="paisaPayFullEscrowEnabled != null">
+                paisa_pay_full_escrow_enabled,
+            </if>
+            <if test="paypalBuyerProtectionEnabled != null">
+                paypal_buyer_protection_enabled,
+            </if>
+            <if test="paypalRequired != null">
+                paypal_required,
+            </if>
+            <if test="paymentMethoed != null">
+                payment_methoed,
+            </if>
+            <if test="paymentProfileCategoryGroup != null">
+                payment_profile_category_group,
+            </if>
+            <if test="pickupDropOffEnabled != null">
+                pickup_drop_off_enabled,
+            </if>
+            <if test="premiumSubscription != null">
+                premium_subscription,
+            </if>
+            <if test="proPackEnabled != null">
+                pro_pack_enabled,
+            </if>
+            <if test="proPackPlusEnabled != null">
+                pro_pack_plus_enabled,
+            </if>
+            <if test="productCreationEnabled != null">
+                product_creation_enabled,
+            </if>
+            <if test="regularSubscription != null">
+                regular_subscription,
+            </if>
+            <if test="returnPolicyEnabled != null">
+                return_policy_enabled,
+            </if>
+            <if test="returnPolicyProfileCategoryGroup != null">
+                return_policy_profile_category_group,
+            </if>
+            <if test="revisePriceAllowed != null">
+                revise_price_allowed,
+            </if>
+            <if test="reviseQuantityAllowed != null">
+                revise_quantity_allowed,
+            </if>
+            <if test="safePaymentRequired != null">
+                safe_payment_required,
+            </if>
+            <if test="sellerContactDetailsEnabled != null">
+                seller_contact_details_enabled,
+            </if>
+            <if test="sellerProvidedTitleSupported != null">
+                seller_provided_title_supported,
+            </if>
+            <if test="shippingProfileCategoryGroup != null">
+                shipping_profile_category_group,
+            </if>
+            <if test="shippingTermsRequired != null">
+                shipping_terms_required,
+            </if>
+            <if test="site != null">
+                site,
+            </if>
+            <if test="skypeMeNonTransactionalEnabled != null">
+                skype_me_non_transactional_enabled,
+            </if>
+            <if test="skypeMeTransactionalEnabled != null">
+                skype_me_transactional_enabled,
+            </if>
+            <if test="specialitySubscription != null">
+                speciality_subscription,
+            </if>
+            <if test="storeOwnerExtendedListingDurations != null">
+                store_owner_extended_listing_durations,
+            </if>
+            <if test="transactionConfirmationRequestEnabled != null">
+                transaction_confirmation_request_enabled,
+            </if>
+            <if test="upcEnabled != null">
+                upc_enabled,
+            </if>
+            <if test="userConsentRequired != null">
+                user_consent_required,
+            </if>
+            <if test="valueCategory != null">
+                value_category,
+            </if>
+            <if test="valuePackEnabled != null">
+                value_pack_enabled,
+            </if>
+            <if test="variationsEnabled != null">
+                variations_enabled,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="vinSupported != null">
+                vin_supported,
+            </if>
+            <if test="vrmSupported != null">
+                vrm_supported,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="adFormatEnabled != null">
+                #{adFormatEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="adDitionalCompatibilityEnabled != null">
+                #{adDitionalCompatibilityEnabled,jdbcType=BIT},
+            </if>
+            <if test="bestOfferAutoAcceptEnabled != null">
+                #{bestOfferAutoAcceptEnabled,jdbcType=BIT},
+            </if>
+            <if test="bestOfferAutoDeclineEnabled != null">
+                #{bestOfferAutoDeclineEnabled,jdbcType=BIT},
+            </if>
+            <if test="bestOfferCounterEnabled != null">
+                #{bestOfferCounterEnabled,jdbcType=BIT},
+            </if>
+            <if test="bestOfferEnabled != null">
+                #{bestOfferEnabled,jdbcType=BIT},
+            </if>
+            <if test="brandMpnIdentifierEnabled != null">
+                #{brandMpnIdentifierEnabled,jdbcType=BIT},
+            </if>
+            <if test="buyerGuaranteeEnabled != null">
+                #{buyerGuaranteeEnabled,jdbcType=BIT},
+            </if>
+            <if test="conditionEnabled != null">
+                #{conditionEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="conditionValues != null">
+                #{conditionValues,jdbcType=VARCHAR},
+            </if>
+            <if test="crossBorderTradeAustraliaEnabled != null">
+                #{crossBorderTradeAustraliaEnabled,jdbcType=BIT},
+            </if>
+            <if test="crossBorderTradeGbEnabled != null">
+                #{crossBorderTradeGbEnabled,jdbcType=BIT},
+            </if>
+            <if test="crossBorderTradeNorthAmericaEnabled != null">
+                #{crossBorderTradeNorthAmericaEnabled,jdbcType=BIT},
+            </if>
+            <if test="depositSupported != null">
+                #{depositSupported,jdbcType=BIT},
+            </if>
+            <if test="digitalGoodDeliveryEnabled != null">
+                #{digitalGoodDeliveryEnabled,jdbcType=BIT},
+            </if>
+            <if test="eanEnabled != null">
+                #{eanEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="freeGallerPlusEnabled != null">
+                #{freeGallerPlusEnabled,jdbcType=BIT},
+            </if>
+            <if test="freePicturePackEnabled != null">
+                #{freePicturePackEnabled,jdbcType=BIT},
+            </if>
+            <if test="galleryFeaturedDurations != null">
+                #{galleryFeaturedDurations,jdbcType=VARCHAR},
+            </if>
+            <if test="globalShippingEnabled != null">
+                #{globalShippingEnabled,jdbcType=BIT},
+            </if>
+            <if test="group1MaxFlatShippingCost != null">
+                #{group1MaxFlatShippingCost,jdbcType=DECIMAL},
+            </if>
+            <if test="group2MaxFlatShippingCost != null">
+                #{group2MaxFlatShippingCost,jdbcType=DECIMAL},
+            </if>
+            <if test="group3MaxFlatShippingCost != null">
+                #{group3MaxFlatShippingCost,jdbcType=DECIMAL},
+            </if>
+            <if test="handlingTimeEnabled != null">
+                #{handlingTimeEnabled,jdbcType=BIT},
+            </if>
+            <if test="homePageFeaturedEnabled != null">
+                #{homePageFeaturedEnabled,jdbcType=BIT},
+            </if>
+            <if test="inEscrowWorkflowTimeline != null">
+                #{inEscrowWorkflowTimeline,jdbcType=VARCHAR},
+            </if>
+            <if test="isbnEnabled != null">
+                #{isbnEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCompatibilityEnabled != null">
+                #{itemCompatibilityEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCompatibilityType != null">
+                #{itemCompatibilityType,jdbcType=VARCHAR},
+            </if>
+            <if test="itemSpecificsEnabled != null">
+                #{itemSpecificsEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="listingDuration != null">
+                #{listingDuration,jdbcType=VARCHAR},
+            </if>
+            <if test="maxFlatShippingCost != null">
+                #{maxFlatShippingCost,jdbcType=DECIMAL},
+            </if>
+            <if test="maxGranularFitmentCount != null">
+                #{maxGranularFitmentCount,jdbcType=VARCHAR},
+            </if>
+            <if test="minItemCompatibility != null">
+                #{minItemCompatibility,jdbcType=INTEGER},
+            </if>
+            <if test="maxItemCompatibility != null">
+                #{maxItemCompatibility,jdbcType=INTEGER},
+            </if>
+            <if test="minimumReservePrice != null">
+                #{minimumReservePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="nonSubscription != null">
+                #{nonSubscription,jdbcType=VARCHAR},
+            </if>
+            <if test="paisaPayFullEscrowEnabled != null">
+                #{paisaPayFullEscrowEnabled,jdbcType=BIT},
+            </if>
+            <if test="paypalBuyerProtectionEnabled != null">
+                #{paypalBuyerProtectionEnabled,jdbcType=BIT},
+            </if>
+            <if test="paypalRequired != null">
+                #{paypalRequired,jdbcType=BIT},
+            </if>
+            <if test="paymentMethoed != null">
+                #{paymentMethoed,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentProfileCategoryGroup != null">
+                #{paymentProfileCategoryGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="pickupDropOffEnabled != null">
+                #{pickupDropOffEnabled,jdbcType=BIT},
+            </if>
+            <if test="premiumSubscription != null">
+                #{premiumSubscription,jdbcType=VARCHAR},
+            </if>
+            <if test="proPackEnabled != null">
+                #{proPackEnabled,jdbcType=BIT},
+            </if>
+            <if test="proPackPlusEnabled != null">
+                #{proPackPlusEnabled,jdbcType=BIT},
+            </if>
+            <if test="productCreationEnabled != null">
+                #{productCreationEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="regularSubscription != null">
+                #{regularSubscription,jdbcType=VARCHAR},
+            </if>
+            <if test="returnPolicyEnabled != null">
+                #{returnPolicyEnabled,jdbcType=BIT},
+            </if>
+            <if test="returnPolicyProfileCategoryGroup != null">
+                #{returnPolicyProfileCategoryGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="revisePriceAllowed != null">
+                #{revisePriceAllowed,jdbcType=BIT},
+            </if>
+            <if test="reviseQuantityAllowed != null">
+                #{reviseQuantityAllowed,jdbcType=BIT},
+            </if>
+            <if test="safePaymentRequired != null">
+                #{safePaymentRequired,jdbcType=BIT},
+            </if>
+            <if test="sellerContactDetailsEnabled != null">
+                #{sellerContactDetailsEnabled,jdbcType=BIT},
+            </if>
+            <if test="sellerProvidedTitleSupported != null">
+                #{sellerProvidedTitleSupported,jdbcType=BIT},
+            </if>
+            <if test="shippingProfileCategoryGroup != null">
+                #{shippingProfileCategoryGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingTermsRequired != null">
+                #{shippingTermsRequired,jdbcType=BIT},
+            </if>
+            <if test="site != null">
+                #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="skypeMeNonTransactionalEnabled != null">
+                #{skypeMeNonTransactionalEnabled,jdbcType=BIT},
+            </if>
+            <if test="skypeMeTransactionalEnabled != null">
+                #{skypeMeTransactionalEnabled,jdbcType=BIT},
+            </if>
+            <if test="specialitySubscription != null">
+                #{specialitySubscription,jdbcType=VARCHAR},
+            </if>
+            <if test="storeOwnerExtendedListingDurations != null">
+                #{storeOwnerExtendedListingDurations,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionConfirmationRequestEnabled != null">
+                #{transactionConfirmationRequestEnabled,jdbcType=BIT},
+            </if>
+            <if test="upcEnabled != null">
+                #{upcEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="userConsentRequired != null">
+                #{userConsentRequired,jdbcType=BIT},
+            </if>
+            <if test="valueCategory != null">
+                #{valueCategory,jdbcType=BIT},
+            </if>
+            <if test="valuePackEnabled != null">
+                #{valuePackEnabled,jdbcType=BIT},
+            </if>
+            <if test="variationsEnabled != null">
+                #{variationsEnabled,jdbcType=BIT},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=VARCHAR},
+            </if>
+            <if test="vinSupported != null">
+                #{vinSupported,jdbcType=BIT},
+            </if>
+            <if test="vrmSupported != null">
+                #{vrmSupported,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayProductCategoryFeature">
+        update ebay_product_category_feature
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="adFormatEnabled != null">
+                ad_format_enabled = #{adFormatEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="adDitionalCompatibilityEnabled != null">
+                ad_ditional_Compatibility_enabled = #{adDitionalCompatibilityEnabled,jdbcType=BIT},
+            </if>
+            <if test="bestOfferAutoAcceptEnabled != null">
+                best_offer_auto_accept_enabled = #{bestOfferAutoAcceptEnabled,jdbcType=BIT},
+            </if>
+            <if test="bestOfferAutoDeclineEnabled != null">
+                best_offer_auto_decline_enabled = #{bestOfferAutoDeclineEnabled,jdbcType=BIT},
+            </if>
+            <if test="bestOfferCounterEnabled != null">
+                best_offer_counter_enabled = #{bestOfferCounterEnabled,jdbcType=BIT},
+            </if>
+            <if test="bestOfferEnabled != null">
+                best_offer_enabled = #{bestOfferEnabled,jdbcType=BIT},
+            </if>
+            <if test="brandMpnIdentifierEnabled != null">
+                brand_mpn_identifier_enabled = #{brandMpnIdentifierEnabled,jdbcType=BIT},
+            </if>
+            <if test="buyerGuaranteeEnabled != null">
+                buyer_guarantee_enabled = #{buyerGuaranteeEnabled,jdbcType=BIT},
+            </if>
+            <if test="conditionEnabled != null">
+                condition_enabled = #{conditionEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="conditionValues != null">
+                condition_values = #{conditionValues,jdbcType=VARCHAR},
+            </if>
+            <if test="crossBorderTradeAustraliaEnabled != null">
+                cross_border_trade_australia_enabled = #{crossBorderTradeAustraliaEnabled,jdbcType=BIT},
+            </if>
+            <if test="crossBorderTradeGbEnabled != null">
+                cross_border_trade_gb_enabled = #{crossBorderTradeGbEnabled,jdbcType=BIT},
+            </if>
+            <if test="crossBorderTradeNorthAmericaEnabled != null">
+                cross_border_trade_north_america_enabled = #{crossBorderTradeNorthAmericaEnabled,jdbcType=BIT},
+            </if>
+            <if test="depositSupported != null">
+                deposit_supported = #{depositSupported,jdbcType=BIT},
+            </if>
+            <if test="digitalGoodDeliveryEnabled != null">
+                digital_good_delivery_enabled = #{digitalGoodDeliveryEnabled,jdbcType=BIT},
+            </if>
+            <if test="eanEnabled != null">
+                ean_enabled = #{eanEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="freeGallerPlusEnabled != null">
+                free_galler_plus_enabled = #{freeGallerPlusEnabled,jdbcType=BIT},
+            </if>
+            <if test="freePicturePackEnabled != null">
+                free_picture_pack_enabled = #{freePicturePackEnabled,jdbcType=BIT},
+            </if>
+            <if test="galleryFeaturedDurations != null">
+                gallery_featured_durations = #{galleryFeaturedDurations,jdbcType=VARCHAR},
+            </if>
+            <if test="globalShippingEnabled != null">
+                global_shipping_enabled = #{globalShippingEnabled,jdbcType=BIT},
+            </if>
+            <if test="group1MaxFlatShippingCost != null">
+                group1_max_flat_shipping_cost = #{group1MaxFlatShippingCost,jdbcType=DECIMAL},
+            </if>
+            <if test="group2MaxFlatShippingCost != null">
+                group2_max_flat_shipping_cost = #{group2MaxFlatShippingCost,jdbcType=DECIMAL},
+            </if>
+            <if test="group3MaxFlatShippingCost != null">
+                group3_max_flat_shipping_cost = #{group3MaxFlatShippingCost,jdbcType=DECIMAL},
+            </if>
+            <if test="handlingTimeEnabled != null">
+                handling_time_enabled = #{handlingTimeEnabled,jdbcType=BIT},
+            </if>
+            <if test="homePageFeaturedEnabled != null">
+                home_page_featured_enabled = #{homePageFeaturedEnabled,jdbcType=BIT},
+            </if>
+            <if test="inEscrowWorkflowTimeline != null">
+                in_escrow_workflow_timeline = #{inEscrowWorkflowTimeline,jdbcType=VARCHAR},
+            </if>
+            <if test="isbnEnabled != null">
+                isbn_enabled = #{isbnEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCompatibilityEnabled != null">
+                item_compatibility_enabled = #{itemCompatibilityEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCompatibilityType != null">
+                item_compatibility_type = #{itemCompatibilityType,jdbcType=VARCHAR},
+            </if>
+            <if test="itemSpecificsEnabled != null">
+                item_specifics_enabled = #{itemSpecificsEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="listingDuration != null">
+                listing_duration = #{listingDuration,jdbcType=VARCHAR},
+            </if>
+            <if test="maxFlatShippingCost != null">
+                max_flat_shipping_cost = #{maxFlatShippingCost,jdbcType=DECIMAL},
+            </if>
+            <if test="maxGranularFitmentCount != null">
+                max_granular_fitment_count = #{maxGranularFitmentCount,jdbcType=VARCHAR},
+            </if>
+            <if test="minItemCompatibility != null">
+                min_item_compatibility = #{minItemCompatibility,jdbcType=INTEGER},
+            </if>
+            <if test="maxItemCompatibility != null">
+                max_item_compatibility = #{maxItemCompatibility,jdbcType=INTEGER},
+            </if>
+            <if test="minimumReservePrice != null">
+                minimum_reserve_price = #{minimumReservePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="nonSubscription != null">
+                non_subscription = #{nonSubscription,jdbcType=VARCHAR},
+            </if>
+            <if test="paisaPayFullEscrowEnabled != null">
+                paisa_pay_full_escrow_enabled = #{paisaPayFullEscrowEnabled,jdbcType=BIT},
+            </if>
+            <if test="paypalBuyerProtectionEnabled != null">
+                paypal_buyer_protection_enabled = #{paypalBuyerProtectionEnabled,jdbcType=BIT},
+            </if>
+            <if test="paypalRequired != null">
+                paypal_required = #{paypalRequired,jdbcType=BIT},
+            </if>
+            <if test="paymentMethoed != null">
+                payment_methoed = #{paymentMethoed,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentProfileCategoryGroup != null">
+                payment_profile_category_group = #{paymentProfileCategoryGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="pickupDropOffEnabled != null">
+                pickup_drop_off_enabled = #{pickupDropOffEnabled,jdbcType=BIT},
+            </if>
+            <if test="premiumSubscription != null">
+                premium_subscription = #{premiumSubscription,jdbcType=VARCHAR},
+            </if>
+            <if test="proPackEnabled != null">
+                pro_pack_enabled = #{proPackEnabled,jdbcType=BIT},
+            </if>
+            <if test="proPackPlusEnabled != null">
+                pro_pack_plus_enabled = #{proPackPlusEnabled,jdbcType=BIT},
+            </if>
+            <if test="productCreationEnabled != null">
+                product_creation_enabled = #{productCreationEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="regularSubscription != null">
+                regular_subscription = #{regularSubscription,jdbcType=VARCHAR},
+            </if>
+            <if test="returnPolicyEnabled != null">
+                return_policy_enabled = #{returnPolicyEnabled,jdbcType=BIT},
+            </if>
+            <if test="returnPolicyProfileCategoryGroup != null">
+                return_policy_profile_category_group = #{returnPolicyProfileCategoryGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="revisePriceAllowed != null">
+                revise_price_allowed = #{revisePriceAllowed,jdbcType=BIT},
+            </if>
+            <if test="reviseQuantityAllowed != null">
+                revise_quantity_allowed = #{reviseQuantityAllowed,jdbcType=BIT},
+            </if>
+            <if test="safePaymentRequired != null">
+                safe_payment_required = #{safePaymentRequired,jdbcType=BIT},
+            </if>
+            <if test="sellerContactDetailsEnabled != null">
+                seller_contact_details_enabled = #{sellerContactDetailsEnabled,jdbcType=BIT},
+            </if>
+            <if test="sellerProvidedTitleSupported != null">
+                seller_provided_title_supported = #{sellerProvidedTitleSupported,jdbcType=BIT},
+            </if>
+            <if test="shippingProfileCategoryGroup != null">
+                shipping_profile_category_group = #{shippingProfileCategoryGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingTermsRequired != null">
+                shipping_terms_required = #{shippingTermsRequired,jdbcType=BIT},
+            </if>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="skypeMeNonTransactionalEnabled != null">
+                skype_me_non_transactional_enabled = #{skypeMeNonTransactionalEnabled,jdbcType=BIT},
+            </if>
+            <if test="skypeMeTransactionalEnabled != null">
+                skype_me_transactional_enabled = #{skypeMeTransactionalEnabled,jdbcType=BIT},
+            </if>
+            <if test="specialitySubscription != null">
+                speciality_subscription = #{specialitySubscription,jdbcType=VARCHAR},
+            </if>
+            <if test="storeOwnerExtendedListingDurations != null">
+                store_owner_extended_listing_durations = #{storeOwnerExtendedListingDurations,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionConfirmationRequestEnabled != null">
+                transaction_confirmation_request_enabled = #{transactionConfirmationRequestEnabled,jdbcType=BIT},
+            </if>
+            <if test="upcEnabled != null">
+                upc_enabled = #{upcEnabled,jdbcType=VARCHAR},
+            </if>
+            <if test="userConsentRequired != null">
+                user_consent_required = #{userConsentRequired,jdbcType=BIT},
+            </if>
+            <if test="valueCategory != null">
+                value_category = #{valueCategory,jdbcType=BIT},
+            </if>
+            <if test="valuePackEnabled != null">
+                value_pack_enabled = #{valuePackEnabled,jdbcType=BIT},
+            </if>
+            <if test="variationsEnabled != null">
+                variations_enabled = #{variationsEnabled,jdbcType=BIT},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=VARCHAR} + 1,
+            </if>
+            <if test="vinSupported != null">
+                vin_supported = #{vinSupported,jdbcType=BIT},
+            </if>
+            <if test="vrmSupported != null">
+                vrm_supported = #{vrmSupported,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayProductCategoryFeature">
+        update ebay_product_category_feature
+        set category_id = #{categoryId,jdbcType=VARCHAR},
+            ad_format_enabled = #{adFormatEnabled,jdbcType=VARCHAR},
+            ad_ditional_Compatibility_enabled = #{adDitionalCompatibilityEnabled,jdbcType=BIT},
+            best_offer_auto_accept_enabled = #{bestOfferAutoAcceptEnabled,jdbcType=BIT},
+            best_offer_auto_decline_enabled = #{bestOfferAutoDeclineEnabled,jdbcType=BIT},
+            best_offer_counter_enabled = #{bestOfferCounterEnabled,jdbcType=BIT},
+            best_offer_enabled = #{bestOfferEnabled,jdbcType=BIT},
+            brand_mpn_identifier_enabled = #{brandMpnIdentifierEnabled,jdbcType=BIT},
+            buyer_guarantee_enabled = #{buyerGuaranteeEnabled,jdbcType=BIT},
+            condition_enabled = #{conditionEnabled,jdbcType=VARCHAR},
+            condition_values = #{conditionValues,jdbcType=VARCHAR},
+            cross_border_trade_australia_enabled = #{crossBorderTradeAustraliaEnabled,jdbcType=BIT},
+            cross_border_trade_gb_enabled = #{crossBorderTradeGbEnabled,jdbcType=BIT},
+            cross_border_trade_north_america_enabled = #{crossBorderTradeNorthAmericaEnabled,jdbcType=BIT},
+            deposit_supported = #{depositSupported,jdbcType=BIT},
+            digital_good_delivery_enabled = #{digitalGoodDeliveryEnabled,jdbcType=BIT},
+            ean_enabled = #{eanEnabled,jdbcType=VARCHAR},
+            free_galler_plus_enabled = #{freeGallerPlusEnabled,jdbcType=BIT},
+            free_picture_pack_enabled = #{freePicturePackEnabled,jdbcType=BIT},
+            gallery_featured_durations = #{galleryFeaturedDurations,jdbcType=VARCHAR},
+            global_shipping_enabled = #{globalShippingEnabled,jdbcType=BIT},
+            group1_max_flat_shipping_cost = #{group1MaxFlatShippingCost,jdbcType=DECIMAL},
+            group2_max_flat_shipping_cost = #{group2MaxFlatShippingCost,jdbcType=DECIMAL},
+            group3_max_flat_shipping_cost = #{group3MaxFlatShippingCost,jdbcType=DECIMAL},
+            handling_time_enabled = #{handlingTimeEnabled,jdbcType=BIT},
+            home_page_featured_enabled = #{homePageFeaturedEnabled,jdbcType=BIT},
+            in_escrow_workflow_timeline = #{inEscrowWorkflowTimeline,jdbcType=VARCHAR},
+            isbn_enabled = #{isbnEnabled,jdbcType=VARCHAR},
+            item_compatibility_enabled = #{itemCompatibilityEnabled,jdbcType=VARCHAR},
+            item_compatibility_type = #{itemCompatibilityType,jdbcType=VARCHAR},
+            item_specifics_enabled = #{itemSpecificsEnabled,jdbcType=VARCHAR},
+            listing_duration = #{listingDuration,jdbcType=VARCHAR},
+            max_flat_shipping_cost = #{maxFlatShippingCost,jdbcType=DECIMAL},
+            max_granular_fitment_count = #{maxGranularFitmentCount,jdbcType=VARCHAR},
+            min_item_compatibility = #{minItemCompatibility,jdbcType=INTEGER},
+            max_item_compatibility = #{maxItemCompatibility,jdbcType=INTEGER},
+            minimum_reserve_price = #{minimumReservePrice,jdbcType=DECIMAL},
+            non_subscription = #{nonSubscription,jdbcType=VARCHAR},
+            paisa_pay_full_escrow_enabled = #{paisaPayFullEscrowEnabled,jdbcType=BIT},
+            paypal_buyer_protection_enabled = #{paypalBuyerProtectionEnabled,jdbcType=BIT},
+            paypal_required = #{paypalRequired,jdbcType=BIT},
+            payment_methoed = #{paymentMethoed,jdbcType=VARCHAR},
+            payment_profile_category_group = #{paymentProfileCategoryGroup,jdbcType=VARCHAR},
+            pickup_drop_off_enabled = #{pickupDropOffEnabled,jdbcType=BIT},
+            premium_subscription = #{premiumSubscription,jdbcType=VARCHAR},
+            pro_pack_enabled = #{proPackEnabled,jdbcType=BIT},
+            pro_pack_plus_enabled = #{proPackPlusEnabled,jdbcType=BIT},
+            product_creation_enabled = #{productCreationEnabled,jdbcType=VARCHAR},
+            regular_subscription = #{regularSubscription,jdbcType=VARCHAR},
+            return_policy_enabled = #{returnPolicyEnabled,jdbcType=BIT},
+            return_policy_profile_category_group = #{returnPolicyProfileCategoryGroup,jdbcType=VARCHAR},
+            revise_price_allowed = #{revisePriceAllowed,jdbcType=BIT},
+            revise_quantity_allowed = #{reviseQuantityAllowed,jdbcType=BIT},
+            safe_payment_required = #{safePaymentRequired,jdbcType=BIT},
+            seller_contact_details_enabled = #{sellerContactDetailsEnabled,jdbcType=BIT},
+            seller_provided_title_supported = #{sellerProvidedTitleSupported,jdbcType=BIT},
+            shipping_profile_category_group = #{shippingProfileCategoryGroup,jdbcType=VARCHAR},
+            shipping_terms_required = #{shippingTermsRequired,jdbcType=BIT},
+            site = #{site,jdbcType=VARCHAR},
+            skype_me_non_transactional_enabled = #{skypeMeNonTransactionalEnabled,jdbcType=BIT},
+            skype_me_transactional_enabled = #{skypeMeTransactionalEnabled,jdbcType=BIT},
+            speciality_subscription = #{specialitySubscription,jdbcType=VARCHAR},
+            store_owner_extended_listing_durations = #{storeOwnerExtendedListingDurations,jdbcType=VARCHAR},
+            transaction_confirmation_request_enabled = #{transactionConfirmationRequestEnabled,jdbcType=BIT},
+            upc_enabled = #{upcEnabled,jdbcType=VARCHAR},
+            user_consent_required = #{userConsentRequired,jdbcType=BIT},
+            value_category = #{valueCategory,jdbcType=BIT},
+            value_pack_enabled = #{valuePackEnabled,jdbcType=BIT},
+            variations_enabled = #{variationsEnabled,jdbcType=BIT},
+            version = #{version,jdbcType=VARCHAR} + 1,
+            vin_supported = #{vinSupported,jdbcType=BIT},
+            vrm_supported = #{vrmSupported,jdbcType=BIT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayProductCategoryFeature" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_product_category_feature
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="categoryId != null">
+                 and category_id = #{categoryId,jdbcType=VARCHAR}
+            </if>
+            <if test="adFormatEnabled != null">
+                 and ad_format_enabled = #{adFormatEnabled,jdbcType=VARCHAR}
+            </if>
+            <if test="adDitionalCompatibilityEnabled != null">
+                 and ad_ditional_Compatibility_enabled = #{adDitionalCompatibilityEnabled,jdbcType=BIT}
+            </if>
+            <if test="bestOfferAutoAcceptEnabled != null">
+                 and best_offer_auto_accept_enabled = #{bestOfferAutoAcceptEnabled,jdbcType=BIT}
+            </if>
+            <if test="bestOfferAutoDeclineEnabled != null">
+                 and best_offer_auto_decline_enabled = #{bestOfferAutoDeclineEnabled,jdbcType=BIT}
+            </if>
+            <if test="bestOfferCounterEnabled != null">
+                 and best_offer_counter_enabled = #{bestOfferCounterEnabled,jdbcType=BIT}
+            </if>
+            <if test="bestOfferEnabled != null">
+                 and best_offer_enabled = #{bestOfferEnabled,jdbcType=BIT}
+            </if>
+            <if test="brandMpnIdentifierEnabled != null">
+                 and brand_mpn_identifier_enabled = #{brandMpnIdentifierEnabled,jdbcType=BIT}
+            </if>
+            <if test="buyerGuaranteeEnabled != null">
+                 and buyer_guarantee_enabled = #{buyerGuaranteeEnabled,jdbcType=BIT}
+            </if>
+            <if test="conditionEnabled != null">
+                 and condition_enabled = #{conditionEnabled,jdbcType=VARCHAR}
+            </if>
+            <if test="conditionValues != null">
+                 and condition_values = #{conditionValues,jdbcType=VARCHAR}
+            </if>
+            <if test="crossBorderTradeAustraliaEnabled != null">
+                 and cross_border_trade_australia_enabled = #{crossBorderTradeAustraliaEnabled,jdbcType=BIT}
+            </if>
+            <if test="crossBorderTradeGbEnabled != null">
+                 and cross_border_trade_gb_enabled = #{crossBorderTradeGbEnabled,jdbcType=BIT}
+            </if>
+            <if test="crossBorderTradeNorthAmericaEnabled != null">
+                 and cross_border_trade_north_america_enabled = #{crossBorderTradeNorthAmericaEnabled,jdbcType=BIT}
+            </if>
+            <if test="depositSupported != null">
+                 and deposit_supported = #{depositSupported,jdbcType=BIT}
+            </if>
+            <if test="digitalGoodDeliveryEnabled != null">
+                 and digital_good_delivery_enabled = #{digitalGoodDeliveryEnabled,jdbcType=BIT}
+            </if>
+            <if test="eanEnabled != null">
+                 and ean_enabled = #{eanEnabled,jdbcType=VARCHAR}
+            </if>
+            <if test="freeGallerPlusEnabled != null">
+                 and free_galler_plus_enabled = #{freeGallerPlusEnabled,jdbcType=BIT}
+            </if>
+            <if test="freePicturePackEnabled != null">
+                 and free_picture_pack_enabled = #{freePicturePackEnabled,jdbcType=BIT}
+            </if>
+            <if test="galleryFeaturedDurations != null">
+                 and gallery_featured_durations = #{galleryFeaturedDurations,jdbcType=VARCHAR}
+            </if>
+            <if test="globalShippingEnabled != null">
+                 and global_shipping_enabled = #{globalShippingEnabled,jdbcType=BIT}
+            </if>
+            <if test="group1MaxFlatShippingCost != null">
+                 and group1_max_flat_shipping_cost = #{group1MaxFlatShippingCost,jdbcType=DECIMAL}
+            </if>
+            <if test="group2MaxFlatShippingCost != null">
+                 and group2_max_flat_shipping_cost = #{group2MaxFlatShippingCost,jdbcType=DECIMAL}
+            </if>
+            <if test="group3MaxFlatShippingCost != null">
+                 and group3_max_flat_shipping_cost = #{group3MaxFlatShippingCost,jdbcType=DECIMAL}
+            </if>
+            <if test="handlingTimeEnabled != null">
+                 and handling_time_enabled = #{handlingTimeEnabled,jdbcType=BIT}
+            </if>
+            <if test="homePageFeaturedEnabled != null">
+                 and home_page_featured_enabled = #{homePageFeaturedEnabled,jdbcType=BIT}
+            </if>
+            <if test="inEscrowWorkflowTimeline != null">
+                 and in_escrow_workflow_timeline = #{inEscrowWorkflowTimeline,jdbcType=VARCHAR}
+            </if>
+            <if test="isbnEnabled != null">
+                 and isbn_enabled = #{isbnEnabled,jdbcType=VARCHAR}
+            </if>
+            <if test="itemCompatibilityEnabled != null">
+                 and item_compatibility_enabled = #{itemCompatibilityEnabled,jdbcType=VARCHAR}
+            </if>
+            <if test="itemCompatibilityType != null">
+                 and item_compatibility_type = #{itemCompatibilityType,jdbcType=VARCHAR}
+            </if>
+            <if test="itemSpecificsEnabled != null">
+                 and item_specifics_enabled = #{itemSpecificsEnabled,jdbcType=VARCHAR}
+            </if>
+            <if test="listingDuration != null">
+                 and listing_duration = #{listingDuration,jdbcType=VARCHAR}
+            </if>
+            <if test="maxFlatShippingCost != null">
+                 and max_flat_shipping_cost = #{maxFlatShippingCost,jdbcType=DECIMAL}
+            </if>
+            <if test="maxGranularFitmentCount != null">
+                 and max_granular_fitment_count = #{maxGranularFitmentCount,jdbcType=VARCHAR}
+            </if>
+            <if test="minItemCompatibility != null">
+                 and min_item_compatibility = #{minItemCompatibility,jdbcType=INTEGER}
+            </if>
+            <if test="maxItemCompatibility != null">
+                 and max_item_compatibility = #{maxItemCompatibility,jdbcType=INTEGER}
+            </if>
+            <if test="minimumReservePrice != null">
+                 and minimum_reserve_price = #{minimumReservePrice,jdbcType=DECIMAL}
+            </if>
+            <if test="nonSubscription != null">
+                 and non_subscription = #{nonSubscription,jdbcType=VARCHAR}
+            </if>
+            <if test="paisaPayFullEscrowEnabled != null">
+                 and paisa_pay_full_escrow_enabled = #{paisaPayFullEscrowEnabled,jdbcType=BIT}
+            </if>
+            <if test="paypalBuyerProtectionEnabled != null">
+                 and paypal_buyer_protection_enabled = #{paypalBuyerProtectionEnabled,jdbcType=BIT}
+            </if>
+            <if test="paypalRequired != null">
+                 and paypal_required = #{paypalRequired,jdbcType=BIT}
+            </if>
+            <if test="paymentMethoed != null">
+                 and payment_methoed = #{paymentMethoed,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentProfileCategoryGroup != null">
+                 and payment_profile_category_group = #{paymentProfileCategoryGroup,jdbcType=VARCHAR}
+            </if>
+            <if test="pickupDropOffEnabled != null">
+                 and pickup_drop_off_enabled = #{pickupDropOffEnabled,jdbcType=BIT}
+            </if>
+            <if test="premiumSubscription != null">
+                 and premium_subscription = #{premiumSubscription,jdbcType=VARCHAR}
+            </if>
+            <if test="proPackEnabled != null">
+                 and pro_pack_enabled = #{proPackEnabled,jdbcType=BIT}
+            </if>
+            <if test="proPackPlusEnabled != null">
+                 and pro_pack_plus_enabled = #{proPackPlusEnabled,jdbcType=BIT}
+            </if>
+            <if test="productCreationEnabled != null">
+                 and product_creation_enabled = #{productCreationEnabled,jdbcType=VARCHAR}
+            </if>
+            <if test="regularSubscription != null">
+                 and regular_subscription = #{regularSubscription,jdbcType=VARCHAR}
+            </if>
+            <if test="returnPolicyEnabled != null">
+                 and return_policy_enabled = #{returnPolicyEnabled,jdbcType=BIT}
+            </if>
+            <if test="returnPolicyProfileCategoryGroup != null">
+                 and return_policy_profile_category_group = #{returnPolicyProfileCategoryGroup,jdbcType=VARCHAR}
+            </if>
+            <if test="revisePriceAllowed != null">
+                 and revise_price_allowed = #{revisePriceAllowed,jdbcType=BIT}
+            </if>
+            <if test="reviseQuantityAllowed != null">
+                 and revise_quantity_allowed = #{reviseQuantityAllowed,jdbcType=BIT}
+            </if>
+            <if test="safePaymentRequired != null">
+                 and safe_payment_required = #{safePaymentRequired,jdbcType=BIT}
+            </if>
+            <if test="sellerContactDetailsEnabled != null">
+                 and seller_contact_details_enabled = #{sellerContactDetailsEnabled,jdbcType=BIT}
+            </if>
+            <if test="sellerProvidedTitleSupported != null">
+                 and seller_provided_title_supported = #{sellerProvidedTitleSupported,jdbcType=BIT}
+            </if>
+            <if test="shippingProfileCategoryGroup != null">
+                 and shipping_profile_category_group = #{shippingProfileCategoryGroup,jdbcType=VARCHAR}
+            </if>
+            <if test="shippingTermsRequired != null">
+                 and shipping_terms_required = #{shippingTermsRequired,jdbcType=BIT}
+            </if>
+            <if test="site != null">
+                 and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="skypeMeNonTransactionalEnabled != null">
+                 and skype_me_non_transactional_enabled = #{skypeMeNonTransactionalEnabled,jdbcType=BIT}
+            </if>
+            <if test="skypeMeTransactionalEnabled != null">
+                 and skype_me_transactional_enabled = #{skypeMeTransactionalEnabled,jdbcType=BIT}
+            </if>
+            <if test="specialitySubscription != null">
+                 and speciality_subscription = #{specialitySubscription,jdbcType=VARCHAR}
+            </if>
+            <if test="storeOwnerExtendedListingDurations != null">
+                 and store_owner_extended_listing_durations = #{storeOwnerExtendedListingDurations,jdbcType=VARCHAR}
+            </if>
+            <if test="transactionConfirmationRequestEnabled != null">
+                 and transaction_confirmation_request_enabled = #{transactionConfirmationRequestEnabled,jdbcType=BIT}
+            </if>
+            <if test="upcEnabled != null">
+                 and upc_enabled = #{upcEnabled,jdbcType=VARCHAR}
+            </if>
+            <if test="userConsentRequired != null">
+                 and user_consent_required = #{userConsentRequired,jdbcType=BIT}
+            </if>
+            <if test="valueCategory != null">
+                 and value_category = #{valueCategory,jdbcType=BIT}
+            </if>
+            <if test="valuePackEnabled != null">
+                 and value_pack_enabled = #{valuePackEnabled,jdbcType=BIT}
+            </if>
+            <if test="variationsEnabled != null">
+                 and variations_enabled = #{variationsEnabled,jdbcType=BIT}
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=VARCHAR}
+            </if>
+            <if test="vinSupported != null">
+                 and vin_supported = #{vinSupported,jdbcType=BIT}
+            </if>
+            <if test="vrmSupported != null">
+                 and vrm_supported = #{vrmSupported,jdbcType=BIT}
+            </if>
+        </trim>
+    </select>
+</mapper>

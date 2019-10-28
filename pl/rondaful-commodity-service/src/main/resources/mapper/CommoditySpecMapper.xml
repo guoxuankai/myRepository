@@ -1,0 +1,910 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.CommoditySpecMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.CommoditySpec">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="commodity_id" jdbcType="BIGINT" property="commodityId" />
+        <result column="supplier_sku" jdbcType="VARCHAR" property="supplierSku" />
+        <result column="commodity_price" jdbcType="DECIMAL" property="commodityPrice" />
+        <result column="retail_price" jdbcType="DECIMAL" property="retailPrice" />
+        <result column="system_sku" jdbcType="VARCHAR" property="systemSku" />
+        <result column="commodity_spec" jdbcType="VARCHAR" property="commoditySpec" />
+        <result column="attribute_id" jdbcType="VARCHAR" property="attributeId" />
+        <result column="audit_desc" jdbcType="VARCHAR" property="auditDesc" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="SPU" jdbcType="VARCHAR" property="SPU" />
+        <result column="supplier_id" jdbcType="VARCHAR" property="supplierId" />
+        <result column="fee_rate" jdbcType="DOUBLE" property="feeRate" />
+        <result column="fee_price" jdbcType="DOUBLE" property="feePrice" />
+        <result column="commodity_name_cn" jdbcType="VARCHAR" property="commodityNameCn" />
+        <result column="commodity_name_en" jdbcType="VARCHAR" property="commodityNameEn" />
+        <result column="commodity_length" jdbcType="DECIMAL" property="commodityLength" />
+        <result column="commodity_width" jdbcType="DECIMAL" property="commodityWidth" />
+        <result column="commodity_height" jdbcType="DECIMAL" property="commodityHeight" />
+        <result column="packing_length" jdbcType="DECIMAL" property="packingLength" />
+        <result column="packing_width" jdbcType="DECIMAL" property="packingWidth" />
+        <result column="packing_height" jdbcType="DECIMAL" property="packingHeight" />
+        <result column="commodity_weight" jdbcType="DECIMAL" property="commodityWeight" />
+        <result column="packing_weight" jdbcType="DECIMAL" property="packingWeight" />
+        <result column="master_picture" jdbcType="VARCHAR" property="masterPicture" />
+        <result column="additional_picture" jdbcType="VARCHAR" property="additionalPicture" />
+        <result column="customs_name_cn" jdbcType="VARCHAR" property="customsNameCn" />
+        <result column="customs_name_en" jdbcType="VARCHAR" property="customsNameEn" />
+        <result column="customs_price" jdbcType="DECIMAL" property="customsPrice" />
+        <result column="customs_weight" jdbcType="DECIMAL" property="customsWeight" />
+        <result column="customs_code" jdbcType="VARCHAR" property="customsCode" />
+        <result column="down_state_type" jdbcType="INTEGER" property="downStateType" />
+        <result column="category_level_1" jdbcType="INTEGER" property="categoryLevel1" />
+        <result column="category_level_2" jdbcType="INTEGER" property="categoryLevel2" />
+        <result column="category_level_3" jdbcType="INTEGER" property="categoryLevel3" />
+        <result column="sale_num" jdbcType="INTEGER" property="saleNum" />
+        <result column="product_logistics_attributes" jdbcType="VARCHAR" property="productLogisticsAttributes" />
+        <result column="commodity_price_us" jdbcType="DECIMAL" property="commodityPriceUs" />
+        <result column="feePriceUs" jdbcType="DOUBLE" property="feePriceUs" />
+        <result column="lowest_sale_price" property="lowestSalePrice" javaType="DECIMAL"/>
+        <result column="free_freight" jdbcType="INTEGER" property="freeFreight" />
+        <result column="commodity_spec_en" jdbcType="VARCHAR" property="commoditySpecEn" />
+        <result column="producer" jdbcType="VARCHAR" property="producer" />
+        <result column="brandName" jdbcType="VARCHAR" property="brandName" />
+        <result column="publish_num" jdbcType="INTEGER" property="publishNum" />
+        <result column="warehouse_price_group" jdbcType="VARCHAR" property="warehousePriceGroup" />
+        <result column="warehouse_price_group_rmb" jdbcType="VARCHAR" property="warehousePriceGroupRmb" />
+        <result column="inventory_play" jdbcType="INTEGER" property="inventoryPlay" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, version, commodity_id, supplier_sku, commodity_price, retail_price, system_sku, 
+        commodity_spec, attribute_id, state, audit_desc, fee_rate, fee_price,
+        commodity_name_cn,commodity_name_en,
+        commodity_length,commodity_width,commodity_height,packing_length,packing_width,packing_height,
+        commodity_weight,packing_weight,
+        master_picture,additional_picture,customs_name_cn,customs_name_en,customs_price,customs_weight,customs_code,
+        down_state_type,sale_num,commodity_price_us,
+        commodity_spec_en,publish_num,warehouse_price_group,warehouse_price_group_rmb,inventory_play
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        fee_price feePriceUs,
+        <include refid="Base_Column_List" />
+        from t_commodity_spec
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectCommoditySpecByCommodityId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        fee_price feePriceUs,
+        <include refid="Base_Column_List" />
+        from t_commodity_spec
+        where commodity_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+        <if test="autiState != null">
+            and state = #{autiState,jdbcType=BIGINT}
+        </if>
+        <if test="systemSku != null">
+            and system_sku like CONCAT(CONCAT('%', #{systemSku}), '%')
+        </if>
+        <if test="supplierSku != null">
+            and supplier_sku like CONCAT(CONCAT('%', #{supplierSku}), '%')
+        </if>
+        <if test="isUp != null">
+        	<choose>
+        		<when test="isUp == 1">
+        			and state=3
+        		</when>
+        		<otherwise>
+        			and state=1
+        		</otherwise>
+        	</choose>
+        </if>
+    </select>
+
+    <select id="selectCommoditySpecBySku" resultMap="BaseResultMap">
+        SELECT
+			t1.*,
+			t1.fee_price feePriceUs,
+			t2.supplier_id,
+			t2.category_level_1,
+			t2.category_level_2,
+			t2.category_level_3,
+			t2.product_logistics_attributes,
+			t2.free_freight,
+			t2.producer,
+			t3.brand_name brandName,
+			t4.spu_value SPU
+		FROM
+			t_commodity_spec t1
+		LEFT JOIN t_commodity_base t2 ON t2.id = t1.commodity_id
+		LEFT JOIN t_brand t3 ON t3.id = t2.brand_id
+		LEFT JOIN t_system_spu t4 ON t4.id = t2.spu_id
+        where t1.system_sku in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    
+    <!-- 获取上架的且未推送过的sku -->
+    <select id="getUnPushSystemSku" resultMap="BaseResultMap">
+        SELECT
+			t1.*, 
+			t1.fee_price feePriceUs,
+			t2.supplier_id,
+			t2.category_level_1,
+			t2.category_level_2,
+			t2.category_level_3,
+			t2.product_logistics_attributes,
+			t2.free_freight,
+			t2.producer,
+			t3.brand_name brandName,
+			t4.spu_value SPU
+		FROM
+			t_commodity_spec t1
+		LEFT JOIN t_commodity_base t2 ON t2.id = t1.commodity_id
+		LEFT JOIN t_brand t3 ON t3.id = t2.brand_id
+		LEFT JOIN t_system_spu t4 ON t4.id = t2.spu_id
+		WHERE
+			t1.system_sku NOT IN (
+				SELECT
+					t3.system_sku
+				FROM
+					t_sku_push_record t3
+				WHERE
+					t3.account_id = #{accountId}
+			)
+		AND t1.state = #{status}
+		AND t2.supplier_id=#{supplierId}
+    </select>
+    
+    <!-- 获取未推送过的sku数量 -->
+    <select id="getUnPushSystemSkuNum" resultType="int">
+		SELECT
+			count(1)
+		FROM
+			t_commodity_spec t1
+		LEFT JOIN t_commodity_base t2 ON t2.id=t1.commodity_id
+		WHERE
+			t2.supplier_id=#{supplierId}
+		AND t1.system_sku NOT IN (
+				SELECT
+					t3.system_sku
+				FROM
+					t_sku_push_record t3
+				WHERE
+					t3.account_id = #{accountId}
+			)
+		AND t1.state = #{status} 
+    </select>
+
+    <select id="getSystemSkuByUserSku" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+			t1.*, 
+			t1.fee_price feePriceUs,
+			t2.supplier_id,
+			t2.producer,
+			t3.brand_name brandName,
+			t4.spu_value SPU
+		FROM
+			t_commodity_spec t1
+		LEFT JOIN t_commodity_base t2 ON t2.id = t1.commodity_id
+		LEFT JOIN t_brand t3 ON t3.id = t2.brand_id
+		LEFT JOIN t_system_spu t4 ON t4.id = t2.spu_id
+        where t1.supplier_sku in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    
+    <!-- 根据商品ID和商品规格属性查询 -->
+    <select id="getSkuByCommodityIdAndSpec" resultType="int">
+    	select count(1) from t_commodity_spec where commodity_id=#{commodityId} and commodity_spec=#{commoditySpec}
+    </select>
+    
+    <!-- 根据供应商sku查询 -->
+    <select id="getSkuBySupplierIdAndSku" resultMap="BaseResultMap">
+        SELECT
+			t1.*, 
+			t1.fee_price feePriceUs,
+			t2.supplier_id
+		FROM
+			t_commodity_spec t1
+		LEFT JOIN t_commodity_base t2 ON t2.id = t1.commodity_id
+        where t2.supplier_id = #{supplierId} and t1.supplier_sku =#{supplierSku}
+    </select>
+
+
+    <select id="getSystemSkuBySystemSku" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+	        t1.*,
+	        t1.fee_price feePriceUs,
+	        t2.supplier_id,
+	        t2.free_freight
+        from t_commodity_spec t1 
+        left join t_commodity_base t2 on t2.id=t1.commodity_id
+        where t1.system_sku in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_commodity_spec
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteCommoditySpecByCommodityId" parameterType="java.lang.Long">
+        delete from t_commodity_spec
+        where commodity_id = #{0}
+    </delete>
+
+
+    <delete id="deleteCommoditySpecWhereNoUpByCommodityId" parameterType="java.lang.Long">
+        delete from t_commodity_spec
+        where commodity_id = #{0}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.CommoditySpec">
+        insert into t_commodity_spec (id, version, commodity_id, 
+	      supplier_sku, commodity_price,commodity_price_us, retail_price, 
+	      system_sku, commodity_spec, state, 
+	      audit_desc, fee_rate, 
+	      fee_price, commodity_length, commodity_width, 
+	      commodity_height, packing_length, packing_width, 
+	      packing_height, commodity_weight, packing_weight, 
+	      customs_price, customs_weight, customs_code, 
+	      attribute_id, commodity_name_cn, commodity_name_en, 
+	      master_picture, additional_picture, 
+	      customs_name_cn, customs_name_en)
+        values (#{id,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{commodityId,jdbcType=BIGINT}, 
+	      #{supplierSku,jdbcType=VARCHAR}, #{commodityPrice,jdbcType=DECIMAL},#{commodityPriceUs,jdbcType=DECIMAL}, #{retailPrice,jdbcType=DECIMAL}, 
+	      #{systemSku,jdbcType=VARCHAR}, #{commoditySpec,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+	      #{auditDesc,jdbcType=VARCHAR}, #{feeRate,jdbcType=DOUBLE}, 
+	      #{feePrice,jdbcType=DOUBLE}, #{commodityLength,jdbcType=DECIMAL}, #{commodityWidth,jdbcType=DECIMAL}, 
+	      #{commodityHeight,jdbcType=DECIMAL}, #{packingLength,jdbcType=DECIMAL}, #{packingWidth,jdbcType=DECIMAL}, 
+	      #{packingHeight,jdbcType=DECIMAL}, #{commodityWeight,jdbcType=DECIMAL}, #{packingWeight,jdbcType=DECIMAL}, 
+	      #{customsPrice,jdbcType=DECIMAL}, #{customsWeight,jdbcType=DECIMAL}, #{customsCode,jdbcType=VARCHAR}, 
+	      #{attributeId,jdbcType=VARCHAR}, #{commodityNameCn,jdbcType=VARCHAR}, #{commodityNameEn,jdbcType=VARCHAR}, 
+	      #{masterPicture,jdbcType=VARCHAR}, #{additionalPicture,jdbcType=VARCHAR}, 
+	      #{customsNameCn,jdbcType=VARCHAR}, #{customsNameEn,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.CommoditySpec">
+        insert into t_commodity_spec
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            	<if test="id != null">
+		        id,
+		      </if>
+		      <if test="version != null">
+		        version,
+		      </if>
+		      <if test="commodityId != null">
+		        commodity_id,
+		      </if>
+		      <if test="supplierSku != null">
+		        supplier_sku,
+		      </if>
+		      <if test="commodityPrice != null">
+		        commodity_price,
+		      </if>
+		      <if test="commodityPriceUs != null">
+		        commodity_price_us,
+		      </if>
+		      <if test="retailPrice != null">
+		        retail_price,
+		      </if>
+		      <if test="systemSku != null">
+		        system_sku,
+		      </if>
+		      <if test="commoditySpec != null">
+		        commodity_spec,
+		      </if>
+		      <if test="state != null">
+		        state,
+		      </if>
+		      <if test="auditDesc != null">
+		        audit_desc,
+		      </if>
+		      <if test="feeRate != null">
+		        fee_rate,
+		      </if>
+		      <if test="feePrice != null">
+		        fee_price,
+		      </if>
+		      <if test="commodityLength != null">
+		        commodity_length,
+		      </if>
+		      <if test="commodityWidth != null">
+		        commodity_width,
+		      </if>
+		      <if test="commodityHeight != null">
+		        commodity_height,
+		      </if>
+		      <if test="packingLength != null">
+		        packing_length,
+		      </if>
+		      <if test="packingWidth != null">
+		        packing_width,
+		      </if>
+		      <if test="packingHeight != null">
+		        packing_height,
+		      </if>
+		      <if test="commodityWeight != null">
+		        commodity_weight,
+		      </if>
+		      <if test="packingWeight != null">
+		        packing_weight,
+		      </if>
+		      <if test="customsPrice != null">
+		        customs_price,
+		      </if>
+		      <if test="customsWeight != null">
+		        customs_weight,
+		      </if>
+		      <if test="customsCode != null">
+		        customs_code,
+		      </if>
+		      <if test="attributeId != null">
+		        attribute_id,
+		      </if>
+		      <if test="commodityNameCn != null">
+		        commodity_name_cn,
+		      </if>
+		      <if test="commodityNameEn != null">
+		        commodity_name_en,
+		      </if>
+		      <if test="masterPicture != null">
+		        master_picture,
+		      </if>
+		      <if test="additionalPicture != null and additionalPicture != ''">
+		        additional_picture,
+		      </if>
+		      <if test="customsNameCn != null">
+		        customs_name_cn,
+		      </if>
+		      <if test="customsNameEn != null">
+		        customs_name_en,
+		      </if>
+		      <if test="commoditySpecEn != null">
+		        commodity_spec_en,
+		      </if>
+		      <if test="warehousePriceGroup != null and warehousePriceGroup != ''">
+		        warehouse_price_group,
+		      </if>
+		      <if test="warehousePriceGroupRmb != null and warehousePriceGroupRmb != ''">
+		        warehouse_price_group_rmb,
+		      </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+             <if test="id != null">
+		        #{id,jdbcType=BIGINT},
+		      </if>
+		      <if test="version != null">
+		        #{version,jdbcType=BIGINT},
+		      </if>
+		      <if test="commodityId != null">
+		        #{commodityId,jdbcType=BIGINT},
+		      </if>
+		      <if test="supplierSku != null">
+		        #{supplierSku,jdbcType=VARCHAR},
+		      </if>
+		      <if test="commodityPrice != null">
+		        #{commodityPrice,jdbcType=DECIMAL},
+		      </if>
+		       <if test="commodityPriceUs != null">
+		        #{commodityPriceUs,jdbcType=DECIMAL},
+		      </if>
+		      <if test="retailPrice != null">
+		        #{retailPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="systemSku != null">
+		        #{systemSku,jdbcType=VARCHAR},
+		      </if>
+		      <if test="commoditySpec != null">
+		        #{commoditySpec,jdbcType=VARCHAR},
+		      </if>
+		      <if test="state != null">
+		        #{state,jdbcType=INTEGER},
+		      </if>
+		      <if test="auditDesc != null">
+		        #{auditDesc,jdbcType=VARCHAR},
+		      </if>
+		      <if test="feeRate != null">
+		        #{feeRate,jdbcType=DOUBLE},
+		      </if>
+		      <if test="feePrice != null">
+		        #{feePrice,jdbcType=DOUBLE},
+		      </if>
+		      <if test="commodityLength != null">
+		        #{commodityLength,jdbcType=DECIMAL},
+		      </if>
+		      <if test="commodityWidth != null">
+		        #{commodityWidth,jdbcType=DECIMAL},
+		      </if>
+		      <if test="commodityHeight != null">
+		        #{commodityHeight,jdbcType=DECIMAL},
+		      </if>
+		      <if test="packingLength != null">
+		        #{packingLength,jdbcType=DECIMAL},
+		      </if>
+		      <if test="packingWidth != null">
+		        #{packingWidth,jdbcType=DECIMAL},
+		      </if>
+		      <if test="packingHeight != null">
+		        #{packingHeight,jdbcType=DECIMAL},
+		      </if>
+		      <if test="commodityWeight != null">
+		        #{commodityWeight,jdbcType=DECIMAL},
+		      </if>
+		      <if test="packingWeight != null">
+		        #{packingWeight,jdbcType=DECIMAL},
+		      </if>
+		      <if test="customsPrice != null">
+		        #{customsPrice,jdbcType=DECIMAL},
+		      </if>
+		      <if test="customsWeight != null">
+		        #{customsWeight,jdbcType=DECIMAL},
+		      </if>
+		      <if test="customsCode != null">
+		        #{customsCode,jdbcType=VARCHAR},
+		      </if>
+		      <if test="attributeId != null">
+		        #{attributeId,jdbcType=VARCHAR},
+		      </if>
+		      <if test="commodityNameCn != null">
+		        #{commodityNameCn,jdbcType=VARCHAR},
+		      </if>
+		      <if test="commodityNameEn != null">
+		        #{commodityNameEn,jdbcType=VARCHAR},
+		      </if>
+		      <if test="masterPicture != null">
+		        #{masterPicture,jdbcType=VARCHAR},
+		      </if>
+		      <if test="additionalPicture != null and additionalPicture != ''">
+		        #{additionalPicture,jdbcType=VARCHAR},
+		      </if>
+		      <if test="customsNameCn != null">
+		        #{customsNameCn,jdbcType=VARCHAR},
+		      </if>
+		      <if test="customsNameEn != null">
+		        #{customsNameEn,jdbcType=VARCHAR},
+		      </if>
+		      <if test="commoditySpecEn != null">
+		        #{commoditySpecEn,jdbcType=VARCHAR},
+		      </if>
+		      <if test="warehousePriceGroup != null and warehousePriceGroup != ''">
+		        #{warehousePriceGroup,jdbcType=VARCHAR},
+		      </if>
+		      <if test="warehousePriceGroupRmb != null and warehousePriceGroupRmb != ''">
+		        #{warehousePriceGroupRmb,jdbcType=VARCHAR},
+		      </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.CommoditySpec">
+        update t_commodity_spec set update_time=now()
+          <if test="version != null">
+            ,version = #{version,jdbcType=BIGINT} + 1
+          </if>
+	      <if test="commodityId != null">
+	        ,commodity_id = #{commodityId,jdbcType=BIGINT}
+	      </if>
+	      <if test="supplierSku != null">
+	        ,supplier_sku = #{supplierSku,jdbcType=VARCHAR}
+	      </if>
+	      <if test="commodityPrice != null">
+	        ,commodity_price = #{commodityPrice,jdbcType=DECIMAL}
+	      </if>
+	      <if test="commodityPriceUs != null">
+	        ,commodity_price_us = #{commodityPriceUs,jdbcType=DECIMAL}
+	      </if>
+	      <if test="retailPrice != null">
+	        ,retail_price = #{retailPrice,jdbcType=DECIMAL}
+	      </if>
+	      <if test="systemSku != null">
+	        ,system_sku = #{systemSku,jdbcType=VARCHAR}
+	      </if>
+	      <if test="commoditySpec != null">
+	        ,commodity_spec = #{commoditySpec,jdbcType=VARCHAR}
+	      </if>
+	      <if test="state != null">
+	        ,state = #{state,jdbcType=INTEGER}
+	      </if>
+	      <if test="auditDesc != null">
+	        ,audit_desc = #{auditDesc,jdbcType=VARCHAR}
+	      </if>
+	      <if test="feeRate != null">
+	        ,fee_rate = #{feeRate,jdbcType=DOUBLE}
+	      </if>
+	      <if test="feePrice != null">
+	        ,fee_price = #{feePrice,jdbcType=DOUBLE}
+	      </if>
+	      <if test="commodityLength != null">
+	        ,commodity_length = #{commodityLength,jdbcType=DECIMAL}
+	      </if>
+	      <if test="commodityWidth != null">
+	        ,commodity_width = #{commodityWidth,jdbcType=DECIMAL}
+	      </if>
+	      <if test="commodityHeight != null">
+	        ,commodity_height = #{commodityHeight,jdbcType=DECIMAL}
+	      </if>
+	      <if test="packingLength != null">
+	        ,packing_length = #{packingLength,jdbcType=DECIMAL}
+	      </if>
+	      <if test="packingWidth != null">
+	        ,packing_width = #{packingWidth,jdbcType=DECIMAL}
+	      </if>
+	      <if test="packingHeight != null">
+	        ,packing_height = #{packingHeight,jdbcType=DECIMAL}
+	      </if>
+	      <if test="commodityWeight != null">
+	        ,commodity_weight = #{commodityWeight,jdbcType=DECIMAL}
+	      </if>
+	      <if test="packingWeight != null">
+	        ,packing_weight = #{packingWeight,jdbcType=DECIMAL}
+	      </if>
+	      <if test="customsPrice != null">
+	        ,customs_price = #{customsPrice,jdbcType=DECIMAL}
+	      </if>
+	      <if test="customsWeight != null">
+	        ,customs_weight = #{customsWeight,jdbcType=DECIMAL}
+	      </if>
+	      <if test="customsCode != null">
+	        ,customs_code = #{customsCode,jdbcType=VARCHAR}
+	      </if>
+	      <if test="attributeId != null">
+	        ,attribute_id = #{attributeId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="commodityNameCn != null">
+	        ,commodity_name_cn = #{commodityNameCn,jdbcType=VARCHAR}
+	      </if>
+	      <if test="commodityNameEn != null">
+	        ,commodity_name_en = #{commodityNameEn,jdbcType=VARCHAR}
+	      </if>
+	      <if test="masterPicture != null">
+	        ,master_picture = #{masterPicture,jdbcType=VARCHAR}
+	      </if>
+	      <if test="additionalPicture != null">
+	        ,additional_picture = #{additionalPicture,jdbcType=VARCHAR}
+	      </if>
+	      <if test="customsNameCn != null">
+	        ,customs_name_cn = #{customsNameCn,jdbcType=VARCHAR}
+	      </if>
+	      <if test="customsNameEn != null">
+	        ,customs_name_en = #{customsNameEn,jdbcType=VARCHAR}
+	      </if>
+	      <if test="downStateType != null">
+	        ,down_state_type = #{downStateType,jdbcType=INTEGER}
+	      </if>
+	      <if test="saleNum != null">
+	        ,sale_num = #{saleNum,jdbcType=INTEGER}
+	      </if>
+	      <if test="commoditySpecEn != null">
+		    ,commodity_spec_en = #{commoditySpecEn,jdbcType=VARCHAR}
+		  </if>
+		  <if test="publishNum != null">
+	        ,publish_num = #{publishNum,jdbcType=INTEGER}
+	      </if>
+	      <if test="warehousePriceGroup != null and warehousePriceGroup != ''">
+		    ,warehouse_price_group = #{warehousePriceGroup,jdbcType=VARCHAR}
+		  </if>
+		  <if test="warehousePriceGroupRmb != null and warehousePriceGroupRmb != ''">
+		    ,warehouse_price_group_rmb = #{warehousePriceGroupRmb,jdbcType=VARCHAR}
+		  </if>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.CommoditySpec">
+        update t_commodity_spec
+        set version = #{version,jdbcType=BIGINT} + 1,
+             commodity_id = #{commodityId,jdbcType=BIGINT},
+		      supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+		      commodity_price = #{commodityPrice,jdbcType=DECIMAL},
+		      commodity_price_us = #{commodityPriceUs,jdbcType=DECIMAL},
+		      retail_price = #{retailPrice,jdbcType=DECIMAL},
+		      system_sku = #{systemSku,jdbcType=VARCHAR},
+		      commodity_spec = #{commoditySpec,jdbcType=VARCHAR},
+		      state = #{state,jdbcType=INTEGER},
+		      audit_desc = #{auditDesc,jdbcType=VARCHAR},
+		      fee_rate = #{feeRate,jdbcType=DOUBLE},
+		      fee_price = #{feePrice,jdbcType=DOUBLE},
+		      commodity_length = #{commodityLength,jdbcType=DECIMAL},
+		      commodity_width = #{commodityWidth,jdbcType=DECIMAL},
+		      commodity_height = #{commodityHeight,jdbcType=DECIMAL},
+		      packing_length = #{packingLength,jdbcType=DECIMAL},
+		      packing_width = #{packingWidth,jdbcType=DECIMAL},
+		      packing_height = #{packingHeight,jdbcType=DECIMAL},
+		      commodity_weight = #{commodityWeight,jdbcType=DECIMAL},
+		      packing_weight = #{packingWeight,jdbcType=DECIMAL},
+		      customs_price = #{customsPrice,jdbcType=DECIMAL},
+		      customs_weight = #{customsWeight,jdbcType=DECIMAL},
+		      customs_code = #{customsCode,jdbcType=VARCHAR},
+		      attribute_id = #{attributeId,jdbcType=VARCHAR},
+		      commodity_name_cn = #{commodityNameCn,jdbcType=VARCHAR},
+		      commodity_name_en = #{commodityNameEn,jdbcType=VARCHAR},
+		      master_picture = #{masterPicture,jdbcType=VARCHAR},
+		      additional_picture = #{additionalPicture,jdbcType=VARCHAR},
+		      customs_name_cn = #{customsNameCn,jdbcType=VARCHAR},
+		      customs_name_en = #{customsNameEn,jdbcType=VARCHAR},
+		      commodity_spec_en = #{commoditySpecEn,jdbcType=VARCHAR},
+		      warehouse_price_group = #{warehousePriceGroup,jdbcType=VARCHAR},
+		      warehouse_price_group_rmb = #{warehousePriceGroupRmb,jdbcType=VARCHAR},
+		      update_time=now()
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.commodity.entity.CommoditySpec" resultMap="BaseResultMap">
+        select 
+        fee_price feePriceUs,
+        <include refid="Base_Column_List" />
+        from t_commodity_spec
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="commodityId != null">
+                 and commodity_id = #{commodityId,jdbcType=BIGINT}
+            </if>
+            <if test="supplierSku != null">
+                 and supplier_sku = #{supplierSku,jdbcType=VARCHAR}
+            </if>
+            <if test="commodityPrice != null">
+                 and commodity_price = #{commodityPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="commodityPriceUs != null">
+                 and commodity_price_us = #{commodityPriceUs,jdbcType=DECIMAL}
+            </if>
+            <if test="retailPrice != null">
+                 and retail_price = #{retailPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="systemSku != null">
+                 and system_sku = #{systemSku,jdbcType=VARCHAR}
+            </if>
+            <if test="commoditySpec != null">
+                 and commodity_spec = #{commoditySpec,jdbcType=VARCHAR}
+            </if>
+            <if test="attributeId != null">
+                 and attribute_id = #{attributeId,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null">
+                 and state = #{state,jdbcType=INTEGER}
+            </if>
+             <if test="isUp != null">
+            	<choose>
+            		<when test="isUp == 1">
+            			and state=3
+            		</when>
+            		<otherwise>
+            			and state=1
+            		</otherwise>
+            	</choose>
+            </if>
+            <if test="auditDesc != null">
+                and audit_desc = #{auditDesc}
+            </if>
+        </trim>
+        order by commodity_price asc
+    </select>
+
+
+    <select id="statistics" parameterType="java.util.HashMap" resultType="long">
+        SELECT
+			count(1)
+		FROM
+			t_commodity_spec t1
+		LEFT JOIN t_commodity_base t2 ON t2.id=t1.commodity_id
+        <trim prefix="where" prefixOverrides="and">
+        	<if test="supplierId != null">
+                and t2.supplier_id = #{supplierId,jdbcType=INTEGER}
+            </if>
+            <if test="state != null">
+                and t1.state = #{state,jdbcType=INTEGER}
+            </if>
+            <if test="isUp == 1">
+            	and t1.state in (1,3)
+            </if>
+        </trim>
+    </select>
+
+
+    <!--  查询商品sku列表 -->
+    <select id="selectSkuList" parameterType="java.util.Map" resultMap="BaseResultMap">
+       SELECT
+			t1.*,
+			t1.fee_price feePriceUs,
+			t2.supplier_id,
+			t2.category_level_1, 
+			t2.category_level_2, 
+        	t2.category_level_3,
+        	t2.lowest_sale_price,
+        	t2.free_freight,
+			t4.spu_value SPU
+		FROM
+			t_commodity_spec t1
+		LEFT JOIN t_commodity_base t2 ON t1.commodity_id = t2.id
+		LEFT JOIN t_system_spu t4 ON t2.spu_id = t4.id
+        where t1.state=3
+        <if test="vendibilityPlatform != null and vendibilityPlatform != ''">
+            and t2.vendibility_platform like CONCAT(CONCAT('%', #{vendibilityPlatform}), '%')
+        </if>
+        <if test="categoryLevel1 != null and categoryLevel1 != ''">
+            and t2.category_level_1 = #{categoryLevel1,jdbcType=BIGINT}
+        </if>
+        <if test="categoryLevel2 != null and categoryLevel2 != ''">
+            and t2.category_level_2 = #{categoryLevel2,jdbcType=BIGINT}
+        </if>
+        <if test="categoryLevel3 != null and categoryLevel3 != ''">
+            and t2.category_level_3 = #{categoryLevel3,jdbcType=BIGINT}
+        </if>
+        <if test="systemSku != null and systemSku != ''">
+            and t1.system_sku = #{systemSku,jdbcType=VARCHAR}
+        </if>
+        <if test="supplierSku != null and supplierSku != ''">
+            and t1.supplier_sku = #{supplierSku,jdbcType=VARCHAR}
+        </if>
+        <if test="belongSellerId != null and belongSellerId != 981">
+            and t2.belong_seller_id = 0
+        </if>
+        <if test="SPU != null and SPU != ''">
+            and t4.spu_value = #{SPU,jdbcType=VARCHAR}
+        </if>
+        <if test="commodityNameEn != null and commodityNameEn != ''">
+            and t1.commodity_name_en like CONCAT(CONCAT('%', #{commodityNameEn}), '%')
+        </if>
+        <if test="commodityNameCn != null and commodityNameCn != ''">
+            and t1.commodity_name_cn like CONCAT(CONCAT('%', #{commodityNameCn}), '%')
+        </if>
+        <if test="limitIds != null">
+            and t1.commodity_id not in
+            <foreach collection="limitIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+     
+    <select id="getSpecCount" resultType="int">
+		select count(1) from t_commodity_spec where commodity_id=#{commodityId} and id != #{id}
+		<if test="state != null">
+			and state = #{state}
+		</if>    
+    </select>  
+    
+    <select id="getMaxSystemSkuByCommodityId" resultType="String">
+    	select max(t.system_sku) from t_commodity_spec t where t.commodity_id=#{commodityId}
+    </select> 
+    
+    <select id="getMaxSystemSkuBySpu" resultType="String">
+    	select max(t.system_sku) from t_commodity_spec t where t.system_sku like CONCAT(#{SPU}, '%')
+    </select> 
+    
+    <select id="getSupplierSkuBySystemSku" resultType="String">
+        SELECT
+			t1.supplier_sku
+		FROM
+			t_commodity_spec t1
+        where t1.system_sku=#{systemSku}
+    </select>
+    
+    <select id="getSkuNumBySupplierId" resultType="int">
+        select count(*) from t_commodity_spec t1,t_commodity_base t2 
+        where t1.commodity_id=t2.id
+        and t2.supplier_id=#{supplierId}
+        <if test="state != null">
+        	and t1.state=#{state}
+        </if>
+    </select>
+    
+    <select id="getAllSkuBySupplierId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    	SELECT
+			t1.*,
+			t1.fee_price feePriceUs,
+			t2.supplier_id,
+			t2.category_level_1, 
+			t2.category_level_2, 
+        	t2.category_level_3
+		FROM
+			t_commodity_spec t1, t_commodity_base t2 
+        where t1.commodity_id=t2.id
+        and t2.supplier_id=#{supplierId}
+        <if test="isImg != null and isImg=='Yes'">
+        	<![CDATA[ and t1.master_picture not like CONCAT(CONCAT('%', 'brandslink'), '%') ]]>
+        </if>
+        order by t1.id asc
+		limit ${startInx},${size}
+    </select>
+    
+    <select id="getAllSkuCountBySupplierId" parameterType="java.util.Map" resultType="int">
+    	SELECT
+			count(*)
+		FROM
+			t_commodity_spec t1, t_commodity_base t2 
+        where t1.commodity_id=t2.id
+        <if test="isImg != null and isImg=='Yes'">
+        	<![CDATA[ and t1.master_picture not like CONCAT(CONCAT('%', 'brandslink'), '%') ]]>
+        </if>
+        and t2.supplier_id=#{supplierId}
+    </select>
+    
+    <select id="getSkuListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+       	SELECT 
+       		t1.*,
+       		t2.supplier_id
+		FROM
+			t_commodity_spec t1, t_commodity_base t2 
+		where t1.commodity_id=t2.id
+		<if test="state != null">
+			and t1.state=#{state}
+		</if>
+		<if test="systemSku != null and systemSku != '' ">
+			and t1.system_sku=#{systemSku}
+		</if>
+    </select>
+    
+    
+    
+    <resultMap id="ApiResultMap" type="com.rondaful.cloud.commodity.vo.ApiSkuResponse">
+    	<id column="id" jdbcType="BIGINT" property="id" />
+        <result column="commodity_id" jdbcType="BIGINT" property="commodityId" />
+        <result column="system_sku" jdbcType="VARCHAR" property="systemSku" />
+        <result column="commodity_name_cn" jdbcType="VARCHAR" property="commodityNameCn" />
+        <result column="commodity_name_en" jdbcType="VARCHAR" property="commodityNameEn" />
+        <result column="commodity_price_us" jdbcType="DECIMAL" property="commodityPriceUs" />
+        <result column="commodity_spec" jdbcType="VARCHAR" property="commoditySpec" />
+        <result column="commodity_length" jdbcType="DECIMAL" property="commodityLength" />
+        <result column="commodity_width" jdbcType="DECIMAL" property="commodityWidth" />
+        <result column="commodity_height" jdbcType="DECIMAL" property="commodityHeight" />
+        <result column="packing_length" jdbcType="DECIMAL" property="packingLength" />
+        <result column="packing_width" jdbcType="DECIMAL" property="packingWidth" />
+        <result column="packing_height" jdbcType="DECIMAL" property="packingHeight" />
+        <result column="commodity_weight" jdbcType="DECIMAL" property="commodityWeight" />
+        <result column="packing_weight" jdbcType="DECIMAL" property="packingWeight" />
+        <result column="customs_name_cn" jdbcType="VARCHAR" property="customsNameCn" />
+        <result column="customs_name_en" jdbcType="VARCHAR" property="customsNameEn" />
+        <result column="customs_price" jdbcType="DECIMAL" property="customsPrice" />
+        <result column="customs_weight" jdbcType="DECIMAL" property="customsWeight" />
+        <result column="customs_code" jdbcType="VARCHAR" property="customsCode" />
+        <result column="master_picture" jdbcType="VARCHAR" property="masterPicture" />
+        <result column="additional_picture" jdbcType="VARCHAR" property="additionalPicture" />
+        <result column="warehouse_price_group" jdbcType="VARCHAR" property="warehousePriceGroup" />
+    </resultMap>
+    
+    <select id="selectApiSku" parameterType="java.util.Map" resultMap="ApiResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_commodity_spec
+        where state=3 and commodity_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+        <if test="systemSku != null and systemSku != ''">
+            and system_sku like CONCAT(CONCAT('%', #{systemSku}), '%')
+        </if>
+    </select>
+    
+    <select id="getUnAuditNum" resultType="int">
+     	select count(*) from t_commodity_spec where state=0
+     </select>
+     
+     <select id="selectAllWarehousePrice" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_spec
+        where LENGTH(warehouse_price_group)>0
+    </select>
+    
+    <select id="getErpSkuNum" resultType="int">
+    	select count(*) from t_commodity_spec t1,t_commodity_base t2 
+    	where t1.commodity_id=t2.id 
+    	and t2.supplier_id=100
+    	and t1.supplier_sku=#{supplierSku}
+    </select>
+    
+</mapper>

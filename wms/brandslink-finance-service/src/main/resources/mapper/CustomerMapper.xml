@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.CustomerMapper">
+    
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.Customer">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="customer_code" jdbcType="VARCHAR" property="customerCode" />
+        <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+        <result column="total_income" jdbcType="DECIMAL" property="totalIncome" />
+        <result column="total_recharge" jdbcType="DECIMAL" property="totalRecharge" />
+        <result column="total_expend" jdbcType="DECIMAL" property="totalExpend" />
+        <result column="balance_money" jdbcType="DECIMAL" property="balanceMoney" />
+        <result column="usable_money" jdbcType="DECIMAL" property="usableMoney" />
+        <result column="freeze_money" jdbcType="DECIMAL" property="freezeMoney" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, customer_code, customer_name, total_income, total_recharge, total_expend, balance_money, 
+        usable_money, freeze_money, update_by, create_by, update_time, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_customer
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tf_customer
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.finance.pojo.entity.Customer">
+        insert into tf_customer (id, customer_code, customer_name, 
+            total_income, total_recharge, total_expend, 
+            balance_money, usable_money, freeze_money, 
+            update_by, create_by, update_time, 
+            create_time)
+        values (#{id,jdbcType=INTEGER}, #{customerCode,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, 
+            #{totalIncome,jdbcType=DECIMAL}, #{totalRecharge,jdbcType=DECIMAL}, #{totalExpend,jdbcType=DECIMAL}, 
+            #{balanceMoney,jdbcType=DECIMAL}, #{usableMoney,jdbcType=DECIMAL}, #{freezeMoney,jdbcType=DECIMAL}, 
+            #{updateBy,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.finance.pojo.entity.Customer">
+        insert into tf_customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="customerCode != null">
+                customer_code,
+            </if>
+            <if test="customerName != null">
+                customer_name,
+            </if>
+            <if test="totalIncome != null">
+                total_income,
+            </if>
+            <if test="totalRecharge != null">
+                total_recharge,
+            </if>
+            <if test="totalExpend != null">
+                total_expend,
+            </if>
+            <if test="balanceMoney != null">
+                balance_money,
+            </if>
+            <if test="usableMoney != null">
+                usable_money,
+            </if>
+            <if test="freezeMoney != null">
+                freeze_money,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="customerCode != null">
+                #{customerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="customerName != null">
+                #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="totalIncome != null">
+                #{totalIncome,jdbcType=DECIMAL},
+            </if>
+            <if test="totalRecharge != null">
+                #{totalRecharge,jdbcType=DECIMAL},
+            </if>
+            <if test="totalExpend != null">
+                #{totalExpend,jdbcType=DECIMAL},
+            </if>
+            <if test="balanceMoney != null">
+                #{balanceMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="usableMoney != null">
+                #{usableMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="freezeMoney != null">
+                #{freezeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.finance.pojo.entity.Customer">
+        update tf_customer
+        <set>
+            <if test="customerCode != null">
+                customer_code = #{customerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="customerName != null">
+                customer_name = #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="totalIncome != null">
+                total_income = #{totalIncome,jdbcType=DECIMAL},
+            </if>
+            <if test="totalRecharge != null">
+                total_recharge = #{totalRecharge,jdbcType=DECIMAL},
+            </if>
+            <if test="totalExpend != null">
+                total_expend = #{totalExpend,jdbcType=DECIMAL},
+            </if>
+            <if test="balanceMoney != null">
+                balance_money = #{balanceMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="usableMoney != null">
+                usable_money = #{usableMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="freezeMoney != null">
+                freeze_money = #{freezeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.finance.pojo.entity.Customer">
+        update tf_customer
+        set customer_code = #{customerCode,jdbcType=VARCHAR},
+            customer_name = #{customerName,jdbcType=VARCHAR},
+            total_income = #{totalIncome,jdbcType=DECIMAL},
+            total_recharge = #{totalRecharge,jdbcType=DECIMAL},
+            total_expend = #{totalExpend,jdbcType=DECIMAL},
+            balance_money = #{balanceMoney,jdbcType=DECIMAL},
+            usable_money = #{usableMoney,jdbcType=DECIMAL},
+            freeze_money = #{freezeMoney,jdbcType=DECIMAL},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.brandslink.cloud.finance.pojo.entity.Customer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_customer
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="customerCode != null and customerCode != ''">
+                 and customer_code = #{customerCode,jdbcType=VARCHAR}
+            </if>
+            <if test="customerName != null and customerName != ''">
+                 and customer_name = #{customerName,jdbcType=VARCHAR}
+            </if>
+            <if test="totalIncome != null and totalIncome != ''">
+                 and total_income = #{totalIncome,jdbcType=DECIMAL}
+            </if>
+            <if test="totalRecharge != null and totalRecharge != ''">
+                 and total_recharge = #{totalRecharge,jdbcType=DECIMAL}
+            </if>
+            <if test="totalExpend != null and totalExpend != ''">
+                 and total_expend = #{totalExpend,jdbcType=DECIMAL}
+            </if>
+            <if test="balanceMoney != null and balanceMoney != ''">
+                 and balance_money = #{balanceMoney,jdbcType=DECIMAL}
+            </if>
+            <if test="usableMoney != null and usableMoney != ''">
+                 and usable_money = #{usableMoney,jdbcType=DECIMAL}
+            </if>
+            <if test="freezeMoney != null and freezeMoney != ''">
+                 and freeze_money = #{freezeMoney,jdbcType=DECIMAL}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+
+    <select id="getList" parameterType="com.brandslink.cloud.finance.pojo.vo.CustomerVo"
+            resultType="com.brandslink.cloud.finance.pojo.dto.CustomerDto">
+        select * from (select id,customer_code as customerCode,customer_name as customerName,
+        total_income as totalIncome,total_recharge as totalRecharge,total_expend as totalExpend,
+        balance_money as balanceMoney,usable_money as usableMoney,freeze_money as freezeMoney
+        from tf_customer where 1=1
+        <if test="customerName != null and customerName != ''">
+            and customer_name like CONCAT('%',#{customerName},'%')
+        </if>
+        )a order by #{sortField} ${sortType}
+    </select>
+
+    <select id="getByCustomerCode" parameterType="java.lang.String" resultType="com.brandslink.cloud.finance.pojo.dto.CustomerDto">
+        select id,customer_code as customerCode,customer_name as customerName,
+        total_income as totalIncome,total_recharge as totalRecharge,total_expend as totalExpend,
+        balance_money as balanceMoney,usable_money as usableMoney,freeze_money as freezeMoney
+        from tf_customer where customer_code=#{customerCode}
+    </select>
+
+    <update id="updateByRecharge">
+        update tf_customer set total_income=total_income+#{money},total_recharge=total_recharge+#{money},
+        balance_money=balance_money+#{money},usable_money=usable_money+#{money} where customer_code=#{customerCode}
+    </update>
+
+    <select id="getConfig" resultType="com.brandslink.cloud.finance.pojo.entity.CustomerConfigEntity">
+        select threshold_money as thresholdMoney,storage_fee as storageFee,upload_fee as uploadFee,
+        instock_fee as instockFee,outstock_fee as outstockFee,check_fee as checkFee,
+        increment_fee as incrementFee,logistics_fee as logisticsFee
+        from tf_customer_config where customer_code=#{customerCode} and now()>update_time order by update_time desc limit 1
+    </select>
+
+    <select id="getSkuType" resultType="com.brandslink.cloud.finance.pojo.dto.SkuTypeDto">
+        select c.id,c.row_index as rowIndex,c.row_name as rowName from tf_sys_config a
+        join tf_sys_config_cells b on a.id=b.config_id
+        join tf_sys_config_row c on c.id=b.row_id
+        where a.config_status=3 and b.cells_type=#{cellsType} and #{value} BETWEEN b.start_value and b.end_value
+    </select>
+    <select id="getCellIdByCellsType" resultType="java.lang.Integer">
+        select id from tf_sys_config_cells where cells_type=#{cellsType}
+    </select>
+    <select id="getQuoteDetail" resultType="com.brandslink.cloud.finance.pojo.entity.StandardQuoteDetail">
+        select b.quote_id as quoteId,b.quote_value as quoteValue from tf_sys_quote a join tf_sys_quote_cells b on a.id=b.quote_id
+        where a.quote_status=3 and b.quote_type=#{quoteType} and b.cells_id=#{cellsId}
+        <if test="rowId!=0">
+            and b.row_id=#{rowId}
+        </if>
+
+    </select>
+
+    <select id="getCellUnit" resultType="com.brandslink.cloud.finance.pojo.dto.CellsUnitDto">
+       select a.id,a.cells_unit as unit from tf_sys_config_cells a join tf_sys_config b on a.config_id=b.id
+       where b.config_status=3 and b.config_type=4 and #{value} BETWEEN a.start_value AND a.end_value
+    </select>
+
+    <update id="updateByExpend">
+        update tf_customer set total_expend=total_expend+#{money},balance_money=balance_money-#{money},
+        usable_money=usable_money-#{money} where customer_code=#{customerCode} and usable_money>#{money}
+    </update>
+
+    <update id="updateByFreeze">
+        update tf_customer set usable_money=usable_money-#{money},freeze_money=freeze_money+#{money}
+        where customer_code=#{customerCode} and usable_money>#{money}
+    </update>
+
+    <update id="updateByUnFreeze">
+       update tf_customer set usable_money=usable_money+#{freezeMoney}-#{money},
+       freeze_money=freeze_money-#{freezeMoney},
+       total_expend=total_expend+#{money},
+       balance_money=balance_money-#{money}
+       where customer_code=#{customerCode} and usable_money+#{freezeMoney}>#{money}
+    </update>
+
+</mapper>

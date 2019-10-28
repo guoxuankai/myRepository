@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SkuImportMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.SkuImport">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="task_detail" jdbcType="VARCHAR" property="taskDetail" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+    <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
+    <result column="opt_user" jdbcType="VARCHAR" property="optUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="im_type" jdbcType="INTEGER" property="imType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, task_name, task_detail, status, file_url, supplier_id, opt_user, create_time, im_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sku_import
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_sku_import
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SkuImport" useGeneratedKeys="true" keyProperty="id">
+    insert into t_sku_import (id, task_name, task_detail, 
+      status, file_url, supplier_id, 
+      opt_user, create_time, im_type)
+    values (#{id,jdbcType=BIGINT}, #{taskName,jdbcType=VARCHAR}, #{taskDetail,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{fileUrl,jdbcType=VARCHAR}, #{supplierId,jdbcType=BIGINT}, 
+      #{optUser,jdbcType=VARCHAR}, now(), #{imType,jdbcType=INTEGER})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.SkuImport" useGeneratedKeys="true" keyProperty="id">
+    insert into t_sku_import
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskName != null">
+        task_name,
+      </if>
+      <if test="taskDetail != null">
+        task_detail,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="fileUrl != null">
+        file_url,
+      </if>
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="optUser != null">
+        opt_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="imType != null">
+        im_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDetail != null">
+        #{taskDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null">
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="optUser != null">
+        #{optUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="imType != null">
+        #{imType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.SkuImport">
+    update t_sku_import
+    <set>
+      <if test="taskName != null">
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDetail != null">
+        task_detail = #{taskDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null">
+        file_url = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null">
+        supplier_id = #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="optUser != null">
+        opt_user = #{optUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imType != null">
+        im_type = #{imType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.SkuImport">
+    update t_sku_import
+    set task_name = #{taskName,jdbcType=VARCHAR},
+      task_detail = #{taskDetail,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      file_url = #{fileUrl,jdbcType=VARCHAR},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
+      opt_user = #{optUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      im_type = #{imType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="page" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	select
+	<include refid="Base_Column_List" />
+	from t_sku_import
+	<trim prefix="where" prefixOverrides="and">
+		<if test="id != null">
+			and id = #{id,jdbcType=BIGINT}
+		</if>
+		<if test="taskName != null and taskName != ''">
+			and task_name like CONCAT(CONCAT('%', #{taskName}), '%')
+		</if>
+		<if test="status != null">
+			and status = #{status,jdbcType=INTEGER}
+		</if>
+		<if test="startTime != null">
+             and  DATE_FORMAT(create_time, '%Y-%m-%d') &gt;= DATE_FORMAT( #{startTime}, '%Y-%m-%d')
+        </if>
+        <if test="endTime != null">
+            and  DATE_FORMAT(create_time, '%Y-%m-%d') &lt;= DATE_FORMAT( #{endTime}, '%Y-%m-%d')
+        </if>
+        <if test="optUser != null and optUser != ''">
+        	and opt_user=#{optUser}
+        </if>
+	</trim>
+	order by create_time desc
+</select>
+</mapper>

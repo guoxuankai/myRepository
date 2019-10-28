@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressAttributeSelectRelationMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressAttributeSelectRelation">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+        <result column="select_id" jdbcType="BIGINT" property="selectId" />
+        <result column="attribute_id" jdbcType="BIGINT" property="attributeId" />
+        <result column="empower_id" jdbcType="BIGINT" property="empowerId" />
+        <result column="create_id" jdbcType="BIGINT" property="createId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, category_id, select_id, attribute_id, empower_id, create_id, create_time, status
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_attribute_select_relation
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_attribute_select_relation
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressAttributeSelectRelation">
+        insert into aliexpress_attribute_select_relation (id, category_id, select_id, 
+            attribute_id, empower_id, create_id, 
+            create_time, status)
+        values (#{id,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, #{selectId,jdbcType=BIGINT}, 
+            #{attributeId,jdbcType=BIGINT}, #{empowerId,jdbcType=BIGINT}, #{createId,jdbcType=BIGINT}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressAttributeSelectRelation">
+        insert into aliexpress_attribute_select_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="selectId != null">
+                select_id,
+            </if>
+            <if test="attributeId != null">
+                attribute_id,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+            <if test="createId != null">
+                create_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=BIGINT},
+            </if>
+            <if test="selectId != null">
+                #{selectId,jdbcType=BIGINT},
+            </if>
+            <if test="attributeId != null">
+                #{attributeId,jdbcType=BIGINT},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=BIGINT},
+            </if>
+            <if test="createId != null">
+                #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressAttributeSelectRelation">
+        update aliexpress_attribute_select_relation
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=BIGINT},
+            </if>
+            <if test="selectId != null">
+                select_id = #{selectId,jdbcType=BIGINT},
+            </if>
+            <if test="attributeId != null">
+                attribute_id = #{attributeId,jdbcType=BIGINT},
+            </if>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=BIGINT},
+            </if>
+            <if test="createId != null">
+                create_id = #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressAttributeSelectRelation">
+        update aliexpress_attribute_select_relation
+        set category_id = #{categoryId,jdbcType=BIGINT},
+            select_id = #{selectId,jdbcType=BIGINT},
+            attribute_id = #{attributeId,jdbcType=BIGINT},
+            empower_id = #{empowerId,jdbcType=BIGINT},
+            create_id = #{createId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressAttributeSelectRelation" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_attribute_select_relation
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                 and category_id = #{categoryId,jdbcType=BIGINT}
+            </if>
+            <if test="selectId != null and selectId != ''">
+                 and select_id = #{selectId,jdbcType=BIGINT}
+            </if>
+            <if test="attributeId != null and attributeId != ''">
+                 and attribute_id = #{attributeId,jdbcType=BIGINT}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                 and empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+            <if test="createId != null and createId != ''">
+                 and create_id = #{createId,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <delete id="deleteByAliexpressAttributeSelectRelation">
+        delete from aliexpress_attribute_select_relation
+        <trim prefix="where" prefixOverrides="and">
+            <if test="categoryId != null and categoryId != ''">
+                and category_id = #{categoryId,jdbcType=BIGINT}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                and empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+            <if test="attributeId != null and attributeId != ''">
+                and attribute_id = #{attributeId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </delete>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id" parameterType="com.rondaful.cloud.seller.entity.AliexpressAttributeSelectRelation">
+      insert into aliexpress_attribute_select_relation (category_id, select_id,
+            attribute_id, empower_id, create_id,
+            create_time, status)
+        values
+        <foreach collection="list" item="item" index="index" separator ="," >
+            (#{item.categoryId,jdbcType=BIGINT}, #{item.selectId,jdbcType=BIGINT},
+            #{item.attributeId,jdbcType=BIGINT}, #{item.empowerId,jdbcType=BIGINT}, #{item.createId,jdbcType=BIGINT},
+            #{item.createTime,jdbcType=TIMESTAMP}, #{item.status,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+</mapper>

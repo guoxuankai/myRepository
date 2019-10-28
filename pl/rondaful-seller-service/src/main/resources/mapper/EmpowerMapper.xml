@@ -1,0 +1,1100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EmpowerMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.Empower">
+        <id column="empowerId" jdbcType="INTEGER" property="empowerId"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="platform" jdbcType="TINYINT" property="platform"/>
+        <result column="token" jdbcType="VARCHAR" property="token"/>
+        <result column="refreshToken" jdbcType="VARCHAR" property="refreshToken"/>
+        <result column="thirdPartyName" jdbcType="VARCHAR" property="thirdPartyName"/>
+        <result column="webName" jdbcType="VARCHAR" property="webName"/>
+        <result column="paypalAccount01" jdbcType="VARCHAR" property="paypalAccount01"/>
+        <result column="paypalAccount02" jdbcType="VARCHAR" property="paypalAccount02"/>
+        <result column="autoTime" jdbcType="TIMESTAMP" property="autoTime"/>
+        <result column="endTime" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="pinlianAccount" jdbcType="VARCHAR" property="pinlianAccount"/>
+        <result column="pinlianId" jdbcType="INTEGER" property="pinlianId"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickName"/>
+        <result column="parentAccount" jdbcType="VARCHAR" property="parentAccount"/>
+        <result column="rentStatus" jdbcType="TINYINT" property="rentStatus"/>
+        <result column="company" jdbcType="VARCHAR" property="company" />
+        <result column="rent_type" jdbcType="INTEGER" property="rentType" />
+        <result column="rent_time" jdbcType="TIMESTAMP" property="rentTime" />
+        <result column="ebay_edis" jdbcType="INTEGER" property="ebayEdis" />
+        <result column="category_ids" jdbcType="VARCHAR" property="categoryIds" />
+    </resultMap>
+
+	<resultMap id="AnotherResultMap" type="com.rondaful.cloud.seller.vo.EmpowerVo">
+        <id column="empowerId" jdbcType="INTEGER" property="empowerId"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="platform" jdbcType="TINYINT" property="platform"/>
+        <result column="pinlianAccount" jdbcType="VARCHAR" property="pinlianAccount"/>
+    </resultMap>
+
+
+    <!-- 查询亚马逊在线授权，并按照站点作为一级排序（用以将不同的站点的相同亚马逊卖家ID分隔开来）and thirdPartyName in ( 'A9O6B3N4CJQ7B' ) and webName in ( 'APJ6JRA9NG5V4','A1F83G8C2ARO7P' )  -->
+    <select id="getAmazonEmpowerOrderByWebName" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM empower e
+        WHERE e.platform = 2 AND e.`status` = 1
+        ORDER BY e.webName , e.thirdPartyName
+    </select>
+
+
+    <!-- 查询列表信息以及模糊查询 -->
+    <select id="findAll" parameterType="com.rondaful.cloud.seller.entity.Empower" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        <where>
+            and rent_type = 1
+            <if test="platform != null and platform != ''">and platform = #{platform,jdbcType=TINYINT}</if>
+            <if test="status != null and status != '' ">and status = #{status,jdbcType=TINYINT}</if>
+            <if test="account != null and account != '' ">and account = #{account,jdbcType=VARCHAR}</if>
+
+            <if test="thirdPartyName != null and thirdPartyName != '' ">and thirdPartyName = #{thirdPartyName,jdbcType=VARCHAR}</if>
+            <if test="webName != null and webName != '' ">and webName = #{webName,jdbcType=VARCHAR}</if>
+
+            <if test='dataType == "0" '>
+                <if test="beginTime != null and beginTime != '' ">
+                    and autoTime &gt;=#{beginTime}
+                </if>
+                <if test="afterTime != null and afterTime != '' ">
+                    and autoTime &lt;=#{afterTime}
+                </if>
+            </if>
+            <if test='dataType == "1" '>
+                <if test="beginTime != null and beginTime != '' ">
+                    and endTime &gt;=#{beginTime}
+                </if>
+                <if test="afterTime != null and afterTime != '' ">
+                    and endTime &lt;=#{afterTime}
+                </if>
+            </if>
+
+
+           <if test="bindCode != null">
+            and empowerId in
+                <foreach collection="bindCode" index="index" item="id" open="(" separator="," close=")">
+                   #{id}
+                </foreach>
+            </if>
+            <if test="cmsBindCode != null">
+            and pinlianId in
+                <foreach collection="cmsBindCode" index="index" item="id" open="(" separator="," close=")">
+                   #{id}
+                </foreach>
+            </if>
+
+            <if test="pinlianAccount != null and pinlianAccount !='' ">
+                and pinlianAccount =#{pinlianAccount,jdbcType=VARCHAR}
+            </if>
+
+        </where>
+        order by autoTime desc
+    </select>
+
+
+    <!-- 远程查询列表信息以及模糊查询 -->
+    <select id="findAllRemote" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        <where>
+            and rent_type = 1
+            <if test="platform != null">and platform = #{platform,jdbcType=TINYINT}</if>
+            <if test="status != null">and status = #{status,jdbcType=TINYINT}</if>
+        </where>
+    </select>
+
+
+    <!-- 根据账号查看账号的授权信息 -->
+    <select id="selectObjectByAccount"   resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        <where>
+            and rent_type = 1
+            <if test="empowerId != null and empowerId !='' ">and empowerId = #{empowerId,jdbcType=INTEGER}</if>
+            <if test="status != null and status !='' ">and status = #{status,jdbcType=TINYINT}</if>
+            <if test="platform != null and platform != '' ">and platform = #{platform,jdbcType=TINYINT}</if>
+            <if test="account != null and account != '' ">and account = #{account,jdbcType=VARCHAR}</if>
+            <if test="pinlianAccount != null and pinlianAccount !='' ">and pinlianAccount =#{pinlianAccount,jdbcType=VARCHAR}</if>
+            <if test="pinlianId != null and pinlianId !='' ">and pinlianId =#{pinlianId,jdbcType=INTEGER}</if>
+        </where>
+    </select>
+
+
+
+	<select id="selectObjectByAccountDataLimit"  parameterType="com.rondaful.cloud.seller.entity.Empower" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        <where>
+            and rent_type = 1
+            <if test="empowerId != null and empowerId !='' ">and empowerId = #{empowerId,jdbcType=INTEGER}</if>
+            <if test="status != null and status !='' ">and status = #{status,jdbcType=TINYINT}</if>
+            <if test="platform != null and platform != '' ">and platform = #{platform,jdbcType=TINYINT}</if>
+            <if test="account != null and account != '' ">and account = #{account,jdbcType=VARCHAR}</if>
+            <if test="pinlianId != null and pinlianId !='' ">and pinlianId = #{pinlianId,jdbcType=INTEGER}</if>
+            <if test="bindCode != null">
+                and empowerId in
+                <foreach collection="bindCode" index="index" item="id" open="(" separator="," close=")">
+                   #{id}
+                </foreach>
+            </if>
+            <if test="cmsBindCode != null">
+                and pinlianId in
+                <foreach collection="cmsBindCode" index="index" item="id" open="(" separator="," close=")">
+                   #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
+
+
+
+
+	<!-- 通过品连账号查询店铺信息 -->
+    <select id="selectInfoByAccounts"  parameterType="java.util.List"  resultMap="AnotherResultMap">
+        select  empowerId,account,platform,pinlianAccount  from empower
+      	where rent_type = 1 and pinlianAccount in
+      	<foreach collection="list" index="index" item="plAccount" open="(" separator="," close=")">
+            #{plAccount,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+
+	<!-- 通过品连用户id查询店铺信息 -->
+    <select id="selectInfoByUserIds"  parameterType="java.util.List"  resultMap="AnotherResultMap">
+        select  empowerId,account,platform,pinlianAccount  from empower
+      	where rent_type = 1 and pinlianId in
+      	<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id,jdbcType=INTEGER}
+        </foreach>
+    </select>
+
+
+
+
+    <select id="selectOneByAcount" parameterType="com.rondaful.cloud.seller.entity.Empower" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        <where>
+            platform = #{platform,jdbcType=TINYINT}
+            <if test=" empowerId != null and empowerId !='' ">
+                and empowerId = #{empowerId,jdbcType=INTEGER}
+            </if>
+            <if test=" account != null and account !='' ">
+                and account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test=" thirdPartyName != null and thirdPartyName !='' ">
+                and thirdPartyName = #{thirdPartyName,jdbcType=VARCHAR}
+            </if>
+            and status = 1
+            <if test=" webName != null and webName !='' ">
+                and webName = #{webName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 根据账号将token写入数据库 -->
+    <insert id="insertTokenEbay" parameterType="com.rondaful.cloud.seller.entity.Empower">
+        insert into empower (createTime,endTime,autoTime,token) values(#{createTime},#{endTime},#{autoTime},#{token})
+        where account = #{account}
+    </insert>
+
+
+    <!-- 修改授权状态 -->
+    <update id="updateStatusByAccount">
+    	update empower
+    	set status = #{status}
+    	where account = #{account}
+    </update>
+
+
+    <!-- 查询当前账户下的店铺账号 -->
+    <select id="selectAccounts" parameterType="java.lang.String" resultType="string">
+        select distinct account from empower  where  pinlianAccount = #{pinlianAccount,jdbcType=VARCHAR}
+    </select>
+
+
+    <!-- 查询当前账户下的店铺账号 -->
+    <select id="selectAllAccounts" resultType="string">
+        select distinct account from empower
+    </select>
+
+    <!-- 查询当前账户外的店铺账号 -->
+    <select id="selectOtherAccounts" parameterType="java.lang.Integer" resultType="string">
+        select distinct account from empower  where  empowerId != #{empowerid,jdbcType=VARCHAR}
+    </select>
+
+
+    <!-- 查询 -->
+    <select id="checkAccount" resultType="Integer">
+        select count(*) from empower where thirdPartyName = #{thirdPartyName,jdbcType=VARCHAR}
+        <if test="webName != null">
+            and webName = #{webName,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+
+    <sql id="Base_Column_List">
+        empowerId, account, status, platform, token, thirdPartyName, webName, paypalAccount01,
+        paypalAccount02, autoTime, endTime, updateTime, createTime, pinlianAccount, pinlianId,
+        nickname,parentAccount,rentStatus,company, rent_type, rent_time,refreshToken,ebay_edis,category_ids
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        where empowerId = #{empowerid,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from empower
+        where empowerId = #{empowerId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.Empower">
+        insert into empower (empowerId, account, status,
+            platform, token, thirdPartyName,
+            webName, paypalAccount01, paypalAccount02,
+            autoTime, endTime, updateTime,
+            createTime, pinlianAccount, pinlianId,
+            nickname,parentAccount)
+        values (#{empowerid,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+            #{platform,jdbcType=TINYINT}, #{token,jdbcType=VARCHAR}, #{thirdpartyname,jdbcType=VARCHAR},
+            #{webname,jdbcType=VARCHAR}, #{paypalaccount01,jdbcType=VARCHAR}, #{paypalaccount02,jdbcType=VARCHAR},
+            #{autotime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP},
+            #{createtime,jdbcType=TIMESTAMP}, #{pinlianaccount,jdbcType=VARCHAR}, #{pinlianid,jdbcType=INTEGER},
+            #{nickname,jdbcType=VARCHAR},#{parentAccount,jdbcType=VARCHAR})
+    </insert>
+
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.Empower"
+            useGeneratedKeys="true" keyProperty="empowerId" keyColumn="empowerId">
+        insert into empower
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="empowerId != null">
+                empowerId,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="platform != null">
+                platform,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+            <if test="thirdPartyName != null">
+                thirdPartyName,
+            </if>
+            <if test="webName != null">
+                webName,
+            </if>
+            <if test="paypalAccount01 != null">
+                paypalAccount01,
+            </if>
+            <if test="paypalAccount02 != null">
+                paypalAccount02,
+            </if>
+            <if test="autoTime != null">
+                autoTime,
+            </if>
+            <if test="endTime != null">
+                endTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="pinlianAccount != null">
+                pinlianAccount,
+            </if>
+            <if test="pinlianId != null">
+                pinlianId,
+            </if>
+            <if test="nickName != null">
+                nickName,
+            </if>
+            <if test="parentAccount != null">
+                parentAccount,
+            </if>
+            <if test="rentStatus != null">
+                rentStatus,
+            </if>
+            <if test="company != null">
+                company,
+            </if>
+            <if test="rentType != null">
+                rent_type,
+            </if>
+            <if test="rentTime != null">
+                rent_time,
+            </if>
+            <if test="ebayEdis != null">
+                ebay_edis,
+            </if>
+            <if test="categoryIds != null">
+                category_ids,
+            </if>
+            <if test="refreshToken != null">
+                refreshToken,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=INTEGER},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="platform != null">
+                #{platform,jdbcType=TINYINT},
+            </if>
+            <if test="token != null">
+                #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdPartyName != null">
+                #{thirdPartyName,jdbcType=VARCHAR},
+            </if>
+            <if test="webName != null">
+                #{webName,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalAccount01 != null">
+                #{paypalAccount01,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalAccount02 != null">
+                #{paypalAccount02,jdbcType=VARCHAR},
+            </if>
+            <if test="autoTime != null">
+                #{autoTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pinlianAccount != null">
+                #{pinlianAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="pinlianId != null">
+                #{pinlianId,jdbcType=INTEGER},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentAccount != null">
+                #{parentAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="rentStatus != null">
+                #{rentStatus,jdbcType=TINYINT},
+            </if>
+            <if test="company != null">
+                #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="rentType != null">
+                #{rentType,jdbcType=INTEGER},
+            </if>
+            <if test="rentTime != null">
+                #{rentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ebayEdis != null">
+                #{ebayEdis,jdbcType=INTEGER},
+            </if>
+            <if test="categoryIds != null">
+                #{categoryIds,jdbcType=VARCHAR},
+            </if>
+            <if test="refreshToken != null">
+                #{refreshToken,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <insert id="insertObjectSelective" parameterType="com.rondaful.cloud.seller.entity.Empower"
+            useGeneratedKeys="true" keyProperty="empowerId" keyColumn="empowerId">
+        insert into empower
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="empowerId != null">
+                empowerId,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="platform != null">
+                platform,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+            <if test="thirdPartyName != null">
+                thirdPartyName,
+            </if>
+            <if test="webName != null">
+                webName,
+            </if>
+            <if test="paypalAccount01 != null">
+                paypalAccount01,
+            </if>
+            <if test="paypalAccount02 != null">
+                paypalAccount02,
+            </if>
+            <if test="autoTime != null">
+                autoTime,
+            </if>
+            <if test="endTime != null">
+                endTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="pinlianAccount != null">
+                pinlianAccount,
+            </if>
+            <if test="pinlianId != null">
+                pinlianId,
+            </if>
+            <if test="nickName != null">
+                nickName,
+            </if>
+            <if test="parentAccount != null">
+                parentAccount,
+            </if>
+            <if test="rentStatus != null">
+                rentStatus,
+            </if>
+            <if test="company != null">
+                company,
+            </if>
+            <if test="rentType != null">
+                rent_type,
+            </if>
+            <if test="rentTime != null">
+                rent_time,
+            </if>
+            <if test="ebayEdis != null">
+                ebay_edis,
+            </if>
+            <if test="categoryIds != null">
+                category_ids,
+            </if>
+
+            <if test="refreshToken != null">
+                refreshToken,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=INTEGER},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="platform != null">
+                #{platform,jdbcType=TINYINT},
+            </if>
+            <if test="token != null">
+                #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdPartyName != null">
+                #{thirdPartyName,jdbcType=VARCHAR},
+            </if>
+            <if test="webName != null">
+                #{webName,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalAccount01 != null">
+                #{paypalAccount01,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalAccount02 != null">
+                #{paypalAccount02,jdbcType=VARCHAR},
+            </if>
+            <if test="autoTime != null">
+                #{autoTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pinlianAccount != null">
+                #{pinlianAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="pinlianId != null">
+                #{pinlianId,jdbcType=INTEGER},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentAccount != null">
+                #{parentAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="rentStatus != null">
+                #{rentStatus,jdbcType=TINYINT},
+            </if>
+            <if test="company != null">
+                #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="rentType != null">
+                #{rentType,jdbcType=INTEGER},
+            </if>
+            <if test="rentTime != null">
+                #{rentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ebayEdis != null">
+                #{ebayEdis,jdbcType=INTEGER},
+            </if>
+            <if test="categoryIds != null">
+                #{categoryIds,jdbcType=VARCHAR},
+            </if>
+
+
+            <if test="refreshToken != null">
+                #{refreshToken,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateSelective" parameterType="com.rondaful.cloud.seller.entity.Empower"
+            useGeneratedKeys="true" keyProperty="empowerId" keyColumn="empowerId">
+        update empower
+        <set>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="platform != null">
+                platform = #{platform,jdbcType=TINYINT},
+            </if>
+            <if test="token != null">
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdPartyName != null">
+                thirdPartyName = #{thirdPartyName,jdbcType=VARCHAR},
+            </if>
+            <if test="webName != null">
+                webName = #{webName,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalAccount01 != null">
+                paypalAccount01 = #{paypalAccount01,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalAccount02 != null">
+                paypalAccount02 = #{paypalAccount02,jdbcType=VARCHAR},
+            </if>
+            <if test="autoTime != null">
+                autoTime = #{autoTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                endTime = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pinlianAccount != null">
+                pinlianAccount = #{pinlianAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="pinlianId != null">
+                pinlianId = #{pinlianId,jdbcType=INTEGER},
+            </if>
+            <if test="nickName != null">
+                nickname = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentAccount != null">
+                parentAccount = #{parentAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="rentStatus != null">
+                rentStatus = #{rentStatus,jdbcType=TINYINT},
+            </if>
+            <if test="company != null">
+                company = #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="rentType != null">
+                rent_type = #{rentType,jdbcType=INTEGER},
+            </if>
+            <if test="rentTime != null">
+                rent_time = #{rentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ebayEdis != null">
+                ebay_edis = #{ebayEdis,jdbcType=INTEGER},
+            </if>
+            <if test="categoryIds != null">
+                category_ids = #{categoryIds,jdbcType=VARCHAR},
+            </if>
+
+            <if test="refreshToken != null">
+                refreshToken = #{refreshToken,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where account = #{account,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.Empower"
+            useGeneratedKeys="true" keyProperty="empowerId" keyColumn="empowerId">
+        update empower
+        <set>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="platform != null">
+                platform = #{platform,jdbcType=TINYINT},
+            </if>
+            <if test="token != null">
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="thirdPartyName != null">
+                thirdPartyName = #{thirdPartyName,jdbcType=VARCHAR},
+            </if>
+            <if test="webName != null">
+                webName = #{webName,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalAccount01 != null">
+                paypalAccount01 = #{paypalAccount01,jdbcType=VARCHAR},
+            </if>
+            <if test="paypalAccount02 != null">
+                paypalAccount02 = #{paypalAccount02,jdbcType=VARCHAR},
+            </if>
+            <if test="autoTime != null">
+                autoTime = #{autoTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                endTime = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pinlianAccount != null">
+                pinlianAccount = #{pinlianAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="pinlianId != null">
+                pinlianId = #{pinlianId,jdbcType=INTEGER},
+            </if>
+            <if test="nickName != null">
+                nickname = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentAccount != null">
+                parentAccount = #{parentAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="rentStatus != null">
+                rentStatus = #{rentStatus,jdbcType=TINYINT},
+            </if>
+            <if test="company != null">
+                company = #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="rentType != null">
+                rent_type = #{rentType,jdbcType=INTEGER},
+            </if>
+            <if test="rentTime != null">
+                rent_time = #{rentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ebayEdis != null">
+                ebay_edis = #{ebayEdis,jdbcType=INTEGER},
+            </if>
+            <if test="categoryIds != null">
+                category_ids = #{categoryIds,jdbcType=VARCHAR},
+            </if>
+
+
+            <if test="refreshToken != null">
+                refreshToken = #{refreshToken,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where empowerId = #{empowerId,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.Empower">
+        update empower
+        set account = #{account,jdbcType=VARCHAR},
+            status = #{status,jdbcType=TINYINT},
+            platform = #{platform,jdbcType=TINYINT},
+            token = #{token,jdbcType=VARCHAR},
+            thirdPartyName = #{thirdpartyname,jdbcType=VARCHAR},
+            webName = #{webname,jdbcType=VARCHAR},
+            paypalAccount01 = #{paypalaccount01,jdbcType=VARCHAR},
+            paypalAccount02 = #{paypalaccount02,jdbcType=VARCHAR},
+            autoTime = #{autotime,jdbcType=TIMESTAMP},
+            endTime = #{endtime,jdbcType=TIMESTAMP},
+            updateTime = #{updatetime,jdbcType=TIMESTAMP},
+            createTime = #{createtime,jdbcType=TIMESTAMP},
+            pinlianAccount = #{pinlianaccount,jdbcType=VARCHAR},
+            pinlianId = #{pinlianid,jdbcType=INTEGER},
+            nickname = #{nickname,jdbcType=VARCHAR},
+            parentAccount = #{parentAccount,jdbcType=VARCHAR},
+            ebay_edis = #{ebayEdis,jdbcType=INTEGER},
+            category_ids = #{categoryIds,jdbcType=VARCHAR},
+            rentStatus = #{rentStatus,jdbcType=TINYINT}
+        where empowerId = #{empowerid,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="selectAmazonAccount" parameterType="com.rondaful.cloud.seller.entity.Empower" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        <trim prefix="where" prefixOverrides="and">
+            <if test="account != null">
+                and account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                and status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="platform != null">
+                and platform = #{platform,jdbcType=TINYINT}
+            </if>
+            <if test="thirdPartyName != null">
+                and thirdPartyName = #{thirdPartyName,jdbcType=VARCHAR}
+            </if>
+            <if test="webName != null">
+                and webName = #{webName,jdbcType=VARCHAR}
+            </if>
+            <if test="pinlianAccount != null">
+                and pinlianAccount = #{pinlianAccount,jdbcType=VARCHAR}
+            </if>
+        </trim>
+        limit 1
+    </select>
+    <select id="getEmpowerByIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        where empowerId in
+        <foreach collection="empowerIds" item="empowerId" open="(" close=")" separator=",">
+            #{empowerId}
+        </foreach>
+    </select>
+
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.Empower" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        <trim prefix="where" prefixOverrides="and">
+            and rent_type = 1
+            <if test="empowerid != null">
+                and empowerId = #{empowerid,jdbcType=INTEGER}
+            </if>
+            <if test="account != null">
+                and account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                and status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="platform != null">
+                and platform = #{platform,jdbcType=TINYINT}
+            </if>
+            <if test="token != null">
+                and token = #{token,jdbcType=VARCHAR}
+            </if>
+            <if test="thirdpartyname != null">
+                and thirdPartyName = #{thirdpartyname,jdbcType=VARCHAR}
+            </if>
+            <if test="webname != null">
+                and webName = #{webname,jdbcType=VARCHAR}
+            </if>
+            <if test="paypalaccount01 != null">
+                and paypalAccount01 = #{paypalaccount01,jdbcType=VARCHAR}
+            </if>
+            <if test="paypalaccount02 != null">
+                and paypalAccount02 = #{paypalaccount02,jdbcType=VARCHAR}
+            </if>
+            <if test="autotime != null">
+                and autoTime = #{autotime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endtime != null">
+                and endTime = #{endtime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatetime != null">
+                and updateTime = #{updatetime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createtime != null">
+                and createTime = #{createtime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="pinlianaccount != null">
+                and pinlianAccount = #{pinlianaccount,jdbcType=VARCHAR}
+            </if>
+            <if test="pinlianid != null">
+                and pinlianId = #{pinlianid,jdbcType=INTEGER}
+            </if>
+            <if test="nickname != null">
+                and nickname = #{nickname,jdbcType=VARCHAR}
+            </if>
+            <if test="parentAccount != null">
+                and parentAccount = #{parentAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="rentStauts != null">
+                and rentStatus = #{rentStatus,jdbcType=TINYINT}
+            </if>
+        </trim>
+    </select>
+
+
+
+    <select id="getEmpowerAll" resultMap="BaseResultMap">
+        select empowerId,account from empower where rent_type = 1
+        <if test="platform != null">
+            and platform = #{platform,jdbcType=INTEGER}
+        </if>
+        <if test="status != null">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="pinlianId != null">
+            and pinlianId = #{pinlianId,jdbcType=INTEGER}
+        </if>
+
+        order by account
+    </select>
+
+
+    <select id="getEmpowerVO" parameterType="com.rondaful.cloud.seller.vo.EmpowerSearchVO" resultMap="BaseResultMap">
+        select
+        empowerId, account, status, platform, thirdPartyName, webName, paypalAccount01,
+        paypalAccount02, autoTime, endTime, updateTime, createTime, pinlianAccount, pinlianId,
+        nickname,parentAccount,rentStatus,token,company,rent_time,refreshToken,ebay_edis,category_ids
+        from empower
+        <where>
+            <if test="empowerId != null">
+                and empowerId = #{empowerId,jdbcType=INTEGER}
+            </if>
+            <if test="rentType != null">
+              and rent_type = #{rentType,jdbcType=INTEGER}
+            </if>
+            <if test="rentStatus != null">
+              and rentStatus = #{rentStatus,jdbcType=INTEGER}
+            </if>
+            <if test="pinlianId != null and pinlianId !='' ">and pinlianId = #{pinlianId,jdbcType=INTEGER}</if>
+            <if test="platform != null and platform != ''">and platform = #{platform,jdbcType=TINYINT}</if>
+            <if test="status != null and status != '' ">and status = #{status,jdbcType=TINYINT}</if>
+            <if test="account != null and account != '' ">and account = #{account,jdbcType=VARCHAR}</if>
+            <if test="thirdPartyName != null and thirdPartyName != '' ">and thirdPartyName = #{thirdPartyName,jdbcType=VARCHAR}</if>
+            <if test="webName != null and webName != '' ">and webName = #{webName,jdbcType=VARCHAR}</if>
+            <if test="company != null and company != '' ">and company = #{company,jdbcType=VARCHAR}</if>
+
+            <if test="other != null and other == 1 ">and platform != 4</if>
+            <if test='dataType == "0" '>
+                <if test="beginTime != null and beginTime != '' ">
+                    and autoTime &gt;=#{beginTime}
+                </if>
+                <if test="afterTime != null and afterTime != '' ">
+                    and autoTime &lt;= #{afterTime}
+                </if>
+            </if>
+            <if test='dataType == "1" '>
+                <if test="beginTime != null and beginTime != '' ">
+                    and endTime &gt;=#{beginTime}
+                </if>
+                <if test="afterTime != null and afterTime != '' ">
+                    and endTime &lt;=#{afterTime}
+                </if>
+            </if>
+            <if test='dataType == "2" '>
+                <if test="beginTime != null and beginTime != '' ">
+                    and createTime &gt;=#{beginTime}
+                </if>
+                <if test="afterTime != null and afterTime != '' ">
+                    and createTime &lt;=#{afterTime}
+                </if>
+            </if>
+
+
+            <if test="bindCode != null">
+                and empowerId in
+                <foreach collection="bindCode" index="index" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="cmsBindCode != null">
+                and pinlianId in
+                <foreach collection="cmsBindCode" index="index" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+
+            <if test="pinlianAccount != null and pinlianAccount !='' ">
+                and pinlianAccount =#{pinlianAccount,jdbcType=VARCHAR}
+            </if>
+        </where>
+        <choose>
+            <when test="other != null and other == 1">
+                order by createTime DESC
+            </when>
+            <otherwise>
+                order by autoTime DESC
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <select id="checkEndTime" resultType="java.lang.Integer">
+        select
+        count(1)
+        from empower
+        where status =1 and endTime <![CDATA[ <= ]]> NOW()
+    </select>
+
+    <update id="updateEndTime">
+       update  empower set status=2
+        where status =1 and endTime <![CDATA[ <= ]]> NOW()
+    </update>
+
+    <select id="checkEmpowerPaypal" resultType="java.lang.Integer">
+        select
+        count(1)
+        from empower
+        where ( paypalAccount01 = #{paypalAccount01,jdbcType=VARCHAR}
+              or paypalAccount02 =#{paypalAccount01,jdbcType=VARCHAR}
+        <if test="paypalAccount02 != null and paypalAccount02 != '' ">
+            or paypalAccount01 = #{paypalAccount02,jdbcType=VARCHAR}
+            or paypalAccount02 = #{paypalAccount02,jdbcType=VARCHAR}
+        </if>
+        )
+        <if test="empowerId != null">
+            and empowerId != #{empowerId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+
+    <select id="checkEmpowerAccounts" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+         from empower
+        where platform = #{platform,jdbcType=TINYINT}
+        <if test="types == 1">
+            and pinlianId != #{pinlianId,jdbcType=INTEGER}
+        </if>
+        <if test="types == 2">
+            and pinlianId = #{pinlianId,jdbcType=INTEGER}
+        </if>
+        and account in
+        <foreach collection="accounts" index="index" item="account" open="(" separator="," close=")">
+         #{account,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="checkEmpowerAccount" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from empower
+        where platform = #{platform,jdbcType=TINYINT}
+        and account = #{account,jdbcType=VARCHAR}
+        <if test="empowerId != null">
+            and empowerId != #{empowerId,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="checkAccountWebName" resultType="Integer">
+        select count(empowerId)
+        from empower
+        where platform = 2
+        and thirdPartyName = #{thirdPartyName,jdbcType=VARCHAR}
+        <if test="webName != null">
+            and webName = #{webName,jdbcType=VARCHAR}
+        </if>
+        <if test="empowerId != null">
+            and empowerId != #{empowerId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+
+    <select id="getEmpowerByWebName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        where platform =2 and thirdPartyName = #{thirdPartyName,jdbcType=VARCHAR}
+        and webName in
+        <foreach collection="webNames" index="index" item="webName" open="(" separator="," close=")">
+            #{webName,jdbcType=VARCHAR}
+        </foreach>
+        <if test="types == 1">
+          and pinlianId != #{pinlianId,jdbcType=INTEGER}
+        </if>
+        <if test="types == 2">
+            and pinlianId = #{pinlianId,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="checkEmpowerAccountUserId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from empower
+        where platform = #{platform,jdbcType=TINYINT}
+        <choose>
+            <when test="refreshToken != null">
+                and (account =#{account,jdbcType=VARCHAR} or refreshToken = #{refreshToken,jdbcType=VARCHAR})
+            </when>
+            <otherwise>
+                and account =#{account,jdbcType=VARCHAR}
+            </otherwise>
+        </choose>
+        <if test="empowerId != null">
+            and empowerId != #{empowerId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getEmpowerById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        where empowerId = #{empowerId,jdbcType=INTEGER}
+    </select>
+
+    <select id="sendMsgEmpower" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from empower
+        where
+        <if test="status ==1">
+            status =1 and  <![CDATA[
+             TIMESTAMPDIFF(DAY, NOW(), endTime)<=7
+             ]]>
+        </if>
+        <if test="status==2">
+            status =2  and <![CDATA[
+             TIMESTAMPDIFF(DAY, NOW(), endTime)<=0
+             ]]>
+        </if>
+    </select>
+
+</mapper>

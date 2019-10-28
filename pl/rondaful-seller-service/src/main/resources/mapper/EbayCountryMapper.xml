@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayCountryMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayCountry">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="country" jdbcType="VARCHAR" property="country" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, country, type, status, abbreviation
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_country
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_country
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayCountry">
+        insert into ebay_country (id, country, type, 
+            status, abbreviation)
+        values (#{id,jdbcType=INTEGER}, #{country,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+            #{status,jdbcType=INTEGER}, #{abbreviation,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayCountry">
+        insert into ebay_country
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="abbreviation != null">
+                abbreviation,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="abbreviation != null">
+                #{abbreviation,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayCountry">
+        update ebay_country
+        <set>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="abbreviation != null">
+                abbreviation = #{abbreviation,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayCountry">
+        update ebay_country
+        set country = #{country,jdbcType=VARCHAR},
+            type = #{type,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            abbreviation = #{abbreviation,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayCountry" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_country
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="country != null">
+                 and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                 and type = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="status != null">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                 and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    
+     <select id="selectByValue" parameterType="com.rondaful.cloud.seller.entity.EbayCountry" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ebay_country 
+    <where>
+     	1=1 and abbreviation is not null
+    	<if test="type !=null">
+    		and type = #{type,jdbcType=INTEGER}
+    	</if>
+    	<if test="status !=null">
+    		and status = #{status,jdbcType=INTEGER}
+    	</if>
+    	<if test="country !=null">
+    		and country = #{country,jdbcType=VARCHAR}
+    	</if>
+    </where>
+  </select>
+</mapper>

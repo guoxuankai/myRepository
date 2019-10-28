@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbaySiteMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbaySite">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="site_name" jdbcType="CHAR" property="siteName" />
+        <result column="site_zh_name" jdbcType="CHAR" property="siteZhName" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="currency" jdbcType="CHAR" property="currency" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, site_name, site_zh_name, status, currency
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_site
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_site
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbaySite">
+        insert into ebay_site (id, site_name, site_zh_name, 
+            status, currency)
+        values (#{id,jdbcType=INTEGER}, #{siteName,jdbcType=CHAR}, #{siteZhName,jdbcType=CHAR}, 
+            #{status,jdbcType=INTEGER}, #{currency,jdbcType=CHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbaySite">
+        insert into ebay_site
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="siteName != null">
+                site_name,
+            </if>
+            <if test="siteZhName != null">
+                site_zh_name,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="currency != null">
+                currency,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="siteName != null">
+                #{siteName,jdbcType=CHAR},
+            </if>
+            <if test="siteZhName != null">
+                #{siteZhName,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="currency != null">
+                #{currency,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbaySite">
+        update ebay_site
+        <set>
+            <if test="siteName != null">
+                site_name = #{siteName,jdbcType=CHAR},
+            </if>
+            <if test="siteZhName != null">
+                site_zh_name = #{siteZhName,jdbcType=CHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="currency != null">
+                currency = #{currency,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbaySite">
+        update ebay_site
+        set site_name = #{siteName,jdbcType=CHAR},
+            site_zh_name = #{siteZhName,jdbcType=CHAR},
+            status = #{status,jdbcType=INTEGER},
+            currency = #{currency,jdbcType=CHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbaySite" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_site
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="siteName != null">
+                 and site_name = #{siteName,jdbcType=CHAR}
+            </if>
+            <if test="siteZhName != null">
+                 and site_zh_name = #{siteZhName,jdbcType=CHAR}
+            </if>
+            <if test="status != null">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="currency != null">
+                 and currency = #{currency,jdbcType=CHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

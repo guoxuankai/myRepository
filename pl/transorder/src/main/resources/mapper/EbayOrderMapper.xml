@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.transorder.mapper.EbayOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.transorder.entity.ebay.EbayOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="total" jdbcType="VARCHAR" property="total"/>
+        <result column="created_time" jdbcType="VARCHAR" property="createdTime"/>
+        <result column="paid_time" jdbcType="VARCHAR" property="paidTime"/>
+        <result column="seller_user_id" jdbcType="VARCHAR" property="sellerUserId"/>
+        <result column="record_number" jdbcType="VARCHAR" property="recordNumber"/>
+        <result column="buyer_user_id" jdbcType="VARCHAR" property="buyerUserId"/>
+        <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail"/>
+        <result column="shipped_time" jdbcType="VARCHAR" property="shippedTime"/>
+        <result column="shipping_service_cost" jdbcType="VARCHAR" property="shippingServiceCost"/>
+        <result column="amount_paid" jdbcType="VARCHAR" property="amountPaid"/>
+        <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus"/>
+        <result column="payment_method" jdbcType="VARCHAR" property="paymentMethod"/>
+        <result column="reference_id" jdbcType="VARCHAR" property="referenceId"/>
+        <result column="last_modified_time" jdbcType="VARCHAR" property="lastModifiedTime"/>
+        <result column="seller_email" jdbcType="VARCHAR" property="sellerEmail"/>
+        <result column="buyer_checkout_message" jdbcType="VARCHAR" property="buyerCheckoutMessage"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="country_name" jdbcType="VARCHAR" property="countryName"/>
+        <result column="state_or_province" jdbcType="VARCHAR" property="stateOrProvince"/>
+        <result column="city_name" jdbcType="VARCHAR" property="cityName"/>
+        <result column="street1" jdbcType="VARCHAR" property="street1"/>
+        <result column="street2" jdbcType="VARCHAR" property="street2"/>
+        <result column="postal_code" jdbcType="VARCHAR" property="postalCode"/>
+        <result column="is_show_on_list" jdbcType="CHAR" property="isShowOnList"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithChilds"
+               type="com.rondaful.cloud.transorder.entity.ebay.EbayOrder">
+        <association property="orderStatus" javaType="com.rondaful.cloud.transorder.entity.ebay.EbayOrderStatus"
+                     column="order_id"
+                     select="com.rondaful.cloud.transorder.mapper.EbayOrderStatusMapper.getByParentId"></association>
+        <collection property="childs"
+                    column="order_id"
+                    select="com.rondaful.cloud.transorder.mapper.EbayOrderDetailMapper.getByParentId">
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, order_id, total, created_time, paid_time, seller_user_id, record_number, buyer_user_id, 
+        buyer_email, shipped_time, shipping_service_cost, amount_paid, payment_status, payment_method, 
+        reference_id, last_modified_time, seller_email, buyer_checkout_message, name, phone, 
+        country, country_name, state_or_province, city_name, street1, street2, postal_code, 
+        is_show_on_list, create_date, create_by, update_date, update_by
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="com.rondaful.cloud.transorder.entity.ebay.EbayOrderKey"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_ebay_order
+        where id = #{id,jdbcType=INTEGER}
+        and order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getsByOrderIds" parameterType="list" resultMap="ResultMapWithChilds">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_ebay_order
+        where order_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="com.rondaful.cloud.transorder.entity.ebay.EbayOrderKey">
+        delete from tb_ebay_order
+        where id = #{id,jdbcType=INTEGER}
+          and order_id = #{orderId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.transorder.entity.ebay.EbayOrder">
+        insert into tb_ebay_order (id, order_id, total, 
+            created_time, paid_time, seller_user_id, 
+            record_number, buyer_user_id, buyer_email, 
+            shipped_time, shipping_service_cost, amount_paid, 
+            payment_status, payment_method, reference_id, 
+            last_modified_time, seller_email, buyer_checkout_message, 
+            name, phone, country, 
+            country_name, state_or_province, city_name, 
+            street1, street2, postal_code, 
+            is_show_on_list, create_date, create_by, 
+            update_date, update_by)
+        values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{total,jdbcType=VARCHAR}, 
+            #{createdTime,jdbcType=VARCHAR}, #{paidTime,jdbcType=VARCHAR}, #{sellerUserId,jdbcType=VARCHAR}, 
+            #{recordNumber,jdbcType=VARCHAR}, #{buyerUserId,jdbcType=VARCHAR}, #{buyerEmail,jdbcType=VARCHAR}, 
+            #{shippedTime,jdbcType=VARCHAR}, #{shippingServiceCost,jdbcType=VARCHAR}, #{amountPaid,jdbcType=VARCHAR}, 
+            #{paymentStatus,jdbcType=VARCHAR}, #{paymentMethod,jdbcType=VARCHAR}, #{referenceId,jdbcType=VARCHAR}, 
+            #{lastModifiedTime,jdbcType=VARCHAR}, #{sellerEmail,jdbcType=VARCHAR}, #{buyerCheckoutMessage,jdbcType=VARCHAR}, 
+            #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, 
+            #{countryName,jdbcType=VARCHAR}, #{stateOrProvince,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, 
+            #{street1,jdbcType=VARCHAR}, #{street2,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, 
+            #{isShowOnList,jdbcType=CHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.transorder.entity.ebay.EbayOrder">
+        insert into tb_ebay_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="total != null">
+                total,
+            </if>
+            <if test="createdTime != null">
+                created_time,
+            </if>
+            <if test="paidTime != null">
+                paid_time,
+            </if>
+            <if test="sellerUserId != null">
+                seller_user_id,
+            </if>
+            <if test="recordNumber != null">
+                record_number,
+            </if>
+            <if test="buyerUserId != null">
+                buyer_user_id,
+            </if>
+            <if test="buyerEmail != null">
+                buyer_email,
+            </if>
+            <if test="shippedTime != null">
+                shipped_time,
+            </if>
+            <if test="shippingServiceCost != null">
+                shipping_service_cost,
+            </if>
+            <if test="amountPaid != null">
+                amount_paid,
+            </if>
+            <if test="paymentStatus != null">
+                payment_status,
+            </if>
+            <if test="paymentMethod != null">
+                payment_method,
+            </if>
+            <if test="referenceId != null">
+                reference_id,
+            </if>
+            <if test="lastModifiedTime != null">
+                last_modified_time,
+            </if>
+            <if test="sellerEmail != null">
+                seller_email,
+            </if>
+            <if test="buyerCheckoutMessage != null">
+                buyer_checkout_message,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="countryName != null">
+                country_name,
+            </if>
+            <if test="stateOrProvince != null">
+                state_or_province,
+            </if>
+            <if test="cityName != null">
+                city_name,
+            </if>
+            <if test="street1 != null">
+                street1,
+            </if>
+            <if test="street2 != null">
+                street2,
+            </if>
+            <if test="postalCode != null">
+                postal_code,
+            </if>
+            <if test="isShowOnList != null">
+                is_show_on_list,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="total != null">
+                #{total,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=VARCHAR},
+            </if>
+            <if test="paidTime != null">
+                #{paidTime,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerUserId != null">
+                #{sellerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordNumber != null">
+                #{recordNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerUserId != null">
+                #{buyerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerEmail != null">
+                #{buyerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="shippedTime != null">
+                #{shippedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingServiceCost != null">
+                #{shippingServiceCost,jdbcType=VARCHAR},
+            </if>
+            <if test="amountPaid != null">
+                #{amountPaid,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentStatus != null">
+                #{paymentStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentMethod != null">
+                #{paymentMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="referenceId != null">
+                #{referenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifiedTime != null">
+                #{lastModifiedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerEmail != null">
+                #{sellerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerCheckoutMessage != null">
+                #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="countryName != null">
+                #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="stateOrProvince != null">
+                #{stateOrProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="cityName != null">
+                #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="street1 != null">
+                #{street1,jdbcType=VARCHAR},
+            </if>
+            <if test="street2 != null">
+                #{street2,jdbcType=VARCHAR},
+            </if>
+            <if test="postalCode != null">
+                #{postalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="isShowOnList != null">
+                #{isShowOnList,jdbcType=CHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.transorder.entity.ebay.EbayOrder">
+        update tb_ebay_order
+        <set>
+            <if test="total != null">
+                total = #{total,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=VARCHAR},
+            </if>
+            <if test="paidTime != null">
+                paid_time = #{paidTime,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerUserId != null">
+                seller_user_id = #{sellerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordNumber != null">
+                record_number = #{recordNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerUserId != null">
+                buyer_user_id = #{buyerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerEmail != null">
+                buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="shippedTime != null">
+                shipped_time = #{shippedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingServiceCost != null">
+                shipping_service_cost = #{shippingServiceCost,jdbcType=VARCHAR},
+            </if>
+            <if test="amountPaid != null">
+                amount_paid = #{amountPaid,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentStatus != null">
+                payment_status = #{paymentStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentMethod != null">
+                payment_method = #{paymentMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="referenceId != null">
+                reference_id = #{referenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifiedTime != null">
+                last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerEmail != null">
+                seller_email = #{sellerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerCheckoutMessage != null">
+                buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="countryName != null">
+                country_name = #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="stateOrProvince != null">
+                state_or_province = #{stateOrProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="cityName != null">
+                city_name = #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="street1 != null">
+                street1 = #{street1,jdbcType=VARCHAR},
+            </if>
+            <if test="street2 != null">
+                street2 = #{street2,jdbcType=VARCHAR},
+            </if>
+            <if test="postalCode != null">
+                postal_code = #{postalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="isShowOnList != null">
+                is_show_on_list = #{isShowOnList,jdbcType=CHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.transorder.entity.ebay.EbayOrder">
+        update tb_ebay_order
+        set total = #{total,jdbcType=VARCHAR},
+            created_time = #{createdTime,jdbcType=VARCHAR},
+            paid_time = #{paidTime,jdbcType=VARCHAR},
+            seller_user_id = #{sellerUserId,jdbcType=VARCHAR},
+            record_number = #{recordNumber,jdbcType=VARCHAR},
+            buyer_user_id = #{buyerUserId,jdbcType=VARCHAR},
+            buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+            shipped_time = #{shippedTime,jdbcType=VARCHAR},
+            shipping_service_cost = #{shippingServiceCost,jdbcType=VARCHAR},
+            amount_paid = #{amountPaid,jdbcType=VARCHAR},
+            payment_status = #{paymentStatus,jdbcType=VARCHAR},
+            payment_method = #{paymentMethod,jdbcType=VARCHAR},
+            reference_id = #{referenceId,jdbcType=VARCHAR},
+            last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR},
+            seller_email = #{sellerEmail,jdbcType=VARCHAR},
+            buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            name = #{name,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            country = #{country,jdbcType=VARCHAR},
+            country_name = #{countryName,jdbcType=VARCHAR},
+            state_or_province = #{stateOrProvince,jdbcType=VARCHAR},
+            city_name = #{cityName,jdbcType=VARCHAR},
+            street1 = #{street1,jdbcType=VARCHAR},
+            street2 = #{street2,jdbcType=VARCHAR},
+            postal_code = #{postalCode,jdbcType=VARCHAR},
+            is_show_on_list = #{isShowOnList,jdbcType=CHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+          and order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.transorder.entity.ebay.EbayOrder" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_ebay_order
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="total != null and total != ''">
+                and total = #{total,jdbcType=VARCHAR}
+            </if>
+            <if test="createdTime != null and createdTime != ''">
+                and created_time = #{createdTime,jdbcType=VARCHAR}
+            </if>
+            <if test="paidTime != null and paidTime != ''">
+                and paid_time = #{paidTime,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerUserId != null and sellerUserId != ''">
+                and seller_user_id = #{sellerUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="recordNumber != null and recordNumber != ''">
+                and record_number = #{recordNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerUserId != null and buyerUserId != ''">
+                and buyer_user_id = #{buyerUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerEmail != null and buyerEmail != ''">
+                and buyer_email = #{buyerEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="shippedTime != null and shippedTime != ''">
+                and shipped_time = #{shippedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="shippingServiceCost != null and shippingServiceCost != ''">
+                and shipping_service_cost = #{shippingServiceCost,jdbcType=VARCHAR}
+            </if>
+            <if test="amountPaid != null and amountPaid != ''">
+                and amount_paid = #{amountPaid,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentStatus != null and paymentStatus != ''">
+                and payment_status = #{paymentStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentMethod != null and paymentMethod != ''">
+                and payment_method = #{paymentMethod,jdbcType=VARCHAR}
+            </if>
+            <if test="referenceId != null and referenceId != ''">
+                and reference_id = #{referenceId,jdbcType=VARCHAR}
+            </if>
+            <if test="lastModifiedTime != null and lastModifiedTime != ''">
+                and last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerEmail != null and sellerEmail != ''">
+                and seller_email = #{sellerEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerCheckoutMessage != null and buyerCheckoutMessage != ''">
+                and buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="countryName != null and countryName != ''">
+                and country_name = #{countryName,jdbcType=VARCHAR}
+            </if>
+            <if test="stateOrProvince != null and stateOrProvince != ''">
+                and state_or_province = #{stateOrProvince,jdbcType=VARCHAR}
+            </if>
+            <if test="cityName != null and cityName != ''">
+                and city_name = #{cityName,jdbcType=VARCHAR}
+            </if>
+            <if test="street1 != null and street1 != ''">
+                and street1 = #{street1,jdbcType=VARCHAR}
+            </if>
+            <if test="street2 != null and street2 != ''">
+                and street2 = #{street2,jdbcType=VARCHAR}
+            </if>
+            <if test="postalCode != null and postalCode != ''">
+                and postal_code = #{postalCode,jdbcType=VARCHAR}
+            </if>
+            <if test="isShowOnList != null and isShowOnList != ''">
+                and is_show_on_list = #{isShowOnList,jdbcType=CHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

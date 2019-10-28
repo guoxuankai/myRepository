@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.StorageRecordItemMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.storage.StorageRecordItem">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="storage_id" jdbcType="BIGINT" property="storageId" />
+        <result column="box_no" jdbcType="INTEGER" property="boxNo" />
+        <result column="reference_box_no" jdbcType="VARCHAR" property="referenceBoxNo" />
+        <result column="product_sku" jdbcType="VARCHAR" property="productSku" />
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="fba_product_code" jdbcType="VARCHAR" property="fbaProductCode" />
+        <result column="transit_pre_count" jdbcType="INTEGER" property="transitPreCount" />
+        <result column="transit_receiving_count" jdbcType="INTEGER" property="transitReceivingCount" />
+        <result column="overseas_pre_count" jdbcType="INTEGER" property="overseasPreCount" />
+        <result column="overseas_receiving_count" jdbcType="INTEGER" property="overseasReceivingCount" />
+        <result column="overseas_shelves_count" jdbcType="INTEGER" property="overseasShelvesCount" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, storage_id, box_no, reference_box_no, product_sku, quantity, fba_product_code, 
+        transit_pre_count, transit_receiving_count, overseas_pre_count, overseas_receiving_count, 
+        overseas_shelves_count
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_storage_record_item
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_storage_record_item
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordItem">
+        insert into t_storage_record_item (id, storage_id, box_no, 
+            reference_box_no, product_sku, quantity, 
+            fba_product_code, transit_pre_count, transit_receiving_count, 
+            overseas_pre_count, overseas_receiving_count, 
+            overseas_shelves_count)
+        values (#{id,jdbcType=INTEGER}, #{storageId,jdbcType=BIGINT}, #{boxNo,jdbcType=INTEGER}, 
+            #{referenceBoxNo,jdbcType=VARCHAR}, #{productSku,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER}, 
+            #{fbaProductCode,jdbcType=VARCHAR}, #{transitPreCount,jdbcType=INTEGER}, #{transitReceivingCount,jdbcType=INTEGER}, 
+            #{overseasPreCount,jdbcType=INTEGER}, #{overseasReceivingCount,jdbcType=INTEGER}, 
+            #{overseasShelvesCount,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordItem">
+        insert into t_storage_record_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="storageId != null">
+                storage_id,
+            </if>
+            <if test="boxNo != null">
+                box_no,
+            </if>
+            <if test="referenceBoxNo != null">
+                reference_box_no,
+            </if>
+            <if test="productSku != null">
+                product_sku,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="fbaProductCode != null">
+                fba_product_code,
+            </if>
+            <if test="transitPreCount != null">
+                transit_pre_count,
+            </if>
+            <if test="transitReceivingCount != null">
+                transit_receiving_count,
+            </if>
+            <if test="overseasPreCount != null">
+                overseas_pre_count,
+            </if>
+            <if test="overseasReceivingCount != null">
+                overseas_receiving_count,
+            </if>
+            <if test="overseasShelvesCount != null">
+                overseas_shelves_count,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="storageId != null">
+                #{storageId,jdbcType=BIGINT},
+            </if>
+            <if test="boxNo != null">
+                #{boxNo,jdbcType=INTEGER},
+            </if>
+            <if test="referenceBoxNo != null">
+                #{referenceBoxNo,jdbcType=VARCHAR},
+            </if>
+            <if test="productSku != null">
+                #{productSku,jdbcType=VARCHAR},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="fbaProductCode != null">
+                #{fbaProductCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transitPreCount != null">
+                #{transitPreCount,jdbcType=INTEGER},
+            </if>
+            <if test="transitReceivingCount != null">
+                #{transitReceivingCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasPreCount != null">
+                #{overseasPreCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasReceivingCount != null">
+                #{overseasReceivingCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasShelvesCount != null">
+                #{overseasShelvesCount,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordItem">
+        update t_storage_record_item
+        <set>
+            <if test="storageId != null">
+                storage_id = #{storageId,jdbcType=BIGINT},
+            </if>
+            <if test="boxNo != null">
+                box_no = #{boxNo,jdbcType=INTEGER},
+            </if>
+            <if test="referenceBoxNo != null">
+                reference_box_no = #{referenceBoxNo,jdbcType=VARCHAR},
+            </if>
+            <if test="productSku != null">
+                product_sku = #{productSku,jdbcType=VARCHAR},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="fbaProductCode != null">
+                fba_product_code = #{fbaProductCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transitPreCount != null">
+                transit_pre_count = #{transitPreCount,jdbcType=INTEGER},
+            </if>
+            <if test="transitReceivingCount != null">
+                transit_receiving_count = #{transitReceivingCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasPreCount != null">
+                overseas_pre_count = #{overseasPreCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasReceivingCount != null">
+                overseas_receiving_count = #{overseasReceivingCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasShelvesCount != null">
+                overseas_shelves_count = #{overseasShelvesCount,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordItem">
+        update t_storage_record_item
+        set storage_id = #{storageId,jdbcType=BIGINT},
+            box_no = #{boxNo,jdbcType=INTEGER},
+            reference_box_no = #{referenceBoxNo,jdbcType=VARCHAR},
+            product_sku = #{productSku,jdbcType=VARCHAR},
+            quantity = #{quantity,jdbcType=INTEGER},
+            fba_product_code = #{fbaProductCode,jdbcType=VARCHAR},
+            transit_pre_count = #{transitPreCount,jdbcType=INTEGER},
+            transit_receiving_count = #{transitReceivingCount,jdbcType=INTEGER},
+            overseas_pre_count = #{overseasPreCount,jdbcType=INTEGER},
+            overseas_receiving_count = #{overseasReceivingCount,jdbcType=INTEGER},
+            overseas_shelves_count = #{overseasShelvesCount,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordItem" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_storage_record_item
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="storageId != null and storageId != ''">
+                 and storage_id = #{storageId,jdbcType=BIGINT}
+            </if>
+            <if test="boxNo != null and boxNo != ''">
+                 and box_no = #{boxNo,jdbcType=INTEGER}
+            </if>
+            <if test="referenceBoxNo != null and referenceBoxNo != ''">
+                 and reference_box_no = #{referenceBoxNo,jdbcType=VARCHAR}
+            </if>
+            <if test="productSku != null and productSku != ''">
+                 and product_sku = #{productSku,jdbcType=VARCHAR}
+            </if>
+            <if test="quantity != null and quantity != ''">
+                 and quantity = #{quantity,jdbcType=INTEGER}
+            </if>
+            <if test="fbaProductCode != null and fbaProductCode != ''">
+                 and fba_product_code = #{fbaProductCode,jdbcType=VARCHAR}
+            </if>
+            <if test="transitPreCount != null and transitPreCount != ''">
+                 and transit_pre_count = #{transitPreCount,jdbcType=INTEGER}
+            </if>
+            <if test="transitReceivingCount != null and transitReceivingCount != ''">
+                 and transit_receiving_count = #{transitReceivingCount,jdbcType=INTEGER}
+            </if>
+            <if test="overseasPreCount != null and overseasPreCount != ''">
+                 and overseas_pre_count = #{overseasPreCount,jdbcType=INTEGER}
+            </if>
+            <if test="overseasReceivingCount != null and overseasReceivingCount != ''">
+                 and overseas_receiving_count = #{overseasReceivingCount,jdbcType=INTEGER}
+            </if>
+            <if test="overseasShelvesCount != null and overseasShelvesCount != ''">
+                 and overseas_shelves_count = #{overseasShelvesCount,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_storage_record_item (storage_id, box_no,
+        reference_box_no, product_sku, quantity,
+        fba_product_code)
+        values
+        <foreach collection="list" item="item" separator="," index="index">
+            (#{item.storageId,jdbcType=BIGINT}, #{item.boxNo,jdbcType=INTEGER},
+            #{item.referenceBoxNo,jdbcType=VARCHAR}, #{item.productSku,jdbcType=VARCHAR}, #{item.quantity,jdbcType=INTEGER},
+            #{item.fbaProductCode,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="getsByStorageId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_storage_record_item
+        where storage_id = #{storageId,jdbcType=BIGINT} ORDER BY box_no
+    </select>
+
+    <delete id="delByStorageId" parameterType="java.lang.Long">
+        delete from t_storage_record_item where storage_id = #{storageId,jdbcType=BIGINT}
+    </delete>
+    
+    <update id="updateNum" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordItem">
+        update t_storage_record_item
+        <set>
+            <if test="transitPreCount !=null">
+                transit_pre_count = #{transitPreCount,jdbcType=INTEGER},
+            </if>
+            <if test="transitReceivingCount !=null ">
+                transit_receiving_count = #{transitReceivingCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasPreCount != null">
+                overseas_pre_count = #{overseasPreCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasReceivingCount != null ">
+                overseas_receiving_count = #{overseasReceivingCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasShelvesCount !=null">
+                overseas_shelves_count = #{overseasShelvesCount,jdbcType=INTEGER},
+            </if>
+        </set>
+        where storage_id = #{storageId,jdbcType=BIGINT} and product_sku = #{productSku,jdbcType=INTEGER} and box_no = #{boxNo,jdbcType=INTEGER}
+    </update>
+</mapper>

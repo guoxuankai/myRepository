@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WarehouseWarrantDetailMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.WarehouseWarrantDetail">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_sequence_number" jdbcType="VARCHAR" property="parentSequenceNumber"/>
+        <result column="product_sku" jdbcType="VARCHAR" property="productSku"/>
+        <result column="product_cn_name" jdbcType="VARCHAR" property="productCnName"/>
+        <result column="product_en_name" jdbcType="VARCHAR" property="productEnName"/>
+        <result column="box_no" jdbcType="INTEGER" property="boxNo"/>
+        <result column="quantity_shipped" jdbcType="BIGINT" property="quantityShipped"/>
+        <result column="transit_pre_count" jdbcType="INTEGER" property="transitPreCount"/>
+        <result column="transit_receiving_count" jdbcType="INTEGER" property="transitReceivingCount"/>
+        <result column="overseas_pre_count" jdbcType="INTEGER" property="overseasPreCount"/>
+        <result column="overseas_receiving_count" jdbcType="INTEGER" property="overseasReceivingCount"/>
+        <result column="overseas_shelves_count" jdbcType="INTEGER" property="overseasShelvesCount"/>
+        <result column="overseas_unsellable_qty" jdbcType="INTEGER" property="overseasUnsellableQty"/>
+        <result column="overseas_sellable_qty" jdbcType="INTEGER" property="overseasSellableQty"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, parent_sequence_number, product_sku, product_cn_name, product_en_name, box_no,
+        quantity_shipped, transit_pre_count, transit_receiving_count, overseas_pre_count,
+        overseas_receiving_count, overseas_shelves_count, overseas_unsellable_qty, overseas_sellable_qty
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_warrant_detail
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByParentSequenceNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_warrant_detail
+        where parent_sequence_number = #{parentSequenceNumber,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_warehouse_warrant_detail
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByParentSequenceNumber" parameterType="java.lang.String">
+        delete from t_warehouse_warrant_detail
+        where parent_sequence_number = #{sequenceNumber,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrantDetail">
+        insert into t_warehouse_warrant_detail (id, parent_sequence_number, product_sku,
+        product_cn_name, product_en_name, box_no,
+        quantity_shipped, transit_pre_count, transit_receiving_count,
+        overseas_pre_count, overseas_receiving_count,
+        overseas_shelves_count, overseas_unsellable_qty,
+        overseas_sellable_qty)
+        values (#{id,jdbcType=BIGINT}, #{parentSequenceNumber,jdbcType=VARCHAR}, #{productSku,jdbcType=VARCHAR},
+        #{productCnName,jdbcType=VARCHAR}, #{productEnName,jdbcType=VARCHAR}, #{boxNo,jdbcType=INTEGER},
+        #{quantityShipped,jdbcType=BIGINT}, #{transitPreCount,jdbcType=INTEGER},
+        #{transitReceivingCount,jdbcType=INTEGER},
+        #{overseasPreCount,jdbcType=INTEGER}, #{overseasReceivingCount,jdbcType=INTEGER},
+        #{overseasShelvesCount,jdbcType=INTEGER}, #{overseasUnsellableQty,jdbcType=INTEGER},
+        #{overseasSellableQty,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrantDetail">
+        insert into t_warehouse_warrant_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parentSequenceNumber != null">
+                parent_sequence_number,
+            </if>
+            <if test="productSku != null">
+                product_sku,
+            </if>
+            <if test="productCnName != null">
+                product_cn_name,
+            </if>
+            <if test="productEnName != null">
+                product_en_name,
+            </if>
+            <if test="boxNo != null">
+                box_no,
+            </if>
+            <if test="quantityShipped != null">
+                quantity_shipped,
+            </if>
+            <if test="transitPreCount != null">
+                transit_pre_count,
+            </if>
+            <if test="transitReceivingCount != null">
+                transit_receiving_count,
+            </if>
+            <if test="overseasPreCount != null">
+                overseas_pre_count,
+            </if>
+            <if test="overseasReceivingCount != null">
+                overseas_receiving_count,
+            </if>
+            <if test="overseasShelvesCount != null">
+                overseas_shelves_count,
+            </if>
+            <if test="overseasUnsellableQty != null">
+                overseas_unsellable_qty,
+            </if>
+            <if test="overseasSellableQty != null">
+                overseas_sellable_qty,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="parentSequenceNumber != null">
+                #{parentSequenceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="productSku != null">
+                #{productSku,jdbcType=VARCHAR},
+            </if>
+            <if test="productCnName != null">
+                #{productCnName,jdbcType=VARCHAR},
+            </if>
+            <if test="productEnName != null">
+                #{productEnName,jdbcType=VARCHAR},
+            </if>
+            <if test="boxNo != null">
+                #{boxNo,jdbcType=INTEGER},
+            </if>
+            <if test="quantityShipped != null">
+                #{quantityShipped,jdbcType=BIGINT},
+            </if>
+            <if test="transitPreCount != null">
+                #{transitPreCount,jdbcType=INTEGER},
+            </if>
+            <if test="transitReceivingCount != null">
+                #{transitReceivingCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasPreCount != null">
+                #{overseasPreCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasReceivingCount != null">
+                #{overseasReceivingCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasShelvesCount != null">
+                #{overseasShelvesCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasUnsellableQty != null">
+                #{overseasUnsellableQty,jdbcType=INTEGER},
+            </if>
+            <if test="overseasSellableQty != null">
+                #{overseasSellableQty,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrantDetail">
+        update t_warehouse_warrant_detail
+        <set>
+            <if test="parentSequenceNumber != null">
+                parent_sequence_number = #{parentSequenceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="productSku != null">
+                product_sku = #{productSku,jdbcType=VARCHAR},
+            </if>
+            <if test="productCnName != null">
+                product_cn_name = #{productCnName,jdbcType=VARCHAR},
+            </if>
+            <if test="productEnName != null">
+                product_en_name = #{productEnName,jdbcType=VARCHAR},
+            </if>
+            <if test="boxNo != null">
+                box_no = #{boxNo,jdbcType=INTEGER},
+            </if>
+            <if test="quantityShipped != null">
+                quantity_shipped = #{quantityShipped,jdbcType=BIGINT},
+            </if>
+            <if test="transitPreCount != null">
+                transit_pre_count = #{transitPreCount,jdbcType=INTEGER},
+            </if>
+            <if test="transitReceivingCount != null">
+                transit_receiving_count = #{transitReceivingCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasPreCount != null">
+                overseas_pre_count = #{overseasPreCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasReceivingCount != null">
+                overseas_receiving_count = #{overseasReceivingCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasShelvesCount != null">
+                overseas_shelves_count = #{overseasShelvesCount,jdbcType=INTEGER},
+            </if>
+            <if test="overseasUnsellableQty != null">
+                overseas_unsellable_qty = #{overseasUnsellableQty,jdbcType=INTEGER},
+            </if>
+            <if test="overseasSellableQty != null">
+                overseas_sellable_qty = #{overseasSellableQty,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrantDetail">
+        update t_warehouse_warrant_detail
+        set parent_sequence_number = #{parentSequenceNumber,jdbcType=VARCHAR},
+        product_sku = #{productSku,jdbcType=VARCHAR},
+        product_cn_name = #{productCnName,jdbcType=VARCHAR},
+        product_en_name = #{productEnName,jdbcType=VARCHAR},
+        box_no = #{boxNo,jdbcType=INTEGER},
+        quantity_shipped = #{quantityShipped,jdbcType=BIGINT},
+        transit_pre_count = #{transitPreCount,jdbcType=INTEGER},
+        transit_receiving_count = #{transitReceivingCount,jdbcType=INTEGER},
+        overseas_pre_count = #{overseasPreCount,jdbcType=INTEGER},
+        overseas_receiving_count = #{overseasReceivingCount,jdbcType=INTEGER},
+        overseas_shelves_count = #{overseasShelvesCount,jdbcType=INTEGER},
+        overseas_unsellable_qty = #{overseasUnsellableQty,jdbcType=INTEGER},
+        overseas_sellable_qty = #{overseasSellableQty,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.WarehouseWarrantDetail"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_warrant_detail
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="parentSequenceNumber != null and parentSequenceNumber != ''">
+                and parent_sequence_number = #{parentSequenceNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="productSku != null and productSku != ''">
+                and product_sku = #{productSku,jdbcType=VARCHAR}
+            </if>
+            <if test="productCnName != null and productCnName != ''">
+                and product_cn_name = #{productCnName,jdbcType=VARCHAR}
+            </if>
+            <if test="productEnName != null and productEnName != ''">
+                and product_en_name = #{productEnName,jdbcType=VARCHAR}
+            </if>
+            <if test="boxNo != null and boxNo != ''">
+                and box_no = #{boxNo,jdbcType=INTEGER}
+            </if>
+            <if test="quantityShipped != null and quantityShipped != ''">
+                and quantity_shipped = #{quantityShipped,jdbcType=BIGINT}
+            </if>
+            <if test="transitPreCount != null and transitPreCount != ''">
+                and transit_pre_count = #{transitPreCount,jdbcType=INTEGER}
+            </if>
+            <if test="transitReceivingCount != null and transitReceivingCount != ''">
+                and transit_receiving_count = #{transitReceivingCount,jdbcType=INTEGER}
+            </if>
+            <if test="overseasPreCount != null and overseasPreCount != ''">
+                and overseas_pre_count = #{overseasPreCount,jdbcType=INTEGER}
+            </if>
+            <if test="overseasReceivingCount != null and overseasReceivingCount != ''">
+                and overseas_receiving_count = #{overseasReceivingCount,jdbcType=INTEGER}
+            </if>
+            <if test="overseasShelvesCount != null and overseasShelvesCount != ''">
+                and overseas_shelves_count = #{overseasShelvesCount,jdbcType=INTEGER}
+            </if>
+            <if test="overseasUnsellableQty != null and overseasUnsellableQty != ''">
+                and overseas_unsellable_qty = #{overseasUnsellableQty,jdbcType=INTEGER}
+            </if>
+            <if test="overseasSellableQty != null and overseasSellableQty != ''">
+                and overseas_sellable_qty = #{overseasSellableQty,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertList" parameterType="java.util.Map">
+        insert into t_warehouse_warrant_detail
+        <!--        <foreach collection="listColumn" item="item" index="index" >-->
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="listColumn.id != null">
+                id,
+            </if>
+            <if test="listColumn.parentSequenceNumber != null">
+                parent_sequence_number,
+            </if>
+            <if test="listColumn.productSku != null">
+                product_sku,
+            </if>
+            <if test="listColumn.productCnName != null">
+                product_cn_name,
+            </if>
+            <if test="listColumn.productEnName != null">
+                product_en_name,
+            </if>
+            <if test="listColumn.boxNo != null">
+                box_no,
+            </if>
+            <if test="listColumn.quantityShipped != null">
+                quantity_shipped,
+            </if>
+            <if test="listColumn.transitPreCount != null">
+                transit_pre_count,
+            </if>
+            <if test="listColumn.transitReceivingCount != null">
+                transit_receiving_count,
+            </if>
+            <if test="listColumn.overseasPreCount != null">
+                overseas_pre_count,
+            </if>
+            <if test="listColumn.overseasReceivingCount != null">
+                overseas_receiving_count,
+            </if>
+            <if test="listColumn.overseasShelvesCount != null">
+                overseas_shelves_count,
+            </if>
+            <if test="listColumn.overseasUnsellableQty != null">
+                overseas_unsellable_qty,
+            </if>
+            <if test="listColumn.overseasSellableQty != null">
+                overseas_sellable_qty,
+            </if>
+        </trim>
+        <!--        </foreach>-->
+        values
+        <foreach collection="listData" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="item.id != null">
+                    #{item.id,jdbcType=BIGINT},
+                </if>
+                <if test="item.parentSequenceNumber != null">
+                    #{item.parentSequenceNumber,jdbcType=VARCHAR},
+                </if>
+                <if test="item.productSku != null">
+                    #{item.productSku,jdbcType=VARCHAR},
+                </if>
+                <if test="item.productCnName != null">
+                    #{item.productCnName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.productEnName != null">
+                    #{item.productEnName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.boxNo != null">
+                    #{item.boxNo,jdbcType=INTEGER},
+                </if>
+                <if test="item.quantityShipped != null">
+                    #{item.quantityShipped,jdbcType=BIGINT},
+                </if>
+                <if test="item.transitPreCount != null">
+                    #{item.transitPreCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.transitReceivingCount != null">
+                    #{item.transitReceivingCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.overseasPreCount != null">
+                    #{item.overseasPreCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.overseasReceivingCount != null">
+                    #{item.overseasReceivingCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.overseasShelvesCount != null">
+                    #{item.overseasShelvesCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.overseasUnsellableQty != null">
+                    #{item.overseasUnsellableQty,jdbcType=INTEGER},
+                </if>
+                <if test="item.overseasSellableQty != null">
+                    #{item.overseasSellableQty,jdbcType=INTEGER},
+                </if>
+            </trim>
+            <!--            (#{item.parentSequenceNumber,jdbcType=VARCHAR},-->
+            <!--            #{item.productSku,jdbcType=VARCHAR},-->
+            <!--            #{item.productCnName,jdbcType=VARCHAR},-->
+            <!--            #{item.productEnName,jdbcType=VARCHAR},-->
+            <!--            #{item.boxNo,jdbcType=INTEGER},-->
+            <!--            #{item.quantityShipped,jdbcType=BIGINT})-->
+        </foreach>
+    </insert>
+</mapper>

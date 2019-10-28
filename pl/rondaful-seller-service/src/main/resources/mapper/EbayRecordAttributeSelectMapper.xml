@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayRecordAttributeSelectMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayRecordAttributeSelect">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+        <result column="site" jdbcType="VARCHAR" property="site" />
+        <result column="pl_spu" jdbcType="VARCHAR" property="plSpu" />
+        <result column="attribute_val" jdbcType="VARCHAR" property="attributeVal" />
+        <result column="attribute_select_val" jdbcType="VARCHAR" property="attributeSelectVal" />
+        <result column="number_add" jdbcType="BIGINT" property="numberAdd" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, category_id, site, pl_spu, attribute_val, attribute_select_val, number_add, create_time, 
+        update_time, status
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_record_attribute_select
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from ebay_record_attribute_select
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayRecordAttributeSelect">
+        insert into ebay_record_attribute_select (id, category_id, site, 
+            pl_spu, attribute_val, attribute_select_val, 
+            number_add, create_time, update_time, 
+            status)
+        values (#{id,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, #{site,jdbcType=VARCHAR}, 
+            #{plSpu,jdbcType=VARCHAR}, #{attributeVal,jdbcType=VARCHAR}, #{attributeSelectVal,jdbcType=VARCHAR}, 
+            #{numberAdd,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{status,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayRecordAttributeSelect">
+        insert into ebay_record_attribute_select
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="site != null">
+                site,
+            </if>
+            <if test="plSpu != null">
+                pl_spu,
+            </if>
+            <if test="attributeVal != null">
+                attribute_val,
+            </if>
+            <if test="attributeSelectVal != null">
+                attribute_select_val,
+            </if>
+            <if test="numberAdd != null">
+                number_add,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=BIGINT},
+            </if>
+            <if test="site != null">
+                #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="plSpu != null">
+                #{plSpu,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeVal != null">
+                #{attributeVal,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeSelectVal != null">
+                #{attributeSelectVal,jdbcType=VARCHAR},
+            </if>
+            <if test="numberAdd != null">
+                #{numberAdd,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayRecordAttributeSelect">
+        update ebay_record_attribute_select
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=BIGINT},
+            </if>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="plSpu != null">
+                pl_spu = #{plSpu,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeVal != null">
+                attribute_val = #{attributeVal,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeSelectVal != null">
+                attribute_select_val = #{attributeSelectVal,jdbcType=VARCHAR},
+            </if>
+            <if test="numberAdd != null">
+                number_add = #{numberAdd,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayRecordAttributeSelect">
+        update ebay_record_attribute_select
+        set category_id = #{categoryId,jdbcType=BIGINT},
+            site = #{site,jdbcType=VARCHAR},
+            pl_spu = #{plSpu,jdbcType=VARCHAR},
+            attribute_val = #{attributeVal,jdbcType=VARCHAR},
+            attribute_select_val = #{attributeSelectVal,jdbcType=VARCHAR},
+            number_add = #{numberAdd,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayRecordAttributeSelect" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_record_attribute_select
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                 and category_id = #{categoryId,jdbcType=BIGINT}
+            </if>
+            <if test="site != null and site != ''">
+                 and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="plSpu != null and plSpu != ''">
+                 and pl_spu = #{plSpu,jdbcType=VARCHAR}
+            </if>
+            <if test="attributeVal != null and attributeVal != ''">
+                 and attribute_val = #{attributeVal,jdbcType=VARCHAR}
+            </if>
+            <if test="attributeSelectVal != null and attributeSelectVal != ''">
+                 and attribute_select_val = #{attributeSelectVal,jdbcType=VARCHAR}
+            </if>
+            <if test="numberAdd != null and numberAdd != ''">
+                 and number_add = #{numberAdd,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+</mapper>

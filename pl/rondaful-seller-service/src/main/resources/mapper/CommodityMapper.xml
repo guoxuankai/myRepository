@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.CommodityMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.Commodity">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="commodity_name" jdbcType="VARCHAR" property="commodityName" />
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, commodity_name, update_time, version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_commodity
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.Commodity">
+        insert into t_commodity (id, commodity_name, update_time, 
+            version)
+        values (#{id,jdbcType=BIGINT}, #{commodityName,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, 
+            #{version,jdbcType=BIGINT})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.Commodity">
+        insert into t_commodity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="commodityName != null">
+                commodity_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="commodityName != null">
+                #{commodityName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.Commodity">
+        update t_commodity
+        <set>
+            <if test="commodityName != null">
+                commodity_name = #{commodityName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.Commodity">
+        update t_commodity
+        set commodity_name = #{commodityName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=VARCHAR},
+            version = #{version,jdbcType=BIGINT} + 1
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.Commodity" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="commodityName != null">
+                 and commodity_name = #{commodityName,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null">
+                 and update_time = #{updateTime,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+</mapper>

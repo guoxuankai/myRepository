@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonPublishReportTimeMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AmazonPublishReportTime">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="publish_site" jdbcType="VARCHAR" property="publishSite" />
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId" />
+        <result column="merchant_id" jdbcType="VARCHAR" property="merchantId" />
+        <result column="report_time" jdbcType="TIMESTAMP" property="reportTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, publish_site, marketplace_id, merchant_id, report_time, create_time, update_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from amazon_publish_report_time
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from amazon_publish_report_time
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportTime">
+        insert into amazon_publish_report_time (id, publish_site, marketplace_id, 
+            merchant_id, report_time, create_time, 
+            update_time)
+        values (#{id,jdbcType=INTEGER}, #{publishSite,jdbcType=VARCHAR}, #{marketplaceId,jdbcType=VARCHAR}, 
+            #{merchantId,jdbcType=VARCHAR}, #{reportTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+            #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportTime">
+        insert into amazon_publish_report_time
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="publishSite != null">
+                publish_site,
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id,
+            </if>
+            <if test="merchantId != null">
+                merchant_id,
+            </if>
+            <if test="reportTime != null">
+                report_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="publishSite != null">
+                #{publishSite,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="merchantId != null">
+                #{merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="reportTime != null">
+                #{reportTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportTime">
+        update amazon_publish_report_time
+        <set>
+            <if test="publishSite != null">
+                publish_site = #{publishSite,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="merchantId != null">
+                merchant_id = #{merchantId,jdbcType=VARCHAR},
+            </if>
+            <if test="reportTime != null">
+                report_time = #{reportTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportTime">
+        update amazon_publish_report_time
+        set publish_site = #{publishSite,jdbcType=VARCHAR},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            merchant_id = #{merchantId,jdbcType=VARCHAR},
+            report_time = #{reportTime,jdbcType=TIMESTAMP},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishReportTime" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from amazon_publish_report_time
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="publishSite != null and publishSite != ''">
+                 and publish_site = #{publishSite,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null and marketplaceId != ''">
+                 and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="merchantId != null and merchantId != ''">
+                 and merchant_id = #{merchantId,jdbcType=VARCHAR}
+            </if>
+            <if test="reportTime != null and reportTime != ''">
+                 and report_time = #{reportTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+</mapper>

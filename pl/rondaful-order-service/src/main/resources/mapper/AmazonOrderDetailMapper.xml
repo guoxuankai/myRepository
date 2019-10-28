@@ -1,0 +1,942 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.AmazonOrderDetailMapper">
+
+    <!--根据SKU集合查询待转入或转入失败的亚马逊订单项集合 wujiachuang-->
+    <select id="selectAmazonOrderDetailBySkus" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_amazon_order_detail
+        where pl_process_sub_status in ('0','2')
+        AND platform_sku in
+        <foreach collection="platformSKUList" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 批量更新转换状态 wujiachuang-->
+    <update id="updateConvertStatusStatusBatch" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE tbl_amazon_order_detail
+            <set>
+                pl_process_sub_status = #{item.converSysStatus,jdbcType=TINYINT},
+            </set>
+            <where>
+                order_id = #{item.orderId}
+                and amazon_orderitem_id = #{item.orderItemId,jdbcType=VARCHAR}
+            </where>
+        </foreach>
+    </update>
+
+    <!--根据amazon订单项ID批量查询AmazonOrderDetail对象集合_ZJL（回传平台发货信息用） -->
+    <select id="queryBatchAmazonOrderDetailByOrderLineItemId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tbl_amazon_order_detail
+        where amazon_orderitem_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <!--根据订单ID查询订单项   wujiachuang-->
+    <select id="selectAmazonOrderDetail" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select    <include refid="Base_Column_List" />
+        from tbl_amazon_order_detail
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据订单ID查询订单项   wujiachuang-->
+    <select id="selectAmazonOrderItem" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select    <include refid="Base_Column_List" />
+        from tbl_amazon_order_detail
+        where amazon_orderitem_id = #{amazonOrderitemId,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据订单项ID更新发货信息-->
+    <update id="updateDeliverInfoByAmazonOrderItemId" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        update tbl_amazon_order_detail
+        <set>
+            <if test="shipmentTrackingNumber != null">
+                shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingMethod != null">
+                shipping_method = #{shippingMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierName!= null">
+                carrier_name = #{carrierName,jdbcType=VARCHAR},
+            </if>
+            <if test="markDeliverStatus != null">
+                mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where amazon_orderitem_id = #{amazonOrderitemId,jdbcType=INTEGER}
+    </update>
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="pl_seller_account" jdbcType="VARCHAR" property="plSellerAccount" />
+        <result column="amazon_seller_account" jdbcType="VARCHAR" property="amazonSellerAccount" />
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId" />
+        <result column="shipment_tracking_number" jdbcType="VARCHAR" property="shipmentTrackingNumber" />
+        <result column="shipping_method" jdbcType="VARCHAR" property="shippingMethod" />
+        <result column="carrier_name" jdbcType="VARCHAR" property="carrierName" />
+        <result column="mark_deliver_status" jdbcType="TINYINT" property="markDeliverStatus" />
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="amazon_orderitem_id" jdbcType="VARCHAR" property="amazonOrderitemId" />
+        <result column="asin" jdbcType="VARCHAR" property="asin" />
+        <result column="platform_sku" jdbcType="VARCHAR" property="platformSku" />
+        <result column="delivery_time" jdbcType="VARCHAR" property="deliveryTime" />
+        <result column="item_title" jdbcType="VARCHAR" property="itemTitle" />
+        <result column="item_currency_code" jdbcType="VARCHAR" property="itemCurrencyCode" />
+        <result column="item_price" jdbcType="DECIMAL" property="itemPrice" />
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="shipping_price" jdbcType="DECIMAL" property="shippingPrice" />
+        <result column="shipping_currency_code" jdbcType="VARCHAR" property="shippingCurrencyCode" />
+        <result column="condition_note" jdbcType="VARCHAR" property="conditionNote" />
+        <result column="pl_process_sub_status" jdbcType="TINYINT" property="plProcessSubStatus" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, pl_seller_account, amazon_seller_account, marketplace_id, shipment_tracking_number,shipping_method,carrier_name,
+        mark_deliver_status, order_id, amazon_orderitem_id, asin, platform_sku,delivery_time, item_title,
+        item_currency_code, item_price, quantity, shipping_price,
+        shipping_currency_code,
+        condition_note, pl_process_sub_status, create_date, update_date, remark
+    </sql>
+    <!--批量插入-->
+    <update id="insertBulk" parameterType="java.util.ArrayList">
+        insert into tbl_amazon_order_detail
+        <trim prefix=" (" suffix=")" >
+            pl_seller_account, amazon_seller_account, marketplace_id, shipment_tracking_number,shipping_method,carrier_name,
+            mark_deliver_status, order_id, amazon_orderitem_id, asin, platform_sku,delivery_time, item_title,
+            item_currency_code, item_price, quantity, shipping_price,
+            shipping_currency_code,
+            condition_note, pl_process_sub_status, create_date, update_date, remark
+        </trim>
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.plSellerAccount,jdbcType=VARCHAR},
+            #{item.amazonSellerAccount,jdbcType=VARCHAR},
+            #{item.marketplaceId,jdbcType=VARCHAR},
+            #{item.shipmentTrackingNumber,jdbcType=VARCHAR},
+            #{item.shippingMethod,jdbcType=VARCHAR},
+            #{item.carrierName,jdbcType=VARCHAR},
+            #{item.markDeliverStatus,jdbcType=TINYINT},
+            #{item.orderId,jdbcType=VARCHAR},
+            #{item.amazonOrderitemId,jdbcType=VARCHAR},
+            #{item.asin,jdbcType=VARCHAR},
+            #{item.platformSku,jdbcType=VARCHAR},
+            #{item.deliveryTime,jdbcType=VARCHAR},
+            #{item.itemTitle,jdbcType=VARCHAR},
+            #{item.itemCurrencyCode,jdbcType=VARCHAR},
+            #{item.itemPrice,jdbcType=DECIMAL},
+            #{item.quantity,jdbcType=INTEGER},
+            #{item.shippingPrice,jdbcType=DECIMAL},
+            #{item.shippingCurrencyCode,jdbcType=VARCHAR},
+            #{item.conditionNote,jdbcType=VARCHAR},
+            #{item.plProcessSubStatus,jdbcType=TINYINT},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateDate,jdbcType=TIMESTAMP},
+            #{item.remark,jdbcType=VARCHAR}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        item_title=values(item_title)
+    </update>
+
+    <!--更改成  成功的标记发货状态-->
+    <update id="updateMarkStatusSuccessful">
+        update tbl_amazon_order_detail
+        set mark_deliver_status = 1
+        where amazon_orderitem_id=#{orderItemId,jdbcType=VARCHAR}
+        and order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+    <!--更改发货标记状态为失败-->
+    <update id="updateMarkStatusFail">
+        update tbl_amazon_order_detail
+        set mark_deliver_status = 2
+        where amazon_orderitem_id=#{orderItemId,jdbcType=VARCHAR}
+        and order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tbl_amazon_order_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAmazonItemASINList" resultType="java.lang.String" parameterType="java.lang.String" >
+        select asin
+         from tbl_amazon_order_detail
+         where   marketplace_id =  #{marketPlaceId,jdbcType=VARCHAR}
+        and pl_seller_account =  #{plSellerAccount,jdbcType=VARCHAR}
+         <![CDATA[ and create_date  >  #{time}  ]]>
+    </select>
+
+    <update id="updatePlProcessStatus" >
+        update tbl_amazon_order_detail
+        <set>
+            <if test="converSysDetailStatus != null">
+                pl_process_sub_status = #{converSysDetailStatus,jdbcType=TINYINT}
+            </if>
+        </set>
+        where amazon_orderitem_id=#{sourceOrderLineItemId,jdbcType=VARCHAR}
+    </update>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tbl_amazon_order_detail
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        insert into tbl_amazon_order_detail (id, pl_seller_account, amazon_seller_account,
+            marketplace_id, shipment_tracking_number,shipping_method,carrier_name,
+            mark_deliver_status, order_id, amazon_orderitem_id,
+            asin, platform_sku, delivery_time,item_title,
+            item_currency_code, item_price, quantity,
+            shipping_price, shipping_currency_code,
+            condition_note, pl_process_sub_status, create_date,
+            update_date, remark)
+        values (#{id,jdbcType=INTEGER}, #{plSellerAccount,jdbcType=VARCHAR}, #{amazonSellerAccount,jdbcType=VARCHAR},
+            #{marketplaceId,jdbcType=VARCHAR}, #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            #{shippingMethod,jdbcType=VARCHAR},#{carrierName,jdbcType=VARCHAR},
+            #{markDeliverStatus,jdbcType=TINYINT}, #{orderId,jdbcType=VARCHAR}, #{amazonOrderitemId,jdbcType=VARCHAR},
+            #{asin,jdbcType=VARCHAR}, #{platformSku,jdbcType=VARCHAR},
+            #{deliveryTime,jdbcType=VARCHAR}, #{itemTitle,jdbcType=VARCHAR},
+            #{itemCurrencyCode,jdbcType=VARCHAR}, #{itemPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER},
+            #{shippingPrice,jdbcType=DECIMAL}, #{shippingCurrencyCode,jdbcType=VARCHAR},
+            #{conditionNote,jdbcType=VARCHAR}, #{plProcessSubStatus,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP},
+            #{updateDate,jdbcType=TIMESTAMP},  #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        insert into tbl_amazon_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="plSellerAccount != null">
+                pl_seller_account,
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account,
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id,
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                shipment_tracking_number,
+            </if>
+            <if test="shippingMethod != null">
+                shipping_method,
+            </if>
+            <if test="carrierName != null">
+                carrier_name,
+            </if>
+            <if test="markDeliverStatus != null">
+                mark_deliver_status,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="amazonOrderitemId != null">
+                amazon_orderitem_id,
+            </if>
+            <if test="asin != null">
+                asin,
+            </if>
+            <if test="platformSku != null">
+                platform_sku,
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time,
+            </if>
+            <if test="itemTitle != null">
+                item_title,
+            </if>
+            <if test="itemCurrencyCode != null">
+                item_currency_code,
+            </if>
+            <if test="itemPrice != null">
+                item_price,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="shippingPrice != null">
+                shipping_price,
+            </if>
+            <if test="shippingCurrencyCode != null">
+                shipping_currency_code,
+            </if>
+            <if test="conditionNote != null">
+                condition_note,
+            </if>
+            <if test="plProcessSubStatus != null">
+                pl_process_sub_status,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="plSellerAccount != null">
+                #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingMethod != null">
+                #{shippingMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierName != null">
+                #{carrierName,jdbcType=VARCHAR},
+            </if>
+            <if test="markDeliverStatus != null">
+                #{markDeliverStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonOrderitemId != null">
+                #{amazonOrderitemId,jdbcType=VARCHAR},
+            </if>
+            <if test="asin != null">
+                #{asin,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSku != null">
+                #{platformSku,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                #{deliveryTime,,jdbcType=VARCHAR},
+            </if>
+            <if test="itemTitle != null">
+                #{itemTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCurrencyCode != null">
+                #{itemCurrencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="itemPrice != null">
+                #{itemPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="shippingPrice != null">
+                #{shippingPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="shippingCurrencyCode != null">
+                #{shippingCurrencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="conditionNote != null">
+                #{conditionNote,jdbcType=VARCHAR},
+            </if>
+            <if test="plProcessSubStatus != null">
+                #{plProcessSubStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        asin=values(asin)
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        update tbl_amazon_order_detail
+        <set>
+            <if test="plSellerAccount != null">
+                pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingMethod != null">
+                shipping_method = #{shippingMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierName != null">
+                carrier_name= #{carrierName,jdbcType=VARCHAR},
+            </if>
+            <if test="markDeliverStatus != null">
+                mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonOrderitemId != null">
+                amazon_orderitem_id = #{amazonOrderitemId,jdbcType=VARCHAR},
+            </if>
+            <if test="asin != null">
+                asin = #{asin,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSku != null">
+                platform_sku = #{platformSku,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+            </if>
+            <if test="itemTitle != null">
+                item_title = #{itemTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCurrencyCode != null">
+                item_currency_code = #{itemCurrencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="itemPrice != null">
+                item_price = #{itemPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="shippingPrice != null">
+                shipping_price = #{shippingPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="shippingCurrencyCode != null">
+                shipping_currency_code = #{shippingCurrencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="conditionNote != null">
+                condition_note = #{conditionNote,jdbcType=VARCHAR},
+            </if>
+            <if test="plProcessSubStatus != null">
+                pl_process_sub_status = #{plProcessSubStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        update tbl_amazon_order_detail
+        set pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            shipping_method = #{shippingMethod,jdbcType=VARCHAR},
+            carrier_name = #{carrierName,jdbcType=VARCHAR},
+            mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT},
+            order_id = #{orderId,jdbcType=VARCHAR},
+            amazon_orderitem_id = #{amazonOrderitemId,jdbcType=VARCHAR},
+            asin = #{asin,jdbcType=VARCHAR},
+            platform_sku = #{platformSku,jdbcType=VARCHAR},
+            delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+            item_title = #{itemTitle,jdbcType=VARCHAR},
+            item_currency_code = #{itemCurrencyCode,jdbcType=VARCHAR},
+            item_price = #{itemPrice,jdbcType=DECIMAL},
+            quantity = #{quantity,jdbcType=INTEGER},
+            shipping_price = #{shippingPrice,jdbcType=DECIMAL},
+            shipping_currency_code = #{shippingCurrencyCode,jdbcType=VARCHAR},
+            condition_note = #{conditionNote,jdbcType=VARCHAR},
+            pl_process_sub_status = #{plProcessSubStatus,jdbcType=TINYINT},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            remark = #{remark,jdbcType=VARCHAR},
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tbl_amazon_order_detail
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="plSellerAccount != null">
+                and pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="amazonSellerAccount != null">
+                and amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null">
+                and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                and shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="shippingMethod != null">
+                and shipping_method = #{shippingMethod,jdbcType=VARCHAR}
+            </if>
+            <if test="carrierName != null">
+                and carrier_name = #{carrierName,jdbcType=VARCHAR}
+            </if>
+            <if test="markDeliverStatus != null">
+                and mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT}
+            </if>
+            <if test="orderId != null">
+                and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="amazonOrderitemId != null">
+                and amazon_orderitem_id = #{amazonOrderitemId,jdbcType=VARCHAR}
+            </if>
+            <if test="asin != null">
+                and asin = #{asin,jdbcType=VARCHAR}
+            </if>
+            <if test="platformSku != null">
+                and platform_sku = #{platformSku,jdbcType=VARCHAR}
+            </if>
+            <if test="deliveryTime != null">
+                and delivery_time = #{deliveryTime,jdbcType=VARCHAR}
+            </if>
+            <if test="itemTitle != null">
+                and item_title = #{itemTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="itemCurrencyCode != null">
+                and item_currency_code = #{itemCurrencyCode,jdbcType=VARCHAR}
+            </if>
+            <if test="itemPrice != null">
+                and item_price = #{itemPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="quantity != null">
+                and quantity = #{quantity,jdbcType=INTEGER}
+            </if>
+            <if test="shippingPrice != null">
+                and shipping_price = #{shippingPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="shippingCurrencyCode != null">
+                and shipping_currency_code = #{shippingCurrencyCode,jdbcType=VARCHAR}
+            </if>
+            <if test="conditionNote != null">
+                and condition_note = #{conditionNote,jdbcType=VARCHAR}
+            </if>
+            <if test="plProcessSubStatus != null">
+                and pl_process_sub_status = #{plProcessSubStatus,jdbcType=TINYINT}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateDate != null">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="remark != null">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+</mapper>
+
+
+
+
+
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.AmazonOrderDetailMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="pl_seller_account" jdbcType="VARCHAR" property="plSellerAccount" />
+        <result column="amazon_seller_account" jdbcType="VARCHAR" property="amazonSellerAccount" />
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId" />
+        <result column="shipment_tracking_number" jdbcType="VARCHAR" property="shipmentTrackingNumber" />
+        <result column="mark_deliver_status" jdbcType="TINYINT" property="markDeliverStatus" />
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="amazon_orderitem_id" jdbcType="VARCHAR" property="amazonOrderitemId" />
+        <result column="asin" jdbcType="VARCHAR" property="asin" />
+        <result column="platform_sku" jdbcType="VARCHAR" property="platformSku" />
+        <result column="item_title" jdbcType="VARCHAR" property="itemTitle" />
+        <result column="item_currency_code" jdbcType="VARCHAR" property="itemCurrencyCode" />
+        <result column="item_price" jdbcType="DECIMAL" property="itemPrice" />
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="shipping_price" jdbcType="DECIMAL" property="shippingPrice" />
+        <result column="shipping_currency_code" jdbcType="VARCHAR" property="shippingCurrencyCode" />
+        <result column="condition_note" jdbcType="VARCHAR" property="conditionNote" />
+        <result column="pl_process_sub_status" jdbcType="TINYINT" property="plProcessSubStatus" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, pl_seller_account, amazon_seller_account, marketplace_id, shipment_tracking_number, 
+        mark_deliver_status, order_id, amazon_orderitem_id, asin, platform_sku, item_title, 
+        item_currency_code, item_price, quantity, shipping_price, shipping_currency_code, 
+        condition_note, pl_process_sub_status, create_date, update_date
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tbl_amazon_order_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAmazonItemASINList" resultType="java.lang.String" parameterType="java.lang.String">
+        select asin
+         from tbl_amazon_order_detail
+         where   <![CDATA[  create_date  >=  #{time}  ]]>
+        and marketplace_id =  #{marketPlaceId,jdbcType=VARCHAR}
+        and pl_seller_account =  #{plSellerAccount,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updatePlProcessStatus" >
+        update tbl_amazon_order_detail
+        <set>
+            <if test="converSysDetailStatus != null">
+                pl_process_sub_status = #{converSysDetailStatus,jdbcType=TINYINT}
+            </if>
+        </set>
+        where amazon_orderitem_id=#{sourceOrderLineItemId,jdbcType=VARCHAR}
+    </update>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tbl_amazon_order_detail
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        insert into tbl_amazon_order_detail (id, pl_seller_account, amazon_seller_account, 
+            marketplace_id, shipment_tracking_number, 
+            mark_deliver_status, order_id, amazon_orderitem_id, 
+            asin, platform_sku, item_title, 
+            item_currency_code, item_price, quantity, 
+            shipping_price, shipping_currency_code, 
+            condition_note, pl_process_sub_status, create_date, 
+            update_date)
+        values (#{id,jdbcType=INTEGER}, #{plSellerAccount,jdbcType=VARCHAR}, #{amazonSellerAccount,jdbcType=VARCHAR}, 
+            #{marketplaceId,jdbcType=VARCHAR}, #{shipmentTrackingNumber,jdbcType=VARCHAR}, 
+            #{markDeliverStatus,jdbcType=TINYINT}, #{orderId,jdbcType=VARCHAR}, #{amazonOrderitemId,jdbcType=VARCHAR}, 
+            #{asin,jdbcType=VARCHAR}, #{platformSku,jdbcType=VARCHAR}, #{itemTitle,jdbcType=VARCHAR}, 
+            #{itemCurrencyCode,jdbcType=VARCHAR}, #{itemPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, 
+            #{shippingPrice,jdbcType=DECIMAL}, #{shippingCurrencyCode,jdbcType=VARCHAR}, 
+            #{conditionNote,jdbcType=VARCHAR}, #{plProcessSubStatus,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, 
+            #{updateDate,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        insert into tbl_amazon_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="plSellerAccount != null">
+                pl_seller_account,
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account,
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id,
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                shipment_tracking_number,
+            </if>
+            <if test="markDeliverStatus != null">
+                mark_deliver_status,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="amazonOrderitemId != null">
+                amazon_orderitem_id,
+            </if>
+            <if test="asin != null">
+                asin,
+            </if>
+            <if test="platformSku != null">
+                platform_sku,
+            </if>
+            <if test="itemTitle != null">
+                item_title,
+            </if>
+            <if test="itemCurrencyCode != null">
+                item_currency_code,
+            </if>
+            <if test="itemPrice != null">
+                item_price,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="shippingPrice != null">
+                shipping_price,
+            </if>
+            <if test="shippingCurrencyCode != null">
+                shipping_currency_code,
+            </if>
+            <if test="conditionNote != null">
+                condition_note,
+            </if>
+            <if test="plProcessSubStatus != null">
+                pl_process_sub_status,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="plSellerAccount != null">
+                #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="markDeliverStatus != null">
+                #{markDeliverStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonOrderitemId != null">
+                #{amazonOrderitemId,jdbcType=VARCHAR},
+            </if>
+            <if test="asin != null">
+                #{asin,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSku != null">
+                #{platformSku,jdbcType=VARCHAR},
+            </if>
+            <if test="itemTitle != null">
+                #{itemTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCurrencyCode != null">
+                #{itemCurrencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="itemPrice != null">
+                #{itemPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="shippingPrice != null">
+                #{shippingPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="shippingCurrencyCode != null">
+                #{shippingCurrencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="conditionNote != null">
+                #{conditionNote,jdbcType=VARCHAR},
+            </if>
+            <if test="plProcessSubStatus != null">
+                #{plProcessSubStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        update tbl_amazon_order_detail
+        <set>
+            <if test="plSellerAccount != null">
+                pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="markDeliverStatus != null">
+                mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonOrderitemId != null">
+                amazon_orderitem_id = #{amazonOrderitemId,jdbcType=VARCHAR},
+            </if>
+            <if test="asin != null">
+                asin = #{asin,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSku != null">
+                platform_sku = #{platformSku,jdbcType=VARCHAR},
+            </if>
+            <if test="itemTitle != null">
+                item_title = #{itemTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCurrencyCode != null">
+                item_currency_code = #{itemCurrencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="itemPrice != null">
+                item_price = #{itemPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="shippingPrice != null">
+                shipping_price = #{shippingPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="shippingCurrencyCode != null">
+                shipping_currency_code = #{shippingCurrencyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="conditionNote != null">
+                condition_note = #{conditionNote,jdbcType=VARCHAR},
+            </if>
+            <if test="plProcessSubStatus != null">
+                pl_process_sub_status = #{plProcessSubStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail">
+        update tbl_amazon_order_detail
+        set pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT},
+            order_id = #{orderId,jdbcType=VARCHAR},
+            amazon_orderitem_id = #{amazonOrderitemId,jdbcType=VARCHAR},
+            asin = #{asin,jdbcType=VARCHAR},
+            platform_sku = #{platformSku,jdbcType=VARCHAR},
+            item_title = #{itemTitle,jdbcType=VARCHAR},
+            item_currency_code = #{itemCurrencyCode,jdbcType=VARCHAR},
+            item_price = #{itemPrice,jdbcType=DECIMAL},
+            quantity = #{quantity,jdbcType=INTEGER},
+            shipping_price = #{shippingPrice,jdbcType=DECIMAL},
+            shipping_currency_code = #{shippingCurrencyCode,jdbcType=VARCHAR},
+            condition_note = #{conditionNote,jdbcType=VARCHAR},
+            pl_process_sub_status = #{plProcessSubStatus,jdbcType=TINYINT},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            update_date = #{updateDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonOrderDetail" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tbl_amazon_order_detail
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="plSellerAccount != null">
+                 and pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="amazonSellerAccount != null">
+                 and amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null">
+                 and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                 and shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="markDeliverStatus != null">
+                 and mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT}
+            </if>
+            <if test="orderId != null">
+                 and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="amazonOrderitemId != null">
+                 and amazon_orderitem_id = #{amazonOrderitemId,jdbcType=VARCHAR}
+            </if>
+            <if test="asin != null">
+                 and asin = #{asin,jdbcType=VARCHAR}
+            </if>
+            <if test="platformSku != null">
+                 and platform_sku = #{platformSku,jdbcType=VARCHAR}
+            </if>
+            <if test="itemTitle != null">
+                 and item_title = #{itemTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="itemCurrencyCode != null">
+                 and item_currency_code = #{itemCurrencyCode,jdbcType=VARCHAR}
+            </if>
+            <if test="itemPrice != null">
+                 and item_price = #{itemPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="quantity != null">
+                 and quantity = #{quantity,jdbcType=INTEGER}
+            </if>
+            <if test="shippingPrice != null">
+                 and shipping_price = #{shippingPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="shippingCurrencyCode != null">
+                 and shipping_currency_code = #{shippingCurrencyCode,jdbcType=VARCHAR}
+            </if>
+            <if test="conditionNote != null">
+                 and condition_note = #{conditionNote,jdbcType=VARCHAR}
+            </if>
+            <if test="plProcessSubStatus != null">
+                 and pl_process_sub_status = #{plProcessSubStatus,jdbcType=TINYINT}
+            </if>
+            <if test="createDate != null">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateDate != null">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+</mapper>-->

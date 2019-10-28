@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.ProviderMapper">
+    <resultMap id="BaseResultMapUser" type="com.rondaful.cloud.user.entity.User">
+        <id column="user_id" jdbcType="INTEGER" property="userid" />
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+        <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+        <result column="enabled" jdbcType="VARCHAR" property="enabled" />
+        <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="employee_id" jdbcType="VARCHAR" property="employeeId" />
+        <result column="org_id" jdbcType="VARCHAR" property="orgId" />
+        <result column="platform_type" jdbcType="INTEGER" property="platformType" />
+        <result column="closed_circle" jdbcType="INTEGER" property="closedCircle" />
+        <result column="linkman" jdbcType="VARCHAR" property="linkman" />
+        <result column="site" jdbcType="VARCHAR" property="site" />
+        <result column="supply_chain_company" jdbcType="VARCHAR" property="supplyChainCompany" />
+        <result column="image_site" jdbcType="VARCHAR" property="imageSite" />
+        <result column="company_name_user" jdbcType="VARCHAR" property="companyNameUser" />
+        <result column="qq" jdbcType="VARCHAR" property="qq" />
+        <result column="postcode" jdbcType="VARCHAR" property="postcode" />
+    </resultMap>
+
+  <sql id="Base_Column_List">
+    user_id, parent_id, username,
+      phone, mobile, email, status,      
+     	 del_flag, login_name, enabled, remarks, create_date, update_date,  
+     		 employee_id, org_id, platform_type,closed_circle,linkman,site,supply_chain_company,image_site,company_name_user,qq,postcode
+  </sql>
+
+    <!-- 根据用户名或者id获取对应的供应链信息 -->
+    <select id="getSupplyChinByUserIdOrUsername" parameterType="java.util.Map" resultType="com.rondaful.cloud.user.controller.model.provider.GetSupplyChinByUserIdOrUsername">
+        select
+          s.user_id as supplyId,
+          s.company_name_user as supplyUsername
+        from
+          <if test="platformType == 0">sys_supplier_user</if>
+          <if test="platformType == 1">sys_seller_user</if> u
+        join sys_supply_chain_user s on( u.supply_chain_company = s.user_id )
+        <where>
+            <choose>
+                <when test="userid != null and username != null">
+                    u.user_id = #{userid} and u.username = #{username}
+                </when>
+                <otherwise>
+                    <if test="userid != null">u.user_id = #{userid}</if>
+                    <if test="username != null">u.username = #{username}</if>
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!-- 根据穿入用户id找到与其绑定的供应链公司 -->
+    <select id="getSupplyChainByUserId" parameterType="java.util.Map" resultType="com.rondaful.cloud.user.entity.GetSupplyChainByUserId">
+        select
+          sy.user_id as supplyId,
+          sy.company_name_user as supplyChainCompanyName,
+          uy.user_id as userId
+        from sys_supply_chain_user sy join sys_user_supplychain_and uy on (uy.supplychaincompany_id = sy.user_id)
+        <where>
+            <if test="platformtype != null">uy.platform_type = #{platformtype}</if>
+            <if test="userIdList != null">
+                and uy.user_id in <foreach collection="userIdList" item="userIdList" separator="," index="index" open="(" close=")">#{userIdList}</foreach>
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据供应商公司名称获取对应的用户id -->
+   <select id="getSupplierUserIdByCompanyName"  resultType="java.lang.Integer">
+      select user_id from sys_supplier_user where supply_chain_company in
+      ( <foreach collection="list" item="companyName" index="index" separator=",">#{companyName}</foreach> )
+   </select>
+
+    <!-- 根据公司名称获取供应商名称(主账户) -->
+    <select id="getUserNameByCompanyName" resultType="java.lang.String" >
+        select username from sys_supplier_user where company_name_user in
+        	(<foreach collection="list" item="companyName" index="index" separator=",">#{companyName}</foreach>)  
+        		and parent_id is null
+    </select>
+
+  <!-- 获取供应商公司名称 -->
+  <select id="getSupplierName" resultType="java.lang.String">
+  	select company_name_user from sys_supplier_user where platform_type = #{platformType, jdbcType=INTEGER}
+  </select>
+  
+  <!-- 获取注册供应商数据 -->
+  <select id="getUserByPlatformType" resultMap="BaseResultMapUser">
+  	select 
+  		<include refid="Base_Column_List"/>
+  			from sys_supplier_user where platform_type = #{platformType,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 接收List供应商id获取供应商数据 -->
+  <select id="getSupplierUserList" parameterType="java.util.Map" resultMap="BaseResultMapUser" >
+  	select 
+  		<include refid="Base_Column_List" />
+  	from
+      <if test="platformType == 0">sys_supplier_user</if>
+      <if test="platformType == 1">sys_seller_user</if>
+      <if test="platformType == 2">sys_manage_user</if>
+    <where>
+        <if test="userIds != null">user_id in  (<foreach collection="userIds" item="userIds" index= "index"  separator="," >#{userIds}</foreach>)</if>
+    </where>
+  </select>
+ 
+ <!-- 根据平台类型获取用户信息 -->
+ <select id="getUserInfoByPlatformType"  resultMap="BaseResultMapGetUserInfoXie">
+ 	select user_id,username,platform_type from
+     <if test="platformType != null">
+     <if test="platformType == 0">sys_supplier_user </if>
+     <if test="platformType == 1">sys_seller_user </if>
+     </if>
+     <if test="platformType02 != null">
+         sys_supplier_user where parent_id is null
+         union all
+         select user_id,username,platform_type from sys_seller_user where parent_id is null
+     </if>
+ </select>
+
+    <!-- 接收List供应商id获取供应商数据===>根据id找到对应的用户 -->
+    <select id="selectUserByUserIdProvider" resultMap="BaseResultMapUser">
+          select <include refid="Base_Column_List"/> from sys_supplier_user
+          <where>
+              <if test="userId != null">user_id = #{userId}</if>
+          </where>
+    </select>
+
+    <!-- 管理后台用户下拉列表 -->
+    <select id="getManageUsernameList" resultType="java.lang.String">
+        select username from sys_manage_user
+    </select>
+
+    <!-- 财务调用验证绑定银行卡接口 -->
+    <select id="financialCallVerificationBindBankCard" parameterType="java.lang.Integer" resultType="com.rondaful.cloud.user.controller.model.provider.FinancialVerifyBean">
+        select
+            legalperson_name as username,
+            legalperson_identitycard as legalpersonIdentitycard
+        from sys_supplier_companyinfo
+        <where>
+            <if test="userId != null">user_id = #{userId}</if>
+        </where>
+    </select>
+
+
+    <resultMap id="BaseResultMapGetUserInfoXie" type="com.rondaful.cloud.user.entity.ChileUserListRequest">
+        <id column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="username" jdbcType="VARCHAR" property="userName" />
+        <result column="platform_type" jdbcType="INTEGER" property="platformType" />
+    </resultMap>
+ 
+</mapper>

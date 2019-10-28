@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.ThirdAppMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.ThirdApp">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="app_name" jdbcType="VARCHAR" property="appName" />
+        <result column="app_key" jdbcType="VARCHAR" property="appKey" />
+        <result column="app_token" jdbcType="VARCHAR" property="appToken" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="frequency_astrict" jdbcType="VARCHAR" property="frequencyAstrict" />
+        <result column="ip" jdbcType="VARCHAR" property="ip" />
+        <result column="vserion" jdbcType="INTEGER" property="vserion" />
+        <result column="role_back" jdbcType="VARCHAR" property="roleBack" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, app_name, app_key, app_token, status, frequency_astrict, ip, vserion,role_back
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_third_app
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_third_app
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.ThirdApp" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into t_third_app (id, app_name, app_key, 
+            app_token, status, frequency_astrict, 
+            ip, vserion,role_back)
+        values (#{id,jdbcType=INTEGER}, #{appName,jdbcType=VARCHAR}, #{appKey,jdbcType=VARCHAR}, 
+            #{appToken,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{frequencyAstrict,jdbcType=VARCHAR}, 
+            #{ip,jdbcType=VARCHAR}, #{vserion,jdbcType=INTEGER}, #{roleBack,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.ThirdApp">
+        insert into t_third_app
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="appName != null">
+                app_name,
+            </if>
+            <if test="appKey != null">
+                app_key,
+            </if>
+            <if test="appToken != null">
+                app_token,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="frequencyAstrict != null">
+                frequency_astrict,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="vserion != null">
+                vserion,
+            </if>
+            <if test="roleBack != null">
+                role_back,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="appName != null">
+                #{appName,jdbcType=VARCHAR},
+            </if>
+            <if test="appKey != null">
+                #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="appToken != null">
+                #{appToken,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="frequencyAstrict != null">
+                #{frequencyAstrict,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="vserion != null">
+                #{vserion,jdbcType=INTEGER},
+            </if>
+            <if test="roleBack != null">
+                #{roleBack,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.ThirdApp">
+        update t_third_app
+        <set>
+            <if test="appName != null">
+                app_name = #{appName,jdbcType=VARCHAR},
+            </if>
+            <if test="appKey != null">
+                app_key = #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="appToken != null">
+                app_token = #{appToken,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="frequencyAstrict != null">
+                frequency_astrict = #{frequencyAstrict,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="vserion != null">
+                vserion = #{vserion,jdbcType=INTEGER},
+            </if>
+            <if test="roleBack != null">
+                role_back = #{roleBack,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where app_key = #{appKey,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.ThirdApp">
+        update t_third_app
+        set app_name = #{appName,jdbcType=VARCHAR},
+            app_key = #{appKey,jdbcType=VARCHAR},
+            app_token = #{appToken,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            frequency_astrict = #{frequencyAstrict,jdbcType=VARCHAR},
+            ip = #{ip,jdbcType=VARCHAR},
+            vserion = #{vserion,jdbcType=INTEGER},
+            role_back = #{roleBack,jdbcType=INTEGER},
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.ThirdApp" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_third_app
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="appName != null and appName != ''">
+                 and app_name = #{appName,jdbcType=VARCHAR}
+            </if>
+            <if test="appKey != null and appKey != ''">
+                 and app_key = #{appKey,jdbcType=VARCHAR}
+            </if>
+            <if test="appToken != null and appToken != ''">
+                 and app_token = #{appToken,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="frequencyAstrict != null and frequencyAstrict != ''">
+                 and frequency_astrict = #{frequencyAstrict,jdbcType=VARCHAR}
+            </if>
+            <if test="ip != null and ip != ''">
+                 and ip = #{ip,jdbcType=VARCHAR}
+            </if>
+            <if test="vserion != null and vserion != ''">
+                 and vserion = #{vserion,jdbcType=INTEGER}
+            </if>
+            <if test="roleBack != null and roleBack != ''">
+                and role_back = #{roleBack,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+    <select id="getsPage" parameterType="com.rondaful.cloud.user.entity.ThirdApp" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_third_app
+        <trim prefix="where" prefixOverrides="and">
+            
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+    <select id="getByAppKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_third_app
+        <trim prefix="where" prefixOverrides="and">
+            <if test="appKey != null and appKey != ''">
+                 and app_key = #{appKey,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getsById"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_third_app where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

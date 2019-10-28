@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.LogisticsMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.Logistics.Logistics">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="name_en" jdbcType="VARCHAR" property="nameEn" />
+        <result column="sp_code" jdbcType="VARCHAR" property="spCode" />
+        <result column="sp_name" jdbcType="VARCHAR" property="spName" />
+        <result column="sp_name_en" jdbcType="VARCHAR" property="spNameEn" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, warehouse_id, code, `status`, `name`, name_en, sp_code, sp_name, sp_name_en, version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_logistics
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_logistics
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.Logistics.Logistics">
+        insert into t_logistics (id, warehouse_id, code, 
+            `status`, `name`, name_en, 
+            sp_code, sp_name, sp_name_en, version)
+        values (#{id,jdbcType=INTEGER}, #{warehouseId,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{nameEn,jdbcType=VARCHAR}, 
+            #{spCode,jdbcType=VARCHAR}, #{spName,jdbcType=VARCHAR}, #{spNameEn,jdbcType=VARCHAR}, 
+            #{version,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.Logistics.Logistics">
+        insert into t_logistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="nameEn != null">
+                name_en,
+            </if>
+            <if test="spCode != null">
+                sp_code,
+            </if>
+            <if test="spName != null">
+                sp_name,
+            </if>
+            <if test="spNameEn != null">
+                sp_name_en,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nameEn != null">
+                #{nameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="spCode != null">
+                #{spCode,jdbcType=VARCHAR},
+            </if>
+            <if test="spName != null">
+                #{spName,jdbcType=VARCHAR},
+            </if>
+            <if test="spNameEn != null">
+                #{spNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.Logistics.Logistics">
+        update t_logistics
+        <set>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nameEn != null">
+                name_en = #{nameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="spCode != null">
+                sp_code = #{spCode,jdbcType=VARCHAR},
+            </if>
+            <if test="spName != null">
+                sp_name = #{spName,jdbcType=VARCHAR},
+            </if>
+            <if test="spNameEn != null">
+                sp_name_en = #{spNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.Logistics.Logistics">
+        update t_logistics
+        set warehouse_id = #{warehouseId,jdbcType=INTEGER},
+            code = #{code,jdbcType=VARCHAR},
+            `status` = #{status,jdbcType=INTEGER},
+            `name` = #{name,jdbcType=VARCHAR},
+            name_en = #{nameEn,jdbcType=VARCHAR},
+            sp_code = #{spCode,jdbcType=VARCHAR},
+            sp_name = #{spName,jdbcType=VARCHAR},
+            sp_name_en = #{spNameEn,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.Logistics.Logistics" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_logistics
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="warehouseId != null and warehouseId != ''">
+                 and warehouse_id = #{warehouseId,jdbcType=INTEGER}
+            </if>
+            <if test="code != null and code != ''">
+                 and code = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and `status` = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="name != null and name != ''">
+                 and `name` = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="nameEn != null and nameEn != ''">
+                 and name_en = #{nameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="spCode != null and spCode != ''">
+                 and sp_code = #{spCode,jdbcType=VARCHAR}
+            </if>
+            <if test="spName != null and spName != ''">
+                 and sp_name = #{spName,jdbcType=VARCHAR}
+            </if>
+            <if test="spNameEn != null and spNameEn != ''">
+                 and sp_name_en = #{spNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertBatch" >
+        insert into t_logistics ( warehouse_id, code,
+            `status`, `name`, name_en,
+            sp_code, sp_name, sp_name_en,version)
+        values
+        <foreach collection="list" index="index" item="item" separator="," >
+            ( #{item.warehouseId,jdbcType=INTEGER}, #{item.code,jdbcType=VARCHAR},#{item.status,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR},
+            #{item.nameEn,jdbcType=VARCHAR},#{item.spCode,jdbcType=VARCHAR}, #{item.spName,jdbcType=VARCHAR}, #{item.spNameEn,jdbcType=VARCHAR},
+            #{item.version,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <select id="getsPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_logistics
+        where warehouse_id = #{warehouseId,jdbcType=INTEGER}
+        <if test="text !=null and text !='' ">
+            <if test="queryType == 1">
+                and sp_name = #{text,jdbcType=VARCHAR}
+            </if>
+            <if test="queryType == 2">
+                and sp_code = #{text,jdbcType=VARCHAR}
+            </if>
+            <if test="queryType == 3">
+                and `name` = #{text,jdbcType=VARCHAR}
+            </if>
+            <if test="queryType == 4">
+                and code = #{text,jdbcType=VARCHAR}
+            </if>
+        </if>
+    </select>
+
+    <update id="updateStatus" parameterType="java.lang.Integer">
+        update t_logistics set `status` = #{status,jdbcType=INTEGER} where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="getByCode"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_logistics
+        where code = #{code,jdbcType=VARCHAR} and warehouse_id = #{warehouseId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getByWarehouseId"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_logistics
+        where warehouse_id = #{warehouseId,jdbcType=INTEGER}
+        <if test="codes != null and codes.size() > 0">
+            AND `code` NOT IN
+            <foreach collection="codes" index="index" item="item" separator="," open="(" close=")"> #{item} </foreach>
+        </if>
+    </select>
+
+</mapper>

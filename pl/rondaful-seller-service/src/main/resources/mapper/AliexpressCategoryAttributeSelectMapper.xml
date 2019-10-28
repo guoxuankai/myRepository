@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressCategoryAttributeSelectMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressCategoryAttributeSelect">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+        <result column="attribute_id" jdbcType="BIGINT" property="attributeId" />
+        <result column="select_id" jdbcType="BIGINT" property="selectId" />
+        <result column="select_name" jdbcType="VARCHAR" property="selectName" />
+        <result column="select_name_en" jdbcType="VARCHAR" property="selectNameEn" />
+        <result column="select_name_all" jdbcType="VARCHAR" property="selectNameAll" />
+        <result column="value_tags" jdbcType="VARCHAR" property="valueTags" />
+        <result column="empower_id" jdbcType="BIGINT" property="empowerId" />
+        <result column="create_id" jdbcType="BIGINT" property="createId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, category_id, attribute_id, select_id, select_name, select_name_en, select_name_all, 
+        value_tags, empower_id, create_id, create_time, status
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_category_attribute_select
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_category_attribute_select
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressCategoryAttributeSelect">
+        insert into aliexpress_category_attribute_select (id, category_id, attribute_id, 
+            select_id, select_name, select_name_en, 
+            select_name_all, value_tags, empower_id, 
+            create_id, create_time, status
+            )
+        values (#{id,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, #{attributeId,jdbcType=BIGINT},
+            #{selectId,jdbcType=BIGINT}, #{selectName,jdbcType=VARCHAR}, #{selectNameEn,jdbcType=VARCHAR},
+            #{selectNameAll,jdbcType=VARCHAR}, #{valueTags,jdbcType=VARCHAR}, #{empowerId,jdbcType=BIGINT},
+            #{createId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressCategoryAttributeSelect">
+        insert into aliexpress_category_attribute_select
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="attributeId != null">
+                attribute_id,
+            </if>
+            <if test="selectId != null">
+                select_id,
+            </if>
+            <if test="selectName != null">
+                select_name,
+            </if>
+            <if test="selectNameEn != null">
+                select_name_en,
+            </if>
+            <if test="selectNameAll != null">
+                select_name_all,
+            </if>
+            <if test="valueTags != null">
+                value_tags,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+            <if test="createId != null">
+                create_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=BIGINT},
+            </if>
+            <if test="attributeId != null">
+                #{attributeId,jdbcType=BIGINT},
+            </if>
+            <if test="selectId != null">
+                #{selectId,jdbcType=BIGINT},
+            </if>
+            <if test="selectName != null">
+                #{selectName,jdbcType=VARCHAR},
+            </if>
+            <if test="selectNameEn != null">
+                #{selectNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="selectNameAll != null">
+                #{selectNameAll,jdbcType=VARCHAR},
+            </if>
+            <if test="valueTags != null">
+                #{valueTags,jdbcType=VARCHAR},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=BIGINT},
+            </if>
+            <if test="createId != null">
+                #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressCategoryAttributeSelect">
+        update aliexpress_category_attribute_select
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=BIGINT},
+            </if>
+            <if test="attributeId != null">
+                attribute_id = #{attributeId,jdbcType=BIGINT},
+            </if>
+            <if test="selectId != null">
+                select_id = #{selectId,jdbcType=BIGINT},
+            </if>
+            <if test="selectName != null">
+                select_name = #{selectName,jdbcType=VARCHAR},
+            </if>
+            <if test="selectNameEn != null">
+                select_name_en = #{selectNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="selectNameAll != null">
+                select_name_all = #{selectNameAll,jdbcType=VARCHAR},
+            </if>
+            <if test="valueTags != null">
+                value_tags = #{valueTags,jdbcType=VARCHAR},
+            </if>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=BIGINT},
+            </if>
+            <if test="createId != null">
+                create_id = #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressCategoryAttributeSelect">
+        update aliexpress_category_attribute_select
+        set category_id = #{categoryId,jdbcType=BIGINT},
+            attribute_id = #{attributeId,jdbcType=BIGINT},
+            select_id = #{selectId,jdbcType=BIGINT},
+            select_name = #{selectName,jdbcType=VARCHAR},
+            select_name_en = #{selectNameEn,jdbcType=VARCHAR},
+            select_name_all = #{selectNameAll,jdbcType=VARCHAR},
+            value_tags = #{valueTags,jdbcType=VARCHAR},
+            empower_id = #{empowerId,jdbcType=BIGINT},
+            create_id = #{createId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressCategoryAttributeSelect" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_category_attribute_select
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                 and category_id = #{categoryId,jdbcType=BIGINT}
+            </if>
+            <if test="attributeId != null and attributeId != ''">
+                 and attribute_id = #{attributeId,jdbcType=BIGINT}
+            </if>
+            <if test="selectId != null and selectId != ''">
+                 and select_id = #{selectId,jdbcType=BIGINT}
+            </if>
+            <if test="selectNameEn != null and selectNameEn != ''">
+                 and select_name_en = #{selectNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="selectNameAll != null and selectNameAll != ''">
+                 and select_name_all = #{selectNameAll,jdbcType=VARCHAR}
+            </if>
+            <if test="valueTags != null and valueTags != ''">
+                 and value_tags = #{valueTags,jdbcType=VARCHAR}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                 and empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+            <if test="createId != null and createId != ''">
+                 and create_id = #{createId,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="selectName != null and selectName != ''">
+                and ( select_name like CONCAT('%',#{selectName},'%')
+                or select_name_en like CONCAT('%',#{selectName},'%'))
+            </if>
+        </trim>
+    </select>
+
+    <select id="getCategoryAttributeSelectByList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_category_attribute_select
+        where status = 0 and select_id in(
+        select select_id from aliexpress_attribute_select_relation
+        where 1 = 1
+        <if test="categoryId != null and categoryId != ''">
+            and category_id = #{categoryId,jdbcType=BIGINT}
+        </if>
+        <if test="empowerId != null and empowerId != ''">
+            and empower_id = #{empowerId,jdbcType=BIGINT}
+        </if>
+
+        <if test="attributeId != null and attributeId != ''">
+            and attribute_id = #{attributeId,jdbcType=BIGINT}
+        </if>
+        )
+
+    </select>
+
+    <select id="getCategoryAttributeSelectByAttributeId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_category_attribute_select
+        where status = 0
+        AND select_id IN(
+        SELECT select_id FROM aliexpress_attribute_select_relation aasr
+        WHERE aasr.status=0 AND aasr.attribute_id!=2 AND aasr.attribute_id = #{attributeId,jdbcType=BIGINT} ANd category_id = #{categoryId,jdbcType=BIGINT}
+        )
+    </select>
+    <update id="updateAttributeSelectByEmpowerId" parameterType="java.lang.Long">
+        update aliexpress_category_attribute_select
+        set status = 1
+        where empower_id = #{empowerId,jdbcType=BIGINT}
+    </update>
+
+    <select id="getCategoryAttributeSelectByselectIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_category_attribute_select
+        where status = 0
+        <if test="selectIds != null">
+            and select_id in
+            <foreach collection="selectIds" item="selectId" open="(" close=")" separator=",">
+                #{selectId}
+            </foreach>
+        </if>
+
+    </select>
+
+    <select id="getCategoryAttributeSelectBySelectId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_category_attribute_select
+        where status = 0 and select_id = #{selectId,jdbcType=BIGINT}
+
+        limit 1
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.user.mapper.AnnouncementInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.user.entity.AnnouncementInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy"/>
+        <result column="reserve1" jdbcType="VARCHAR" property="reserve1"/>
+        <result column="read" jdbcType="VARCHAR" property="read"/>
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.brandslink.cloud.user.entity.AnnouncementInfo">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, title, create_time, create_by, last_update_time, last_update_by, reserve1, `read`
+    </sql>
+
+    <sql id="Blob_Column_List">
+        content
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_announcement_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_announcement_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteReadByAnnouncementId" parameterType="java.lang.Integer">
+        delete from t_user_announcement_info
+        where announcement_id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.user.entity.AnnouncementInfo">
+        insert into t_announcement_info (id, title, create_time,
+            create_by, last_update_time, last_update_by,
+            reserve1, `read`, content
+            )
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR},
+            #{reserve1,jdbcType=VARCHAR}, #{read,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.user.entity.AnnouncementInfo">
+        insert into t_announcement_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by,
+            </if>
+            <if test="reserve1 != null">
+                reserve1,
+            </if>
+            <if test="read != null">
+                `read`,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="reserve1 != null">
+                #{reserve1,jdbcType=VARCHAR},
+            </if>
+            <if test="read != null">
+                #{read,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertReadByUserIdAndAnnouncementId">
+        insert into t_user_announcement_info(user_id,announcement_id)
+        values (#{userId,jdbcType=INTEGER},#{id,jdbcType=INTEGER})
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.user.entity.AnnouncementInfo">
+        update t_announcement_info
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="reserve1 != null">
+                reserve1 = #{reserve1,jdbcType=VARCHAR},
+            </if>
+            <if test="read != null">
+                `read` = #{read,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.user.entity.AnnouncementInfo">
+        update t_announcement_info
+        set title = #{title,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            reserve1 = #{reserve1,jdbcType=VARCHAR},
+            `read` = #{read,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.user.entity.AnnouncementInfo" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_announcement_info
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">
+                and last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastUpdateBy != null and lastUpdateBy != ''">
+                and last_update_by = #{lastUpdateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="reserve1 != null and reserve1 != ''">
+                and reserve1 = #{reserve1,jdbcType=VARCHAR}
+            </if>
+            <if test="read != null and read != ''">
+                and `read` = #{read,jdbcType=VARCHAR}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+    <select id="getAnnouncementList" parameterType="com.brandslink.cloud.user.dto.request.GetAnnouncementListRequestDTO"
+            resultType="com.brandslink.cloud.user.dto.response.AnnouncementInfoResponseDTO">
+        select
+        id, title, `read`, create_time createTime, create_by createBy,last_update_time lastUpdateTime, last_update_by lastUpdateBy
+        from t_announcement_info u
+        <trim prefix="where" prefixOverrides="and">
+            <if test="title != null and title != ''">
+                and u.title = #{title,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null">
+                and u.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and u.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectReadByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select announcement_id
+        from t_user_announcement_info
+        where user_id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectReadByUserIdAndAnnouncementId" resultType="java.lang.Integer">
+        select id
+        from t_user_announcement_info
+        where announcement_id = #{id,jdbcType=INTEGER}
+        and user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+</mapper>

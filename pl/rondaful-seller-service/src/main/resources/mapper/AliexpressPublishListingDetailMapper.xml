@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressPublishListingDetailMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressPublishListingDetail">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="publish_listing_id" jdbcType="BIGINT" property="publishListingId" />
+        <result column="select_attributes" jdbcType="VARCHAR" property="selectAttributes" />
+        <result column="regional_pricing" jdbcType="VARCHAR" property="regionalPricing" />
+        <result column="wholesale" jdbcType="BIT" property="wholesale" />
+        <result column="bulk_order" jdbcType="INTEGER" property="bulkOrder" />
+        <result column="bulk_discount" jdbcType="DECIMAL" property="bulkDiscount" />
+        <result column="reduce_strategy" jdbcType="VARCHAR" property="reduceStrategy" />
+        <result column="delivery_time" jdbcType="INTEGER" property="deliveryTime" />
+        <result column="unit" jdbcType="INTEGER" property="unit" />
+        <result column="sales_method" jdbcType="INTEGER" property="salesMethod" />
+        <result column="lot_num" jdbcType="INTEGER" property="lotNum" />
+        <result column="packaging_weight" jdbcType="DECIMAL" property="packagingWeight" />
+        <result column="is_pack_sell" jdbcType="BIT" property="isPackSell" />
+        <result column="buyers_purchase" jdbcType="INTEGER" property="buyersPurchase" />
+        <result column="buyers_more" jdbcType="INTEGER" property="buyersMore" />
+        <result column="increase_weight" jdbcType="DECIMAL" property="increaseWeight" />
+        <result column="package_length" jdbcType="INTEGER" property="packageLength" />
+        <result column="package_width" jdbcType="INTEGER" property="packageWidth" />
+        <result column="package_height" jdbcType="INTEGER" property="packageHeight" />
+        <result column="freight_template_id" jdbcType="BIGINT" property="freightTemplateId" />
+        <result column="promise_template_id" jdbcType="BIGINT" property="promiseTemplateId" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="ws_valid_num" jdbcType="INTEGER" property="wsValidNum" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="ship_country" jdbcType="VARCHAR" property="shipCountry" />
+        <result column="logistics_type" jdbcType="VARCHAR" property="logisticsType" />
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode" />
+        <result column="logistics_aging" jdbcType="VARCHAR" property="logisticsAging" />
+        <result column="template_ids" jdbcType="VARCHAR" property="templateIds" />
+        <result column="pricing_show" jdbcType="VARCHAR" property="pricingShow" />
+        <result column="product_details" jdbcType="VARCHAR" property="productDetails" />
+        <result column="mobile_terminal" jdbcType="BIT" property="mobileTerminal" />
+        <result column="mobile_remark" jdbcType="VARCHAR" property="mobileRemark" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, publish_listing_id, select_attributes, regional_pricing, wholesale, bulk_order, 
+        bulk_discount, reduce_strategy, delivery_time, unit, sales_method, lot_num, packaging_weight, is_pack_sell,
+        buyers_purchase, buyers_more, increase_weight, package_length, package_width, package_height, 
+        freight_template_id, promise_template_id, group_id, ws_valid_num, create_time, update_time, 
+        version, ship_country, logistics_type, warehouse_code,
+        logistics_aging,template_ids,pricing_show, product_details, mobile_terminal, mobile_remark
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_detail
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_publish_listing_detail
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingDetail">
+        insert into aliexpress_publish_listing_detail (id, publish_listing_id, select_attributes, 
+            regional_pricing, wholesale, bulk_order, 
+            bulk_discount, reduce_strategy, delivery_time, 
+            unit, sales_method, lot_num, 
+            is_pack_sell, buyers_purchase, buyers_more, 
+            increase_weight, package_length, package_width, 
+            package_height, freight_template_id, promise_template_id, 
+            group_id, ws_valid_num, create_time, 
+            update_time, version,
+            ship_country, logistics_type, warehouse_code, logistics_aging,template_ids,pricing_show,
+            product_details, mobile_terminal,mobile_remark)
+        values (#{id,jdbcType=BIGINT}, #{publishListingId,jdbcType=BIGINT}, #{selectAttributes,jdbcType=VARCHAR},
+            #{regionalPricing,jdbcType=VARCHAR}, #{wholesale,jdbcType=BIT}, #{bulkOrder,jdbcType=INTEGER}, 
+            #{bulkDiscount,jdbcType=DECIMAL}, #{reduceStrategy,jdbcType=VARCHAR}, #{deliveryTime,jdbcType=INTEGER}, 
+            #{unit,jdbcType=INTEGER}, #{salesMethod,jdbcType=INTEGER}, #{lotNum,jdbcType=INTEGER}, 
+            #{isPackSell,jdbcType=BIT}, #{buyersPurchase,jdbcType=INTEGER}, #{buyersMore,jdbcType=INTEGER}, 
+            #{increaseWeight,jdbcType=DECIMAL}, #{packageLength,jdbcType=INTEGER}, #{packageWidth,jdbcType=INTEGER}, 
+            #{packageHeight,jdbcType=INTEGER}, #{freightTemplateId,jdbcType=BIGINT}, #{promiseTemplateId,jdbcType=BIGINT},
+            #{groupId,jdbcType=BIGINT}, #{wsValidNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+            #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER},
+            #{shipCountry,jdbcType=VARCHAR}, #{logisticsType,jdbcType=VARCHAR}, #{warehouseCode,jdbcType=VARCHAR},
+            #{logisticsAging,jdbcType=VARCHAR},#{templateIds,jdbcType=VARCHAR},#{pricingShow,jdbcType=BIT}, #{productDetails,jdbcType=VARCHAR}, #{mobileTerminal,jdbcType=BIT},
+            #{mobileRemark,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingDetail">
+        insert into aliexpress_publish_listing_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="publishListingId != null">
+                publish_listing_id,
+            </if>
+            <if test="selectAttributes != null">
+                select_attributes,
+            </if>
+            <if test="regionalPricing != null">
+                regional_pricing,
+            </if>
+            <if test="wholesale != null">
+                wholesale,
+            </if>
+            <if test="bulkOrder != null">
+                bulk_order,
+            </if>
+            <if test="bulkDiscount != null">
+                bulk_discount,
+            </if>
+            <if test="reduceStrategy != null">
+                reduce_strategy,
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time,
+            </if>
+            <if test="unit != null">
+                unit,
+            </if>
+            <if test="salesMethod != null">
+                sales_method,
+            </if>
+            <if test="lotNum != null">
+                lot_num,
+            </if>
+            <if test="packagingWeight != null">
+                packaging_weight,
+            </if>
+            <if test="isPackSell != null">
+                is_pack_sell,
+            </if>
+            <if test="buyersPurchase != null">
+                buyers_purchase,
+            </if>
+            <if test="buyersMore != null">
+                buyers_more,
+            </if>
+            <if test="increaseWeight != null">
+                increase_weight,
+            </if>
+            <if test="packageLength != null">
+                package_length,
+            </if>
+            <if test="packageWidth != null">
+                package_width,
+            </if>
+            <if test="packageHeight != null">
+                package_height,
+            </if>
+            <if test="freightTemplateId != null">
+                freight_template_id,
+            </if>
+            <if test="promiseTemplateId != null">
+                promise_template_id,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="wsValidNum != null">
+                ws_valid_num,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="shipCountry != null">
+                ship_country,
+            </if>
+            <if test="logisticsType != null">
+                logistics_type,
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code,
+            </if>
+            <if test="logisticsAging != null">
+                logistics_aging,
+            </if>
+            <if test="templateIds != null">
+                template_ids,
+            </if>
+            <if test="pricingShow != null">
+                pricing_show,
+            </if>
+            <if test="productDetails != null">
+                product_details,
+            </if>
+            <if test="mobileTerminal != null">
+                mobile_terminal,
+            </if>
+            <if test="mobileRemark != null">
+                mobile_remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="publishListingId != null">
+                #{publishListingId,jdbcType=BIGINT},
+            </if>
+            <if test="selectAttributes != null">
+                #{selectAttributes,jdbcType=VARCHAR},
+            </if>
+            <if test="regionalPricing != null">
+                #{regionalPricing,jdbcType=VARCHAR},
+            </if>
+            <if test="wholesale != null">
+                #{wholesale,jdbcType=BIT},
+            </if>
+            <if test="bulkOrder != null">
+                #{bulkOrder,jdbcType=INTEGER},
+            </if>
+            <if test="bulkDiscount != null">
+                #{bulkDiscount,jdbcType=DECIMAL},
+            </if>
+            <if test="reduceStrategy != null">
+                #{reduceStrategy,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                #{deliveryTime,jdbcType=INTEGER},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=INTEGER},
+            </if>
+            <if test="salesMethod != null">
+                #{salesMethod,jdbcType=INTEGER},
+            </if>
+            <if test="lotNum != null">
+                #{lotNum,jdbcType=INTEGER},
+            </if>
+            <if test="packagingWeight != null">
+                #{packagingWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="isPackSell != null">
+                #{isPackSell,jdbcType=BIT},
+            </if>
+            <if test="buyersPurchase != null">
+                #{buyersPurchase,jdbcType=INTEGER},
+            </if>
+            <if test="buyersMore != null">
+                #{buyersMore,jdbcType=INTEGER},
+            </if>
+            <if test="increaseWeight != null">
+                #{increaseWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="packageLength != null">
+                #{packageLength,jdbcType=INTEGER},
+            </if>
+            <if test="packageWidth != null">
+                #{packageWidth,jdbcType=INTEGER},
+            </if>
+            <if test="packageHeight != null">
+                #{packageHeight,jdbcType=INTEGER},
+            </if>
+            <if test="freightTemplateId != null">
+                #{freightTemplateId,jdbcType=BIGINT},
+            </if>
+            <if test="promiseTemplateId != null">
+                #{promiseTemplateId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="wsValidNum != null">
+                #{wsValidNum,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="shipCountry != null">
+                #{shipCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsType != null">
+                #{logisticsType,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsAging != null">
+                #{logisticsAging,jdbcType=VARCHAR},
+            </if>
+            <if test="templateIds != null">
+                #{templateIds,jdbcType=VARCHAR},
+            </if>
+            <if test="templateIds != null">
+                #{pricingShow,jdbcType=BIT},
+            </if>
+            <if test="productDetails != null">
+                #{productDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="mobileTerminal != null">
+                #{mobileTerminal,jdbcType=BIT},
+            </if>
+            <if test="mobileRemark != null">
+                #{mobileRemark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingDetail">
+        update aliexpress_publish_listing_detail
+        <set>
+            <if test="publishListingId != null">
+                publish_listing_id = #{publishListingId,jdbcType=BIGINT},
+            </if>
+            <if test="selectAttributes != null">
+                select_attributes = #{selectAttributes,jdbcType=VARCHAR},
+            </if>
+            <if test="regionalPricing != null">
+                regional_pricing = #{regionalPricing,jdbcType=VARCHAR},
+            </if>
+            <if test="wholesale != null">
+                wholesale = #{wholesale,jdbcType=BIT},
+            </if>
+            <if test="bulkOrder != null">
+                bulk_order = #{bulkOrder,jdbcType=INTEGER},
+            </if>
+            <if test="bulkDiscount != null">
+                bulk_discount = #{bulkDiscount,jdbcType=DECIMAL},
+            </if>
+            <if test="reduceStrategy != null">
+                reduce_strategy = #{reduceStrategy,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=INTEGER},
+            </if>
+            <if test="unit != null">
+                unit = #{unit,jdbcType=INTEGER},
+            </if>
+            <if test="salesMethod != null">
+                sales_method = #{salesMethod,jdbcType=INTEGER},
+            </if>
+            <if test="lotNum != null">
+                lot_num = #{lotNum,jdbcType=INTEGER},
+            </if>
+            <if test="isPackSell != null">
+                is_pack_sell = #{isPackSell,jdbcType=BIT},
+            </if>
+            <if test="buyersPurchase != null">
+                buyers_purchase = #{buyersPurchase,jdbcType=INTEGER},
+            </if>
+            <if test="buyersMore != null">
+                buyers_more = #{buyersMore,jdbcType=INTEGER},
+            </if>
+            <if test="increaseWeight != null">
+                increase_weight = #{increaseWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="packageLength != null">
+                package_length = #{packageLength,jdbcType=INTEGER},
+            </if>
+            <if test="packageWidth != null">
+                package_width = #{packageWidth,jdbcType=INTEGER},
+            </if>
+            <if test="packageHeight != null">
+                package_height = #{packageHeight,jdbcType=INTEGER},
+            </if>
+            <if test="freightTemplateId != null">
+                freight_template_id = #{freightTemplateId,jdbcType=BIGINT},
+            </if>
+            <if test="promiseTemplateId != null">
+                promise_template_id = #{promiseTemplateId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="wsValidNum != null">
+                ws_valid_num = #{wsValidNum,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+            <if test="shipCountry != null">
+                ship_country = #{shipCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsType != null">
+                logistics_type = #{logisticsType,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsAging != null">
+                logistics_aging = #{logisticsAging,jdbcType=VARCHAR},
+            </if>
+            <if test="templateIds != null">
+                template_ids = #{templateIds,jdbcType=VARCHAR},
+            </if>
+            <if test="pricingShow != null">
+                pricing_show = #{pricingShow,jdbcType=BIT}
+            </if>
+            <if test="productDetails != null">
+                product_details = #{productDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="mobileTerminal != null">
+                mobile_terminal = #{mobileTerminal,jdbcType=BIT},
+            </if>
+            <if test="mobileRemark != null">
+                mobile_remark = #{mobileRemark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where publish_listing_id = #{publishListingId,jdbcType=BIGINT}
+
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingDetail">
+        update aliexpress_publish_listing_detail
+        set publish_listing_id = #{publishListingId,jdbcType=BIGINT},
+            select_attributes = #{selectAttributes,jdbcType=VARCHAR},
+            regional_pricing = #{regionalPricing,jdbcType=VARCHAR},
+            wholesale = #{wholesale,jdbcType=BIT},
+            bulk_order = #{bulkOrder,jdbcType=INTEGER},
+            bulk_discount = #{bulkDiscount,jdbcType=DECIMAL},
+            reduce_strategy = #{reduceStrategy,jdbcType=VARCHAR},
+            delivery_time = #{deliveryTime,jdbcType=INTEGER},
+            unit = #{unit,jdbcType=INTEGER},
+            sales_method = #{salesMethod,jdbcType=INTEGER},
+            lot_num = #{lotNum,jdbcType=INTEGER},
+            is_pack_sell = #{isPackSell,jdbcType=BIT},
+            buyers_purchase = #{buyersPurchase,jdbcType=INTEGER},
+            buyers_more = #{buyersMore,jdbcType=INTEGER},
+            increase_weight = #{increaseWeight,jdbcType=DECIMAL},
+            package_length = #{packageLength,jdbcType=INTEGER},
+            package_width = #{packageWidth,jdbcType=INTEGER},
+            package_height = #{packageHeight,jdbcType=INTEGER},
+            freight_template_id = #{freightTemplateId,jdbcType=BIGINT},
+            promise_template_id = #{promiseTemplateId,jdbcType=BIGINT},
+            group_id = #{groupId,jdbcType=BIGINT},
+            ws_valid_num = #{wsValidNum,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            product_details = #{productDetails,jdbcType=VARCHAR},
+            mobile_terminal = #{mobileTerminal,jdbcType=BIT},
+            mobile_remark = #{mobileRemark,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1,
+            ship_country = #{shipCountry,jdbcType=VARCHAR},
+            logistics_type = #{logisticsType,jdbcType=VARCHAR},
+            warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            logistics_aging = #{logisticsAging,jdbcType=VARCHAR},
+            template_ids = #{templateIds,jdbcType=VARCHAR},
+            pricing_show = #{pricingShow,jdbcType=BIT}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingDetail" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_detail
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="publishListingId != null and publishListingId != ''">
+                 and publish_listing_id = #{publishListingId,jdbcType=BIGINT}
+            </if>
+            <if test="selectAttributes != null and selectAttributes != ''">
+                 and select_attributes = #{selectAttributes,jdbcType=VARCHAR}
+            </if>
+            <if test="regionalPricing != null and regionalPricing != ''">
+                 and regional_pricing = #{regionalPricing,jdbcType=VARCHAR}
+            </if>
+            <if test="wholesale != null and wholesale != ''">
+                 and wholesale = #{wholesale,jdbcType=BIT}
+            </if>
+            <if test="bulkOrder != null and bulkOrder != ''">
+                 and bulk_order = #{bulkOrder,jdbcType=INTEGER}
+            </if>
+            <if test="bulkDiscount != null and bulkDiscount != ''">
+                 and bulk_discount = #{bulkDiscount,jdbcType=DECIMAL}
+            </if>
+            <if test="reduceStrategy != null and reduceStrategy != ''">
+                 and reduce_strategy = #{reduceStrategy,jdbcType=VARCHAR}
+            </if>
+            <if test="deliveryTime != null and deliveryTime != ''">
+                 and delivery_time = #{deliveryTime,jdbcType=INTEGER}
+            </if>
+            <if test="unit != null and unit != ''">
+                 and unit = #{unit,jdbcType=INTEGER}
+            </if>
+            <if test="salesMethod != null and salesMethod != ''">
+                 and sales_method = #{salesMethod,jdbcType=INTEGER}
+            </if>
+            <if test="lotNum != null and lotNum != ''">
+                 and lot_num = #{lotNum,jdbcType=INTEGER}
+            </if>
+            <if test="isPackSell != null and isPackSell != ''">
+                 and is_pack_sell = #{isPackSell,jdbcType=BIT}
+            </if>
+            <if test="buyersPurchase != null and buyersPurchase != ''">
+                 and buyers_purchase = #{buyersPurchase,jdbcType=INTEGER}
+            </if>
+            <if test="buyersMore != null and buyersMore != ''">
+                 and buyers_more = #{buyersMore,jdbcType=INTEGER}
+            </if>
+            <if test="increaseWeight != null and increaseWeight != ''">
+                 and increase_weight = #{increaseWeight,jdbcType=DECIMAL}
+            </if>
+            <if test="packageLength != null and packageLength != ''">
+                 and package_length = #{packageLength,jdbcType=INTEGER}
+            </if>
+            <if test="packageWidth != null and packageWidth != ''">
+                 and package_width = #{packageWidth,jdbcType=INTEGER}
+            </if>
+            <if test="packageHeight != null and packageHeight != ''">
+                 and package_height = #{packageHeight,jdbcType=INTEGER}
+            </if>
+            <if test="freightTemplateId != null and freightTemplateId != ''">
+                 and freight_template_id = #{freightTemplateId,jdbcType=BIGINT}
+            </if>
+            <if test="promiseTemplateId != null and promiseTemplateId != ''">
+                 and promise_template_id = #{promiseTemplateId,jdbcType=BIGINT}
+            </if>
+            <if test="groupId != null and groupId != ''">
+                 and group_id = #{groupId,jdbcType=BIGINT}
+            </if>
+            <if test="wsValidNum != null and wsValidNum != ''">
+                 and ws_valid_num = #{wsValidNum,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+            <if test="shipCountry != null and shipCountry != ''">
+                and ship_country = #{shipCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="logisticsType != null and logisticsType != ''">
+                and logistics_type = #{logisticsType,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseCode != null and warehouseCode != ''">
+                and warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="logisticsAging != null and logisticsAging != ''">
+                and logistics_aging = #{logisticsAging,jdbcType=VARCHAR}
+            </if>
+            <if test="templateIds != null and templateIds != ''">
+                and template_ids = #{templateIds,jdbcType=VARCHAR}
+            </if>
+
+        </trim>
+    </select>
+    <select id="getPublishListingDetailByPublishListingId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_detail
+        where publish_listing_id = #{publishListingId,jdbcType=BIGINT}
+    </select>
+
+</mapper>

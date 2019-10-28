@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.EbayOrderDetailMapper">
+
+    <!-- 批量更新转换状态 -->
+    <update id="updateConvertStatusStatusBatch" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE tb_ebay_order_detail
+            <set>
+                conver_sys_status=#{item.converSysStatus},
+                update_by = #{item.updateBy},
+                update_date = #{item.updateDate}
+            </set>
+            <where>
+                order_id = #{item.orderId}
+                and order_line_item_id = #{item.orderItemId}
+            </where>
+        </foreach>
+    </update>
+    
+    <select id="selectDeliverDeadLineByOrderLineItemId" parameterType="java.lang.String" resultType="java.lang.String">
+        select handle_by_time
+        from tb_ebay_order_detail
+        where order_line_item_id = #{orderLineItemId,jdbcType=VARCHAR}
+    </select>
+    
+    <!--更新ebay订单项表状态-->
+    <update id="updateConverStatusByOrderItemId" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail">
+        update tb_ebay_order_detail
+            set conver_sys_status = #{converSysStatus,jdbcType=TINYINT}
+            where order_line_item_id = #{orderLineItemId,jdbcType=VARCHAR}
+    </update>
+
+    <!--根据订单项ID更新shipmentTrackingNumber跟踪号,deliveryTime发货时间,markDeliverStatus标记ebay平台发货状态-->
+    <update id="updateMarkDeliverStatusByOrderItemId"
+            parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail">
+        update tb_ebay_order_detail
+        <set>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingCarrierUsed != null">
+                shipping_carrier_used = #{shippingCarrierUsed,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="markDeliverStatus != null">
+                mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where order_line_item_id = #{orderLineItemId}
+    </update>
+
+    <!--根据平台订单号orderId查询其下所有订单项的状态-->
+    <select id="selectDetailStausByOrderId" parameterType="java.lang.String"
+            resultType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail">
+        select
+        conver_sys_status converSysStatus
+        from tb_ebay_order_detail
+        where order_id = #{orderId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据订单项ID批量查询订单项对象集合-->
+    <select id="queryBatchEbayOrderDetailByOrderLineItemId" parameterType="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_ebay_order_detail
+        where order_line_item_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <!--======================================================================================-->
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="order_line_item_id" jdbcType="VARCHAR" property="orderLineItemId"/>
+        <result column="transaction_id" jdbcType="VARCHAR" property="transactionId"/>
+        <result column="conver_sys_status" jdbcType="TINYINT" property="converSysStatus"/>
+        <result column="buyer_email" jdbcType="VARCHAR" property="buyerEmail"/>
+        <result column="transaction_price" jdbcType="VARCHAR" property="transactionPrice"/>
+        <result column="quantity_purchased" jdbcType="INTEGER" property="quantityPurchased"/>
+        <result column="item_id" jdbcType="VARCHAR" property="itemId"/>
+        <result column="handle_by_time" jdbcType="VARCHAR" property="handleByTime"/>
+        <result column="item_title" jdbcType="VARCHAR" property="itemTitle"/>
+        <result column="sku" jdbcType="VARCHAR" property="sku"/>
+        <result column="variation_sku" jdbcType="VARCHAR" property="variationSku"/>
+        <result column="variation_title" jdbcType="VARCHAR" property="variationTitle"/>
+        <result column="variation_view_item_url" jdbcType="VARCHAR" property="variationViewItemUrl"/>
+        <result column="delivery_time" jdbcType="VARCHAR" property="deliveryTime"/>
+        <result column="shipped_time" jdbcType="VARCHAR" property="shippedTime"/>
+        <result column="shipping_carrier_used" jdbcType="VARCHAR" property="shippingCarrierUsed"/>
+        <result column="shipment_tracking_number" jdbcType="VARCHAR" property="shipmentTrackingNumber"/>
+        <result column="mark_deliver_status" jdbcType="TINYINT" property="markDeliverStatus"/>
+        <result column="record_number" jdbcType="INTEGER" property="recordNumber"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, order_id, order_line_item_id, transaction_id, conver_sys_status, buyer_email, 
+        transaction_price, quantity_purchased, item_id, handle_by_time, item_title, sku, 
+        variation_sku, variation_title, variation_view_item_url, delivery_time, shipped_time, 
+        shipping_carrier_used, shipment_tracking_number, mark_deliver_status, record_number, 
+        create_date, create_by, update_date, update_by, remark
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_ebay_order_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tb_ebay_order_detail
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail">
+        insert into tb_ebay_order_detail (id, order_id, order_line_item_id, 
+            transaction_id, conver_sys_status, buyer_email, 
+            transaction_price, quantity_purchased, 
+            item_id, handle_by_time, item_title, 
+            sku, variation_sku, variation_title, 
+            variation_view_item_url, delivery_time, shipped_time, 
+            shipping_carrier_used, shipment_tracking_number, 
+            mark_deliver_status, record_number, create_date, 
+            create_by, update_date, update_by, 
+            remark)
+        values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{orderLineItemId,jdbcType=VARCHAR}, 
+            #{transactionId,jdbcType=VARCHAR}, #{converSysStatus,jdbcType=TINYINT}, #{buyerEmail,jdbcType=VARCHAR}, 
+            #{transactionPrice,jdbcType=VARCHAR}, #{quantityPurchased,jdbcType=INTEGER}, 
+            #{itemId,jdbcType=VARCHAR}, #{handleByTime,jdbcType=VARCHAR}, #{itemTitle,jdbcType=VARCHAR}, 
+            #{sku,jdbcType=VARCHAR}, #{variationSku,jdbcType=VARCHAR}, #{variationTitle,jdbcType=VARCHAR}, 
+            #{variationViewItemUrl,jdbcType=VARCHAR}, #{deliveryTime,jdbcType=VARCHAR}, #{shippedTime,jdbcType=VARCHAR}, 
+            #{shippingCarrierUsed,jdbcType=VARCHAR}, #{shipmentTrackingNumber,jdbcType=VARCHAR}, 
+            #{markDeliverStatus,jdbcType=TINYINT}, #{recordNumber,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+            #{createBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail">
+        insert into tb_ebay_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="orderLineItemId != null">
+                order_line_item_id,
+            </if>
+            <if test="transactionId != null">
+                transaction_id,
+            </if>
+            <if test="converSysStatus != null">
+                conver_sys_status,
+            </if>
+            <if test="buyerEmail != null">
+                buyer_email,
+            </if>
+            <if test="transactionPrice != null">
+                transaction_price,
+            </if>
+            <if test="quantityPurchased != null">
+                quantity_purchased,
+            </if>
+            <if test="itemId != null">
+                item_id,
+            </if>
+            <if test="handleByTime != null">
+                handle_by_time,
+            </if>
+            <if test="itemTitle != null">
+                item_title,
+            </if>
+            <if test="sku != null">
+                sku,
+            </if>
+            <if test="variationSku != null">
+                variation_sku,
+            </if>
+            <if test="variationTitle != null">
+                variation_title,
+            </if>
+            <if test="variationViewItemUrl != null">
+                variation_view_item_url,
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time,
+            </if>
+            <if test="shippedTime != null">
+                shipped_time,
+            </if>
+            <if test="shippingCarrierUsed != null">
+                shipping_carrier_used,
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                shipment_tracking_number,
+            </if>
+            <if test="markDeliverStatus != null">
+                mark_deliver_status,
+            </if>
+            <if test="recordNumber != null">
+                record_number,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderLineItemId != null">
+                #{orderLineItemId,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionId != null">
+                #{transactionId,jdbcType=VARCHAR},
+            </if>
+            <if test="converSysStatus != null">
+                #{converSysStatus,jdbcType=TINYINT},
+            </if>
+            <if test="buyerEmail != null">
+                #{buyerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionPrice != null">
+                #{transactionPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="quantityPurchased != null">
+                #{quantityPurchased,jdbcType=INTEGER},
+            </if>
+            <if test="itemId != null">
+                #{itemId,jdbcType=VARCHAR},
+            </if>
+            <if test="handleByTime != null">
+                #{handleByTime,jdbcType=VARCHAR},
+            </if>
+            <if test="itemTitle != null">
+                #{itemTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="sku != null">
+                #{sku,jdbcType=VARCHAR},
+            </if>
+            <if test="variationSku != null">
+                #{variationSku,jdbcType=VARCHAR},
+            </if>
+            <if test="variationTitle != null">
+                #{variationTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="variationViewItemUrl != null">
+                #{variationViewItemUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                #{deliveryTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippedTime != null">
+                #{shippedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingCarrierUsed != null">
+                #{shippingCarrierUsed,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="markDeliverStatus != null">
+                #{markDeliverStatus,jdbcType=TINYINT},
+            </if>
+            <if test="recordNumber != null">
+                #{recordNumber,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail">
+        update tb_ebay_order_detail
+        <set>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderLineItemId != null">
+                order_line_item_id = #{orderLineItemId,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionId != null">
+                transaction_id = #{transactionId,jdbcType=VARCHAR},
+            </if>
+            <if test="converSysStatus != null">
+                conver_sys_status = #{converSysStatus,jdbcType=TINYINT},
+            </if>
+            <if test="buyerEmail != null">
+                buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionPrice != null">
+                transaction_price = #{transactionPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="quantityPurchased != null">
+                quantity_purchased = #{quantityPurchased,jdbcType=INTEGER},
+            </if>
+            <if test="itemId != null">
+                item_id = #{itemId,jdbcType=VARCHAR},
+            </if>
+            <if test="handleByTime != null">
+                handle_by_time = #{handleByTime,jdbcType=VARCHAR},
+            </if>
+            <if test="itemTitle != null">
+                item_title = #{itemTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="sku != null">
+                sku = #{sku,jdbcType=VARCHAR},
+            </if>
+            <if test="variationSku != null">
+                variation_sku = #{variationSku,jdbcType=VARCHAR},
+            </if>
+            <if test="variationTitle != null">
+                variation_title = #{variationTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="variationViewItemUrl != null">
+                variation_view_item_url = #{variationViewItemUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippedTime != null">
+                shipped_time = #{shippedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingCarrierUsed != null">
+                shipping_carrier_used = #{shippingCarrierUsed,jdbcType=VARCHAR},
+            </if>
+            <if test="shipmentTrackingNumber != null">
+                shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="markDeliverStatus != null">
+                mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT},
+            </if>
+            <if test="recordNumber != null">
+                record_number = #{recordNumber,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail">
+        update tb_ebay_order_detail
+        set order_id = #{orderId,jdbcType=VARCHAR},
+            order_line_item_id = #{orderLineItemId,jdbcType=VARCHAR},
+            transaction_id = #{transactionId,jdbcType=VARCHAR},
+            conver_sys_status = #{converSysStatus,jdbcType=TINYINT},
+            buyer_email = #{buyerEmail,jdbcType=VARCHAR},
+            transaction_price = #{transactionPrice,jdbcType=VARCHAR},
+            quantity_purchased = #{quantityPurchased,jdbcType=INTEGER},
+            item_id = #{itemId,jdbcType=VARCHAR},
+            handle_by_time = #{handleByTime,jdbcType=VARCHAR},
+            item_title = #{itemTitle,jdbcType=VARCHAR},
+            sku = #{sku,jdbcType=VARCHAR},
+            variation_sku = #{variationSku,jdbcType=VARCHAR},
+            variation_title = #{variationTitle,jdbcType=VARCHAR},
+            variation_view_item_url = #{variationViewItemUrl,jdbcType=VARCHAR},
+            delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+            shipped_time = #{shippedTime,jdbcType=VARCHAR},
+            shipping_carrier_used = #{shippingCarrierUsed,jdbcType=VARCHAR},
+            shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR},
+            mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT},
+            record_number = #{recordNumber,jdbcType=INTEGER},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderDetail" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_ebay_order_detail
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderLineItemId != null and orderLineItemId != ''">
+                and order_line_item_id = #{orderLineItemId,jdbcType=VARCHAR}
+            </if>
+            <if test="transactionId != null and transactionId != ''">
+                and transaction_id = #{transactionId,jdbcType=VARCHAR}
+            </if>
+            <if test="converSysStatus != null and converSysStatus != ''">
+                and conver_sys_status = #{converSysStatus,jdbcType=TINYINT}
+            </if>
+            <if test="buyerEmail != null and buyerEmail != ''">
+                and buyer_email = #{buyerEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="transactionPrice != null and transactionPrice != ''">
+                and transaction_price = #{transactionPrice,jdbcType=VARCHAR}
+            </if>
+            <if test="quantityPurchased != null and quantityPurchased != ''">
+                and quantity_purchased = #{quantityPurchased,jdbcType=INTEGER}
+            </if>
+            <if test="itemId != null and itemId != ''">
+                and item_id = #{itemId,jdbcType=VARCHAR}
+            </if>
+            <if test="handleByTime != null and handleByTime != ''">
+                and handle_by_time = #{handleByTime,jdbcType=VARCHAR}
+            </if>
+            <if test="itemTitle != null and itemTitle != ''">
+                and item_title = #{itemTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="sku != null and sku != ''">
+                and sku = #{sku,jdbcType=VARCHAR}
+            </if>
+            <if test="variationSku != null and variationSku != ''">
+                and variation_sku = #{variationSku,jdbcType=VARCHAR}
+            </if>
+            <if test="variationTitle != null and variationTitle != ''">
+                and variation_title = #{variationTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="variationViewItemUrl != null and variationViewItemUrl != ''">
+                and variation_view_item_url = #{variationViewItemUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="deliveryTime != null and deliveryTime != ''">
+                and delivery_time = #{deliveryTime,jdbcType=VARCHAR}
+            </if>
+            <if test="shippedTime != null and shippedTime != ''">
+                and shipped_time = #{shippedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="shippingCarrierUsed != null and shippingCarrierUsed != ''">
+                and shipping_carrier_used = #{shippingCarrierUsed,jdbcType=VARCHAR}
+            </if>
+            <if test="shipmentTrackingNumber != null and shipmentTrackingNumber != ''">
+                and shipment_tracking_number = #{shipmentTrackingNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="markDeliverStatus != null and markDeliverStatus != ''">
+                and mark_deliver_status = #{markDeliverStatus,jdbcType=TINYINT}
+            </if>
+            <if test="recordNumber != null and recordNumber != ''">
+                and record_number = #{recordNumber,jdbcType=INTEGER}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

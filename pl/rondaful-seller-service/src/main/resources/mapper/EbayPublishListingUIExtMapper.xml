@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishListingUIExtMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishListingUIExt">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="listing_id" jdbcType="INTEGER" property="listingId" />
+        <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.seller.entity.EbayPublishListingUIExt">
+        <result column="ext" jdbcType="LONGVARCHAR" property="ext" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, creation_time
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        ext
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from ebay_publish_listing_ui_ext
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_publish_listing_ui_ext
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingUIExt">
+        insert into ebay_publish_listing_ui_ext (id, listing_id, creation_time, 
+            ext)
+        values (#{id,jdbcType=INTEGER}, #{listingId,jdbcType=INTEGER}, #{creationTime,jdbcType=TIMESTAMP}, 
+            #{ext,jdbcType=LONGVARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingUIExt">
+        insert into ebay_publish_listing_ui_ext
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="creationTime != null">
+                creation_time,
+            </if>
+            <if test="ext != null">
+                ext,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=INTEGER},
+            </if>
+            <if test="creationTime != null">
+                #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ext != null">
+                #{ext,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingUIExt">
+        update ebay_publish_listing_ui_ext
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=INTEGER},
+            </if>
+            <if test="creationTime != null">
+                creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ext != null">
+                ext = #{ext,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingUIExt">
+        update ebay_publish_listing_ui_ext
+        set listing_id = #{listingId,jdbcType=INTEGER},
+            creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            ext = #{ext,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingUIExt">
+        update ebay_publish_listing_ui_ext
+        set listing_id = #{listingId,jdbcType=INTEGER},
+            creation_time = #{creationTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingUIExt" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from ebay_publish_listing_ui_ext
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="listingId != null">
+                 and listing_id = #{listingId,jdbcType=INTEGER}
+            </if>
+            <if test="creationTime != null">
+                 and creation_time = #{creationTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="ext != null">
+                 and ext = #{ext,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+    
+        <update id="updateByListingId" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingUIExt">
+        update ebay_publish_listing_ui_ext  
+        set ext = #{ext,jdbcType=LONGVARCHAR},
+            creation_time = now()
+        where listing_id = #{listingId,jdbcType=INTEGER}
+    </update>
+</mapper>

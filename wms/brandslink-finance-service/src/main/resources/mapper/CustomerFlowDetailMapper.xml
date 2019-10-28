@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.CustomerFlowDetailMapper">
+    
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.CustomerFlowDetail">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="customer_flow_id" jdbcType="INTEGER" property="customerFlowId" />
+        <result column="sku" jdbcType="VARCHAR" property="sku" />
+        <result column="sku_name" jdbcType="VARCHAR" property="skuName" />
+        <result column="sku_type" jdbcType="VARCHAR" property="skuType" />
+        <result column="sku_number" jdbcType="INTEGER" property="skuNumber" />
+        <result column="original_cost" jdbcType="DECIMAL" property="originalCost" />
+        <result column="discount" jdbcType="DOUBLE" property="discount" />
+        <result column="discount_cost" jdbcType="DECIMAL" property="discountCost" />
+        <result column="feature_json" jdbcType="VARCHAR" property="featureJson" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, customer_flow_id, sku, sku_name, sku_type, sku_number, original_cost, discount, 
+        discount_cost, feature_json, create_by, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_customer_flow_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tf_customer_flow_detail
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.finance.pojo.entity.CustomerFlowDetail">
+        insert into tf_customer_flow_detail (id, customer_flow_id, sku, 
+            sku_name, sku_type, sku_number, 
+            original_cost, discount, discount_cost, 
+            feature_json, create_by, create_time
+            )
+        values (#{id,jdbcType=INTEGER}, #{customerFlowId,jdbcType=INTEGER}, #{sku,jdbcType=VARCHAR}, 
+            #{skuName,jdbcType=VARCHAR}, #{skuType,jdbcType=VARCHAR}, #{skuNumber,jdbcType=INTEGER}, 
+            #{originalCost,jdbcType=DECIMAL}, #{discount,jdbcType=DOUBLE}, #{discountCost,jdbcType=DECIMAL}, 
+            #{featureJson,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.finance.pojo.entity.CustomerFlowDetail">
+        insert into tf_customer_flow_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="customerFlowId != null">
+                customer_flow_id,
+            </if>
+            <if test="sku != null">
+                sku,
+            </if>
+            <if test="skuName != null">
+                sku_name,
+            </if>
+            <if test="skuType != null">
+                sku_type,
+            </if>
+            <if test="skuNumber != null">
+                sku_number,
+            </if>
+            <if test="originalCost != null">
+                original_cost,
+            </if>
+            <if test="discount != null">
+                discount,
+            </if>
+            <if test="discountCost != null">
+                discount_cost,
+            </if>
+            <if test="featureJson != null">
+                feature_json,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="customerFlowId != null">
+                #{customerFlowId,jdbcType=INTEGER},
+            </if>
+            <if test="sku != null">
+                #{sku,jdbcType=VARCHAR},
+            </if>
+            <if test="skuName != null">
+                #{skuName,jdbcType=VARCHAR},
+            </if>
+            <if test="skuType != null">
+                #{skuType,jdbcType=VARCHAR},
+            </if>
+            <if test="skuNumber != null">
+                #{skuNumber,jdbcType=INTEGER},
+            </if>
+            <if test="originalCost != null">
+                #{originalCost,jdbcType=DECIMAL},
+            </if>
+            <if test="discount != null">
+                #{discount,jdbcType=DOUBLE},
+            </if>
+            <if test="discountCost != null">
+                #{discountCost,jdbcType=DECIMAL},
+            </if>
+            <if test="featureJson != null">
+                #{featureJson,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.finance.pojo.entity.CustomerFlowDetail">
+        update tf_customer_flow_detail
+        <set>
+            <if test="customerFlowId != null">
+                customer_flow_id = #{customerFlowId,jdbcType=INTEGER},
+            </if>
+            <if test="sku != null">
+                sku = #{sku,jdbcType=VARCHAR},
+            </if>
+            <if test="skuName != null">
+                sku_name = #{skuName,jdbcType=VARCHAR},
+            </if>
+            <if test="skuType != null">
+                sku_type = #{skuType,jdbcType=VARCHAR},
+            </if>
+            <if test="skuNumber != null">
+                sku_number = #{skuNumber,jdbcType=INTEGER},
+            </if>
+            <if test="originalCost != null">
+                original_cost = #{originalCost,jdbcType=DECIMAL},
+            </if>
+            <if test="discount != null">
+                discount = #{discount,jdbcType=DOUBLE},
+            </if>
+            <if test="discountCost != null">
+                discount_cost = #{discountCost,jdbcType=DECIMAL},
+            </if>
+            <if test="featureJson != null">
+                feature_json = #{featureJson,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.finance.pojo.entity.CustomerFlowDetail">
+        update tf_customer_flow_detail
+        set customer_flow_id = #{customerFlowId,jdbcType=INTEGER},
+            sku = #{sku,jdbcType=VARCHAR},
+            sku_name = #{skuName,jdbcType=VARCHAR},
+            sku_type = #{skuType,jdbcType=VARCHAR},
+            sku_number = #{skuNumber,jdbcType=INTEGER},
+            original_cost = #{originalCost,jdbcType=DECIMAL},
+            discount = #{discount,jdbcType=DOUBLE},
+            discount_cost = #{discountCost,jdbcType=DECIMAL},
+            feature_json = #{featureJson,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.brandslink.cloud.finance.pojo.entity.CustomerFlowDetail" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_customer_flow_detail
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="customerFlowId != null and customerFlowId != ''">
+                 and customer_flow_id = #{customerFlowId,jdbcType=INTEGER}
+            </if>
+            <if test="sku != null and sku != ''">
+                 and sku = #{sku,jdbcType=VARCHAR}
+            </if>
+            <if test="skuName != null and skuName != ''">
+                 and sku_name = #{skuName,jdbcType=VARCHAR}
+            </if>
+            <if test="skuType != null and skuType != ''">
+                 and sku_type = #{skuType,jdbcType=VARCHAR}
+            </if>
+            <if test="skuNumber != null and skuNumber != ''">
+                 and sku_number = #{skuNumber,jdbcType=INTEGER}
+            </if>
+            <if test="originalCost != null and originalCost != ''">
+                 and original_cost = #{originalCost,jdbcType=DECIMAL}
+            </if>
+            <if test="discount != null and discount != ''">
+                 and discount = #{discount,jdbcType=DOUBLE}
+            </if>
+            <if test="discountCost != null and discountCost != ''">
+                 and discount_cost = #{discountCost,jdbcType=DECIMAL}
+            </if>
+            <if test="featureJson != null and featureJson != ''">
+                 and feature_json = #{featureJson,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getByCustomerFlowId" parameterType="java.lang.Integer" resultType="com.brandslink.cloud.finance.pojo.dto.CustomerFlowDetailDto">
+        select a.id,c.customer_name as customerName,b.order_no as orderNo,
+        b.source_no AS sourceNo,b.waybill_no as waybillNo,b.bill_time as billTime,
+        b.warehouse_name as warehouseName,a.sku,a.sku_name as skuName,a.sku_type as skuType,
+        a.original_cost as originalCost,a.discount,a.discount_cost as discountCost,
+        a.detail_type as detailType,a.feature_json as featureJson
+        from tf_customer_flow_detail a join tf_customer_flow b on a.customer_flow_id=b.id
+        join tf_customer c on c.customer_code=b.customer_code
+        where b.id=#{customerFlowId}
+    </select>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonPublishTemplateOrderMapper">
+
+
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AmazonPublishTemplateOrder">
+      INSERT amazon_publish_template_order(`key`,`value`)VALUES(#{key},1);
+    </insert>
+
+    <update id="addValue1" parameterType="java.lang.String">
+      UPDATE amazon_publish_template_order o SET o.`value` = o.`value` + 1 WHERE o.`key` = #{key};
+    </update>
+
+    <select id="findByKey" parameterType="java.lang.String"
+            resultType="com.rondaful.cloud.seller.entity.AmazonPublishTemplateOrder">
+        SELECT * FROM amazon_publish_template_order o WHERE o.`key` = #{key};
+    </select>
+
+
+</mapper>

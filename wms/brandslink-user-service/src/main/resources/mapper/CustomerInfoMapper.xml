@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.user.mapper.CustomerInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.user.entity.CustomerInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="customer_app_id" jdbcType="VARCHAR" property="customerAppId"/>
+        <result column="customer_secret_key" jdbcType="VARCHAR" property="customerSecretKey"/>
+        <result column="customer_code" jdbcType="VARCHAR" property="customerCode"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="shortened_chinese_name" jdbcType="VARCHAR" property="shortenedChineseName"/>
+        <result column="chinese_name" jdbcType="VARCHAR" property="chineseName"/>
+        <result column="english_name" jdbcType="VARCHAR" property="englishName"/>
+        <result column="provincial" jdbcType="VARCHAR" property="provincial"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="district" jdbcType="VARCHAR" property="district"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="contacts" jdbcType="VARCHAR" property="contacts"/>
+        <result column="contact_way" jdbcType="VARCHAR" property="contactWay"/>
+        <result column="commerce" jdbcType="VARCHAR" property="commerce"/>
+        <result column="commerce_way" jdbcType="VARCHAR" property="commerceWay"/>
+        <result column="contract_date" jdbcType="VARCHAR" property="contractDate"/>
+        <result column="cancellation_refund_code" jdbcType="VARCHAR" property="cancellationRefundCode"/>
+        <result column="cancellation_refund_name" jdbcType="VARCHAR" property="cancellationRefundName"/>
+        <result column="status" jdbcType="CHAR" property="status"/>
+        <result column="legal_representative" jdbcType="VARCHAR" property="legalRepresentative"/>
+        <result column="legal_representative_identity_card" jdbcType="VARCHAR"
+                property="legalRepresentativeIdentityCard"/>
+        <result column="business_license" jdbcType="VARCHAR" property="businessLicense"/>
+        <result column="identity_card_front" jdbcType="VARCHAR" property="identityCardFront"/>
+        <result column="identity_card_verso" jdbcType="VARCHAR" property="identityCardVerso"/>
+        <result column="audit_status" jdbcType="CHAR" property="auditStatus"/>
+        <result column="auditor" jdbcType="VARCHAR" property="auditor"/>
+        <result column="audit_date" jdbcType="TIMESTAMP" property="auditDate"/>
+        <result column="audit_failed_cause" jdbcType="VARCHAR" property="auditFailedCause"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="tax_registration_certificate" jdbcType="VARCHAR" property="taxRegistrationCertificate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName"/>
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, customer_app_id, customer_secret_key, customer_code, account, shortened_chinese_name,
+        chinese_name, english_name, provincial, city, district, address, contacts, contact_way,
+        commerce, commerce_way, contract_date, cancellation_refund_code, cancellation_refund_name,
+        status, legal_representative, legal_representative_identity_card, business_license,
+        identity_card_front, identity_card_verso, audit_status, auditor, audit_date, audit_failed_cause,
+        url, country, tax_registration_certificate, create_by, create_time, last_update_by,
+        last_update_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_customer_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_customer_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteWarehouseByCustomerId" parameterType="java.lang.Integer">
+        delete from t_customer_warehouse_info
+        where customer_id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.user.entity.CustomerInfo">
+        insert into t_customer_info (id, customer_app_id, customer_secret_key,
+            customer_code, account, shortened_chinese_name,
+            chinese_name, english_name, provincial,
+            city, district, address,
+            contacts, contact_way, commerce,
+            commerce_way, contract_date, cancellation_refund_code,
+            cancellation_refund_name, status, legal_representative,
+            legal_representative_identity_card, business_license,
+            identity_card_front, identity_card_verso,
+            audit_status, auditor, audit_date,
+            audit_failed_cause, url, country,
+            tax_registration_certificate, create_by,
+            create_time, last_update_by, last_update_time
+            )
+        values (#{id,jdbcType=INTEGER}, #{customerAppId,jdbcType=VARCHAR}, #{customerSecretKey,jdbcType=VARCHAR},
+            #{customerCode,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{shortenedChineseName,jdbcType=VARCHAR},
+            #{chineseName,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, #{provincial,jdbcType=VARCHAR},
+            #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+            #{contacts,jdbcType=VARCHAR}, #{contactWay,jdbcType=VARCHAR}, #{commerce,jdbcType=VARCHAR},
+            #{commerceWay,jdbcType=VARCHAR}, #{contractDate,jdbcType=VARCHAR}, #{cancellationRefundCode,jdbcType=VARCHAR},
+            #{cancellationRefundName,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{legalRepresentative,jdbcType=VARCHAR},
+            #{legalRepresentativeIdentityCard,jdbcType=VARCHAR}, #{businessLicense,jdbcType=VARCHAR},
+            #{identityCardFront,jdbcType=VARCHAR}, #{identityCardVerso,jdbcType=VARCHAR},
+            #{auditStatus,jdbcType=CHAR}, #{auditor,jdbcType=VARCHAR}, #{auditDate,jdbcType=TIMESTAMP},
+            #{auditFailedCause,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR},
+            #{taxRegistrationCertificate,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.user.entity.CustomerInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_customer_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="customerAppId != null">
+                customer_app_id,
+            </if>
+            <if test="customerSecretKey != null">
+                customer_secret_key,
+            </if>
+            <if test="customerCode != null">
+                customer_code,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="shortenedChineseName != null">
+                shortened_chinese_name,
+            </if>
+            <if test="chineseName != null">
+                chinese_name,
+            </if>
+            <if test="englishName != null">
+                english_name,
+            </if>
+            <if test="provincial != null">
+                provincial,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="district != null">
+                district,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="contacts != null">
+                contacts,
+            </if>
+            <if test="contactWay != null">
+                contact_way,
+            </if>
+            <if test="commerce != null">
+                commerce,
+            </if>
+            <if test="commerceWay != null">
+                commerce_way,
+            </if>
+            <if test="contractDate != null">
+                contract_date,
+            </if>
+            <if test="cancellationRefundCode != null">
+                cancellation_refund_code,
+            </if>
+            <if test="cancellationRefundName != null">
+                cancellation_refund_name,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="legalRepresentative != null">
+                legal_representative,
+            </if>
+            <if test="legalRepresentativeIdentityCard != null">
+                legal_representative_identity_card,
+            </if>
+            <if test="businessLicense != null">
+                business_license,
+            </if>
+            <if test="identityCardFront != null">
+                identity_card_front,
+            </if>
+            <if test="identityCardVerso != null">
+                identity_card_verso,
+            </if>
+            <if test="auditStatus != null">
+                audit_status,
+            </if>
+            <if test="auditor != null">
+                auditor,
+            </if>
+            <if test="auditDate != null">
+                audit_date,
+            </if>
+            <if test="auditFailedCause != null">
+                audit_failed_cause,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="taxRegistrationCertificate != null">
+                tax_registration_certificate,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="customerAppId != null">
+                #{customerAppId,jdbcType=VARCHAR},
+            </if>
+            <if test="customerSecretKey != null">
+                #{customerSecretKey,jdbcType=VARCHAR},
+            </if>
+            <if test="customerCode != null">
+                #{customerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="shortenedChineseName != null">
+                #{shortenedChineseName,jdbcType=VARCHAR},
+            </if>
+            <if test="chineseName != null">
+                #{chineseName,jdbcType=VARCHAR},
+            </if>
+            <if test="englishName != null">
+                #{englishName,jdbcType=VARCHAR},
+            </if>
+            <if test="provincial != null">
+                #{provincial,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="contacts != null">
+                #{contacts,jdbcType=VARCHAR},
+            </if>
+            <if test="contactWay != null">
+                #{contactWay,jdbcType=VARCHAR},
+            </if>
+            <if test="commerce != null">
+                #{commerce,jdbcType=VARCHAR},
+            </if>
+            <if test="commerceWay != null">
+                #{commerceWay,jdbcType=VARCHAR},
+            </if>
+            <if test="contractDate != null">
+                #{contractDate,jdbcType=VARCHAR},
+            </if>
+            <if test="cancellationRefundCode != null">
+                #{cancellationRefundCode,jdbcType=VARCHAR},
+            </if>
+            <if test="cancellationRefundName != null">
+                #{cancellationRefundName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="legalRepresentative != null">
+                #{legalRepresentative,jdbcType=VARCHAR},
+            </if>
+            <if test="legalRepresentativeIdentityCard != null">
+                #{legalRepresentativeIdentityCard,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="identityCardFront != null">
+                #{identityCardFront,jdbcType=VARCHAR},
+            </if>
+            <if test="identityCardVerso != null">
+                #{identityCardVerso,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null">
+                #{auditStatus,jdbcType=CHAR},
+            </if>
+            <if test="auditor != null">
+                #{auditor,jdbcType=VARCHAR},
+            </if>
+            <if test="auditDate != null">
+                #{auditDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditFailedCause != null">
+                #{auditFailedCause,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="taxRegistrationCertificate != null">
+                #{taxRegistrationCertificate,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.user.entity.CustomerInfo">
+        update t_customer_info
+        <set>
+            <if test="customerAppId != null">
+                customer_app_id = #{customerAppId,jdbcType=VARCHAR},
+            </if>
+            <if test="customerSecretKey != null">
+                customer_secret_key = #{customerSecretKey,jdbcType=VARCHAR},
+            </if>
+            <if test="customerCode != null">
+                customer_code = #{customerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="shortenedChineseName != null">
+                shortened_chinese_name = #{shortenedChineseName,jdbcType=VARCHAR},
+            </if>
+            <if test="chineseName != null">
+                chinese_name = #{chineseName,jdbcType=VARCHAR},
+            </if>
+            <if test="englishName != null">
+                english_name = #{englishName,jdbcType=VARCHAR},
+            </if>
+            <if test="provincial != null">
+                provincial = #{provincial,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                district = #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="contacts != null">
+                contacts = #{contacts,jdbcType=VARCHAR},
+            </if>
+            <if test="contactWay != null">
+                contact_way = #{contactWay,jdbcType=VARCHAR},
+            </if>
+            <if test="commerce != null">
+                commerce = #{commerce,jdbcType=VARCHAR},
+            </if>
+            <if test="commerceWay != null">
+                commerce_way = #{commerceWay,jdbcType=VARCHAR},
+            </if>
+            <if test="contractDate != null">
+                contract_date = #{contractDate,jdbcType=VARCHAR},
+            </if>
+            <if test="cancellationRefundCode != null">
+                cancellation_refund_code = #{cancellationRefundCode,jdbcType=VARCHAR},
+            </if>
+            <if test="cancellationRefundName != null">
+                cancellation_refund_name = #{cancellationRefundName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="legalRepresentative != null">
+                legal_representative = #{legalRepresentative,jdbcType=VARCHAR},
+            </if>
+            <if test="legalRepresentativeIdentityCard != null">
+                legal_representative_identity_card = #{legalRepresentativeIdentityCard,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                business_license = #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="identityCardFront != null">
+                identity_card_front = #{identityCardFront,jdbcType=VARCHAR},
+            </if>
+            <if test="identityCardVerso != null">
+                identity_card_verso = #{identityCardVerso,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null">
+                audit_status = #{auditStatus,jdbcType=CHAR},
+            </if>
+            <if test="auditor != null">
+                auditor = #{auditor,jdbcType=VARCHAR},
+            </if>
+            <if test="auditDate != null">
+                audit_date = #{auditDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditFailedCause != null">
+                audit_failed_cause = #{auditFailedCause,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="taxRegistrationCertificate != null">
+                tax_registration_certificate = #{taxRegistrationCertificate,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.user.entity.CustomerInfo">
+        update t_customer_info
+        set customer_app_id = #{customerAppId,jdbcType=VARCHAR},
+            customer_secret_key = #{customerSecretKey,jdbcType=VARCHAR},
+            customer_code = #{customerCode,jdbcType=VARCHAR},
+            account = #{account,jdbcType=VARCHAR},
+            shortened_chinese_name = #{shortenedChineseName,jdbcType=VARCHAR},
+            chinese_name = #{chineseName,jdbcType=VARCHAR},
+            english_name = #{englishName,jdbcType=VARCHAR},
+            provincial = #{provincial,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            district = #{district,jdbcType=VARCHAR},
+            address = #{address,jdbcType=VARCHAR},
+            contacts = #{contacts,jdbcType=VARCHAR},
+            contact_way = #{contactWay,jdbcType=VARCHAR},
+            commerce = #{commerce,jdbcType=VARCHAR},
+            commerce_way = #{commerceWay,jdbcType=VARCHAR},
+            contract_date = #{contractDate,jdbcType=VARCHAR},
+            cancellation_refund_code = #{cancellationRefundCode,jdbcType=VARCHAR},
+            cancellation_refund_name = #{cancellationRefundName,jdbcType=VARCHAR},
+            status = #{status,jdbcType=CHAR},
+            legal_representative = #{legalRepresentative,jdbcType=VARCHAR},
+            legal_representative_identity_card = #{legalRepresentativeIdentityCard,jdbcType=VARCHAR},
+            business_license = #{businessLicense,jdbcType=VARCHAR},
+            identity_card_front = #{identityCardFront,jdbcType=VARCHAR},
+            identity_card_verso = #{identityCardVerso,jdbcType=VARCHAR},
+            audit_status = #{auditStatus,jdbcType=CHAR},
+            auditor = #{auditor,jdbcType=VARCHAR},
+            audit_date = #{auditDate,jdbcType=TIMESTAMP},
+            audit_failed_cause = #{auditFailedCause,jdbcType=VARCHAR},
+            url = #{url,jdbcType=VARCHAR},
+            country = #{country,jdbcType=VARCHAR},
+            tax_registration_certificate = #{taxRegistrationCertificate,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updatePhone">
+        UPDATE t_customer_info customer,t_customer_user_info u
+        SET customer.contact_way = #{mobile,jdbcType=VARCHAR},
+            u.contact_phone = #{mobile,jdbcType=VARCHAR}
+        WHERE customer.id = u.customer_id and customer.id = #{customerId,jdbcType=INTEGER} and u.type = 0
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.user.entity.CustomerInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_customer_info
+        where audit_status != 0
+        <if test="id != null and id != ''">
+            and id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="customerAppId != null and customerAppId != ''">
+            and customer_app_id = #{customerAppId,jdbcType=VARCHAR}
+        </if>
+        <if test="customerSecretKey != null and customerSecretKey != ''">
+            and customer_secret_key = #{customerSecretKey,jdbcType=VARCHAR}
+        </if>
+        <if test="customerCode != null and customerCode != ''">
+            and customer_code like concat('%', #{customerCode,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="account != null and account != ''">
+            and account = #{account,jdbcType=VARCHAR}
+        </if>
+        <if test="shortenedChineseName != null and shortenedChineseName != ''">
+            and shortened_chinese_name = #{shortenedChineseName,jdbcType=VARCHAR}
+        </if>
+        <if test="chineseName != null and chineseName != ''">
+            and chinese_name like concat('%', #{chineseName,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test="englishName != null and englishName != ''">
+            and english_name = #{englishName,jdbcType=VARCHAR}
+        </if>
+        <if test="provincial != null and provincial != ''">
+            and provincial = #{provincial,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null and city != ''">
+            and city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="district != null and district != ''">
+            and district = #{district,jdbcType=VARCHAR}
+        </if>
+        <if test="address != null and address != ''">
+            and address = #{address,jdbcType=VARCHAR}
+        </if>
+        <if test="contacts != null and contacts != ''">
+            and contacts = #{contacts,jdbcType=VARCHAR}
+        </if>
+        <if test="contactWay != null and contactWay != ''">
+            and contact_way = #{contactWay,jdbcType=VARCHAR}
+        </if>
+        <if test="commerce != null and commerce != ''">
+            and commerce = #{commerce,jdbcType=VARCHAR}
+        </if>
+        <if test="commerceWay != null and commerceWay != ''">
+            and commerce_way = #{commerceWay,jdbcType=VARCHAR}
+        </if>
+        <if test="contractDate != null and contractDate != ''">
+            and contract_date = #{contractDate,jdbcType=VARCHAR}
+        </if>
+        <if test="cancellationRefundCode != null and cancellationRefundCode != ''">
+            and cancellation_refund_code = #{cancellationRefundCode,jdbcType=VARCHAR}
+        </if>
+        <if test="cancellationRefundName != null and cancellationRefundName != ''">
+            and cancellation_refund_name = #{cancellationRefundName,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null and status != ''">
+            and status = #{status,jdbcType=CHAR}
+        </if>
+        <if test="legalRepresentative != null and legalRepresentative != ''">
+            and legal_representative = #{legalRepresentative,jdbcType=VARCHAR}
+        </if>
+        <if test="legalRepresentativeIdentityCard != null and legalRepresentativeIdentityCard != ''">
+            and legal_representative_identity_card = #{legalRepresentativeIdentityCard,jdbcType=VARCHAR}
+        </if>
+        <if test="businessLicense != null and businessLicense != ''">
+            and business_license = #{businessLicense,jdbcType=VARCHAR}
+        </if>
+        <if test="identityCardFront != null and identityCardFront != ''">
+            and identity_card_front = #{identityCardFront,jdbcType=VARCHAR}
+        </if>
+        <if test="identityCardVerso != null and identityCardVerso != ''">
+            and identity_card_verso = #{identityCardVerso,jdbcType=VARCHAR}
+        </if>
+        <if test="auditStatus != null and auditStatus != ''">
+            and audit_status = #{auditStatus,jdbcType=CHAR}
+        </if>
+        <if test="auditor != null and auditor != ''">
+            and auditor = #{auditor,jdbcType=VARCHAR}
+        </if>
+        <if test="auditDate != null and auditDate != ''">
+            and audit_date = #{auditDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="auditFailedCause != null and auditFailedCause != ''">
+            and audit_failed_cause = #{auditFailedCause,jdbcType=VARCHAR}
+        </if>
+        <if test="url != null and url != ''">
+            and url = #{url,jdbcType=VARCHAR}
+        </if>
+        <if test="country != null and country != ''">
+            and country = #{country,jdbcType=VARCHAR}
+        </if>
+        <if test="taxRegistrationCertificate != null and taxRegistrationCertificate != ''">
+            and tax_registration_certificate = #{taxRegistrationCertificate,jdbcType=VARCHAR}
+        </if>
+        <if test="createBy != null and createBy != ''">
+            and create_by = #{createBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="lastUpdateBy != null and lastUpdateBy != ''">
+            and last_update_by = #{lastUpdateBy,jdbcType=VARCHAR}
+        </if>
+        <if test="lastUpdateTime != null and lastUpdateTime != ''">
+            and last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        customer_code, chinese_name
+        from t_customer_info
+    </select>
+
+    <select id="selectCustomerChineseNamesByCustomerCodes" parameterType="java.util.List"
+            resultType="com.brandslink.cloud.user.dto.response.CustomerShipperDetailResponseDTO">
+        select c.customer_code customerCode,c.chinese_name chineseName
+        from t_customer_info c
+        WHERE c.customer_code in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+        and c.status = 1
+    </select>
+
+    <select id="selectShipperNamesByCustomerCodeAndShipperCodes" parameterType="java.util.List"
+            resultType="com.brandslink.cloud.user.dto.response.CustomerShipperDetailResponseDTO">
+        select c.customer_code customerCode,c.chinese_name chineseName,s.shipper_name shipperName
+        from t_customer_info c
+        left JOIN t_customer_shipper_info cs on c.id = cs.customer_id and c.status = 1
+        left JOIN t_shipper_info s on s.id = cs.shipper_id
+        WHERE c.customer_code in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item.customerCode,jdbcType=VARCHAR}
+        </foreach>
+        AND s.shipper_code in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item.shipperCode,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <insert id="insertCustomerShipper">
+        insert into t_customer_shipper_info(customer_id,shipper_id)
+        values (#{customerId,jdbcType=INTEGER},#{id,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertWarehouseByCustomerId">
+        insert into t_customer_warehouse_info(customer_id,warehouse_name,warehouse_code)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{id,jdbcType=INTEGER},#{item.warehouseName,jdbcType=VARCHAR},#{item.warehouseCode,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="selectByCustomerCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_customer_info
+        where customer_code = #{customerCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByCustomerName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_customer_info
+        where chinese_name = #{chineseName,jdbcType=VARCHAR}
+        <if test="id != null">
+            and id != #{id,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectCustomerCodeByCustomerId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select
+        customer_code
+        from t_customer_info
+        where id = #{customerId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectCustomerDetailAndWarehouseInfoByPrimaryKey" parameterType="java.lang.Integer"
+            resultMap="BaseResultMap">
+        select
+        c.*,w.warehouse_name,w.warehouse_code
+        from t_customer_info c
+        left join t_customer_warehouse_info w on c.id = w.customer_id
+        where c.id = #{customerId,jdbcType=INTEGER}
+    </select>
+
+</mapper>

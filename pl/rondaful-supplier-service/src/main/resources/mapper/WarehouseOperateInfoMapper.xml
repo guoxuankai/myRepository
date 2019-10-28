@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WarehouseOperateInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.WarehouseOperateInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="supplier" jdbcType="VARCHAR" property="supplier"/>
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode"/>
+       	<result column="available" jdbcType="BIT" property="available" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy"/>
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      	id,warehouse_code,supplier,available,create_by,create_date,last_update_by,last_update_date
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_operateinfo
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.WarehouseOperateInfo">
+        update t_warehouse_operateinfo
+        set warehouse_id = #{warehouseId,jdbcType=INTEGER},
+            warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            warehouse_type = #{warehouseType,jdbcType=VARCHAR},
+            warehouse_provider = #{warehouseProvider,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    <!-- 批量插入仓库操作信息 -->
+    <insert id="insertOperateInfo" parameterType="com.rondaful.cloud.supplier.entity.WarehouseOperateInfo">
+        insert into t_warehouse_operateinfo
+        (warehouse_code,supplier_id,supplier,supplier_company_name,create_by,create_date,last_update_by,last_update_date)
+        values
+            (#{warehouseCode,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER},#{supplier,jdbcType=VARCHAR},#{supplierCompanyName,jdbcType=VARCHAR},
+            #{createBy,jdbcType=VARCHAR},now(),#{lastUpdateBy,jdbcType=VARCHAR},
+            now())
+    </insert>
+    
+	<!-- 根据供应商分页查询操作记录 -->
+     <select id="pageBySupplier" parameterType="com.rondaful.cloud.supplier.entity.WarehouseOperateInfo" resultType="com.rondaful.cloud.supplier.entity.WarehouseOperateInfo">
+        SELECT
+			sy.id,sy.warehouse_code warehouseCode,
+			sy.warehouse_name warehouseName,sy.warehouse_name_en warehouseNameEn,
+			sy.status,sy.country_code countryCode,
+			cmap.country_name countryName,cmap.country_name_en countryNameEn 
+			FROM t_warehouse_sync sy 
+			INNER JOIN t_country_map cmap ON cmap.country_code = sy.country_code
+			WHERE 1=1
+			<if test='choiceValid=="1"'>
+                and sy.status  = 1
+            </if>
+            <if test='choiceValid=="0"'>
+                and sy.status = 0
+            </if>
+            <if test="countryCode != null">
+                and sy.country_code = #{countryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseType != null">
+                and sy.warehouse_type = #{warehouseType,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseCode != null">
+                and sy.warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="codeList !=null and codeList.size>0">
+               	and sy.warehouse_code in
+              <foreach collection="codeList" item="item" open="(" close=")" separator=",">
+           		 #{item}
+           		</foreach>
+            </if>
+            <if test="supplier !=null">
+            	and sy.supplier_id = #{supplier,jdbcType=VARCHAR}
+            </if>
+        </select>
+    <!-- 提供管理后台分页查询仓库操作记录 -->
+    <!-- 诡异需求修改  -->
+ 	<select id="pageByCms" parameterType="com.rondaful.cloud.supplier.entity.WarehouseOperateInfo" resultType="com.rondaful.cloud.supplier.entity.WarehouseOperateInfo">
+         SELECT
+			wh.id id,"深圳市利朗达科技有限公司" as supplierCompanyName,wh.warehouse_provider warehouseProvider,wh.warehouse_type warehouseType,wh.warehouse_name warehouseName
+			,wh.warehouse_name_en warehouseNameEn,wh.warehouse_code warehouseCode,wh.status available
+		FROM
+		<!-- 	t_warehouse_operateinfo opinfo INNER JOIN
+			t_warehouse_sync wh   on opinfo.warehouse_code = wh.warehouse_code -->
+			t_warehouse_sync wh 
+		<!-- left join	t_warehouse_operateinfo opinfo on opinfo.warehouse_code = wh.warehouse_code -->
+			WHERE 1=1 and wh.warehouse_type =0
+		<!--  <if test='choiceValid=="1"'>
+                and opinfo.available =1
+            </if>
+            <if test='choiceValid=="0"'>
+                and opinfo.available =0
+            </if>
+            -->
+        <!--   <if test="supplierCompanyName != null">
+	    		and opinfo.supplier_company_name=#{supplierCompanyName,jdbcType=VARCHAR}
+	    	</if>  -->
+	    	<if test='choiceValid=="1"'>
+                and wh.status =1
+            </if>
+            <if test='choiceValid=="0"'>
+                and  wh.status  =0
+            </if>
+	    	
+            <if test="warehouseProvider != null">
+                and wh.warehouse_provider = #{warehouseProvider,jdbcType=VARCHAR}
+            </if>
+             <if test="warehouseType != null">
+                and wh.warehouse_type = #{warehouseType,jdbcType=VARCHAR}
+            </if>
+    </select>
+    <!-- 根据供应商取得启用的仓库列表 -->
+ 	<select id="selectAvalibleWarehouseBySupplier"  parameterType="java.lang.String"  resultType="java.lang.String">
+	    SELECT
+			DISTINCT opinfo.warehouse_code warehouseCode,wh.warehouse_name warehouseName
+		FROM
+			t_warehouse_operateinfo opinfo,
+			t_warehouse_sync wh  
+			WHERE
+	   opinfo.warehouse_code = wh.warehouse_code and
+		opinfo.available = 1 
+		<if test="supplierId != null">
+	    		and opinfo.supplier_id=#{supplierId,jdbcType=INTEGER}
+	    	</if>
+    </select>
+    <!-- 根据id更新仓库是否启用 -->
+   <update id="updateWarehouseStatusById" parameterType="java.util.Map">
+        update t_warehouse_operateinfo set
+       	available = #{available,jdbcType=BIT},
+       last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+       last_update_date = now()
+        where id = #{id,jdbcType=INTEGER} 
+    </update> 
+    <!-- 查询对应供应商的仓库操作记录数量 -->
+    <select id="selectOperateInfoBySupplier"  parameterType="java.lang.String"  resultMap="BaseResultMap">
+	   select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_operateinfo
+			where 1=1
+			 <if test="supplierId != null">
+	    		and supplier_id=#{supplierId,jdbcType=INTEGER}
+	    	</if>
+	    	<if test="warehouseCode != null">
+	    		and warehouse_code = #{warehouseCode,jdbcType=VARCHAR} 
+	    	</if>
+    </select>
+     <!-- 查询国家表信息 -->
+    <select id="selectCountry"  resultType="com.rondaful.cloud.supplier.entity.WarehouseOperateInfo">
+	   select
+       country_code countryCode,country_name countryName,country_name_en countryNameEn
+        from t_country_map
+    </select>
+    
+     <!-- 根据code查询国家表信息 -->
+    <select id="selectCountryByCode"  parameterType="java.lang.String" resultType="com.rondaful.cloud.supplier.entity.WarehouseOperateInfo">
+	   select
+       country_code countryCode,country_name countryName,country_name_en countryNameEn
+        from t_country_map where  country_code = #{countryCode,jdbcType=VARCHAR}
+    </select>
+</mapper>

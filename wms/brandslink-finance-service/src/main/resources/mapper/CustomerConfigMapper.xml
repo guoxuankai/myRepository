@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.CustomerConfigMapper">
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.CustomerConfigEntity">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
+        <result column="config_status" jdbcType="TINYINT" property="configStatus"/>
+        <result column="customer_id" jdbcType="VARCHAR" property="customerId"/>
+        <result column="threshold_money" jdbcType="DECIMAL" property="thresholdMoney"/>
+        <result column="storage_fee" jdbcType="DOUBLE" property="storageFee"/>
+        <result column="upload_fee" jdbcType="DOUBLE" property="uploadFee"/>
+        <result column="instock_fee" jdbcType="DOUBLE" property="instockFee"/>
+        <result column="outstock_fee" jdbcType="DOUBLE" property="outstockFee"/>
+        <result column="check_fee" jdbcType="DOUBLE" property="checkFee"/>
+        <result column="increment_fee" jdbcType="DOUBLE" property="incrementFee"/>
+        <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+
+    <insert id="addCustomerConfig"
+            parameterType="com.brandslink.cloud.finance.pojo.vo.CustomerConfig.AddCustomerConfigVo">
+        INSERT INTO tf_customer_config(threshold_money, customer_code, version, storage_fee, upload_fee, instock_fee,
+                                       outstock_fee,
+                                       check_fee, increment_fee, logistics_fee, create_time, create_by)
+        values (#{thresholdMoney}, #{customerCode}, #{version}, #{storageFee}, #{uploadFee}, #{instockFee},
+                #{outstockFee}, #{checkFee}, #{incrementFee}, #{logisticsFee}, now(), #{createBy});
+
+    </insert>
+    <update id="editorCustomerConfig" parameterType="com.brandslink.cloud.finance.pojo.vo.CustomerConfig.EditorCustomerVo">
+        UPDATE tf_customer_config SET storage_fee=#{storageFee},
+                                      upload_fee=#{uploadFee},instock_fee=#{instockFee},
+                                      outstock_fee=#{outstockFee},
+                                      check_fee=#{checkFee},
+                                      increment_fee=#{incrementFee},
+                                      logistics_fee=#{logisticsFee},
+
+                                      threshold_money=#{thresholdMoney}
+                                      where id =#{id} and config_status=1
+    </update>
+    <update id="customerSubmit">
+        UPDATE tf_customer_config SET config_status=2
+        where id =#{id} and config_status=1
+    </update>
+    <update id="customerEffective"  parameterType="com.brandslink.cloud.finance.pojo.vo.CustomerConfig.EffectiveCstomerVo">
+        UPDATE tf_customer_config SET update_time=#{effectiveDate}, update_by=#{updateBy}
+        where id =#{id} and customer_code=#{customerCode}
+    </update>
+    <update id="loseEfficacy" parameterType="java.util.List">
+        update tf_customer_config set config_status=4  where   current_date>update_time and customer_code in(
+        <foreach collection="list" item="item" separator="," >
+            #{item.customerCode}
+        </foreach>
+        )
+    </update>
+    <update id="effective">
+        update tf_customer_config set config_status=3  where update_time=current_date
+    </update>
+
+
+    <select id="selectCustomer" resultType="com.brandslink.cloud.finance.pojo.dto.CustomerConfig.SelectCustomerDto">
+        select id as id, customer_code as customerCode, customer_name as customerName
+        from tf_customer
+    </select>
+
+    <select id="queryQuote" resultType="com.brandslink.cloud.finance.pojo.dto.CustomerConfig.QueryCustomerConfigDto" parameterType="com.brandslink.cloud.finance.pojo.vo.CustomerConfig.QueryCustomerConfigVo">
+        select id, version,config_status customerState,threshold_money thresholdMoney,storage_fee storageFee,
+        instock_fee instockFee, outstock_fee outstockFee,update_time updateTime
+        from tf_customer_config where 1=1
+        <if test="customerCode != null and customerCode != ''">
+            and customer_code = #{customerCode}
+        </if>
+        <if test="customerState != null and customerState != ''">
+            and config_status = #{customerState}
+        </if>
+        <if test="updateDate1 != null">and update_time &gt;=#{updateDate1}</if>
+        <if test="updateDate2 != null">and update_time &lt;=#{updateDate2}</if>
+    </select>
+    <select id="judgeEffective" resultType="java.lang.Integer" parameterType="com.brandslink.cloud.finance.pojo.vo.CustomerConfig.EffectiveCstomerVo">
+        select id from tf_customer_config where  customer_code=#{customerCode} and update_time=#{effectiveDate}
+    </select>
+    <select id="getNowEffective"
+                     resultMap="BaseResultMap">
+        select  * from tf_sys_config where update_time=current_date
+
+    </select>
+
+    <select id="getCustomerInfo" resultMap="BaseResultMap">
+        select * from tf_customer_config where version = #{version}
+
+    </select>
+</mapper>

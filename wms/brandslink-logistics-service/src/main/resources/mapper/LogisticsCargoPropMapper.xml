@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.logistics.mapper.LogisticsCargoPropMapper">
+    <insert id="insertUpdateSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.brandslink.cloud.logistics.model.LogisticsCargoPropModel">
+        insert into t_logistics_cargo_prop
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="cargoCode != null">
+                cargo_code,
+            </if>
+            <if test="cargoName != null">
+                cargo_name,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="cargoCode != null">
+                #{cargoCode,jdbcType=VARCHAR},
+            </if>
+            <if test="cargoName != null">
+                #{cargoName,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        cargo_code = VALUES(cargo_code),
+        cargo_name = VALUES(cargo_name),
+        is_valid = VALUES(is_valid),
+        update_by = VALUES(update_by)
+    </insert>
+
+    <select id="page" parameterType="com.brandslink.cloud.logistics.model.LogisticsCargoPropModel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_logistics_cargo_prop
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="cargoCode != null and cargoCode != ''">
+                and cargo_code = #{cargoCode,jdbcType=VARCHAR}
+            </if>
+            <if test="cargoName != null and cargoName != ''">
+                and cargo_name like "%"#{cargoName,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="isValid != null and isValid != ''">
+                and is_valid = #{isValid,jdbcType=TINYINT}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="beginDate != null">
+                and unix_timestamp(create_date) <![CDATA[ >= ]]> unix_timestamp(#{beginDate})
+            </if>
+            <if test="endDate != null">
+                and unix_timestamp(create_date) <![CDATA[ <= ]]> unix_timestamp(#{endDate})
+            </if>
+        </trim>
+    </select>
+
+    <!--###########################################################################################-->
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.logistics.model.LogisticsCargoPropModel">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="cargo_code" jdbcType="VARCHAR" property="cargoCode" />
+        <result column="cargo_name" jdbcType="VARCHAR" property="cargoName" />
+        <result column="is_valid" jdbcType="TINYINT" property="isValid" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, cargo_code, cargo_name, is_valid, create_date, create_by, update_date, update_by
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_logistics_cargo_prop
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_logistics_cargo_prop
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.logistics.model.LogisticsCargoPropModel">
+        insert into t_logistics_cargo_prop (id, cargo_code, cargo_name, 
+            is_valid, create_date, create_by, 
+            update_date, update_by)
+        values (#{id,jdbcType=BIGINT}, #{cargoCode,jdbcType=VARCHAR}, #{cargoName,jdbcType=VARCHAR}, 
+            #{isValid,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.logistics.model.LogisticsCargoPropModel">
+        insert into t_logistics_cargo_prop
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="cargoCode != null">
+                cargo_code,
+            </if>
+            <if test="cargoName != null">
+                cargo_name,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="cargoCode != null">
+                #{cargoCode,jdbcType=VARCHAR},
+            </if>
+            <if test="cargoName != null">
+                #{cargoName,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.logistics.model.LogisticsCargoPropModel">
+        update t_logistics_cargo_prop
+        <set>
+            <if test="cargoCode != null">
+                cargo_code = #{cargoCode,jdbcType=VARCHAR},
+            </if>
+            <if test="cargoName != null">
+                cargo_name = #{cargoName,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                is_valid = #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.logistics.model.LogisticsCargoPropModel">
+        update t_logistics_cargo_prop
+        set cargo_code = #{cargoCode,jdbcType=VARCHAR},
+            cargo_name = #{cargoName,jdbcType=VARCHAR},
+            is_valid = #{isValid,jdbcType=TINYINT},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <!--<select id="page" parameterType="com.brandslink.cloud.logistics.entity.LogisticsCargoProp" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_logistics_cargo_prop
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="cargoCode != null and cargoCode != ''">
+                 and cargo_code = #{cargoCode,jdbcType=VARCHAR}
+            </if>
+            <if test="cargoName != null and cargoName != ''">
+                 and cargo_name = #{cargoName,jdbcType=VARCHAR}
+            </if>
+            <if test="isValid != null and isValid != ''">
+                 and is_valid = #{isValid,jdbcType=TINYINT}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>-->
+</mapper>

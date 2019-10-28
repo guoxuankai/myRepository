@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.QuoteConfigMapper">
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.QuoteConfig">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
+        <result column="config_type" jdbcType="TINYINT" property="configType"/>
+        <result column="config_status" jdbcType="TINYINT" property="configStatus"/>
+        <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <insert id="addQuoteConfig" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+            parameterType="com.brandslink.cloud.finance.pojo.vo.QuoteConfig.AddQuoteConfigVo" >
+        INSERT INTO tf_sys_config(version,
+                                  config_type,
+                                  config_status,
+                                  submit_time,
+                                  create_by,
+                                  create_time)
+        values (#{version}, #{configType}, #{configStatus}, now(), #{createBy}, now())
+    </insert>
+    <insert id="insertConfigRow" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+            parameterType="com.brandslink.cloud.finance.pojo.vo.QuoteConfig.ConfigRowCla">
+        INSERT INTO tf_sys_config_row(config_id,
+                                      row_name,
+                                      create_by,
+                                      create_time)
+        values (#{configId}, #{rowName}, #{createBy}, now());
+    </insert>
+    <insert id="insertConfigCells" parameterType="com.brandslink.cloud.finance.pojo.vo.QuoteConfig.ConfigCellsCla">
+        INSERT INTO tf_sys_config_cells(config_id,
+                                        row_id,
+                                        cells_name,
+                                        cells_type,
+                                        cells_unit,
+                                        start_value,
+                                        end_value,
+                                        create_by,
+                                        create_time)
+        values (#{configId}, #{rowId}, #{cellsName}, #{cellsType}, #{cellsUnit}, #{startValue}, #{end_value},
+                #{createBy}, now())
+    </insert>
+    <update id="updateConfigRow" >
+        update tf_sys_config_row set
+        <trim prefix="row_name=case id" suffix="end" >
+            <foreach collection="list" item="item" index="index">
+                    when #{item.id} then #{item.rowName}
+            </foreach>
+        </trim>
+            where id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+
+    <update id="updateConfigCells" >
+        update tf_sys_config_cells
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="cells_name =case id  " suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    when #{i.id} then #{i.cellsName}
+                </foreach>
+            </trim>
+            <trim prefix="cells_type =case id " suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    when #{i.id} then #{i.cellsType}
+                </foreach>
+            </trim>
+            <trim prefix="cells_unit =case id  " suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    when #{i.id} then #{i.cellsUnit}
+                </foreach>
+            </trim>
+            <trim prefix="start_value =case id  " suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    when #{i.id} then #{i.startValue}
+                </foreach>
+            </trim>
+            <trim prefix="end_value =case id " suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    when #{i.id} then #{i.endValue}
+                </foreach>
+            </trim>
+
+        </trim>
+        where id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+    <update id="configSubmit">
+        update tf_sys_config set config_status =2 where id =#{id} and config_status = 1
+    </update>
+    <update id="configEffective" parameterType="com.brandslink.cloud.finance.pojo.vo.QuoteConfig.EffectiveConfigVo">
+        update tf_sys_config set update_time = #{effectiveDate},update_by=#{updateBy} where id= #{id}
+
+    </update>
+    <update id="loseEfficacy">
+        update tf_sys_config set config_status=4  where   current_date>update_time and config_type in(
+        <foreach collection="list" item="item" separator="," >
+            #{item.configType}
+        </foreach>
+        )
+    </update>
+    <update id="effective">
+        update tf_sys_config set config_status=3  where update_time=current_date
+    </update>
+
+    <select id="getQuoteConfig" resultMap="BaseResultMap"
+            resultType="com.brandslink.cloud.finance.pojo.vo.QuoteConfig.QueryQuoteConfigVo">
+        select *
+        from tf_sys_config where 1=1
+        <if test="configType != null">
+            and config_type = #{configType}
+        </if>
+        <if test="version != null and version != ''">
+            and version = #{version}
+        </if>
+        <if test="configStatus != null ">
+            and config_status = #{configStatus}
+        </if>
+        <if test="updateTime1 != null">and update_time &gt;=#{updateTime1}</if>
+        <if test="updateTime2 != null">and update_time &lt;=#{updateTime2}</if>
+
+    </select>
+    <select id="getConfigState" resultType="java.lang.Integer">
+        select config_status from tf_sys_config where version =#{version}
+    </select>
+    <select id="judgeEffective" resultType="java.lang.Integer" parameterType="com.brandslink.cloud.finance.pojo.vo.QuoteConfig.EffectiveConfigVo">
+        select id from tf_sys_config where  config_type=#{configType} and update_time=#{effectiveDate}
+
+    </select>
+    <select id="getNowEffective" resultMap="BaseResultMap">
+        select  * from tf_sys_config where update_time=current_date
+
+    </select>
+
+
+    <select id="versionInfo" resultType="com.brandslink.cloud.finance.pojo.dto.QuoteConfig.CellsConfigDto">
+        select cells.id,
+               cells.config_id configId,
+               cells.row_id rowId,
+               cells.cells_name cellsName,
+               cells.cells_type cellsType,
+               cells.cells_unit cellsUnit,
+               cells.start_value startValue,
+               cells.end_value endValue,
+               cells.create_by createBy,
+               cells.create_time createTime,
+               rows.row_name rowName,
+               rows.row_index rowIndex
+        from tf_sys_config_cells cells
+                 inner join tf_sys_config_row rows on cells.row_id   =rows.id left join tf_sys_config config on config.id =cells.config_id where config.version=#{version}
+        order by row_index asc
+
+    </select>
+
+
+</mapper>

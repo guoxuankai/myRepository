@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.NewSupplierCompanyinfoMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.NewSupplierCompanyinfo">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+        <result column="reg_area" jdbcType="VARCHAR" property="regArea" />
+        <result column="reg_address" jdbcType="VARCHAR" property="regAddress" />
+        <result column="credit_code" jdbcType="VARCHAR" property="creditCode" />
+        <result column="company_create_date" jdbcType="VARCHAR" property="companyCreateDate" />
+        <result column="operating_period" jdbcType="VARCHAR" property="operatingPeriod" />
+        <result column="company_scale" jdbcType="VARCHAR" property="companyScale" />
+        <result column="legalperson_name" jdbcType="VARCHAR" property="legalpersonName" />
+        <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+        <result column="id_card_f_image" jdbcType="VARCHAR" property="idCardFImage" />
+        <result column="id_card_r_image" jdbcType="VARCHAR" property="idCardRImage" />
+        <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+        <result column="company_profile" jdbcType="VARCHAR" property="companyProfile" />
+        <result column="monthly_turnover" jdbcType="VARCHAR" property="monthlyTurnover" />
+        <result column="brand_licensing" jdbcType="VARCHAR" property="brandLicensing" />
+        <result column="other_certificates" jdbcType="VARCHAR" property="otherCertificates" />
+        <result column="main_category" jdbcType="VARCHAR" property="mainCategory" />
+        <result column="quit_country" jdbcType="VARCHAR" property="quitCountry" />
+        <result column="quite_address" jdbcType="VARCHAR" property="quiteAddress" />
+        <result column="quit_post_code" jdbcType="VARCHAR" property="quitPostCode" />
+        <result column="quit_name" jdbcType="VARCHAR" property="quitName" />
+        <result column="quit_mobile" jdbcType="VARCHAR" property="quitMobile" />
+        <result column="quit_phone" jdbcType="VARCHAR" property="quitPhone" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, user_id, company_name, reg_area, reg_address, credit_code, company_create_date, 
+        operating_period, company_scale, legalperson_name, id_card, id_card_f_image, id_card_r_image, 
+        business_license, company_profile, monthly_turnover, brand_licensing, other_certificates, 
+        main_category, quit_country, quite_address, quit_post_code, quit_name, quit_mobile,
+        quit_phone
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_supplier_companyinfo
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_supplier_companyinfo
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.NewSupplierCompanyinfo">
+        insert into t_supplier_companyinfo (id, user_id, company_name, 
+            reg_area, reg_address, credit_code, 
+            company_create_date, operating_period, company_scale, 
+            legalperson_name, id_card, id_card_f_image, 
+            id_card_r_image, business_license, company_profile, 
+            monthly_turnover, brand_licensing, other_certificates, 
+            main_category, quit_country, quite_address,
+            quit_post_code, quit_name, quit_mobile, 
+            quit_phone)
+        values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, 
+            #{regArea,jdbcType=VARCHAR}, #{regAddress,jdbcType=VARCHAR}, #{creditCode,jdbcType=VARCHAR}, 
+            #{companyCreateDate,jdbcType=VARCHAR}, #{operatingPeriod,jdbcType=VARCHAR}, #{companyScale,jdbcType=VARCHAR}, 
+            #{legalpersonName,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{idCardFImage,jdbcType=VARCHAR}, 
+            #{idCardRImage,jdbcType=VARCHAR}, #{businessLicense,jdbcType=VARCHAR}, #{companyProfile,jdbcType=VARCHAR}, 
+            #{monthlyTurnover,jdbcType=VARCHAR}, #{brandLicensing,jdbcType=VARCHAR}, #{otherCertificates,jdbcType=VARCHAR}, 
+            #{mainCategory,jdbcType=VARCHAR}, #{quitCountry,jdbcType=VARCHAR}, #{quiteAddress,jdbcType=VARCHAR},
+            #{quitPostCode,jdbcType=VARCHAR}, #{quitName,jdbcType=VARCHAR}, #{quitMobile,jdbcType=VARCHAR}, 
+            #{quitPhone,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.NewSupplierCompanyinfo">
+        insert into t_supplier_companyinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="regArea != null">
+                reg_area,
+            </if>
+            <if test="regAddress != null">
+                reg_address,
+            </if>
+            <if test="creditCode != null">
+                credit_code,
+            </if>
+            <if test="companyCreateDate != null">
+                company_create_date,
+            </if>
+            <if test="operatingPeriod != null">
+                operating_period,
+            </if>
+            <if test="companyScale != null">
+                company_scale,
+            </if>
+            <if test="legalpersonName != null">
+                legalperson_name,
+            </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="idCardFImage != null">
+                id_card_f_image,
+            </if>
+            <if test="idCardRImage != null">
+                id_card_r_image,
+            </if>
+            <if test="businessLicense != null">
+                business_license,
+            </if>
+            <if test="companyProfile != null">
+                company_profile,
+            </if>
+            <if test="monthlyTurnover != null">
+                monthly_turnover,
+            </if>
+            <if test="brandLicensing != null">
+                brand_licensing,
+            </if>
+            <if test="otherCertificates != null">
+                other_certificates,
+            </if>
+            <if test="mainCategory != null">
+                main_category,
+            </if>
+            <if test="quitCountry != null">
+                quit_country,
+            </if>
+            <if test="quiteAddress != null">
+                quite_address,
+            </if>
+            <if test="quitPostCode != null">
+                quit_post_code,
+            </if>
+            <if test="quitName != null">
+                quit_name,
+            </if>
+            <if test="quitMobile != null">
+                quit_mobile,
+            </if>
+            <if test="quitPhone != null">
+                quit_phone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="regArea != null">
+                #{regArea,jdbcType=VARCHAR},
+            </if>
+            <if test="regAddress != null">
+                #{regAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="companyCreateDate != null">
+                #{companyCreateDate,jdbcType=VARCHAR},
+            </if>
+            <if test="operatingPeriod != null">
+                #{operatingPeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="companyScale != null">
+                #{companyScale,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonName != null">
+                #{legalpersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard != null">
+                #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardFImage != null">
+                #{idCardFImage,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardRImage != null">
+                #{idCardRImage,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="companyProfile != null">
+                #{companyProfile,jdbcType=VARCHAR},
+            </if>
+            <if test="monthlyTurnover != null">
+                #{monthlyTurnover,jdbcType=VARCHAR},
+            </if>
+            <if test="brandLicensing != null">
+                #{brandLicensing,jdbcType=VARCHAR},
+            </if>
+            <if test="otherCertificates != null">
+                #{otherCertificates,jdbcType=VARCHAR},
+            </if>
+            <if test="mainCategory != null">
+                #{mainCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="quitCountry != null">
+                #{quitCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="quiteAddress != null">
+                #{quiteAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="quitPostCode != null">
+                #{quitPostCode,jdbcType=VARCHAR},
+            </if>
+            <if test="quitName != null">
+                #{quitName,jdbcType=VARCHAR},
+            </if>
+            <if test="quitMobile != null">
+                #{quitMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="quitPhone != null">
+                #{quitPhone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.NewSupplierCompanyinfo">
+        update t_supplier_companyinfo
+        <set>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="regArea != null">
+                reg_area = #{regArea,jdbcType=VARCHAR},
+            </if>
+            <if test="regAddress != null">
+                reg_address = #{regAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                credit_code = #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="companyCreateDate != null">
+                company_create_date = #{companyCreateDate,jdbcType=VARCHAR},
+            </if>
+            <if test="operatingPeriod != null">
+                operating_period = #{operatingPeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="companyScale != null">
+                company_scale = #{companyScale,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonName != null">
+                legalperson_name = #{legalpersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardFImage != null">
+                id_card_f_image = #{idCardFImage,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardRImage != null">
+                id_card_r_image = #{idCardRImage,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                business_license = #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="companyProfile != null">
+                company_profile = #{companyProfile,jdbcType=VARCHAR},
+            </if>
+            <if test="monthlyTurnover != null">
+                monthly_turnover = #{monthlyTurnover,jdbcType=VARCHAR},
+            </if>
+            <if test="brandLicensing != null">
+                brand_licensing = #{brandLicensing,jdbcType=VARCHAR},
+            </if>
+            <if test="otherCertificates != null">
+                other_certificates = #{otherCertificates,jdbcType=VARCHAR},
+            </if>
+            <if test="mainCategory != null">
+                main_category = #{mainCategory,jdbcType=VARCHAR},
+            </if>
+            <if test="quitCountry != null">
+                quit_country = #{quitCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="quiteAddress != null">
+                quite_address = #{quiteAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="quitPostCode != null">
+                quit_post_code = #{quitPostCode,jdbcType=VARCHAR},
+            </if>
+            <if test="quitName != null">
+                quit_name = #{quitName,jdbcType=VARCHAR},
+            </if>
+            <if test="quitMobile != null">
+                quit_mobile = #{quitMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="quitPhone != null">
+                quit_phone = #{quitPhone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.NewSupplierCompanyinfo">
+        update t_supplier_companyinfo
+        set
+            company_name = #{companyName,jdbcType=VARCHAR},
+            reg_area = #{regArea,jdbcType=VARCHAR},
+            reg_address = #{regAddress,jdbcType=VARCHAR},
+            credit_code = #{creditCode,jdbcType=VARCHAR},
+            company_create_date = #{companyCreateDate,jdbcType=VARCHAR},
+            operating_period = #{operatingPeriod,jdbcType=VARCHAR},
+            company_scale = #{companyScale,jdbcType=VARCHAR},
+            legalperson_name = #{legalpersonName,jdbcType=VARCHAR},
+            id_card = #{idCard,jdbcType=VARCHAR},
+            id_card_f_image = #{idCardFImage,jdbcType=VARCHAR},
+            id_card_r_image = #{idCardRImage,jdbcType=VARCHAR},
+            business_license = #{businessLicense,jdbcType=VARCHAR},
+            company_profile = #{companyProfile,jdbcType=VARCHAR},
+            monthly_turnover = #{monthlyTurnover,jdbcType=VARCHAR},
+            brand_licensing = #{brandLicensing,jdbcType=VARCHAR},
+            other_certificates = #{otherCertificates,jdbcType=VARCHAR},
+            main_category = #{mainCategory,jdbcType=VARCHAR},
+            quit_country = #{quitCountry,jdbcType=VARCHAR},
+            quite_address = #{quiteAddress,jdbcType=VARCHAR},
+            quit_post_code = #{quitPostCode,jdbcType=VARCHAR},
+            quit_name = #{quitName,jdbcType=VARCHAR},
+            quit_mobile = #{quitMobile,jdbcType=VARCHAR},
+            quit_phone = #{quitPhone,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.NewSupplierCompanyinfo" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_supplier_companyinfo
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+                 and user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                 and company_name = #{companyName,jdbcType=VARCHAR}
+            </if>
+            <if test="regArea != null and regArea != ''">
+                 and reg_area = #{regArea,jdbcType=VARCHAR}
+            </if>
+            <if test="regAddress != null and regAddress != ''">
+                 and reg_address = #{regAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="creditCode != null and creditCode != ''">
+                 and credit_code = #{creditCode,jdbcType=VARCHAR}
+            </if>
+            <if test="companyCreateDate != null and companyCreateDate != ''">
+                 and company_create_date = #{companyCreateDate,jdbcType=VARCHAR}
+            </if>
+            <if test="operatingPeriod != null and operatingPeriod != ''">
+                 and operating_period = #{operatingPeriod,jdbcType=VARCHAR}
+            </if>
+            <if test="companyScale != null and companyScale != ''">
+                 and company_scale = #{companyScale,jdbcType=VARCHAR}
+            </if>
+            <if test="legalpersonName != null and legalpersonName != ''">
+                 and legalperson_name = #{legalpersonName,jdbcType=VARCHAR}
+            </if>
+            <if test="idCard != null and idCard != ''">
+                 and id_card = #{idCard,jdbcType=VARCHAR}
+            </if>
+            <if test="idCardFImage != null and idCardFImage != ''">
+                 and id_card_f_image = #{idCardFImage,jdbcType=VARCHAR}
+            </if>
+            <if test="idCardRImage != null and idCardRImage != ''">
+                 and id_card_r_image = #{idCardRImage,jdbcType=VARCHAR}
+            </if>
+            <if test="businessLicense != null and businessLicense != ''">
+                 and business_license = #{businessLicense,jdbcType=VARCHAR}
+            </if>
+            <if test="companyProfile != null and companyProfile != ''">
+                 and company_profile = #{companyProfile,jdbcType=VARCHAR}
+            </if>
+            <if test="monthlyTurnover != null and monthlyTurnover != ''">
+                 and monthly_turnover = #{monthlyTurnover,jdbcType=VARCHAR}
+            </if>
+            <if test="brandLicensing != null and brandLicensing != ''">
+                 and brand_licensing = #{brandLicensing,jdbcType=VARCHAR}
+            </if>
+            <if test="otherCertificates != null and otherCertificates != ''">
+                 and other_certificates = #{otherCertificates,jdbcType=VARCHAR}
+            </if>
+            <if test="mainCategory != null and mainCategory != ''">
+                 and main_category = #{mainCategory,jdbcType=VARCHAR}
+            </if>
+            <if test="quitCountry != null and quitCountry != ''">
+                 and quit_country = #{quitCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="quiteAddress != null and quiteAddress != ''">
+                 and quite_address = #{quiteAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="quitPostCode != null and quitPostCode != ''">
+                 and quit_post_code = #{quitPostCode,jdbcType=VARCHAR}
+            </if>
+            <if test="quitName != null and quitName != ''">
+                 and quit_name = #{quitName,jdbcType=VARCHAR}
+            </if>
+            <if test="quitMobile != null and quitMobile != ''">
+                 and quit_mobile = #{quitMobile,jdbcType=VARCHAR}
+            </if>
+            <if test="quitPhone != null and quitPhone != ''">
+                 and quit_phone = #{quitPhone,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_supplier_companyinfo
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+</mapper>

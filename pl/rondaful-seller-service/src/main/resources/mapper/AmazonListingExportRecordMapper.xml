@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonListingExportRecordMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AmazonListingExportRecord">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="pl_account" jdbcType="VARCHAR" property="plAccount" />
+        <result column="export_type" jdbcType="CHAR" property="exportType" />
+        <result column="export_name" jdbcType="VARCHAR" property="exportName" />
+        <result column="export_status" jdbcType="CHAR" property="exportStatus" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, pl_account, export_type, export_name, export_status, url, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from amazon_listing_export_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from amazon_listing_export_record
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AmazonListingExportRecord">
+        insert into amazon_listing_export_record (id, pl_account, export_type, 
+            export_name, export_status, url, 
+            create_time)
+        values (#{id,jdbcType=BIGINT}, #{plAccount,jdbcType=VARCHAR}, #{exportType,jdbcType=CHAR}, 
+            #{exportName,jdbcType=VARCHAR}, #{exportStatus,jdbcType=CHAR}, #{url,jdbcType=VARCHAR}, 
+            #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AmazonListingExportRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into amazon_listing_export_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="plAccount != null">
+                pl_account,
+            </if>
+            <if test="exportType != null">
+                export_type,
+            </if>
+            <if test="exportName != null">
+                export_name,
+            </if>
+            <if test="exportStatus != null">
+                export_status,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="plAccount != null">
+                #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="exportType != null">
+                #{exportType,jdbcType=CHAR},
+            </if>
+            <if test="exportName != null">
+                #{exportName,jdbcType=VARCHAR},
+            </if>
+            <if test="exportStatus != null">
+                #{exportStatus,jdbcType=CHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AmazonListingExportRecord">
+        update amazon_listing_export_record
+        <set>
+            <if test="plAccount != null">
+                pl_account = #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="exportType != null">
+                export_type = #{exportType,jdbcType=CHAR},
+            </if>
+            <if test="exportName != null">
+                export_name = #{exportName,jdbcType=VARCHAR},
+            </if>
+            <if test="exportStatus != null">
+                export_status = #{exportStatus,jdbcType=CHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AmazonListingExportRecord">
+        update amazon_listing_export_record
+        set pl_account = #{plAccount,jdbcType=VARCHAR},
+            export_type = #{exportType,jdbcType=CHAR},
+            export_name = #{exportName,jdbcType=VARCHAR},
+            export_status = #{exportStatus,jdbcType=CHAR},
+            url = #{url,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AmazonListingExportRecord" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from amazon_listing_export_record
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="plAccount != null and plAccount != ''">
+                 and pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="exportType != null and exportType != ''">
+                 and export_type = #{exportType,jdbcType=CHAR}
+            </if>
+            <if test="exportName != null and exportName != ''">
+                 and export_name = #{exportName,jdbcType=VARCHAR}
+            </if>
+            <if test="exportStatus != null and exportStatus != ''">
+                 and export_status = #{exportStatus,jdbcType=CHAR}
+            </if>
+            <if test="url != null and url != ''">
+                 and url = #{url,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="limitTime != null and limitTime != ''" >
+                and DATE_FORMAT(create_time,'%Y-%m-%d') > #{limitTime}
+            </if>
+        </trim>
+        order by create_time desc
+    </select>
+</mapper>

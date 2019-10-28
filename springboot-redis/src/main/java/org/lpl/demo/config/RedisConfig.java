@@ -22,7 +22,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPoolConfig;
 
-//@Configuration
+@Configuration
 @PropertySource("classpath:config/redis.properties")
 public class RedisConfig {
 	

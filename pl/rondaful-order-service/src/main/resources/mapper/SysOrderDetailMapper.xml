@@ -1,0 +1,1246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.SysOrderDetailMapper">
+
+    <!--根据订单ID查出订单项集合 wujiachuang-->
+    <select id="querySysOrderDetailByOrderId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_detail
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+        AND bind_status != 'remove'
+    </select>
+
+    <!--根据订单ID查出订单项集合 lijiantao-->
+    <select id="querySysOrderDetailCoantainAllSkuByOrderId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_detail
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据订单ID和sku查出订单项集合 wujiachuang-->
+    <select id="querySysOrderDetailByOrderIdAndSku" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_detail
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+        and sku = #{sku,jdbcType=VARCHAR}
+        AND bind_status != 'remove'
+    </select>
+
+    <!--根据系统订单号批量删除订单项_ZJL-->
+    <delete id="deleteBatchBySysOrderId" parameterType="list">
+        delete from tb_sys_order_detail
+        where sys_order_id in
+        <foreach close=")" collection="list" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- &lt;!&ndash;批量更新_WJC&ndash;&gt;
+     <update id="updateBatch" parameterType="java.util.List">
+         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+             update tb_sys_order_detail
+             <set>
+                 <if test="item.sysOrderId != null">
+                     sys_order_id = #{item.sysOrderId,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.sourceOrderId != null">
+                     source_order_id = #{item.sourceOrderId,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.sourceOrderLineItemId != null">
+                     source_order_line_item_id = #{item.sourceOrderLineItemId,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.orderLineItemId != null">
+                     order_line_item_id = #{item.orderLineItemId,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.transactionId != null">
+                     transaction_id = #{item.transactionId,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.bulk != null">
+                     bulk = #{item.bulk,jdbcType=DECIMAL},
+                 </if>
+                 <if test="item.weight != null">
+                     weight = #{item.weight,jdbcType=DECIMAL},
+                 </if>
+                 <if test="item.itemId != null">
+                     item_id = #{item.itemId,jdbcType=BIGINT},
+                 </if>
+                 <if test="item.itemCost != null">
+                     item_cost =#{item.itemCost,jdbcType=DECIMAL},
+                 </if>
+                 <if test="item.itemUrl != null">
+                     item_url = #{item.itemUrl,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.itemName != null">
+                     item_name =#{item.itemName,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.itemNameEn != null">
+                     item_name_en =#{item.itemNameEn,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.itemAttr != null">
+                     item_attr = #{item.itemAttr,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.itemPrice != null">
+                     item_price = #{item.itemPrice,jdbcType=DECIMAL},
+                 </if>
+                 <if test="item.sku != null">
+                     sku = #{item.sku,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.skuTitle != null">
+                     sku_title = #{item.skuTitle,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.skuQuantity != null">
+                     sku_quantity = #{item.skuQuantity,jdbcType=INTEGER},
+                 </if>
+                 <if test="item.skuShippingFee != null">
+                     sku_shipping_fee = #{item.skuShippingFee,jdbcType=DECIMAL},
+                 </if>
+                 <if test="item.supplierId != null">
+                     supplier_id = #{item.supplierId,jdbcType=BIGINT},
+                 </if>
+                 <if test="item.supplierName != null">
+                     supplier_name =#{item.supplierName,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.supplierSku != null">
+                     supplier_sku = #{item.supplierSku,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.supplierSkuTitle != null">
+                     supplier_sku_title = #{item.supplierSkuTitle,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.supplierSkuPrice != null">
+                     supplier_sku_price = #{item.supplierSkuPrice,jdbcType=DECIMAL},
+                 </if>
+                 <if test="item.recordNumber != null">
+                     record_number = #{item.recordNumber,jdbcType=INTEGER},
+                 </if>
+                 <if test="item.createDate != null">
+                     create_date = #{item.createDate,jdbcType=TIMESTAMP},
+                 </if>
+                 <if test="item.createBy != null">
+                     create_by = #{item.createBy,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.updateDate != null">
+                     update_date = #{item.updateDate,jdbcType=TIMESTAMP},
+                 </if>
+                 <if test="item.updateBy != null">
+                     update_by = #{item.updateBy,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.remark != null">
+                     remark = #{item.remark,jdbcType=VARCHAR},
+                 </if>
+                 <if test="item.sourceSku != null">
+                     source_sku = #{item.sourceSku,jdbcType=VARCHAR},
+                 </if>
+             </set>
+             where order_line_item_id = #{item.orderLineItemId,jdbcType=INTEGER}
+         </foreach>
+     </update>
+ -->
+    <!-- &lt;!&ndash;根据订单项ID更新&ndash;&gt;
+     <update id="updateBySysOrderDetailId" parameterType="com.rondaful.cloud.order.entity.SysOrderDetail">
+         update tb_sys_order_detail
+         <set>
+             <if test="fareTypeAmount != null">
+                 fare_type_amount = #{fareTypeAmount,jdbcType=VARCHAR},
+             </if>
+             <if test="supplyChainCompanyId != null">
+                 supply_chain_company_id = #{supplyChainCompanyId,jdbcType=INTEGER},
+             </if>
+             <if test="supplyChainCompanyName != null">
+                 supply_chain_company_name = #{supplyChainCompanyName,jdbcType=VARCHAR},
+             </if>
+             <if test="bulk != null">
+                 bulk = #{bulk,jdbcType=DECIMAL},
+             </if>
+             <if test="weight != null">
+                 weight = #{weight,jdbcType=DECIMAL},
+             </if>
+             <if test="itemId != null">
+                 item_id = #{itemId,jdbcType=BIGINT},
+             </if>
+             <if test="itemCost != null">
+                 item_cost = #{itemCost,jdbcType=DECIMAL},
+             </if>
+             <if test="itemUrl != null">
+                 item_url = #{itemUrl,jdbcType=VARCHAR},
+             </if>
+             <if test="itemName != null">
+                 item_name = #{itemName,jdbcType=VARCHAR},
+             </if>
+             <if test="itemNameEn != null">
+                 item_name_en = #{itemNameEn,jdbcType=VARCHAR},
+             </if>
+             <if test="itemAttr != null">
+                 item_attr = #{itemAttr,jdbcType=VARCHAR},
+             </if>
+             <if test="itemPrice != null">
+                 item_price = #{itemPrice,jdbcType=DECIMAL},
+             </if>
+             <if test="sku != null">
+                 sku = #{sku,jdbcType=VARCHAR},
+             </if>
+             <if test="skuTitle != null">
+                 sku_title = #{skuTitle,jdbcType=VARCHAR},
+             </if>
+             <if test="skuQuantity != null">
+                 sku_quantity = #{skuQuantity,jdbcType=INTEGER},
+             </if>
+             <if test="skuShippingFee != null">
+                 sku_shipping_fee = #{skuShippingFee,jdbcType=DECIMAL},
+             </if>
+             <if test="supplierId != null">
+                 supplier_id = #{supplierId,jdbcType=BIGINT},
+             </if>
+             <if test="supplierName != null">
+                 supplier_name = #{supplierName,jdbcType=VARCHAR},
+             </if>
+             <if test="supplierSku != null">
+                 supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+             </if>
+             <if test="supplierSkuTitle != null">
+                 supplier_sku_title = #{supplierSkuTitle,jdbcType=VARCHAR},
+             </if>
+             <if test="supplierSkuPrice != null">
+                 supplier_sku_price = #{supplierSkuPrice,jdbcType=DECIMAL},
+             </if>
+             <if test="sourceSku != null">
+                 source_sku = #{sourceSku,jdbcType=VARCHAR},
+             </if>
+         </set>
+         where order_line_item_id = #{orderLineItemId,jdbcType=VARCHAR}
+     </update>-->
+
+    <!--批量插入_WJC-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into tb_sys_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            sys_order_id, source_order_id, source_order_line_item_id, order_line_item_id,
+            bulk, weight, item_id, item_cost, item_url, item_name,item_name_en, item_attr,
+            item_price, sku, sku_title, sku_quantity, sku_shipping_fee, supplier_id, supplier_name,
+            supplier_sku, supplier_sku_title, supplier_sku_price, record_number, create_date,
+            create_by, update_date, update_by,
+            remark,fare_type_amount,supply_chain_company_id,supply_chain_company_name,source_sku,bind_status,free_freight,is_after_sale
+        </trim>
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.sysOrderId,jdbcType=VARCHAR},
+            #{item.sourceOrderId,jdbcType=VARCHAR},
+            #{item.sourceOrderLineItemId,jdbcType=VARCHAR},
+            #{item.orderLineItemId,jdbcType=VARCHAR},
+            #{item.bulk,jdbcType=DECIMAL},
+            #{item.weight,jdbcType=DECIMAL},
+            #{item.itemId,jdbcType=BIGINT},
+            #{item.itemCost,jdbcType=DECIMAL},
+            #{item.itemUrl,jdbcType=VARCHAR},
+            #{item.itemName,jdbcType=VARCHAR},
+            #{item.itemNameEn,jdbcType=VARCHAR},
+            #{item.itemAttr,jdbcType=VARCHAR},
+            #{item.itemPrice,jdbcType=DECIMAL},
+            #{item.sku,jdbcType=VARCHAR},
+            #{item.skuTitle,jdbcType=VARCHAR},
+            #{item.skuQuantity,jdbcType=INTEGER},
+            #{item.skuShippingFee,jdbcType=DECIMAL},
+            #{item.supplierId,jdbcType=BIGINT},
+            #{item.supplierName,jdbcType=VARCHAR},
+            #{item.supplierSku,jdbcType=VARCHAR},
+            #{item.supplierSkuTitle,jdbcType=VARCHAR},
+            #{item.supplierSkuPrice,jdbcType=DECIMAL},
+            #{item.recordNumber,jdbcType=INTEGER},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.createBy,jdbcType=VARCHAR},
+            #{item.updateDate,jdbcType=TIMESTAMP},
+            #{item.updateBy,jdbcType=VARCHAR},
+            #{item.remark,jdbcType=VARCHAR},
+            #{item.fareTypeAmount,jdbcType=VARCHAR},
+            #{item.supplyChainCompanyId,jdbcType=VARCHAR},
+            #{item.supplyChainCompanyName,jdbcType=VARCHAR},
+            #{item.sourceSku,jdbcType=VARCHAR},
+            #{item.bindStatus,jdbcType=VARCHAR},
+            #{item.freeFreight,jdbcType=INTEGER},
+            #{item.isAfterSale,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 批量插入 - chenjiangxin -->
+    <insert id="insertBatchSelective">
+        insert into tb_sys_order_detail (sys_order_id, source_order_id,
+        source_order_line_item_id, order_line_item_id,
+        bulk, weight, item_id,
+        deliver_deadline, item_cost, item_url,
+        item_name, item_name_en, item_attr,
+        item_price, sku, sku_title,
+        sku_quantity, sku_shipping_fee, fare_type_amount,
+        supplier_id, supplier_name, supply_chain_company_id,
+        supply_chain_company_name, supplier_sku,
+        supplier_sku_title, supplier_sku_price, record_number,
+        create_date, create_by, update_date,
+        update_by, remark,source_sku,bind_status,free_freight,is_after_sale)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <choose>
+                    <when test="item.sysOrderId != null">
+                        #{item.sysOrderId,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.sourceOrderId != null">
+                        #{item.sourceOrderId,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.sourceOrderLineItemId != null">
+                        #{item.sourceOrderLineItemId,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.orderLineItemId != null">
+                        #{item.orderLineItemId,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.bulk != null">
+                        #{item.bulk,jdbcType=DECIMAL},
+                    </when>
+                    <otherwise>
+                        0.00,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.weight != null">
+                        #{item.weight,jdbcType=DECIMAL},
+                    </when>
+                    <otherwise>
+                        0.00,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.itemId != null">
+                        #{item.itemId,jdbcType=BIGINT},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.deliverDeadline != null">
+                        #{item.deliverDeadline,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.itemCost != null">
+                        #{item.itemCost,jdbcType=DECIMAL},
+                    </when>
+                    <otherwise>
+                        0.00,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.itemUrl != null">
+                        #{item.itemUrl,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.itemName != null">
+                        #{item.itemName,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.itemNameEn != null">
+                        #{item.itemNameEn,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.itemAttr != null">
+                        #{item.itemAttr,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.itemPrice != null">
+                        #{item.itemPrice,jdbcType=DECIMAL},
+                    </when>
+                    <otherwise>
+                        0.00,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.sku != null">
+                        #{item.sku,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.skuTitle != null">
+                        #{item.skuTitle,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.skuQuantity != null">
+                        #{item.skuQuantity,jdbcType=INTEGER},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.skuShippingFee != null">
+                        #{item.skuShippingFee,jdbcType=DECIMAL},
+                    </when>
+                    <otherwise>
+                        0.00,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.fareTypeAmount != null">
+                        #{item.fareTypeAmount,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplierId != null">
+                        #{item.supplierId,jdbcType=INTEGER},
+                    </when>
+                    <otherwise>
+                        null,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplierName != null">
+                        #{item.supplierName,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplyChainCompanyId != null">
+                        #{item.supplyChainCompanyId,jdbcType=INTEGER},
+                    </when>
+                    <otherwise>
+                        null,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplyChainCompanyName != null">
+                        #{item.supplyChainCompanyName,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplierSku != null">
+                        #{item.supplierSku,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplierSkuTitle != null">
+                        #{item.supplierSkuTitle,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplierSkuPrice != null">
+                        #{item.supplierSkuPrice,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        null,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.recordNumber != null">
+                        #{item.recordNumber,jdbcType=INTEGER},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.createDate != null">
+                        #{item.createDate,jdbcType=TIMESTAMP},
+                    </when>
+                    <otherwise>
+                        now(),
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.createBy != null">
+                        #{item.createBy,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.updateDate != null">
+                        #{item.updateDate,jdbcType=TIMESTAMP},
+                    </when>
+                    <otherwise>
+                        now(),
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.updateBy != null">
+                        #{item.updateBy,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.remark != null">
+                        #{item.remark,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.sourceSku != null">
+                        #{item.sourceSku,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.bindStatus != null">
+                        #{item.bindStatus,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        'bind',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.freeFreight != null">
+                        #{item.freeFreight,jdbcType=TINYINT},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.isAfterSale != null">
+                        #{item.isAfterSale,jdbcType=TINYINT},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+            </trim>
+        </foreach>
+    </insert>
+
+    <!-- &lt;!&ndash;有则更新无则插入_WJC&ndash;&gt;
+     <insert id="insertOrUpdate" parameterType="com.rondaful.cloud.order.entity.SysOrderDetail">
+         insert into tb_sys_order_detail (id, sys_order_id, source_order_id, source_order_line_item_id, order_line_item_id,
+             transaction_id, bulk, weight, item_id, item_cost, item_url, item_name,item_name_en, item_attr,
+             item_price, sku, sku_title, sku_quantity, sku_shipping_fee, supplier_id, supplier_name,
+             supplier_sku, supplier_sku_title, supplier_sku_price, record_number, create_date,
+             create_by, update_date, update_by, remark,source_sku)
+         values (#{id,jdbcType=INTEGER},
+              #{sysOrderId,jdbcType=VARCHAR},
+             #{sourceOrderId,jdbcType=VARCHAR},
+             #{sourceOrderLineItemId,jdbcType=VARCHAR},
+             #{orderLineItemId,jdbcType=VARCHAR},
+             #{transactionId,jdbcType=VARCHAR},
+             #{bulk,jdbcType=DECIMAL},
+             #{weight,jdbcType=DECIMAL},
+             #{itemId,jdbcType=BIGINT},
+             #{itemCost,jdbcType=DECIMAL},
+             #{itemUrl,jdbcType=VARCHAR},
+             #{itemName,jdbcType=VARCHAR},
+             #{itemNameEn,jdbcType=VARCHAR},
+             #{itemAttr,jdbcType=VARCHAR},
+             #{itemPrice,jdbcType=DECIMAL},
+             #{sku,jdbcType=VARCHAR},
+             #{skuTitle,jdbcType=VARCHAR},
+             #{skuQuantity,jdbcType=INTEGER},
+             #{skuShippingFee,jdbcType=DECIMAL},
+             #{supplierId,jdbcType=BIGINT},
+             #{supplierName,jdbcType=VARCHAR},
+             #{supplierSku,jdbcType=VARCHAR},
+             #{supplierSkuTitle,jdbcType=VARCHAR},
+             #{supplierSkuPrice,jdbcType=DECIMAL},
+             #{recordNumber,jdbcType=INTEGER},
+             #{createDate,jdbcType=TIMESTAMP},
+             #{createBy,jdbcType=VARCHAR},
+             #{updateDate,jdbcType=TIMESTAMP},
+             #{updateBy,jdbcType=VARCHAR},
+             #{remark,jdbcType=VARCHAR}),
+             #{sourceSku,jdbcType=VARCHAR})
+            ON DUPLICATE KEY UPDATE
+             id=values(id), sys_order_id=values(sys_order_id),
+             source_order_id=values(source_order_id),source_order_line_item_id=values(source_order_line_item_id),
+             order_line_item_id=values(order_line_item_id),transaction_id=values(transaction_id),
+             bulk=values(bulk),weight=values(weight),item_id=values(item_id), item_cost=values(item_cost),
+             item_url=values(item_url),item_name=values(item_name),item_name_en=values(item_name_en),item_attr=values(item_attr),
+             item_price=values(item_price),sku=values(sku), sku_title=values(sku_title), sku_quantity=values(sku_quantity), sku_shipping_fee=values(sku_shipping_fee),
+             supplier_id=values(supplier_id), supplier_name=values(supplier_name),supplier_sku=values(supplier_sku),
+             supplier_sku_title=values(supplier_sku_title), supplier_sku_price=values(supplier_sku_price),record_number=values(record_number),
+             create_date=values(create_date), create_by=values(create_by), update_date=values(update_date),
+             update_by=values(update_by), remark=values(remark),source_sku=values(source_sku)
+     </insert>-->
+
+    <!--=============================================================================-->
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.SysOrderDetail">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId"/>
+        <result column="source_order_id" jdbcType="VARCHAR" property="sourceOrderId"/>
+        <result column="source_order_line_item_id" jdbcType="VARCHAR" property="sourceOrderLineItemId"/>
+        <result column="order_line_item_id" jdbcType="VARCHAR" property="orderLineItemId"/>
+        <result column="bulk" jdbcType="DECIMAL" property="bulk"/>
+        <result column="weight" jdbcType="DECIMAL" property="weight"/>
+        <result column="item_id" jdbcType="BIGINT" property="itemId"/>
+        <result column="deliver_deadline" jdbcType="VARCHAR" property="deliverDeadline"/>
+        <result column="item_cost" jdbcType="DECIMAL" property="itemCost"/>
+        <result column="item_url" jdbcType="VARCHAR" property="itemUrl"/>
+        <result column="item_name" jdbcType="VARCHAR" property="itemName"/>
+        <result column="item_name_en" jdbcType="VARCHAR" property="itemNameEn"/>
+        <result column="item_attr" jdbcType="VARCHAR" property="itemAttr"/>
+        <result column="item_price" jdbcType="DECIMAL" property="itemPrice"/>
+        <result column="sku" jdbcType="VARCHAR" property="sku"/>
+        <result column="sku_title" jdbcType="VARCHAR" property="skuTitle"/>
+        <result column="sku_quantity" jdbcType="INTEGER" property="skuQuantity"/>
+        <result column="sku_shipping_fee" jdbcType="DECIMAL" property="skuShippingFee"/>
+        <result column="fare_type_amount" jdbcType="VARCHAR" property="fareTypeAmount"/>
+        <result column="supplier_id" jdbcType="BIGINT" property="supplierId"/>
+        <result column="supplier_name" jdbcType="VARCHAR" property="supplierName"/>
+        <result column="supply_chain_company_id" jdbcType="INTEGER" property="supplyChainCompanyId"/>
+        <result column="supply_chain_company_name" jdbcType="VARCHAR" property="supplyChainCompanyName"/>
+        <result column="supplier_sku" jdbcType="VARCHAR" property="supplierSku"/>
+        <result column="supplier_sku_title" jdbcType="VARCHAR" property="supplierSkuTitle"/>
+        <result column="supplier_sku_price" jdbcType="DECIMAL" property="supplierSkuPrice"/>
+        <result column="record_number" jdbcType="INTEGER" property="recordNumber"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="source_sku" jdbcType="VARCHAR" property="sourceSku"/>
+        <result column="bind_status" jdbcType="VARCHAR" property="bindStatus"/>
+        <result column="free_freight" jdbcType="TINYINT" property="freeFreight"/>
+        <result column="is_after_sale" jdbcType="TINYINT" property="isAfterSale"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, sys_order_id, source_order_id, source_order_line_item_id, order_line_item_id, 
+        bulk, weight, item_id, deliver_deadline, item_cost, item_url, item_name, item_name_en, 
+        item_attr, item_price, sku, sku_title, sku_quantity, sku_shipping_fee, fare_type_amount, 
+        supplier_id, supplier_name, supply_chain_company_id, supply_chain_company_name, supplier_sku, 
+        supplier_sku_title, supplier_sku_price, record_number, create_date, create_by, update_date, 
+        update_by, remark,source_sku,bind_status,free_freight,is_after_sale
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectOrderDetailBySysOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_detail
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+        AND bind_status != 'remove'
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tb_sys_order_detail
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.SysOrderDetail">
+        insert into tb_sys_order_detail (id, sys_order_id, source_order_id, 
+            source_order_line_item_id, order_line_item_id, 
+            bulk, weight, item_id, 
+            deliver_deadline, item_cost, item_url, 
+            item_name, item_name_en, item_attr, 
+            item_price, sku, sku_title, 
+            sku_quantity, sku_shipping_fee, fare_type_amount, 
+            supplier_id, supplier_name, supply_chain_company_id, 
+            supply_chain_company_name, supplier_sku, 
+            supplier_sku_title, supplier_sku_price, record_number, 
+            create_date, create_by, update_date, 
+            update_by, remark,source_sku,bind_status,free_freight,is_after_sale)
+        values (#{id,jdbcType=INTEGER}, #{sysOrderId,jdbcType=VARCHAR}, #{sourceOrderId,jdbcType=VARCHAR}, 
+            #{sourceOrderLineItemId,jdbcType=VARCHAR}, #{orderLineItemId,jdbcType=VARCHAR}, 
+            #{bulk,jdbcType=DECIMAL}, #{weight,jdbcType=DECIMAL}, #{itemId,jdbcType=BIGINT}, 
+            #{deliverDeadline,jdbcType=VARCHAR}, #{itemCost,jdbcType=DECIMAL}, #{itemUrl,jdbcType=VARCHAR}, 
+            #{itemName,jdbcType=VARCHAR}, #{itemNameEn,jdbcType=VARCHAR}, #{itemAttr,jdbcType=VARCHAR}, 
+            #{itemPrice,jdbcType=DECIMAL}, #{sku,jdbcType=VARCHAR}, #{skuTitle,jdbcType=VARCHAR}, 
+            #{skuQuantity,jdbcType=INTEGER}, #{skuShippingFee,jdbcType=DECIMAL}, #{fareTypeAmount,jdbcType=VARCHAR}, 
+            #{supplierId,jdbcType=BIGINT}, #{supplierName,jdbcType=VARCHAR}, #{supplyChainCompanyId,jdbcType=INTEGER}, 
+            #{supplyChainCompanyName,jdbcType=VARCHAR}, #{supplierSku,jdbcType=VARCHAR}, 
+            #{supplierSkuTitle,jdbcType=VARCHAR}, #{supplierSkuPrice,jdbcType=DECIMAL}, #{recordNumber,jdbcType=INTEGER}, 
+            #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+            #{updateBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},#{sourceSku,jdbcType=VARCHAR},#{bindStatus,jdbcType=VARCHAR},#{freeFreight,jdbcType=TINYINT},#{isAfterSale,jdbcType=TINYINT})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.SysOrderDetail">
+        insert into tb_sys_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysOrderId != null">
+                sys_order_id,
+            </if>
+            <if test="sourceOrderId != null">
+                source_order_id,
+            </if>
+            <if test="sourceOrderLineItemId != null">
+                source_order_line_item_id,
+            </if>
+            <if test="orderLineItemId != null">
+                order_line_item_id,
+            </if>
+            <if test="bulk != null">
+                bulk,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="itemId != null">
+                item_id,
+            </if>
+            <if test="deliverDeadline != null">
+                deliver_deadline,
+            </if>
+            <if test="itemCost != null">
+                item_cost,
+            </if>
+            <if test="itemUrl != null">
+                item_url,
+            </if>
+            <if test="itemName != null">
+                item_name,
+            </if>
+            <if test="itemNameEn != null">
+                item_name_en,
+            </if>
+            <if test="itemAttr != null">
+                item_attr,
+            </if>
+            <if test="itemPrice != null">
+                item_price,
+            </if>
+            <if test="sku != null">
+                sku,
+            </if>
+            <if test="skuTitle != null">
+                sku_title,
+            </if>
+            <if test="skuQuantity != null">
+                sku_quantity,
+            </if>
+            <if test="skuShippingFee != null">
+                sku_shipping_fee,
+            </if>
+            <if test="fareTypeAmount != null">
+                fare_type_amount,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="supplierName != null">
+                supplier_name,
+            </if>
+            <if test="supplyChainCompanyId != null">
+                supply_chain_company_id,
+            </if>
+            <if test="supplyChainCompanyName != null">
+                supply_chain_company_name,
+            </if>
+            <if test="supplierSku != null">
+                supplier_sku,
+            </if>
+            <if test="supplierSkuTitle != null">
+                supplier_sku_title,
+            </if>
+            <if test="supplierSkuPrice != null">
+                supplier_sku_price,
+            </if>
+            <if test="recordNumber != null">
+                record_number,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="sourceSku != null">
+                source_sku,
+            </if>
+            <if test="bindStatus != null">
+                bind_status,
+            </if>
+            <if test="freeFreight != null">
+                free_freight,
+            </if>
+            <if test="isAfterSale != null">
+                is_after_sale,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="sysOrderId != null">
+                #{sysOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceOrderId != null">
+                #{sourceOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceOrderLineItemId != null">
+                #{sourceOrderLineItemId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderLineItemId != null">
+                #{orderLineItemId,jdbcType=VARCHAR},
+            </if>
+            <if test="bulk != null">
+                #{bulk,jdbcType=DECIMAL},
+            </if>
+            <if test="weight != null">
+                #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="itemId != null">
+                #{itemId,jdbcType=BIGINT},
+            </if>
+            <if test="deliverDeadline != null">
+                #{deliverDeadline,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCost != null">
+                #{itemCost,jdbcType=DECIMAL},
+            </if>
+            <if test="itemUrl != null">
+                #{itemUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="itemName != null">
+                #{itemName,jdbcType=VARCHAR},
+            </if>
+            <if test="itemNameEn != null">
+                #{itemNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="itemAttr != null">
+                #{itemAttr,jdbcType=VARCHAR},
+            </if>
+            <if test="itemPrice != null">
+                #{itemPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="sku != null">
+                #{sku,jdbcType=VARCHAR},
+            </if>
+            <if test="skuTitle != null">
+                #{skuTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="skuQuantity != null">
+                #{skuQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="skuShippingFee != null">
+                #{skuShippingFee,jdbcType=DECIMAL},
+            </if>
+            <if test="fareTypeAmount != null">
+                #{fareTypeAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=BIGINT},
+            </if>
+            <if test="supplierName != null">
+                #{supplierName,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompanyId != null">
+                #{supplyChainCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="supplyChainCompanyName != null">
+                #{supplyChainCompanyName,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSku != null">
+                #{supplierSku,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSkuTitle != null">
+                #{supplierSkuTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSkuPrice != null">
+                #{supplierSkuPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="recordNumber != null">
+                #{recordNumber,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceSku != null">
+                #{sourceSku,jdbcType=VARCHAR},
+            </if>
+            <if test="bindStatus != null">
+                #{bindStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="freeFreight != null">
+                #{freeFreight,jdbcType=TINYINT},
+            </if>
+            <if test="isAfterSale != null">
+                #{isAfterSale,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.SysOrderDetail">
+        update tb_sys_order_detail
+        <set>
+            <if test="sysOrderId != null">
+                sys_order_id = #{sysOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceOrderId != null">
+                source_order_id = #{sourceOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceOrderLineItemId != null">
+                source_order_line_item_id = #{sourceOrderLineItemId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderLineItemId != null">
+                order_line_item_id = #{orderLineItemId,jdbcType=VARCHAR},
+            </if>
+            <if test="bulk != null">
+                bulk = #{bulk,jdbcType=DECIMAL},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="itemId != null">
+                item_id = #{itemId,jdbcType=BIGINT},
+            </if>
+            <if test="deliverDeadline != null">
+                deliver_deadline = #{deliverDeadline,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCost != null">
+                item_cost = #{itemCost,jdbcType=DECIMAL},
+            </if>
+            <if test="itemUrl != null">
+                item_url = #{itemUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="itemName != null">
+                item_name = #{itemName,jdbcType=VARCHAR},
+            </if>
+            <if test="itemNameEn != null">
+                item_name_en = #{itemNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="itemAttr != null">
+                item_attr = #{itemAttr,jdbcType=VARCHAR},
+            </if>
+            <if test="itemPrice != null">
+                item_price = #{itemPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="sku != null">
+                sku = #{sku,jdbcType=VARCHAR},
+            </if>
+            <if test="skuTitle != null">
+                sku_title = #{skuTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="skuQuantity != null">
+                sku_quantity = #{skuQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="skuShippingFee != null">
+                sku_shipping_fee = #{skuShippingFee,jdbcType=DECIMAL},
+            </if>
+            <if test="fareTypeAmount != null">
+                fare_type_amount = #{fareTypeAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=BIGINT},
+            </if>
+            <if test="supplierName != null">
+                supplier_name = #{supplierName,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompanyId != null">
+                supply_chain_company_id = #{supplyChainCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="supplyChainCompanyName != null">
+                supply_chain_company_name = #{supplyChainCompanyName,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSku != null">
+                supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSkuTitle != null">
+                supplier_sku_title = #{supplierSkuTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSkuPrice != null">
+                supplier_sku_price = #{supplierSkuPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="recordNumber != null">
+                record_number = #{recordNumber,jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceSku != null">
+                source_sku = #{sourceSku,jdbcType=VARCHAR},
+            </if>
+            <if test="bindStatus != null">
+                bind_status = #{bindStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="freeFreight != null">
+                free_freight = #{freeFreight,jdbcType=TINYINT},
+            </if>
+            <if test="isAfterSale != null">
+                is_after_sale = #{isAfterSale,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.SysOrderDetail">
+        update tb_sys_order_detail
+        set sys_order_id = #{sysOrderId,jdbcType=VARCHAR},
+            source_order_id = #{sourceOrderId,jdbcType=VARCHAR},
+            source_order_line_item_id = #{sourceOrderLineItemId,jdbcType=VARCHAR},
+            order_line_item_id = #{orderLineItemId,jdbcType=VARCHAR},
+            bulk = #{bulk,jdbcType=DECIMAL},
+            weight = #{weight,jdbcType=DECIMAL},
+            item_id = #{itemId,jdbcType=BIGINT},
+            deliver_deadline = #{deliverDeadline,jdbcType=VARCHAR},
+            item_cost = #{itemCost,jdbcType=DECIMAL},
+            item_url = #{itemUrl,jdbcType=VARCHAR},
+            item_name = #{itemName,jdbcType=VARCHAR},
+            item_name_en = #{itemNameEn,jdbcType=VARCHAR},
+            item_attr = #{itemAttr,jdbcType=VARCHAR},
+            item_price = #{itemPrice,jdbcType=DECIMAL},
+            sku = #{sku,jdbcType=VARCHAR},
+            sku_title = #{skuTitle,jdbcType=VARCHAR},
+            sku_quantity = #{skuQuantity,jdbcType=INTEGER},
+            sku_shipping_fee = #{skuShippingFee,jdbcType=DECIMAL},
+            fare_type_amount = #{fareTypeAmount,jdbcType=VARCHAR},
+            supplier_id = #{supplierId,jdbcType=BIGINT},
+            supplier_name = #{supplierName,jdbcType=VARCHAR},
+            supply_chain_company_id = #{supplyChainCompanyId,jdbcType=INTEGER},
+            supply_chain_company_name = #{supplyChainCompanyName,jdbcType=VARCHAR},
+            supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+            supplier_sku_title = #{supplierSkuTitle,jdbcType=VARCHAR},
+            supplier_sku_price = #{supplierSkuPrice,jdbcType=DECIMAL},
+            record_number = #{recordNumber,jdbcType=INTEGER},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            source_sku = #{sourceSku,jdbcType=VARCHAR},
+            bind_status = #{bindStatus,jdbcType=VARCHAR},
+            free_freight = #{freeFreight,jdbcType=TINYINT},
+            is_after_sale = #{isAfterSale,jdbcType=TINYINT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--更改订单项为售后状态-->
+    <update id="updateOrderItemAfterStatus">
+        update tb_sys_order_detail
+        <set>
+            is_after_sale = #{status,jdbcType=TINYINT}
+        </set>
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+        AND sku = #{sku,jdbcType=VARCHAR}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.SysOrderDetail" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_detail
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="sysOrderId != null and sysOrderId != ''">
+                and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="sourceOrderId != null and sourceOrderId != ''">
+                and source_order_id = #{sourceOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="sourceOrderLineItemId != null and sourceOrderLineItemId != ''">
+                and source_order_line_item_id = #{sourceOrderLineItemId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderLineItemId != null and orderLineItemId != ''">
+                and order_line_item_id = #{orderLineItemId,jdbcType=VARCHAR}
+            </if>
+            <if test="bulk != null and bulk != ''">
+                and bulk = #{bulk,jdbcType=DECIMAL}
+            </if>
+            <if test="weight != null and weight != ''">
+                and weight = #{weight,jdbcType=DECIMAL}
+            </if>
+            <if test="itemId != null and itemId != ''">
+                and item_id = #{itemId,jdbcType=BIGINT}
+            </if>
+            <if test="deliverDeadline != null and deliverDeadline != ''">
+                and deliver_deadline = #{deliverDeadline,jdbcType=VARCHAR}
+            </if>
+            <if test="itemCost != null and itemCost != ''">
+                and item_cost = #{itemCost,jdbcType=DECIMAL}
+            </if>
+            <if test="itemUrl != null and itemUrl != ''">
+                and item_url = #{itemUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="itemName != null and itemName != ''">
+                and item_name = #{itemName,jdbcType=VARCHAR}
+            </if>
+            <if test="itemNameEn != null and itemNameEn != ''">
+                and item_name_en = #{itemNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="itemAttr != null and itemAttr != ''">
+                and item_attr = #{itemAttr,jdbcType=VARCHAR}
+            </if>
+            <if test="itemPrice != null and itemPrice != ''">
+                and item_price = #{itemPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="sku != null and sku != ''">
+                and sku = #{sku,jdbcType=VARCHAR}
+            </if>
+            <if test="skuTitle != null and skuTitle != ''">
+                and sku_title = #{skuTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="skuQuantity != null and skuQuantity != ''">
+                and sku_quantity = #{skuQuantity,jdbcType=INTEGER}
+            </if>
+            <if test="skuShippingFee != null and skuShippingFee != ''">
+                and sku_shipping_fee = #{skuShippingFee,jdbcType=DECIMAL}
+            </if>
+            <if test="fareTypeAmount != null and fareTypeAmount != ''">
+                and fare_type_amount = #{fareTypeAmount,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                and supplier_id = #{supplierId,jdbcType=BIGINT}
+            </if>
+            <if test="supplierName != null and supplierName != ''">
+                and supplier_name = #{supplierName,jdbcType=VARCHAR}
+            </if>
+            <if test="supplyChainCompanyId != null and supplyChainCompanyId != ''">
+                and supply_chain_company_id = #{supplyChainCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="supplyChainCompanyName != null and supplyChainCompanyName != ''">
+                and supply_chain_company_name = #{supplyChainCompanyName,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierSku != null and supplierSku != ''">
+                and supplier_sku = #{supplierSku,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierSkuTitle != null and supplierSkuTitle != ''">
+                and supplier_sku_title = #{supplierSkuTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierSkuPrice != null and supplierSkuPrice != ''">
+                and supplier_sku_price = #{supplierSkuPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="recordNumber != null and recordNumber != ''">
+                and record_number = #{recordNumber,jdbcType=INTEGER}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="sourceSku != null and sourceSku != ''">
+                and source_sku = #{sourceSku,jdbcType=VARCHAR}
+            </if>
+            <if test="bindStatus != null and bindStatus != ''">
+                and bind_status = #{bindStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="freeFreight != null and freeFreight!=''">
+                and free_freight = #{freeFreight,jdbcType=TINYINT}
+            </if>
+            <if test="isAfterSale != null and isAfterSale != ''">
+                and is_after_sale = #{isAfterSale,jdbcType=TINYINT}
+            </if>
+        </trim>
+    </select>
+    <!--根据SKU查询订单ID集合 wujiachuang-->
+    <select id="querySysOrderIdListBySku" resultType="java.lang.String" parameterType="java.lang.String">
+        select sys_order_id
+        from tb_sys_order_detail
+        where sku = #{sku,jdbcType=VARCHAR}
+        AND bind_status != 'remove' order by create_date desc
+    </select>
+</mapper>

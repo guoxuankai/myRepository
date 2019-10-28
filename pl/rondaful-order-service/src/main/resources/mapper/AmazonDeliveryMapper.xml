@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.AmazonDeliveryMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.Amazon.AmazonDelivery">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="amazon_shop_name" jdbcType="VARCHAR" property="amazonShopName" />
+        <result column="pl_seller_account" jdbcType="VARCHAR" property="plSellerAccount" />
+        <result column="amazon_seller_account" jdbcType="VARCHAR" property="amazonSellerAccount" />
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId" />
+        <result column="amazon_order_details" jdbcType="VARCHAR" property="amazonOrderDetails" />
+        <result column="upload_status" jdbcType="TINYINT" property="uploadStatus" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, amazon_shop_name, pl_seller_account, amazon_seller_account, marketplace_id, amazon_order_details, 
+        upload_status, create_date, update_date
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tbl_amazon_delivery
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <update id="updateUploadStatus" parameterType="java.lang.Integer">
+        update tbl_amazon_delivery
+        <set>
+            upload_status = 1
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="queryUploadData"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tbl_amazon_delivery
+        where upload_status = 0
+    </select>
+
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tbl_amazon_delivery
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonDelivery">
+        insert into tbl_amazon_delivery (id, amazon_shop_name, pl_seller_account, 
+            amazon_seller_account, marketplace_id, amazon_order_details, 
+            upload_status, create_date, update_date
+            )
+        values (#{id,jdbcType=INTEGER}, #{amazonShopName,jdbcType=VARCHAR}, #{plSellerAccount,jdbcType=VARCHAR}, 
+            #{amazonSellerAccount,jdbcType=VARCHAR}, #{marketplaceId,jdbcType=VARCHAR}, #{amazonOrderDetails,jdbcType=VARCHAR}, 
+            #{uploadStatus,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonDelivery">
+        insert into tbl_amazon_delivery
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="amazonShopName != null">
+                amazon_shop_name,
+            </if>
+            <if test="plSellerAccount != null">
+                pl_seller_account,
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account,
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id,
+            </if>
+            <if test="amazonOrderDetails != null">
+                amazon_order_details,
+            </if>
+            <if test="uploadStatus != null">
+                upload_status,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="amazonShopName != null">
+                #{amazonShopName,jdbcType=VARCHAR},
+            </if>
+            <if test="plSellerAccount != null">
+                #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonOrderDetails != null">
+                #{amazonOrderDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadStatus != null">
+                #{uploadStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonDelivery">
+        update tbl_amazon_delivery
+        <set>
+            <if test="amazonShopName != null">
+                amazon_shop_name = #{amazonShopName,jdbcType=VARCHAR},
+            </if>
+            <if test="plSellerAccount != null">
+                pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonOrderDetails != null">
+                amazon_order_details = #{amazonOrderDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadStatus != null">
+                upload_status = #{uploadStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonDelivery">
+        update tbl_amazon_delivery
+        set amazon_shop_name = #{amazonShopName,jdbcType=VARCHAR},
+            pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            amazon_order_details = #{amazonOrderDetails,jdbcType=VARCHAR},
+            upload_status = #{uploadStatus,jdbcType=TINYINT},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            update_date = #{updateDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonDelivery" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tbl_amazon_delivery
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="amazonShopName != null and amazonShopName != ''">
+                 and amazon_shop_name = #{amazonShopName,jdbcType=VARCHAR}
+            </if>
+            <if test="plSellerAccount != null and plSellerAccount != ''">
+                 and pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="amazonSellerAccount != null and amazonSellerAccount != ''">
+                 and amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null and marketplaceId != ''">
+                 and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="amazonOrderDetails != null and amazonOrderDetails != ''">
+                 and amazon_order_details = #{amazonOrderDetails,jdbcType=VARCHAR}
+            </if>
+            <if test="uploadStatus != null and uploadStatus != ''">
+                 and upload_status = #{uploadStatus,jdbcType=TINYINT}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+</mapper>

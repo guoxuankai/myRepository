@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SystemSpuMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.SystemSpu">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="category_level_1" jdbcType="BIGINT" property="categoryLevel1" />
+        <result column="category_level_2" jdbcType="BIGINT" property="categoryLevel2" />
+        <result column="category_level_3" jdbcType="BIGINT" property="categoryLevel3" />
+        <result column="creat_time" jdbcType="VARCHAR" property="creatTime" />
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+        <result column="spu_value" jdbcType="VARCHAR" property="spuValue" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, version, category_level_1, category_level_2, category_level_3, creat_time, update_time, 
+        spu_value
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_system_spu
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_system_spu
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SystemSpu">
+        insert into t_system_spu (id, version, category_level_1, 
+            category_level_2, category_level_3, creat_time, 
+            update_time, spu_value)
+        values (#{id,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{categoryLevel1,jdbcType=BIGINT}, 
+            #{categoryLevel2,jdbcType=BIGINT}, #{categoryLevel3,jdbcType=BIGINT}, #{creatTime,jdbcType=VARCHAR}, 
+            #{updateTime,jdbcType=VARCHAR}, #{spuValue,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.SystemSpu" useGeneratedKeys="true" keyProperty="id">
+        insert into t_system_spu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="categoryLevel1 != null">
+                category_level_1,
+            </if>
+            <if test="categoryLevel2 != null">
+                category_level_2,
+            </if>
+            <if test="categoryLevel3 != null">
+                category_level_3,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="spuValue != null">
+                spu_value,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel1 != null">
+                #{categoryLevel1,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel2 != null">
+                #{categoryLevel2,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel3 != null">
+                #{categoryLevel3,jdbcType=BIGINT},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="spuValue != null">
+                #{spuValue,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.SystemSpu">
+        update t_system_spu
+        <set>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+            <if test="categoryLevel1 != null">
+                category_level_1 = #{categoryLevel1,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel2 != null">
+                category_level_2 = #{categoryLevel2,jdbcType=BIGINT},
+            </if>
+            <if test="categoryLevel3 != null">
+                category_level_3 = #{categoryLevel3,jdbcType=BIGINT},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="spuValue != null">
+                spu_value = #{spuValue,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.SystemSpu">
+        update t_system_spu
+        set version = #{version,jdbcType=BIGINT} + 1,
+            category_level_1 = #{categoryLevel1,jdbcType=BIGINT},
+            category_level_2 = #{categoryLevel2,jdbcType=BIGINT},
+            category_level_3 = #{categoryLevel3,jdbcType=BIGINT},
+            creat_time = #{creatTime,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=VARCHAR},
+            spu_value = #{spuValue,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.commodity.entity.SystemSpu" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_system_spu
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="categoryLevel1 != null">
+                 and category_level_1 = #{categoryLevel1,jdbcType=BIGINT}
+            </if>
+            <if test="categoryLevel2 != null">
+                 and category_level_2 = #{categoryLevel2,jdbcType=BIGINT}
+            </if>
+            <if test="categoryLevel3 != null">
+                 and category_level_3 = #{categoryLevel3,jdbcType=BIGINT}
+            </if>
+            <if test="creatTime != null">
+                 and creat_time = #{creatTime,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null">
+                 and update_time = #{updateTime,jdbcType=VARCHAR}
+            </if>
+            <if test="spuValue != null">
+                 and spu_value = #{spuValue,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    
+    <select id="getSpuCount" resultType="int">
+    	select count(*) from t_system_spu where spu_value=#{spuValue}
+    </select>
+    
+    <select id="getSpuBySku" resultType="String">
+		select t1.spu_value from t_system_spu t1,t_commodity_base t2,t_commodity_spec t3
+		where t3.commodity_id=t2.id and t2.spu_id=t1.id
+		and t3.system_sku=#{systemSku}  
+    </select>
+</mapper>

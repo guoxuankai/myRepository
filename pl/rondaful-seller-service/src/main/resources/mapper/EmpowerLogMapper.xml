@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EmpowerLogMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EmpowerLog">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="handler" jdbcType="VARCHAR" property="handler" />
+        <result column="operation" jdbcType="CHAR" property="operation" />
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="empowerId" jdbcType="INTEGER" property="empowerid" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, handler, operation, createTime, empowerId
+    </sql>
+    
+    <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from empower_log
+        where empowerId = #{id,jdbcType=INTEGER}
+        order by id desc
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from empower_log
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EmpowerLog">
+        insert into empower_log (id, handler, operation, 
+            createTime, empowerId)
+        values (#{id,jdbcType=INTEGER}, #{handler,jdbcType=VARCHAR}, #{operation,jdbcType=CHAR}, 
+            #{createtime,jdbcType=TIMESTAMP}, #{empowerid,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EmpowerLog">
+        insert into empower_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="handler != null">
+                handler,
+            </if>
+            <if test="operation != null">
+                operation,
+            </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+            <if test="empowerid != null">
+                empowerId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="handler != null">
+                #{handler,jdbcType=VARCHAR},
+            </if>
+            <if test="operation != null">
+                #{operation,jdbcType=CHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="empowerid != null">
+                #{empowerid,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EmpowerLog">
+        update empower_log
+        <set>
+            <if test="handler != null">
+                handler = #{handler,jdbcType=VARCHAR},
+            </if>
+            <if test="operation != null">
+                operation = #{operation,jdbcType=CHAR},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="empowerid != null">
+                empowerId = #{empowerid,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EmpowerLog">
+        update empower_log
+        set handler = #{handler,jdbcType=VARCHAR},
+            operation = #{operation,jdbcType=CHAR},
+            createTime = #{createtime,jdbcType=TIMESTAMP},
+            empowerId = #{empowerid,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EmpowerLog" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from empower_log
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="handler != null">
+                 and handler = #{handler,jdbcType=VARCHAR}
+            </if>
+            <if test="operation != null">
+                 and operation = #{operation,jdbcType=CHAR}
+            </if>
+            <if test="createtime != null">
+                 and createTime = #{createtime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="empowerid != null">
+                 and empowerId = #{empowerid,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+</mapper>

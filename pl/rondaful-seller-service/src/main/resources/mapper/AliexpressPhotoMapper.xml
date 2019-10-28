@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressPhotoMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressPhoto">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="display_name" jdbcType="VARCHAR" property="displayName" />
+        <result column="photo_id" jdbcType="BIGINT" property="photoId" />
+        <result column="file_size" jdbcType="BIGINT" property="fileSize" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="height" jdbcType="BIGINT" property="height" />
+        <result column="width" jdbcType="BIGINT" property="width" />
+        <result column="reference_count" jdbcType="BIGINT" property="referenceCount" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="pl_account_id" jdbcType="BIGINT" property="plAccountId" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="empower_id" jdbcType="BIGINT" property="empowerId" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, display_name, photo_id, file_size, group_id, height, width, reference_count, 
+        url, create_time, update_time, pl_account_id, status, empower_id
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_photo
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_photo
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressPhoto">
+        insert into aliexpress_photo (id, display_name, photo_id, 
+            file_size, group_id, height, 
+            width, reference_count, url, 
+            create_time, update_time, pl_account_id, 
+            status, empower_id)
+        values (#{id,jdbcType=BIGINT}, #{displayName,jdbcType=VARCHAR}, #{photoId,jdbcType=BIGINT}, 
+            #{fileSize,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{height,jdbcType=BIGINT}, 
+            #{width,jdbcType=BIGINT}, #{referenceCount,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{plAccountId,jdbcType=BIGINT}, 
+            #{status,jdbcType=INTEGER}, #{empowerId,jdbcType=BIGINT})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPhoto">
+        insert into aliexpress_photo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="displayName != null">
+                display_name,
+            </if>
+            <if test="photoId != null">
+                photo_id,
+            </if>
+            <if test="fileSize != null">
+                file_size,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="height != null">
+                height,
+            </if>
+            <if test="width != null">
+                width,
+            </if>
+            <if test="referenceCount != null">
+                reference_count,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="plAccountId != null">
+                pl_account_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="displayName != null">
+                #{displayName,jdbcType=VARCHAR},
+            </if>
+            <if test="photoId != null">
+                #{photoId,jdbcType=BIGINT},
+            </if>
+            <if test="fileSize != null">
+                #{fileSize,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="height != null">
+                #{height,jdbcType=BIGINT},
+            </if>
+            <if test="width != null">
+                #{width,jdbcType=BIGINT},
+            </if>
+            <if test="referenceCount != null">
+                #{referenceCount,jdbcType=BIGINT},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="plAccountId != null">
+                #{plAccountId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPhoto">
+        update aliexpress_photo
+        <set>
+            <if test="displayName != null">
+                display_name = #{displayName,jdbcType=VARCHAR},
+            </if>
+            <if test="photoId != null">
+                photo_id = #{photoId,jdbcType=BIGINT},
+            </if>
+            <if test="fileSize != null">
+                file_size = #{fileSize,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="height != null">
+                height = #{height,jdbcType=BIGINT},
+            </if>
+            <if test="width != null">
+                width = #{width,jdbcType=BIGINT},
+            </if>
+            <if test="referenceCount != null">
+                reference_count = #{referenceCount,jdbcType=BIGINT},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="plAccountId != null">
+                pl_account_id = #{plAccountId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressPhoto">
+        update aliexpress_photo
+        set display_name = #{displayName,jdbcType=VARCHAR},
+            photo_id = #{photoId,jdbcType=BIGINT},
+            file_size = #{fileSize,jdbcType=BIGINT},
+            group_id = #{groupId,jdbcType=BIGINT},
+            height = #{height,jdbcType=BIGINT},
+            width = #{width,jdbcType=BIGINT},
+            reference_count = #{referenceCount,jdbcType=BIGINT},
+            url = #{url,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            pl_account_id = #{plAccountId,jdbcType=BIGINT},
+            status = #{status,jdbcType=INTEGER},
+            empower_id = #{empowerId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressPhoto" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_photo
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="displayName != null and displayName != ''">
+                 and display_name = #{displayName,jdbcType=VARCHAR}
+            </if>
+            <if test="photoId != null and photoId != ''">
+                 and photo_id = #{photoId,jdbcType=BIGINT}
+            </if>
+            <if test="fileSize != null and fileSize != ''">
+                 and file_size = #{fileSize,jdbcType=BIGINT}
+            </if>
+            <if test="groupId != null and groupId != ''">
+                 and group_id = #{groupId,jdbcType=BIGINT}
+            </if>
+            <if test="height != null and height != ''">
+                 and height = #{height,jdbcType=BIGINT}
+            </if>
+            <if test="width != null and width != ''">
+                 and width = #{width,jdbcType=BIGINT}
+            </if>
+            <if test="referenceCount != null and referenceCount != ''">
+                 and reference_count = #{referenceCount,jdbcType=BIGINT}
+            </if>
+            <if test="url != null and url != ''">
+                 and url = #{url,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="plAccountId != null and plAccountId != ''">
+                 and pl_account_id = #{plAccountId,jdbcType=BIGINT}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                 and empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+
+
+    <select id="findPage" parameterType="com.rondaful.cloud.seller.vo.AliexpressPhotoSearchVO" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_photo
+        <trim prefix="where" prefixOverrides="and">
+            <if test="displayName != null and displayName != ''">
+                and display_name like CONCAT('%',#{displayName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="groupId != null">
+                and group_id = #{groupId,jdbcType=BIGINT}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                and empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+        </trim>
+        order by id desc
+    </select>
+
+
+    <select id="getAliexpressPhotoList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_photo
+        <trim prefix="where" prefixOverrides="and">
+
+            <if test="empowerId != null and empowerId != ''">
+                and empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+            <if test="photoIds != null">
+                and photo_id in
+                <foreach collection="photoIds" item="photoId" index="index"  open='(' separator=',' close=')' >
+                    #{photoId,jdbcType=BIGINT}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <update id="updateBatch" parameterType="java.util.List">
+            <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+                update aliexpress_photo
+                <set>
+                    <if test="item.referenceCount != null">
+                        reference_count = #{item.referenceCount,jdbcType=BIGINT},
+                    </if>
+                    <if test="item.groupId != null">
+                        group_id = #{item.groupId,jdbcType=BIGINT},
+                    </if>
+                    <if test="item.updateTime != null">
+                        update_time = #{item.updateTime,jdbcType=TIMESTAMP},
+                    </if>
+                </set>
+                where photo_id = #{item.photoId,jdbcType=BIGINT}
+            </foreach>
+
+    </update>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id"  parameterType="com.rondaful.cloud.seller.entity.AliexpressPhoto">
+        insert into aliexpress_photo (display_name, photo_id,
+            file_size, group_id, height,
+            width, reference_count, url,
+            create_time, update_time, pl_account_id,
+            status, empower_id)
+        values
+        <foreach collection="list" item="item" index="index" separator ="," >
+        (#{item.displayName,jdbcType=VARCHAR}, #{item.photoId,jdbcType=BIGINT},
+            #{item.fileSize,jdbcType=BIGINT}, #{item.groupId,jdbcType=BIGINT}, #{item.height,jdbcType=BIGINT},
+            #{item.width,jdbcType=BIGINT}, #{item.referenceCount,jdbcType=BIGINT}, #{item.url,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP}, #{item.plAccountId,jdbcType=BIGINT},
+            #{item.status,jdbcType=INTEGER}, #{item.empowerId,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+
+</mapper>

@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.SupplyChainUserMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.SupplyChainUser">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="phone_code" jdbcType="VARCHAR" property="phoneCode" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="qq" jdbcType="VARCHAR" property="qq" />
+        <result column="post_code" jdbcType="VARCHAR" property="postCode" />
+        <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+        <result column="reg_area" jdbcType="VARCHAR" property="regArea" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="reg_address" jdbcType="VARCHAR" property="regAddress" />
+        <result column="credit_code" jdbcType="VARCHAR" property="creditCode" />
+        <result column="credit_date" jdbcType="VARCHAR" property="creditDate" />
+        <result column="operating_period" jdbcType="VARCHAR" property="operatingPeriod" />
+        <result column="company_scale" jdbcType="VARCHAR" property="companyScale" />
+        <result column="legalperson_name" jdbcType="VARCHAR" property="legalpersonName" />
+        <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+        <result column="identitycard_front_image" jdbcType="VARCHAR" property="identitycardFrontImage" />
+        <result column="identitycard_reverse_image" jdbcType="VARCHAR" property="identitycardReverseImage" />
+        <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+        <result column="company_profile" jdbcType="VARCHAR" property="companyProfile" />
+        <result column="bind_type" jdbcType="VARCHAR" property="bindType" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, user_name, mobile, phone_code, phone, email, status, qq, post_code, company_name, 
+        reg_area, address, reg_address, credit_code, credit_date, operating_period, company_scale, 
+        legalperson_name, id_card, identitycard_front_image, identitycard_reverse_image, 
+        business_license, company_profile, bind_type, create_by, create_time, update_by, 
+        update_time, version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_supply_chain_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_supply_chain_user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.SupplyChainUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_supply_chain_user (id, user_name, mobile, 
+            phone_code, phone, email, 
+            status, qq, post_code, 
+            company_name, reg_area, address, 
+            reg_address, credit_code, credit_date, 
+            operating_period, company_scale, legalperson_name, 
+            id_card, identitycard_front_image, identitycard_reverse_image, 
+            business_license, company_profile, bind_type, 
+            create_by, create_time, update_by, 
+            update_time, version)
+        values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+            #{phoneCode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{qq,jdbcType=VARCHAR}, #{postCode,jdbcType=VARCHAR}, 
+            #{companyName,jdbcType=VARCHAR}, #{regArea,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+            #{regAddress,jdbcType=VARCHAR}, #{creditCode,jdbcType=VARCHAR}, #{creditDate,jdbcType=VARCHAR}, 
+            #{operatingPeriod,jdbcType=VARCHAR}, #{companyScale,jdbcType=VARCHAR}, #{legalpersonName,jdbcType=VARCHAR}, 
+            #{idCard,jdbcType=VARCHAR}, #{identitycardFrontImage,jdbcType=VARCHAR}, #{identitycardReverseImage,jdbcType=VARCHAR}, 
+            #{businessLicense,jdbcType=VARCHAR}, #{companyProfile,jdbcType=VARCHAR}, #{bindType,jdbcType=VARCHAR}, 
+            #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+            #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.SupplyChainUser">
+        insert into t_supply_chain_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="phoneCode != null">
+                phone_code,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="qq != null">
+                qq,
+            </if>
+            <if test="postCode != null">
+                post_code,
+            </if>
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="regArea != null">
+                reg_area,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="regAddress != null">
+                reg_address,
+            </if>
+            <if test="creditCode != null">
+                credit_code,
+            </if>
+            <if test="creditDate != null">
+                credit_date,
+            </if>
+            <if test="operatingPeriod != null">
+                operating_period,
+            </if>
+            <if test="companyScale != null">
+                company_scale,
+            </if>
+            <if test="legalpersonName != null">
+                legalperson_name,
+            </if>
+            <if test="idCard != null">
+                id_card,
+            </if>
+            <if test="identitycardFrontImage != null">
+                identitycard_front_image,
+            </if>
+            <if test="identitycardReverseImage != null">
+                identitycard_reverse_image,
+            </if>
+            <if test="businessLicense != null">
+                business_license,
+            </if>
+            <if test="companyProfile != null">
+                company_profile,
+            </if>
+            <if test="bindType != null">
+                bind_type,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCode != null">
+                #{phoneCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="qq != null">
+                #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="postCode != null">
+                #{postCode,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="regArea != null">
+                #{regArea,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="regAddress != null">
+                #{regAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="creditDate != null">
+                #{creditDate,jdbcType=VARCHAR},
+            </if>
+            <if test="operatingPeriod != null">
+                #{operatingPeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="companyScale != null">
+                #{companyScale,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonName != null">
+                #{legalpersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard != null">
+                #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardFrontImage != null">
+                #{identitycardFrontImage,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardReverseImage != null">
+                #{identitycardReverseImage,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="companyProfile != null">
+                #{companyProfile,jdbcType=VARCHAR},
+            </if>
+            <if test="bindType != null">
+                #{bindType,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.SupplyChainUser">
+        update t_supply_chain_user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCode != null">
+                phone_code = #{phoneCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="qq != null">
+                qq = #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="postCode != null">
+                post_code = #{postCode,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="regArea != null">
+                reg_area = #{regArea,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="regAddress != null">
+                reg_address = #{regAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                credit_code = #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="creditDate != null">
+                credit_date = #{creditDate,jdbcType=VARCHAR},
+            </if>
+            <if test="operatingPeriod != null">
+                operating_period = #{operatingPeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="companyScale != null">
+                company_scale = #{companyScale,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonName != null">
+                legalperson_name = #{legalpersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardFrontImage != null">
+                identitycard_front_image = #{identitycardFrontImage,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardReverseImage != null">
+                identitycard_reverse_image = #{identitycardReverseImage,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                business_license = #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="companyProfile != null">
+                company_profile = #{companyProfile,jdbcType=VARCHAR},
+            </if>
+            <if test="bindType != null">
+                bind_type = #{bindType,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.SupplyChainUser">
+        update t_supply_chain_user
+        set user_name = #{userName,jdbcType=VARCHAR},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            phone_code = #{phoneCode,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            email = #{email,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            qq = #{qq,jdbcType=VARCHAR},
+            post_code = #{postCode,jdbcType=VARCHAR},
+            company_name = #{companyName,jdbcType=VARCHAR},
+            reg_area = #{regArea,jdbcType=VARCHAR},
+            address = #{address,jdbcType=VARCHAR},
+            reg_address = #{regAddress,jdbcType=VARCHAR},
+            credit_code = #{creditCode,jdbcType=VARCHAR},
+            credit_date = #{creditDate,jdbcType=VARCHAR},
+            operating_period = #{operatingPeriod,jdbcType=VARCHAR},
+            company_scale = #{companyScale,jdbcType=VARCHAR},
+            legalperson_name = #{legalpersonName,jdbcType=VARCHAR},
+            id_card = #{idCard,jdbcType=VARCHAR},
+            identitycard_front_image = #{identitycardFrontImage,jdbcType=VARCHAR},
+            identitycard_reverse_image = #{identitycardReverseImage,jdbcType=VARCHAR},
+            business_license = #{businessLicense,jdbcType=VARCHAR},
+            company_profile = #{companyProfile,jdbcType=VARCHAR},
+            bind_type = #{bindType,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            version = #{version,jdbcType=INTEGER} + 1
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.SupplyChainUser" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_supply_chain_user
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="userName != null and userName != ''">
+                 and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                 and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="phoneCode != null and phoneCode != ''">
+                 and phone_code = #{phoneCode,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != ''">
+                 and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                 and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="qq != null and qq != ''">
+                 and qq = #{qq,jdbcType=VARCHAR}
+            </if>
+            <if test="postCode != null and postCode != ''">
+                 and post_code = #{postCode,jdbcType=VARCHAR}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                 and company_name = #{companyName,jdbcType=VARCHAR}
+            </if>
+            <if test="regArea != null and regArea != ''">
+                 and reg_area = #{regArea,jdbcType=VARCHAR}
+            </if>
+            <if test="address != null and address != ''">
+                 and address = #{address,jdbcType=VARCHAR}
+            </if>
+            <if test="regAddress != null and regAddress != ''">
+                 and reg_address = #{regAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="creditCode != null and creditCode != ''">
+                 and credit_code = #{creditCode,jdbcType=VARCHAR}
+            </if>
+            <if test="creditDate != null and creditDate != ''">
+                 and credit_date = #{creditDate,jdbcType=VARCHAR}
+            </if>
+            <if test="operatingPeriod != null and operatingPeriod != ''">
+                 and operating_period = #{operatingPeriod,jdbcType=VARCHAR}
+            </if>
+            <if test="companyScale != null and companyScale != ''">
+                 and company_scale = #{companyScale,jdbcType=VARCHAR}
+            </if>
+            <if test="legalpersonName != null and legalpersonName != ''">
+                 and legalperson_name = #{legalpersonName,jdbcType=VARCHAR}
+            </if>
+            <if test="idCard != null and idCard != ''">
+                 and id_card = #{idCard,jdbcType=VARCHAR}
+            </if>
+            <if test="identitycardFrontImage != null and identitycardFrontImage != ''">
+                 and identitycard_front_image = #{identitycardFrontImage,jdbcType=VARCHAR}
+            </if>
+            <if test="identitycardReverseImage != null and identitycardReverseImage != ''">
+                 and identitycard_reverse_image = #{identitycardReverseImage,jdbcType=VARCHAR}
+            </if>
+            <if test="businessLicense != null and businessLicense != ''">
+                 and business_license = #{businessLicense,jdbcType=VARCHAR}
+            </if>
+            <if test="companyProfile != null and companyProfile != ''">
+                 and company_profile = #{companyProfile,jdbcType=VARCHAR}
+            </if>
+            <if test="bindType != null and bindType != ''">
+                 and bind_type = #{bindType,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getsPage"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_supply_chain_user
+        <where>
+            <if test="companyName !=null and companyName!=''">
+                company_name like CONCAT(CONCAT('%',#{companyName},'%'))
+            </if>
+            <if test="dataType ==1">
+                and create_time  BETWEEN  #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="dataType ==2">
+                and update_time  BETWEEN  #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+    <select id="getAll"   parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_supply_chain_user
+        where status = #{status,jdbcType=INTEGER}
+    </select>
+</mapper>

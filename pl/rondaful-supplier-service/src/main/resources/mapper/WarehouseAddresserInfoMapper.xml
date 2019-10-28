@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WarehouseAddresserInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.WarehouseAddresserInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_sequence_number" jdbcType="VARCHAR" property="parentSequenceNumber"/>
+        <result column="ca_first_name" jdbcType="VARCHAR" property="caFirstName"/>
+        <result column="ca_last_name" jdbcType="VARCHAR" property="caLastName"/>
+        <result column="ca_contact_phone" jdbcType="VARCHAR" property="caContactPhone"/>
+        <result column="ca_state" jdbcType="VARCHAR" property="caState"/>
+        <result column="ca_city" jdbcType="VARCHAR" property="caCity"/>
+        <result column="ca_country_code" jdbcType="VARCHAR" property="caCountryCode"/>
+        <result column="ca_zipcode" jdbcType="VARCHAR" property="caZipcode"/>
+        <result column="ca_address1" jdbcType="VARCHAR" property="caAddress1"/>
+        <result column="ca_address2" jdbcType="VARCHAR" property="caAddress2"/>
+        <result column="ca_date" jdbcType="TIMESTAMP" property="caDate"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, parent_sequence_number, ca_first_name, ca_last_name, ca_contact_phone, ca_state,
+        ca_city, ca_country_code, ca_zipcode, ca_address1, ca_address2, ca_date
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_addresser_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByParentSequenceNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_addresser_info
+        where parent_sequence_number = #{parentSequenceNumber,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_warehouse_addresser_info
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByParentSequenceNumber" parameterType="java.lang.String">
+        delete from t_warehouse_addresser_info
+        where parent_sequence_number = #{sequenceNumber,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.WarehouseAddresserInfo">
+        insert into t_warehouse_addresser_info (id, parent_sequence_number, ca_first_name,
+            ca_last_name, ca_contact_phone, ca_state,
+            ca_city, ca_country_code, ca_zipcode,
+            ca_address1, ca_address2, ca_date
+            )
+        values (#{id,jdbcType=BIGINT}, #{parentSequenceNumber,jdbcType=VARCHAR}, #{caFirstName,jdbcType=VARCHAR},
+            #{caLastName,jdbcType=VARCHAR}, #{caContactPhone,jdbcType=VARCHAR}, #{caState,jdbcType=VARCHAR},
+            #{caCity,jdbcType=VARCHAR}, #{caCountryCode,jdbcType=VARCHAR}, #{caZipcode,jdbcType=VARCHAR},
+            #{caAddress1,jdbcType=VARCHAR}, #{caAddress2,jdbcType=VARCHAR}, #{caDate,jdbcType=TIMESTAMP}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.WarehouseAddresserInfo">
+        insert into t_warehouse_addresser_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parentSequenceNumber != null">
+                parent_sequence_number,
+            </if>
+            <if test="caFirstName != null">
+                ca_first_name,
+            </if>
+            <if test="caLastName != null">
+                ca_last_name,
+            </if>
+            <if test="caContactPhone != null">
+                ca_contact_phone,
+            </if>
+            <if test="caState != null">
+                ca_state,
+            </if>
+            <if test="caCity != null">
+                ca_city,
+            </if>
+            <if test="caCountryCode != null">
+                ca_country_code,
+            </if>
+            <if test="caZipcode != null">
+                ca_zipcode,
+            </if>
+            <if test="caAddress1 != null">
+                ca_address1,
+            </if>
+            <if test="caAddress2 != null">
+                ca_address2,
+            </if>
+            <if test="caDate != null">
+                ca_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="parentSequenceNumber != null">
+                #{parentSequenceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="caFirstName != null">
+                #{caFirstName,jdbcType=VARCHAR},
+            </if>
+            <if test="caLastName != null">
+                #{caLastName,jdbcType=VARCHAR},
+            </if>
+            <if test="caContactPhone != null">
+                #{caContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="caState != null">
+                #{caState,jdbcType=VARCHAR},
+            </if>
+            <if test="caCity != null">
+                #{caCity,jdbcType=VARCHAR},
+            </if>
+            <if test="caCountryCode != null">
+                #{caCountryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="caZipcode != null">
+                #{caZipcode,jdbcType=VARCHAR},
+            </if>
+            <if test="caAddress1 != null">
+                #{caAddress1,jdbcType=VARCHAR},
+            </if>
+            <if test="caAddress2 != null">
+                #{caAddress2,jdbcType=VARCHAR},
+            </if>
+            <if test="caDate != null">
+                #{caDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.WarehouseAddresserInfo">
+        update t_warehouse_addresser_info
+        <set>
+            <if test="parentSequenceNumber != null">
+                parent_sequence_number = #{parentSequenceNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="caFirstName != null">
+                ca_first_name = #{caFirstName,jdbcType=VARCHAR},
+            </if>
+            <if test="caLastName != null">
+                ca_last_name = #{caLastName,jdbcType=VARCHAR},
+            </if>
+            <if test="caContactPhone != null">
+                ca_contact_phone = #{caContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="caState != null">
+                ca_state = #{caState,jdbcType=VARCHAR},
+            </if>
+            <if test="caCity != null">
+                ca_city = #{caCity,jdbcType=VARCHAR},
+            </if>
+            <if test="caCountryCode != null">
+                ca_country_code = #{caCountryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="caZipcode != null">
+                ca_zipcode = #{caZipcode,jdbcType=VARCHAR},
+            </if>
+            <if test="caAddress1 != null">
+                ca_address1 = #{caAddress1,jdbcType=VARCHAR},
+            </if>
+            <if test="caAddress2 != null">
+                ca_address2 = #{caAddress2,jdbcType=VARCHAR},
+            </if>
+            <if test="caDate != null">
+                ca_date = #{caDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.WarehouseAddresserInfo">
+        update t_warehouse_addresser_info
+        set parent_sequence_number = #{parentSequenceNumber,jdbcType=VARCHAR},
+            ca_first_name = #{caFirstName,jdbcType=VARCHAR},
+            ca_last_name = #{caLastName,jdbcType=VARCHAR},
+            ca_contact_phone = #{caContactPhone,jdbcType=VARCHAR},
+            ca_state = #{caState,jdbcType=VARCHAR},
+            ca_city = #{caCity,jdbcType=VARCHAR},
+            ca_country_code = #{caCountryCode,jdbcType=VARCHAR},
+            ca_zipcode = #{caZipcode,jdbcType=VARCHAR},
+            ca_address1 = #{caAddress1,jdbcType=VARCHAR},
+            ca_address2 = #{caAddress2,jdbcType=VARCHAR},
+            ca_date = #{caDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.WarehouseAddresserInfo"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_addresser_info
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="parentSequenceNumber != null and parentSequenceNumber != ''">
+                and parent_sequence_number = #{parentSequenceNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="caFirstName != null and caFirstName != ''">
+                and ca_first_name = #{caFirstName,jdbcType=VARCHAR}
+            </if>
+            <if test="caLastName != null and caLastName != ''">
+                and ca_last_name = #{caLastName,jdbcType=VARCHAR}
+            </if>
+            <if test="caContactPhone != null and caContactPhone != ''">
+                and ca_contact_phone = #{caContactPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="caState != null and caState != ''">
+                and ca_state = #{caState,jdbcType=VARCHAR}
+            </if>
+            <if test="caCity != null and caCity != ''">
+                and ca_city = #{caCity,jdbcType=VARCHAR}
+            </if>
+            <if test="caCountryCode != null and caCountryCode != ''">
+                and ca_country_code = #{caCountryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="caZipcode != null and caZipcode != ''">
+                and ca_zipcode = #{caZipcode,jdbcType=VARCHAR}
+            </if>
+            <if test="caAddress1 != null and caAddress1 != ''">
+                and ca_address1 = #{caAddress1,jdbcType=VARCHAR}
+            </if>
+            <if test="caAddress2 != null and caAddress2 != ''">
+                and ca_address2 = #{caAddress2,jdbcType=VARCHAR}
+            </if>
+            <if test="caDate != null and caDate != ''">
+                and ca_date = #{caDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+</mapper>

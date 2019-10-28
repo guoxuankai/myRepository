@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.CountryMapMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.CountryMap">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="country_code" jdbcType="VARCHAR" property="countryCode" />
+    <result column="country_name" jdbcType="VARCHAR" property="countryName" />
+    <result column="country_name_en" jdbcType="VARCHAR" property="countryNameEn" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, country_code, country_name, country_name_en
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_country_map
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_country_map
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.CountryMap">
+    insert into t_country_map (id, country_code, country_name, 
+      country_name_en)
+    values (#{id,jdbcType=INTEGER}, #{countryCode,jdbcType=VARCHAR}, #{countryName,jdbcType=VARCHAR}, 
+      #{countryNameEn,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.CountryMap">
+    insert into t_country_map
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="countryCode != null">
+        country_code,
+      </if>
+      <if test="countryName != null">
+        country_name,
+      </if>
+      <if test="countryNameEn != null">
+        country_name_en,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="countryCode != null">
+        #{countryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="countryName != null">
+        #{countryName,jdbcType=VARCHAR},
+      </if>
+      <if test="countryNameEn != null">
+        #{countryNameEn,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.CountryMap">
+    update t_country_map
+    <set>
+      <if test="countryCode != null">
+        country_code = #{countryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="countryName != null">
+        country_name = #{countryName,jdbcType=VARCHAR},
+      </if>
+      <if test="countryNameEn != null">
+        country_name_en = #{countryNameEn,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.CountryMap">
+    update t_country_map
+    set country_code = #{countryCode,jdbcType=VARCHAR},
+      country_name = #{countryName,jdbcType=VARCHAR},
+      country_name_en = #{countryNameEn,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+      <select id="page" parameterType="com.rondaful.cloud.supplier.entity.CountryMap" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_country_map
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="countryCode != null and countryCode != ''">
+                 and country_code = #{countryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="countryName != null and countryName != ''">
+                 and country_name = #{countryName,jdbcType=VARCHAR}
+            </if>
+            <if test="countryNameEn != null and countryNameEn != ''">
+                 and country_name_en = #{countryNameEn,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

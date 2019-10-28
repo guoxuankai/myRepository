@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.CommodityBelongSellerMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.CommodityBelongSeller">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="commodity_id" jdbcType="BIGINT" property="commodityId" />
+    <result column="seller_id" jdbcType="BIGINT" property="sellerId" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, commodity_id, seller_id, version, create_time, update_time
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_commodity_belong_seller
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_commodity_belong_seller
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteByCommodityId" parameterType="java.lang.Long">
+    delete from t_commodity_belong_seller
+    where commodity_id = #{commodityId,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.CommodityBelongSeller">
+    insert into t_commodity_belong_seller (id, commodity_id, seller_id, 
+      version, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{commodityId,jdbcType=BIGINT}, #{sellerId,jdbcType=BIGINT}, 
+      #{version,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  <insert id="insertBatch" parameterType="java.util.ArrayList">
+		insert into t_commodity_belong_seller (
+			commodity_id, 
+	    	seller_id, 
+	      	create_time
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(
+			#{item.commodityId,jdbcType=BIGINT},
+			#{item.sellerId,jdbcType=BIGINT},
+			now()
+			)
+		</foreach>
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityBelongSeller">
+    insert into t_commodity_belong_seller
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="commodityId != null">
+        commodity_id,
+      </if>
+      <if test="sellerId != null">
+        seller_id,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="commodityId != null">
+        #{commodityId,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null">
+        #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityBelongSeller">
+    update t_commodity_belong_seller
+    <set>
+      <if test="commodityId != null">
+        commodity_id = #{commodityId,jdbcType=BIGINT},
+      </if>
+      <if test="sellerId != null">
+        seller_id = #{sellerId,jdbcType=BIGINT},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT}+1,
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+    and version = #{version,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.CommodityBelongSeller">
+    update t_commodity_belong_seller
+    set commodity_id = #{commodityId,jdbcType=BIGINT},
+      seller_id = #{sellerId,jdbcType=BIGINT},
+      version = #{version,jdbcType=BIGINT} + 1,
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+    and version = #{version,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectCountByCommodityId" resultType="int">
+  	select count(*) from t_commodity_belong_seller where commodity_id = #{commodityId,jdbcType=BIGINT}
+  	<if test="sellerId != null">
+  		and seller_id = #{sellerId,jdbcType=BIGINT}
+  	</if>
+  </select>
+  
+  <select id="selectAllCommodityId" resultType="String">
+  	select DISTINCT commodity_id from t_commodity_belong_seller
+  	<trim prefix="where" prefixOverrides="and">
+  		<if test="sellerId != null">
+  			and seller_id = #{sellerId}
+  		</if>
+  	</trim>
+  </select>
+  
+  <!-- 获取当前卖家不可售的商品ID -->
+  <select id="selectCommodityIdBySellerId" resultType="String">
+  	select DISTINCT commodity_id from t_commodity_belong_seller where seller_id != #{sellerId}
+  	and commodity_id not in (
+		SELECT commodity_id from t_commodity_belong_seller where seller_id=#{sellerId}
+	)
+  </select>
+  
+  <select id="getSellerIdBySku" resultType="String">
+  	select DISTINCT seller_id from t_commodity_belong_seller t1,t_commodity_spec t2
+	where t1.commodity_id=t2.commodity_id and t2.system_sku=#{sku,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

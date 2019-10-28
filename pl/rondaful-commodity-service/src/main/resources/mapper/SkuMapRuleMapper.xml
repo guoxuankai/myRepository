@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SkuMapRuleMapper">
+
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SkuMapRule" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO t_sku_map_rule(
+        	rule_type,
+        	rule1,
+        	rule2,
+        	create_time,
+        	seller_id,
+        	seller_account,
+        	status
+        )
+        VALUES(
+        	#{ruleType},
+        	#{rule1},
+        	#{rule2},
+        	now(),
+        	#{sellerId},
+        	#{sellerAccount},
+        	#{status}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        update t_sku_map_rule
+        set
+            status = 1,
+            update_time = now()
+        where
+        id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.rondaful.cloud.commodity.entity.SkuMapRule">
+        update t_sku_map_rule set update_time = now(), rule1 = #{rule1}, rule2 = #{rule2}
+        <if test="ruleType != null and ruleType != ''">
+        	,rule_type = #{ruleType}
+        </if>
+        <if test="status != null">
+        	,status = #{status}
+        </if>
+        where id = #{id}
+    </update>
+
+    <select id="selectBySellerId" resultType="com.rondaful.cloud.commodity.entity.SkuMapRule">
+        SELECT
+          r.`id`,
+          r.`rule_type` as ruleType,
+          r.`rule1`,
+          r.`rule2`,
+          r.`create_time` as createTime,
+          r.`update_time` as updateTime,
+          r.`seller_id` as sellerId,
+          r.`seller_account` as sellerAccount,
+          r.`status`
+        FROM t_sku_map_rule r
+        WHERE r.seller_id = #{sellerId}
+    </select>
+
+
+</mapper>

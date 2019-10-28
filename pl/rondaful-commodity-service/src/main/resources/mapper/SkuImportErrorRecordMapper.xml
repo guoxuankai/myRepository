@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SkuImportErrorRecordMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.SkuImportErrorRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="supplier_spu" jdbcType="VARCHAR" property="supplierSpu" />
+    <result column="supplier_sku" jdbcType="VARCHAR" property="supplierSku" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="opt_user" jdbcType="VARCHAR" property="optUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="import_id" jdbcType="BIGINT" property="importId" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, supplier_spu, supplier_sku, content, opt_user, create_time,import_id, state
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sku_import_error_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByImportId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sku_import_error_record
+    where import_id = #{importId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_sku_import_error_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteByImportId" parameterType="java.lang.Long">
+    delete from t_sku_import_error_record
+    where import_id = #{importId,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SkuImportErrorRecord">
+    insert into t_sku_import_error_record (id, supplier_spu, supplier_sku, 
+      content, opt_user, create_time,import_id,state
+      )
+    values (#{id,jdbcType=BIGINT}, #{supplierSpu,jdbcType=VARCHAR}, #{supplierSku,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{optUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{importId},#{state}
+      )
+  </insert>
+  
+  <insert id="insertBatch" parameterType="java.util.ArrayList">
+	insert into t_sku_import_error_record (
+		supplier_spu, 
+		supplier_sku, 
+      	content, 
+      	opt_user, 
+      	create_time,
+      	import_id,
+      	state
+	)
+	values
+	<foreach collection="list" item="item" index="index" separator=",">
+		(
+			#{item.supplierSpu,jdbcType=VARCHAR},
+			#{item.supplierSku,jdbcType=VARCHAR},
+			#{item.content,jdbcType=VARCHAR},
+			#{item.optUser,jdbcType=VARCHAR},
+			#{item.createTime},
+			#{item.importId},
+			#{item.state}
+		)
+	</foreach>
+</insert>
+  
+  <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.SkuImportErrorRecord">
+    insert into t_sku_import_error_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="supplierSpu != null">
+        supplier_spu,
+      </if>
+      <if test="supplierSku != null">
+        supplier_sku,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="optUser != null">
+        opt_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="importId != null">
+        import_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="supplierSpu != null">
+        #{supplierSpu,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierSku != null">
+        #{supplierSku,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="optUser != null">
+        #{optUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="importId != null">
+        #{importId},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.SkuImportErrorRecord">
+    update t_sku_import_error_record
+    <set>
+      <if test="supplierSpu != null">
+        supplier_spu = #{supplierSpu,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierSku != null">
+        supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="optUser != null">
+        opt_user = #{optUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.SkuImportErrorRecord">
+    update t_sku_import_error_record
+    set supplier_spu = #{supplierSpu,jdbcType=VARCHAR},
+      supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      opt_user = #{optUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

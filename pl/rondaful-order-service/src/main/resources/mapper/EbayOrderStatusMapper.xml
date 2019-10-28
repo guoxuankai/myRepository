@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.EbayOrderStatusMapper">
+
+    <!-- 批量更新ebay订单状态表==转单用的 -->
+    <update id="updateConvertStatusBatch" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE tb_ebay_order_status
+            <set>
+                conver_sys_status=#{item.converSysStatus},
+                update_by = #{item.updateBy},
+                update_date = #{item.updateDate}
+            </set>
+            <where>
+                order_id = #{item.orderId}
+            </where>
+        </foreach>
+    </update>
+
+    <!--根据ebay的orderId查询订单最近一次修改时间lastModifiedTime-->
+    <select id="selectLastModTimeById" parameterType="java.lang.String" resultType="java.util.Date">
+        select
+        date_format(last_modified_time, '%Y-%m-%d %H:%i:%s') lastModifiedTime
+        from tb_ebay_order_status
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据平台订单ID查询此订单转化状态-->
+    <select id="selectConverStatus" parameterType="java.lang.String" resultType="java.lang.Byte">
+        select
+        conver_sys_status converSysStatus
+        from tb_ebay_order_status
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据订单号查询最迟发货时间wujiachuang-->
+    <select id="selectLastShippingTimeByOrderId" parameterType="java.lang.String" resultType="java.lang.String">
+        select handle_by_time
+        from tb_ebay_order_status
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <!--==============================================================================-->
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.eBay.EbayOrderStatus">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <id column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="seller_pl_id" jdbcType="INTEGER" property="sellerPlId" />
+        <result column="seller_pl_account" jdbcType="VARCHAR" property="sellerPlAccount" />
+        <result column="empower_id" jdbcType="INTEGER" property="empowerId" />
+        <result column="seller_user_id" jdbcType="VARCHAR" property="sellerUserId" />
+        <result column="conver_sys_status" jdbcType="TINYINT" property="converSysStatus" />
+        <result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
+        <result column="handle_by_time" jdbcType="VARCHAR" property="handleByTime" />
+        <result column="last_modified_time" jdbcType="VARCHAR" property="lastModifiedTime" />
+        <result column="cancel_status" jdbcType="VARCHAR" property="cancelStatus" />
+        <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus" />
+        <result column="refund_status" jdbcType="VARCHAR" property="refundStatus" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, order_id, seller_pl_id, seller_pl_account, empower_id, seller_user_id, conver_sys_status, 
+        order_status, handle_by_time, last_modified_time, cancel_status, payment_status, 
+        refund_status, create_date, create_by, update_date, update_by, remark
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tb_ebay_order_status
+        where id = #{id,jdbcType=INTEGER}
+          and order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete from tb_ebay_order_status
+        where id = #{id,jdbcType=INTEGER}
+          and order_id = #{orderId,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderStatus">
+        insert into tb_ebay_order_status (id, order_id, seller_pl_id, 
+            seller_pl_account, empower_id, seller_user_id, 
+            conver_sys_status, order_status, handle_by_time, 
+            last_modified_time, cancel_status, payment_status, 
+            refund_status, create_date, create_by, 
+            update_date, update_by, remark
+            )
+        values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{sellerPlId,jdbcType=INTEGER}, 
+            #{sellerPlAccount,jdbcType=VARCHAR}, #{empowerId,jdbcType=INTEGER}, #{sellerUserId,jdbcType=VARCHAR}, 
+            #{converSysStatus,jdbcType=TINYINT}, #{orderStatus,jdbcType=VARCHAR}, #{handleByTime,jdbcType=VARCHAR}, 
+            #{lastModifiedTime,jdbcType=VARCHAR}, #{cancelStatus,jdbcType=VARCHAR}, #{paymentStatus,jdbcType=VARCHAR}, 
+            #{refundStatus,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderStatus">
+        insert into tb_ebay_order_status
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="sellerPlId != null">
+                seller_pl_id,
+            </if>
+            <if test="sellerPlAccount != null">
+                seller_pl_account,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+            <if test="sellerUserId != null">
+                seller_user_id,
+            </if>
+            <if test="converSysStatus != null">
+                conver_sys_status,
+            </if>
+            <if test="orderStatus != null">
+                order_status,
+            </if>
+            <if test="handleByTime != null">
+                handle_by_time,
+            </if>
+            <if test="lastModifiedTime != null">
+                last_modified_time,
+            </if>
+            <if test="cancelStatus != null">
+                cancel_status,
+            </if>
+            <if test="paymentStatus != null">
+                payment_status,
+            </if>
+            <if test="refundStatus != null">
+                refund_status,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerPlId != null">
+                #{sellerPlId,jdbcType=INTEGER},
+            </if>
+            <if test="sellerPlAccount != null">
+                #{sellerPlAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=INTEGER},
+            </if>
+            <if test="sellerUserId != null">
+                #{sellerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="converSysStatus != null">
+                #{converSysStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="handleByTime != null">
+                #{handleByTime,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifiedTime != null">
+                #{lastModifiedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="cancelStatus != null">
+                #{cancelStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentStatus != null">
+                #{paymentStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="refundStatus != null">
+                #{refundStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderStatus">
+        update tb_ebay_order_status
+        <set>
+            <if test="sellerPlId != null">
+                seller_pl_id = #{sellerPlId,jdbcType=INTEGER},
+            </if>
+            <if test="sellerPlAccount != null">
+                seller_pl_account = #{sellerPlAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=INTEGER},
+            </if>
+            <if test="sellerUserId != null">
+                seller_user_id = #{sellerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="converSysStatus != null">
+                conver_sys_status = #{converSysStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="handleByTime != null">
+                handle_by_time = #{handleByTime,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifiedTime != null">
+                last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR},
+            </if>
+            <if test="cancelStatus != null">
+                cancel_status = #{cancelStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentStatus != null">
+                payment_status = #{paymentStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="refundStatus != null">
+                refund_status = #{refundStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+          and order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderStatus">
+        update tb_ebay_order_status
+        set seller_pl_id = #{sellerPlId,jdbcType=INTEGER},
+            seller_pl_account = #{sellerPlAccount,jdbcType=VARCHAR},
+            empower_id = #{empowerId,jdbcType=INTEGER},
+            seller_user_id = #{sellerUserId,jdbcType=VARCHAR},
+            conver_sys_status = #{converSysStatus,jdbcType=TINYINT},
+            order_status = #{orderStatus,jdbcType=VARCHAR},
+            handle_by_time = #{handleByTime,jdbcType=VARCHAR},
+            last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR},
+            cancel_status = #{cancelStatus,jdbcType=VARCHAR},
+            payment_status = #{paymentStatus,jdbcType=VARCHAR},
+            refund_status = #{refundStatus,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+          and order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.eBay.EbayOrderStatus" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tb_ebay_order_status
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                 and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerPlId != null and sellerPlId != ''">
+                 and seller_pl_id = #{sellerPlId,jdbcType=INTEGER}
+            </if>
+            <if test="sellerPlAccount != null and sellerPlAccount != ''">
+                 and seller_pl_account = #{sellerPlAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                 and empower_id = #{empowerId,jdbcType=INTEGER}
+            </if>
+            <if test="sellerUserId != null and sellerUserId != ''">
+                 and seller_user_id = #{sellerUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="converSysStatus != null and converSysStatus != ''">
+                 and conver_sys_status = #{converSysStatus,jdbcType=TINYINT}
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                 and order_status = #{orderStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="handleByTime != null and handleByTime != ''">
+                 and handle_by_time = #{handleByTime,jdbcType=VARCHAR}
+            </if>
+            <if test="lastModifiedTime != null and lastModifiedTime != ''">
+                 and last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR}
+            </if>
+            <if test="cancelStatus != null and cancelStatus != ''">
+                 and cancel_status = #{cancelStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentStatus != null and paymentStatus != ''">
+                 and payment_status = #{paymentStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="refundStatus != null and refundStatus != ''">
+                 and refund_status = #{refundStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                 and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

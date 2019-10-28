@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.GoodCangMapper">
+    
+    <delete id="deleteCategory">
+    	delete from t_good_cang_category
+    </delete>
+    
+    <insert id="insertCategory" parameterType="com.rondaful.cloud.commodity.entity.GoodCangCategory">
+        insert into t_good_cang_category (
+        	category_id, 
+        	parent_category_id, 
+            category_name,
+            category_name_en,
+            category_level
+            )
+        values (
+        	#{category_id}, 
+        	#{parent_category_id}, 
+        	#{category_name}, 
+            #{category_name_en}, 
+            #{category_level}
+            )
+    </insert>
+    
+    <insert id="insertBatchCategory" parameterType="java.util.ArrayList">
+        insert into t_good_cang_category (
+        	category_id, 
+        	parent_category_id, 
+            category_name,
+            category_name_en,
+            category_level
+            )
+        values 
+        <foreach collection="list" item="item" index="index" separator=",">
+		(
+			#{item.category_id},
+			#{item.parent_category_id},
+			#{item.category_name},
+			#{item.category_name_en},
+			#{item.category_level}
+		)
+		</foreach>
+    </insert>
+    
+    <select id="pageCategory" parameterType="com.rondaful.cloud.commodity.entity.GoodCangCategory" resultType="com.rondaful.cloud.commodity.entity.GoodCangCategory">
+        select * from t_good_cang_category
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="category_id != null">
+                 and category_id = #{category_id,jdbcType=BIGINT}
+            </if>
+            <if test="category_name != null">
+                 and category_name like CONCAT(CONCAT('%', #{category_name}), '%')
+            </if>
+            <if test="category_name_en != null">
+                 and category_name_en like CONCAT(CONCAT('%', #{category_name_en}), '%')
+            </if>
+            <if test="category_level != null">
+                 and category_level = #{category_level,jdbcType=INTEGER}
+            </if>
+            <if test="parent_category_id != null">
+                 and parent_category_id = #{parent_category_id,jdbcType=BIGINT}
+            </if>
+        </trim>
+        <if test="sort != null and sortKey != null">
+            order by ${sortKey} ${sort}
+        </if>
+    </select>
+    
+    <select id="getCategoryBindByCategoryId" resultType="com.rondaful.cloud.commodity.entity.GoodCangCategoryBind">
+    	SELECT
+			t1.id,
+			t1.pinlian_categoty3_id pinlianCategoty3Id,
+			t1.granary_categoty3_id granaryCategoty3Id,
+			t1.version,
+			ca3.category_id categoryId3,
+			ca2.category_id categoryId2,
+			ca1.category_id categoryId1
+		FROM
+			t_bind_category t1
+		LEFT JOIN t_good_cang_category ca3 ON ca3.category_id=t1.granary_categoty3_id and ca3.category_level=2
+		LEFT JOIN t_good_cang_category ca2 ON ca2.category_id=ca3.parent_category_id and ca2.category_level=1
+		LEFT JOIN t_good_cang_category ca1 ON ca1.category_id=ca2.parent_category_id and ca1.category_level=0
+		WHERE
+			t1.pinlian_categoty3_id = #{pinlianCategoty3Id}
+    </select>
+    
+     <insert id="insertCategoryBind" parameterType="com.rondaful.cloud.commodity.entity.GoodCangCategoryBind">
+        insert into t_bind_category (
+        	pinlian_categoty3_id, 
+        	granary_categoty3_id
+            )
+        values (
+        	#{pinlianCategoty3Id}, 
+        	#{granaryCategoty3Id}
+            )
+    </insert>
+    
+    <update id="updateCategoryBind" parameterType="com.rondaful.cloud.commodity.entity.GoodCangCategoryBind">
+        update t_bind_category
+        set update_time=now(),
+        granary_categoty3_id=#{granaryCategoty3Id},
+        version = #{version,jdbcType=BIGINT} + 1
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <insert id="insertSkuPushRecord" parameterType="com.rondaful.cloud.commodity.entity.SkuPushRecord" useGeneratedKeys="true" keyProperty="id">
+	    insert into t_sku_push_record (
+	    	warehouse_provider_code,
+	    	account_id, 
+	      	system_sku,
+	      	push_state, 
+	      	product_state,
+	      	create_time
+	      )
+	    values (
+	    	#{warehouseProviderCode,jdbcType=VARCHAR}, 
+	    	#{accountId,jdbcType=INTEGER}, 
+	      	#{systemSku,jdbcType=VARCHAR}, 
+	      	#{pushState,jdbcType=INTEGER},
+	      	#{productState,jdbcType=VARCHAR},
+	      	now()
+	      )
+  </insert>
+  
+  <insert id="insertSkuPushRecordBatch" parameterType="java.util.ArrayList">
+	    insert into t_sku_push_record (
+	    	warehouse_provider_code, 
+	    	account_id, 
+	      	system_sku, 
+	      	create_time
+	      )
+	    values 
+	    <foreach collection="list" item="item" index="index" separator=",">
+		  (
+	    	#{item.warehouseProviderCode,jdbcType=VARCHAR},
+	    	#{item.accountId,jdbcType=INTEGER}, 
+	      	#{item.systemSku,jdbcType=VARCHAR}, 
+	      	now()
+		   )
+	    </foreach>
+  </insert>
+  
+  <update id="updateSkuPushRecord" parameterType="com.rondaful.cloud.commodity.entity.SkuPushRecord">
+    update t_sku_push_record set update_time=now()
+      <if test="version != null">
+       	,version = #{version,jdbcType=BIGINT} + 1
+      </if>
+      <if test="warehouseProviderCode != null and warehouseProviderCode != ''">
+        ,warehouse_provider_code = #{warehouseProviderCode,jdbcType=VARCHAR}
+      </if>
+      <if test="accountId != null">
+        ,account_id = #{accountId,jdbcType=INTEGER}
+      </if>
+      <if test="systemSku != null">
+        ,system_sku = #{systemSku,jdbcType=VARCHAR}
+      </if>
+      <if test="productState != null">
+        ,product_state = #{productState,jdbcType=CHAR}
+      </if>
+      <if test="pushState != null">
+        ,push_state = #{pushState,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null">
+        ,create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    where id = #{id,jdbcType=BIGINT}
+    and version = #{version,jdbcType=BIGINT}
+  </update>
+  
+  <select id="querySkuPushRecord" parameterType="java.util.Map" resultType="com.rondaful.cloud.commodity.entity.SkuPushRecord">
+	  	SELECT
+		t1.id,
+		t1.warehouse_provider_code warehouseProviderCode,
+		t1.account_id accountId,
+		t1.system_sku systemSku,
+		t1.product_state productState,
+		t1.push_state pushState,
+		t1.create_time createTime,
+		t1.update_time updateTime,
+		t1.version,
+		t2.commodity_name_cn commodityName,
+		t2.commodity_name_en commodityNameEn,
+		t2.master_picture masterPicture,
+		t3.supplier_id supplierId
+	FROM
+		t_sku_push_record t1
+	LEFT JOIN t_commodity_spec t2 ON t1.system_sku=t2.system_sku
+	LEFT JOIN t_commodity_base t3 ON t3.id=t2.commodity_id
+	<trim prefix="where" prefixOverrides="and">
+         <if test="id != null">
+              and t1.id = #{id,jdbcType=BIGINT}
+         </if>
+         <if test="version != null">
+              and t1.version = #{version,jdbcType=BIGINT}
+         </if>
+         <if test="warehouseProviderCode != null and warehouseProviderCode != ''">
+              and t1.warehouse_provider_code = #{warehouseProviderCode}
+         </if>
+         <if test="accountId != null">
+              and t1.account_id=#{accountId}
+         </if>
+         <if test="systemSku != null and systemSku != ''">
+              and t1.system_sku like CONCAT('%',#{systemSku,jdbcType=VARCHAR},'%')
+         </if>
+         <if test="commodityName != null and commodityName != ''">
+              and t2.commodity_name_cn like CONCAT('%',#{commodityName,jdbcType=VARCHAR},'%') 
+         </if>
+         <if test="commodityNameEn != null and commodityNameEn != ''">
+              and t2.commodity_name_en like CONCAT('%',#{commodityNameEn,jdbcType=VARCHAR},'%') 
+         </if>
+         <if test="productState != null and productState != ''">
+              and t1.product_state = #{productState,jdbcType=VARCHAR}
+         </if>
+         <if test="pushState != null">
+              and t1.push_state = #{pushState}
+         </if>
+         <if test="supplierId != null">
+              and t3.supplier_id = #{supplierId}
+         </if>
+         <if test="queryTimeType != null">
+         	<choose>
+         		<when test="queryTimeType==1">
+         			<if test="startTime != null">
+			    		and t1.create_time &gt;= str_to_date(CONCAT(#{startTime},' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+			    	 </if>
+			   		<if test="endTime != null">
+			   			and t1.create_time &lt;= str_to_date(CONCAT(#{endTime},' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+			   		</if>
+         		</when>
+         		<when test="queryTimeType==2">
+         			<if test="startTime != null">
+			    		and t1.update_time &gt;= str_to_date(CONCAT(#{startTime},' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+			    	 </if>
+			   		<if test="endTime != null">
+			   			and t1.update_time &lt;= str_to_date(CONCAT(#{endTime},' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+			   		</if>
+         		</when>
+         		<otherwise></otherwise>
+         	</choose>
+         </if>
+   		<if test="isUpdate == 1">
+   			and (t1.product_state is null or LENGTH(t1.product_state)=0 or t1.product_state in ('D','W','R'))
+   		</if>
+     </trim> 
+     ORDER BY t1.create_time desc
+  </select>
+  
+   
+   <insert id="insertSkuPushLog" parameterType="com.rondaful.cloud.commodity.entity.SkuPushLog">
+    insert into t_sku_push_log (
+    	record_id, 
+    	opt_user,
+    	opt_type,
+      	content, 
+      	create_time
+    )
+    values (
+    	#{recordId,jdbcType=BIGINT}, 
+    	#{optUser,jdbcType=VARCHAR},
+    	#{optType},
+      	#{content,jdbcType=VARCHAR}, 
+      	now()
+    )
+   </insert> 
+  
+  <select id="querySkuPushLog" resultType="com.rondaful.cloud.commodity.entity.SkuPushLog">
+  	select
+  		id,
+  		record_id recordId, 
+    	opt_user optUser,
+    	opt_type optType,
+      	content content, 
+      	create_time createTime
+    from t_sku_push_log where record_id=#{recordId}
+    ORDER BY create_time DESC
+  </select>
+  
+</mapper>

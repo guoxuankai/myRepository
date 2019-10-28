@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.ManageUserMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.ManageUser">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="level" jdbcType="INTEGER" property="level" />
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="phone_code" jdbcType="VARCHAR" property="phoneCode" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="country" jdbcType="INTEGER" property="country" />
+        <result column="province" jdbcType="INTEGER" property="province" />
+        <result column="city" jdbcType="INTEGER" property="city" />
+        <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+        <result column="image_site" jdbcType="VARCHAR" property="imageSite" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.user.entity.ManageUser">
+        <result column="job_name" jdbcType="LONGVARCHAR" property="jobName" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, level, parent_id, login_name ,user_name, pass_word, email, phone_code, phone, status, remark,
+        create_date, update_date, update_by, create_by, country, province, city, department_id, 
+        image_site, version
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        job_name
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_manage_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_manage_user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.ManageUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_manage_user (id, level, parent_id, login_name,
+            user_name, pass_word, email, 
+            phone_code, phone, status, 
+            remark, create_date, update_date, 
+            update_by, create_by, country, 
+            province, city, department_id, 
+            image_site, version, job_name
+            )
+        values (#{id,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR},
+            #{userName,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+            #{phoneCode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+            #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+            #{updateBy,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{country,jdbcType=INTEGER}, 
+            #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
+            #{imageSite,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{jobName,jdbcType=LONGVARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.ManageUser">
+        insert into t_manage_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="loginName != null">
+                login_name,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="passWord != null">
+                pass_word,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="phoneCode != null">
+                phone_code,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="departmentId != null">
+                department_id,
+            </if>
+            <if test="imageSite != null">
+                image_site,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="jobName != null">
+                job_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="loginName != null">
+                #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="passWord != null">
+                #{passWord,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCode != null">
+                #{phoneCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=INTEGER},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=INTEGER},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="imageSite != null">
+                #{imageSite,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="jobName != null">
+                #{jobName,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.ManageUser">
+        update t_manage_user
+        <set>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="passWord != null and passWord !='' ">
+                pass_word = #{passWord,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCode != null">
+                phone_code = #{phoneCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            country = #{country,jdbcType=INTEGER},
+            province = #{province,jdbcType=INTEGER},
+            city = #{city,jdbcType=INTEGER},
+            <if test="departmentId != null">
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="imageSite != null">
+                image_site = #{imageSite,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+            <if test="jobName != null">
+                job_name = #{jobName,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.user.entity.ManageUser">
+        update t_manage_user
+        set level = #{level,jdbcType=INTEGER},
+            parent_id = #{parentId,jdbcType=INTEGER},
+            login_name = #{loginName,jdbcType=VARCHAR},
+            user_name = #{userName,jdbcType=VARCHAR},
+            pass_word = #{passWord,jdbcType=VARCHAR},
+            email = #{email,jdbcType=VARCHAR},
+            phone_code = #{phoneCode,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            country = #{country,jdbcType=INTEGER},
+            province = #{province,jdbcType=INTEGER},
+            city = #{city,jdbcType=INTEGER},
+            department_id = #{departmentId,jdbcType=INTEGER},
+            image_site = #{imageSite,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER},
+            job_name = #{jobName,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.ManageUser">
+        update t_manage_user
+        set level = #{level,jdbcType=INTEGER},
+            parent_id = #{parentId,jdbcType=INTEGER},
+            login_name = #{loginName,jdbcType=VARCHAR},
+            user_name = #{userName,jdbcType=VARCHAR},
+            pass_word = #{passWord,jdbcType=VARCHAR},
+            email = #{email,jdbcType=VARCHAR},
+            phone_code = #{phoneCode,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            country = #{country,jdbcType=INTEGER},
+            province = #{province,jdbcType=INTEGER},
+            city = #{city,jdbcType=INTEGER},
+            department_id = #{departmentId,jdbcType=INTEGER},
+            image_site = #{imageSite,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.ManageUser" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_manage_user
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="level != null and level != ''">
+                 and level = #{level,jdbcType=INTEGER}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                 and parent_id = #{parentId,jdbcType=INTEGER}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                 and login_name = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="passWord != null and passWord != ''">
+                 and pass_word = #{passWord,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                 and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="phoneCode != null and phoneCode != ''">
+                 and phone_code = #{phoneCode,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != ''">
+                 and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="remark != null and remark != ''">
+                 and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+                 and country = #{country,jdbcType=INTEGER}
+            </if>
+            <if test="province != null and province != ''">
+                 and province = #{province,jdbcType=INTEGER}
+            </if>
+            <if test="city != null and city != ''">
+                 and city = #{city,jdbcType=INTEGER}
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                 and department_id = #{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="imageSite != null and imageSite != ''">
+                 and image_site = #{imageSite,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+            <if test="jobName != null and jobName != ''">
+                 and job_name = #{jobName,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByUserName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_manage_user
+        where login_name = #{loginName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getPage"  resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_manage_user
+        where  parent_id !=0
+        <if test="loginName!=null and loginName!=''">
+            and login_name = #{loginName,jdbcType=VARCHAR}
+        </if>
+        <if test="userName!=null and userName!=''">
+            and user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="departmentId!=null and departmentId!=''">
+            and department_id = #{departmentId,jdbcType=INTEGER}
+        </if>
+        <if test="jobName!=null and jobName!=''">
+            and job_name  like concat('%',#{jobName,jdbcType=LONGVARCHAR},'%')
+        </if>
+        <if test="startTime!=null and endTime!=null">
+            and create_date  between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="userIds!=null and userIds.size()>0">
+            and id in
+            <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                #{item,jdbcType=INTEGER}
+            </foreach>
+        </if>
+        order by create_date desc
+    </select>
+
+    <select id="getAllName" parameterType="java.lang.String" resultType="java.lang.String">
+        select
+        login_name
+        from t_manage_user
+    </select>
+
+    <select id="getByPhone" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_manage_user
+        where phone = #{phone,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getsByDep" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        count(id)
+        from t_manage_user
+        where department_id = #{departmentId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getsChildName"  resultMap="BaseResultMap">
+        select
+        id, login_name,`status`,user_name
+        from t_manage_user
+    </select>
+</mapper>

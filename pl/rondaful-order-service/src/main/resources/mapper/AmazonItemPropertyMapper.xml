@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.AmazonItemPropertyMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.Amazon.AmazonItemProperty">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="asin" jdbcType="VARCHAR" property="asin" />
+        <result column="item_title" jdbcType="VARCHAR" property="itemTitle" />
+        <result column="item_url" jdbcType="VARCHAR" property="itemUrl" />
+        <result column="item_height" jdbcType="DECIMAL" property="itemHeight" />
+        <result column="item_length" jdbcType="DECIMAL" property="itemLength" />
+        <result column="item_width" jdbcType="DECIMAL" property="itemWidth" />
+        <result column="item_weight" jdbcType="DECIMAL" property="itemWeight" />
+        <result column="item_color" jdbcType="VARCHAR" property="itemColor" />
+        <result column="item_size" jdbcType="VARCHAR" property="itemSize" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, asin, item_title, item_url, item_height, item_length, item_width, item_weight, 
+        item_color, item_size, create_date, update_date
+    </sql>
+
+    <!--批量插入   有则更新无则插入-->
+    <update id="insertBulk" parameterType="java.util.ArrayList">
+        insert into tbl_amazon_items_property
+        <trim prefix=" (" suffix=")" >
+            asin, item_title, item_url, item_height, item_length, item_width, item_weight,
+            item_color, item_size, create_date, update_date
+        </trim>
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.asin,jdbcType=VARCHAR},
+            #{item.itemTitle,jdbcType=VARCHAR},
+            #{item.itemUrl,jdbcType=VARCHAR},
+            #{item.itemHeight,jdbcType=DECIMAL},
+            #{item.itemLength,jdbcType=DECIMAL},
+            #{item.itemWidth,jdbcType=DECIMAL},
+            #{item.itemWeight,jdbcType=DECIMAL},
+            #{item.itemColor,jdbcType=VARCHAR},
+            #{item.itemSize,jdbcType=VARCHAR},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateDate,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        item_url=values(item_url)
+    </update>
+
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tbl_amazon_items_property
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tbl_amazon_items_property
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonItemProperty">
+        insert into tbl_amazon_items_property (id, asin, item_title, 
+            item_url, item_height, item_length, 
+            item_width, item_weight, item_color, 
+            item_size, create_date, update_date
+            )
+        values (#{id,jdbcType=INTEGER}, #{asin,jdbcType=VARCHAR}, #{itemTitle,jdbcType=VARCHAR}, 
+            #{itemUrl,jdbcType=VARCHAR}, #{itemHeight,jdbcType=DECIMAL}, #{itemLength,jdbcType=DECIMAL}, 
+            #{itemWidth,jdbcType=DECIMAL}, #{itemWeight,jdbcType=DECIMAL}, #{itemColor,jdbcType=VARCHAR}, 
+            #{itemSize,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonItemProperty">
+        replace into tbl_amazon_items_property
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="asin != null">
+                asin,
+            </if>
+            <if test="itemTitle != null">
+                item_title,
+            </if>
+            <if test="itemUrl != null">
+                item_url,
+            </if>
+            <if test="itemHeight != null">
+                item_height,
+            </if>
+            <if test="itemLength != null">
+                item_length,
+            </if>
+            <if test="itemWidth != null">
+                item_width,
+            </if>
+            <if test="itemWeight != null">
+                item_weight,
+            </if>
+            <if test="itemColor != null">
+                item_color,
+            </if>
+            <if test="itemSize != null">
+                item_size,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="asin != null">
+                #{asin,jdbcType=VARCHAR},
+            </if>
+            <if test="itemTitle != null">
+                #{itemTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="itemUrl != null">
+                #{itemUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="itemHeight != null">
+                #{itemHeight,jdbcType=DECIMAL},
+            </if>
+            <if test="itemLength != null">
+                #{itemLength,jdbcType=DECIMAL},
+            </if>
+            <if test="itemWidth != null">
+                #{itemWidth,jdbcType=DECIMAL},
+            </if>
+            <if test="itemWeight != null">
+                #{itemWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="itemColor != null">
+                #{itemColor,jdbcType=VARCHAR},
+            </if>
+            <if test="itemSize != null">
+                #{itemSize,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonItemProperty">
+        update tbl_amazon_items_property
+        <set>
+            <if test="asin != null">
+                asin = #{asin,jdbcType=VARCHAR},
+            </if>
+            <if test="itemTitle != null">
+                item_title = #{itemTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="itemUrl != null">
+                item_url = #{itemUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="itemHeight != null">
+                item_height = #{itemHeight,jdbcType=DECIMAL},
+            </if>
+            <if test="itemLength != null">
+                item_length = #{itemLength,jdbcType=DECIMAL},
+            </if>
+            <if test="itemWidth != null">
+                item_width = #{itemWidth,jdbcType=DECIMAL},
+            </if>
+            <if test="itemWeight != null">
+                item_weight = #{itemWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="itemColor != null">
+                item_color = #{itemColor,jdbcType=VARCHAR},
+            </if>
+            <if test="itemSize != null">
+                item_size = #{itemSize,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonItemProperty">
+        update tbl_amazon_items_property
+        set asin = #{asin,jdbcType=VARCHAR},
+            item_title = #{itemTitle,jdbcType=VARCHAR},
+            item_url = #{itemUrl,jdbcType=VARCHAR},
+            item_height = #{itemHeight,jdbcType=DECIMAL},
+            item_length = #{itemLength,jdbcType=DECIMAL},
+            item_width = #{itemWidth,jdbcType=DECIMAL},
+            item_weight = #{itemWeight,jdbcType=DECIMAL},
+            item_color = #{itemColor,jdbcType=VARCHAR},
+            item_size = #{itemSize,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            update_date = #{updateDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonItemProperty" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tbl_amazon_items_property
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="asin != null">
+                 and asin = #{asin,jdbcType=VARCHAR}
+            </if>
+            <if test="itemTitle != null">
+                 and item_title = #{itemTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="itemUrl != null">
+                 and item_url = #{itemUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="itemHeight != null">
+                 and item_height = #{itemHeight,jdbcType=DECIMAL}
+            </if>
+            <if test="itemLength != null">
+                 and item_length = #{itemLength,jdbcType=DECIMAL}
+            </if>
+            <if test="itemWidth != null">
+                 and item_width = #{itemWidth,jdbcType=DECIMAL}
+            </if>
+            <if test="itemWeight != null">
+                 and item_weight = #{itemWeight,jdbcType=DECIMAL}
+            </if>
+            <if test="itemColor != null">
+                 and item_color = #{itemColor,jdbcType=VARCHAR}
+            </if>
+            <if test="itemSize != null">
+                 and item_size = #{itemSize,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateDate != null">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+</mapper>

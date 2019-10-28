@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WarehouseFirmMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.basics.WarehouseFirm">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="firm_code" jdbcType="VARCHAR" property="firmCode" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="app_token" jdbcType="VARCHAR" property="appToken" />
+        <result column="app_key" jdbcType="VARCHAR" property="appKey" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="logistics_user_id" jdbcType="INTEGER" property="logisticsUserId" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, firm_code, status, supplier_id,`name`, app_token, app_key, create_by, create_date, update_by,
+        update_date,logistics_user_id
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_warehouse_firm
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_warehouse_firm
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseFirm" useGeneratedKeys="true" keyProperty="id" >
+        insert into t_warehouse_firm (id, firm_code, status, 
+            supplier_id,`name`, app_token, app_key,
+            create_by, create_date, update_by, 
+            update_date,logistics_user_id)
+        values (#{id,jdbcType=INTEGER}, #{firmCode,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+            #{supplierId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{appToken,jdbcType=VARCHAR},#{appKey,jdbcType=VARCHAR},
+            #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+            #{updateDate,jdbcType=TIMESTAMP},#{logisticsUserId,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseFirm">
+        insert into t_warehouse_firm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="firmCode != null">
+                firm_code,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="appToken != null">
+                app_token,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="appKey != null">
+                app_key,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="logisticsUserId != null">
+                logistics_user_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="firmCode != null">
+                #{firmCode,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="appToken != null">
+                #{appToken,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="appKey != null">
+                #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="logisticsUserId != null">
+                #{logisticsUserId,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseFirm">
+        update t_warehouse_firm
+        <set>
+            <if test="firmCode != null">
+                firm_code = #{firmCode,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="appToken != null">
+                app_token = #{appToken,jdbcType=VARCHAR},
+            </if>
+            <if test="appKey != null">
+                app_key = #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="logisticsUserId != null">
+                logistics_user_id = #{logisticsUserId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseFirm">
+        update t_warehouse_firm
+        set firm_code = #{firmCode,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            supplier_id = #{supplierId,jdbcType=INTEGER},
+            `name` = #{name,jdbcType=VARCHAR},
+            app_token = #{appToken,jdbcType=VARCHAR},
+            app_key = #{appKey,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            logistics_user_id = #{logisticsUserId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseFirm" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_warehouse_firm
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="firmCode != null and firmCode != ''">
+                 and firm_code = #{firmCode,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                 and supplier_id = #{supplierId,jdbcType=INTEGER}
+            </if>
+            <if test="name != null and name != ''">
+                 and `name` = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="appToken != null and appToken != ''">
+                and app_token = #{appToken,jdbcType=VARCHAR}
+            </if>
+            <if test="appKey != null and appKey != ''">
+                 and app_key = #{appKey,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="logistics_user_id != null and logistics_user_id != 0">
+                and logistics_user_id = #{logisticsUserId,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getBySupplierId" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_firm
+        <where>
+            <if test="status !=null or status==0">
+                status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="supplierIds==null">
+                and supplier_id !=0
+            </if>
+            <if test="supplierIds !=null and supplierIds.size()>0">
+                and supplier_id in
+                <foreach collection="supplierIds" item="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getsByStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_firm
+        where status = #{status,jdbcType=INTEGER}
+    </select>
+
+    <select id="getsByFirmCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_firm
+        where firm_code = #{firmCode,jdbcType=VARCHAR}
+        <if test="userId!=null">
+            and supplier_id = #{userId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_firm
+        where `name` = #{name,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getsByAppToken" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_firm
+        where app_token = #{appToken,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getsByAppKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_firm
+        where app_key = #{appKey,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getPage" resultType="java.lang.Integer">
+        select
+        id
+        from t_warehouse_firm
+        <where>
+            <choose>
+                <when test="supplierIds ==null or supplierIds.size()==0">
+                    supplier_id != 0
+                </when>
+                <otherwise>
+                    supplier_id in
+                    <foreach collection="supplierIds" item="item" index="index" open="(" close=")" separator=",">
+                        #{item}
+                    </foreach>
+                </otherwise>
+            </choose>
+            <if test="firmCode !=null and firmCode!=''">
+                and firm_code = #{firmCode,jdbcType=VARCHAR}
+            </if>
+            <if test="id !=null and id !=''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.UserRoleMapper">
+  
+  <!-- 用户角色表的映射表 -->
+ <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.UserRoleKey">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <id column="role_id" jdbcType="INTEGER" property="roleId" />
+  </resultMap>
+ 
+  <!-- 建立用户和角色的关系 -->
+  <insert id="insertUserRole" parameterType="java.util.Map">
+  insert into sys_user_role (user_id,role_id,platform_type) values
+  <foreach collection="role" item="role" index= "index"  separator=",">
+  	(#{userId, jdbcType=INTEGER},#{role, jdbcType=INTEGER},#{platformType,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  
+  <!-- 删除对应的用户的角色 -->
+  <delete id="deleteUser_Role">
+  	delete from sys_user_role
+    	where user_id = #{uid,jdbcType=INTEGER}
+  </delete>
+
+	<!-- 根据对应的用户id 获取用户对应的角色名称 -->
+	<select id="getRoleName" resultType="com.rondaful.cloud.user.entity.RoleInfo">
+		select
+			r.rid as roleId,
+			r.role_name as roleName
+		from sys_user_role ur join sys_role r on ur.role_id = r.rid
+		where ur.user_id = #{userId, jdbcType=INTEGER}
+	</select>
+	
+	<!-- 根据userId获取对应的角色id -->
+	<select id="getRoleIdsByUserId" resultType="java.lang.Integer">
+		select 
+			role_id
+				from sys_user_role 
+					where user_id = #{userId, jdbcType=INTEGER}
+	</select>
+
+	
+	 <!-- 找出当前角色id相关联的用户id -->
+	 <select id="selectUserByRole" resultType="java.util.List">
+	 	select user_id from sys_user_role where role_id = #{rid,jdbcType=INTEGER}
+	 </select>
+	
+</mapper>
+
+
+
+
+
+

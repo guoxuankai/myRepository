@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.user.mapper.UserInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.user.entity.UserInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="enabled" jdbcType="INTEGER" property="enabled"/>
+        <result column="contact_way" jdbcType="VARCHAR" property="contactWay"/>
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName"/>
+        <result column="department_id" jdbcType="INTEGER" property="departmentId"/>
+        <result column="position" jdbcType="VARCHAR" property="position"/>
+        <result column="reserve1" jdbcType="VARCHAR" property="reserve1"/>
+        <result column="reserve2" jdbcType="VARCHAR" property="reserve2"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="company_id" jdbcType="INTEGER" property="companyId"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_code" jdbcType="VARCHAR" property="roleCode"/>
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName"/>
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, account, password, name, sex, enabled, contact_way, department_name, department_id,
+        position, reserve1, reserve2, company_name, company_id, create_by, create_time,
+        last_update_by, last_update_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user_info
+        where account = #{account,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user_info
+        where name = #{name,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByAccountResult" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        u.*,r.id role_code,r.role_name,i.warehouse_name,i.warehouse_code
+        from t_user_info u
+        left join t_user_role_info t on u.id = t.user_id
+        left join t_role_info r on t.role_id = r.id
+        left join t_user_warehouse_info i on i.user_id = u.id
+        where u.account = #{account,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_user_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.user.entity.UserInfo">
+        insert into t_user_info (id, account, password,
+            name, sex, enabled,
+            contact_way, department_name, department_id,
+            position, reserve1, reserve2,
+            company_name, company_id, create_by,
+            create_time, last_update_by, last_update_time
+            )
+        values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{enabled,jdbcType=INTEGER},
+            #{contactWay,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER},
+            #{position,jdbcType=VARCHAR}, #{reserve1,jdbcType=VARCHAR}, #{reserve2,jdbcType=VARCHAR},
+            #{companyName,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.user.entity.UserInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="contactWay != null">
+                contact_way,
+            </if>
+            <if test="departmentName != null">
+                department_name,
+            </if>
+            <if test="departmentId != null">
+                department_id,
+            </if>
+            <if test="position != null">
+                position,
+            </if>
+            <if test="reserve1 != null">
+                reserve1,
+            </if>
+            <if test="reserve2 != null">
+                reserve2,
+            </if>
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="companyId != null">
+                company_id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="enabled != null">
+                #{enabled,jdbcType=INTEGER},
+            </if>
+            <if test="contactWay != null">
+                #{contactWay,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentName != null">
+                #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="position != null">
+                #{position,jdbcType=VARCHAR},
+            </if>
+            <if test="reserve1 != null">
+                #{reserve1,jdbcType=VARCHAR},
+            </if>
+            <if test="reserve2 != null">
+                #{reserve2,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyId != null">
+                #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.user.entity.UserInfo">
+        update t_user_info
+        <set>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled,jdbcType=INTEGER},
+            </if>
+            <if test="contactWay != null">
+                contact_way = #{contactWay,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentName != null">
+                department_name = #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="position != null">
+                position = #{position,jdbcType=VARCHAR},
+            </if>
+            <if test="reserve1 != null">
+                reserve1 = #{reserve1,jdbcType=VARCHAR},
+            </if>
+            <if test="reserve2 != null">
+                reserve2 = #{reserve2,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.user.entity.UserInfo">
+        update t_user_info
+        set account = #{account,jdbcType=VARCHAR},
+            password = #{password,jdbcType=VARCHAR},
+            name = #{name,jdbcType=VARCHAR},
+            sex = #{sex,jdbcType=INTEGER},
+            enabled = #{enabled,jdbcType=INTEGER},
+            contact_way = #{contactWay,jdbcType=VARCHAR},
+            department_name = #{departmentName,jdbcType=VARCHAR},
+            department_id = #{departmentId,jdbcType=INTEGER},
+            position = #{position,jdbcType=VARCHAR},
+            reserve1 = #{reserve1,jdbcType=VARCHAR},
+            reserve2 = #{reserve2,jdbcType=VARCHAR},
+            company_name = #{companyName,jdbcType=VARCHAR},
+            company_id = #{companyId,jdbcType=INTEGER},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateCompanyNameByCompanyId">
+        update t_user_info
+            set company_name = #{name,jdbcType=VARCHAR}
+            where company_id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateDepartmentNameByDepartmentId">
+        update t_user_department_info
+        <!-- set department_name = CONCAT(REVERSE(SUBSTR(REVERSE(department_name),LOCATE('-',REVERSE(department_name)))),#{name,jdbcType=VARCHAR}) -->
+        set department_name = #{name,jdbcType=VARCHAR}
+        where department_id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateWarehouseNameByWarehouseId">
+        update t_role_warehouse_info t1,t_user_warehouse_info t2
+			set t1.warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+			     t2.warehouse_name = concat(#{warehouseName,jdbcType=VARCHAR},'-',substring_index(t2.warehouse_name,'-',-1))
+			where t1.warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+				and t1.warehouse_code = t2.warehouse_code
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.user.entity.UserInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user_info
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="account != null and account != ''">
+                and account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex = #{sex,jdbcType=INTEGER}
+            </if>
+            <if test="enabled != null and enabled != ''">
+                and enabled = #{enabled,jdbcType=INTEGER}
+            </if>
+            <if test="contactWay != null and contactWay != ''">
+                and contact_way = #{contactWay,jdbcType=VARCHAR}
+            </if>
+            <if test="departmentName != null and departmentName != ''">
+                and department_name = #{departmentName,jdbcType=VARCHAR}
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                and department_id = #{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="position != null and position != ''">
+                and position = #{position,jdbcType=VARCHAR}
+            </if>
+            <if test="reserve1 != null and reserve1 != ''">
+                and reserve1 = #{reserve1,jdbcType=VARCHAR}
+            </if>
+            <if test="reserve2 != null and reserve2 != ''">
+                and reserve2 = #{reserve2,jdbcType=VARCHAR}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and company_name = #{companyName,jdbcType=VARCHAR}
+            </if>
+            <if test="companyId != null and companyId != ''">
+                and company_id = #{companyId,jdbcType=INTEGER}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastUpdateBy != null and lastUpdateBy != ''">
+                and last_update_by = #{lastUpdateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">
+                and last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getUserList" parameterType="com.brandslink.cloud.user.dto.request.GetUserListRequestDTO"
+            resultMap="BaseResultMap">
+        select
+        u.id, u.account, u.name,u.sex, u.contact_way, td.department_name,
+        u.enabled,u.position, u.reserve2, u.company_name, u.create_by, u.create_time,
+        i.warehouse_name,i.warehouse_code,r.role_code,r.role_name
+        from t_user_info u
+        left join t_user_role_info t on u.id = t.user_id
+        left join t_role_info r on t.role_id = r.id
+        left join t_user_warehouse_info i on i.user_id = u.id
+        left JOIN (select user_id,REPLACE(GROUP_CONCAT(department_name ORDER BY department_seq ASC),',','-')
+        department_name from t_user_department_info GROUP BY user_id) td
+        on td.user_id = u.id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="account != null and account != ''">
+                and u.account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null and name != ''">
+                and u.name like concat('%', #{name,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="position != null and position != ''">
+                and u.position like concat('%', #{position,jdbcType=VARCHAR}, '%')
+            </if>
+            <if test="warehouseName != null and warehouseName != ''">
+                and u.id in (select ur.user_id from t_user_warehouse_info ur
+                where ur.warehouse_name like concat('%', #{warehouseName,jdbcType=VARCHAR}, '%'))
+            </if>
+            <if test="role != null and role != ''">
+                and u.id in (select ur.user_id from t_user_role_info ur where ur.role_id in (select ri.id from
+                t_role_info ri where ri.role_name like concat('%', #{role,jdbcType=VARCHAR}, '%')))
+            </if>
+            <if test="startTime != null">
+                and u.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and u.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <resultMap id="UserRoleResult" type="com.brandslink.cloud.user.entity.UserRoleResult">
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="reserve2" jdbcType="VARCHAR" property="warehouseName"/>
+    </resultMap>
+
+    <insert id="insertRolesByUserId">
+        insert into t_user_role_info(user_id,role_id)
+        values
+        <foreach collection="roleIds" index="index" item="item" separator=",">
+            (#{id,jdbcType=INTEGER},#{item,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <delete id="deleteRolesByUserId" parameterType="java.lang.Integer">
+        delete from t_user_role_info
+        where user_id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <update id="enabledByIds" parameterType="java.util.List">
+        update t_user_info
+        set enabled = 0
+        where
+        id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </update>
+
+    <update id="disabledByIds" parameterType="java.util.List">
+        update t_user_info
+        set enabled = 1
+        where
+        id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </update>
+
+    <delete id="deleteWarehouseDetailByUserId" parameterType="java.lang.Integer">
+        delete from t_user_warehouse_info
+        where user_id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertWarehouseDetailByUserId" parameterType="java.util.List">
+        insert into t_user_warehouse_info(user_id,warehouse_code,warehouse_name)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.roleId,jdbcType=INTEGER},#{item.warehouseCode,jdbcType=VARCHAR},#{item.warehouseName,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <!--    <select id="selectMenusByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">-->
+    <!--        select m.menu_id from t_role_menu_info m where m.role_id in (select ur.role_id from t_user_role_info ur where ur.user_id = #{id,jdbcType=INTEGER})-->
+    <!--    </select>-->
+
+    <resultMap id="UserWarehouseMap" type="com.brandslink.cloud.user.dto.response.UserWarehouseDetailResponseDTO">
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName"/>
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode"/>
+    </resultMap>
+
+    <select id="selectWarehouseInfoByUserId" parameterType="java.lang.Integer" resultMap="UserWarehouseMap">
+        select warehouse_name,warehouse_code
+        from t_user_warehouse_info
+        where user_id = #{id,jdbcType=INTEGER}
+        GROUP BY warehouse_code
+    </select>
+
+    <select id="selectIdAndNamesByWarehouseId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select u.id,u.name,u.account
+        from t_user_info u
+        left join t_user_warehouse_info w
+        on w.user_id = u.id
+        where u.enabled = 0
+        <if test="warehouseCode != null">
+            and w.warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <select id="getShortcutMenusByUserId" parameterType="java.lang.Integer"
+            resultType="com.brandslink.cloud.user.entity.MenuInfo">
+        select
+        id, parent_id, name, seq, level, type, belong, icon, remark, version, url
+        from t_menu_info
+        where id in (select menu_id from t_user_shortcut_menu_info where user_id = #{userId,jdbcType=INTEGER} and belong = #{flag,jdbcType=INTEGER})
+    </select>
+    <select id="selectAccountById" resultType="java.lang.String" parameterType="java.lang.Integer">
+        select account
+        from t_user_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertDepartmentDetailByUserId">
+        insert into t_user_department_info(user_id,department_name,department_id,department_seq)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{id,jdbcType=INTEGER},#{item.name,jdbcType=VARCHAR},#{item.id,jdbcType=INTEGER},#{item.seq,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+    <insert id="insertShortcutMenusByUserId">
+        insert into t_user_shortcut_menu_info(user_id,menu_id,belong)
+        values
+        <foreach collection="shortcutMenus" index="index" item="item" separator=",">
+            (#{userId,jdbcType=INTEGER},#{item,jdbcType=INTEGER},#{flag,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <delete id="deleteDepartmentDetailByUserId" parameterType="java.lang.Integer">
+        delete from t_user_department_info where user_id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteShortcutMenusByUserI" parameterType="java.lang.Integer">
+        delete from t_user_shortcut_menu_info where user_id = #{userId,jdbcType=INTEGER} and belong = #{flag,jdbcType=INTEGER}
+    </delete>
+
+</mapper>

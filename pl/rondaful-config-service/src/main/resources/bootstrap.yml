@@ -1,0 +1,90 @@
+#应用名称
+spring:
+  application:
+           name: rondaful-config-service
+
+  #远程配置仓库
+  cloud:
+    config:
+      server:
+        git:
+          uri: http://120.78.217.162:8695/rondaful-cloud/config-repository.git
+          search-paths: /configuration
+          username: configure
+          password: rondaful
+
+
+
+#应用端口
+server:
+    port: 8108
+
+
+
+#服务发现
+eureka:
+  client:
+    serviceUrl:
+       defaultZone: http://rondaful:rondaful123@localhost:8000/eureka/
+  instance:
+     status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/config/dev
+     instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+     prefer-ip-address: true
+
+# 安全认证的配置
+security:
+  basic:
+    enabled: true
+  user:
+    name: rondaful
+    password: rondaful123
+
+
+
+---
+spring:
+  profiles: test
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://rondaful:rondaful123@172.16.2.203:8000/eureka/
+  instance:
+    status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/config/test
+
+
+security:
+  basic:
+    enabled: true
+  user:
+    name: rondaful
+    password: rondaful123
+
+---
+spring:
+  profiles: prod
+
+
+#应用端口
+server:
+  port: 50102
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://rondaful:rondaful123@192.168.0.4:50105/eureka/
+  instance:
+      status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/config/prod
+
+
+security:
+  basic:
+    enabled: true
+  user:
+    name: rondaful
+    password: rondaful123
+
+---
+

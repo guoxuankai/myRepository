@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SiteCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.SiteCategory">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="spu_id" jdbcType="BIGINT" property="spuId" />
+    <result column="platform" jdbcType="VARCHAR" property="platform" />
+    <result column="site_code" jdbcType="VARCHAR" property="siteCode" />
+    <result column="site_name" jdbcType="VARCHAR" property="siteName" />
+    <result column="plat_category_id" jdbcType="BIGINT" property="platCategoryId" />
+    <result column="category_level_3" jdbcType="BIGINT" property="categoryLevel3" />
+    <result column="category_path" jdbcType="VARCHAR" property="categoryPath" />
+    <result column="category_template_1" jdbcType="VARCHAR" property="categoryTemplate1" />
+    <result column="category_template_2" jdbcType="VARCHAR" property="categoryTemplate2" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, platform, site_code, site_name, plat_category_id, category_level_3, category_path, category_template_1, category_template_2, 
+    version, update_time
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_site_category
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+ 
+  
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SiteCategory">
+    insert into t_site_category (platform, site_code, site_name, 
+      plat_category_id, category_level_3, category_path, category_template_1, 
+      category_template_2
+      )
+    values (#{platform,jdbcType=VARCHAR}, #{siteCode,jdbcType=VARCHAR}, #{siteName,jdbcType=VARCHAR}, 
+      #{platCategoryId,jdbcType=BIGINT}, #{categoryLevel3,jdbcType=BIGINT}, #{categoryPath,jdbcType=VARCHAR}, #{categoryTemplate1,jdbcType=VARCHAR}, 
+      #{categoryTemplate2,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertBatch" parameterType="java.util.ArrayList">
+	insert into t_site_category (
+		platform, 
+		site_code, 
+		site_name, 
+      	category_level_3
+	)
+	values
+	<foreach collection="list" item="item" index="index" separator=",">
+		(
+			#{item.platform,jdbcType=VARCHAR},
+			#{item.siteCode,jdbcType=VARCHAR},
+			#{item.siteName,jdbcType=VARCHAR},
+			#{item.categoryLevel3,jdbcType=BIGINT}
+		)
+	</foreach>
+</insert>
+  
+  <delete id="deleteByCategorylevel3">
+  	delete from t_site_category where category_level_3 = #{categoryLevel3}
+  </delete>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.SiteCategory">
+    update t_site_category
+    set plat_category_id = #{platCategoryId,jdbcType=BIGINT},
+      category_level_3 = #{categoryLevel3,jdbcType=BIGINT},
+      category_path = #{categoryPath,jdbcType=VARCHAR},
+      category_template_1 = #{categoryTemplate1,jdbcType=VARCHAR},
+      category_template_2 = #{categoryTemplate2,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT} + 1,
+      update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+    and version = #{version,jdbcType=BIGINT}
+  </update>
+  
+  <select id="queryList" resultMap="BaseResultMap">
+      select 
+      <include refid="Base_Column_List" />
+      from t_site_category
+      where platform = #{platform,jdbcType=VARCHAR} and category_level_3=#{categoryLevel3,jdbcType=BIGINT}
+      order by CONVERT(site_name USING gbk) asc
+  </select>
+  
+  <update id="cleanUp">
+  	update t_site_category set update_time=now(),plat_category_id=null,category_path=null,category_template_1=null,category_template_2=null
+  	where platform = #{platform,jdbcType=VARCHAR} and category_level_3=#{categoryLevel3,jdbcType=BIGINT}
+  </update>
+  
+  <select id="querySiteCategory" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+  	  select 
+      <include refid="Base_Column_List" />
+      from t_site_category
+      where platform = #{platform,jdbcType=VARCHAR} 
+      <if test="siteCode != null and siteCode != ''">
+      	and site_code = #{siteCode} 
+      </if>
+      and category_level_3 = #{categoryLevel3,jdbcType=BIGINT}
+  </select>
+  
+  <select id="querySiteCategoryInfo" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+  	  select t1.*,t2.category_template_1,t2.category_template_2
+	  from t_spu_category t1
+      LEFT JOIN t_site_category t2 ON t2.category_level_3=t1.category_level_3 
+      <if test="siteCode != null and siteCode != ''">
+      	and t2.site_code=t1.site_code
+      </if>
+	  and t2.platform=t1.platform
+      where t1.platform = #{platform,jdbcType=VARCHAR} 
+      <if test="siteCode != null and siteCode != ''">
+      	and t1.site_code = #{siteCode} 
+      </if>
+      and t1.category_level_3 = #{categoryLevel3,jdbcType=BIGINT}
+      and t1.spu = #{spu}
+  </select>
+  
+</mapper>

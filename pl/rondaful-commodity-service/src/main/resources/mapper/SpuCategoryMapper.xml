@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SpuCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.SpuCategory">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="spu" jdbcType="VARCHAR" property="spu" />
+    <result column="platform" jdbcType="VARCHAR" property="platform" />
+    <result column="site_code" jdbcType="VARCHAR" property="siteCode" />
+    <result column="site_name" jdbcType="VARCHAR" property="siteName" />
+    <result column="plat_category_id" jdbcType="BIGINT" property="platCategoryId" />
+    <result column="category_level_3" jdbcType="BIGINT" property="categoryLevel3" />
+    <result column="category_path" jdbcType="VARCHAR" property="categoryPath" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, spu, site_code, platform, site_name, plat_category_id, category_level_3, category_path, version, creat_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_spu_category
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_spu_category
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SpuCategory">
+    insert into t_spu_category (spu, platform, 
+      site_code,site_name, plat_category_id, category_level_3, 
+      category_path, creat_time
+      )
+    values (#{spu,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, 
+      #{siteCode,jdbcType=VARCHAR}, #{siteName,jdbcType=VARCHAR}, #{platCategoryId,jdbcType=BIGINT}, #{categoryLevel3,jdbcType=BIGINT}, 
+      #{categoryPath,jdbcType=VARCHAR},now()
+      )
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.SpuCategory">
+    update t_spu_category
+    <set>
+      <if test="spu != null">
+        spu = #{spu,jdbcType=VARCHAR},
+      </if>
+      <if test="platform != null">
+        platform = #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="siteCode != null">
+        site_code = #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="siteName != null">
+        site_name = #{siteName,jdbcType=VARCHAR},
+      </if>
+      <if test="platCategoryId != null">
+        plat_category_id = #{platCategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryLevel3 != null">
+        category_level_3 = #{categoryLevel3,jdbcType=BIGINT},
+      </if>
+      <if test="categoryPath != null">
+        category_path = #{categoryPath,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="creatTime != null">
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+    and version = #{version,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.SpuCategory">
+    update t_spu_category
+    set spu = #{spu,jdbcType=VARCHAR},
+      platform = #{platform,jdbcType=VARCHAR},
+      site_code = #{siteCode,jdbcType=VARCHAR},
+      site_name = #{siteName,jdbcType=VARCHAR},
+      plat_category_id = #{platCategoryId,jdbcType=BIGINT},
+      category_level_3 = #{categoryLevel3,jdbcType=BIGINT},
+      category_path = #{categoryPath,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT} + 1,
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+    and version = #{version,jdbcType=BIGINT}
+  </update>
+  
+  <select id="queryList" resultMap="BaseResultMap">
+        SELECT t1.id,t1.spu,t1.platform,t1.site_code,t2.site_name,t1.plat_category_id,t1.category_level_3,t1.category_path
+		FROM
+			t_spu_category t1
+		LEFT JOIN t_site_category t2 ON t2.category_level_3=t1.category_level_3 and t2.site_code=t1.site_code
+        where spu = #{spu,jdbcType=VARCHAR}
+        order by platform asc,CONVERT(t2.site_name USING gbk) asc
+    </select>
+    
+    <select id="queryBySpuPlatformSite" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    	select <include refid="Base_Column_List" /> 
+    	from t_spu_category where spu = #{spu} and platform = #{platform} 
+    	<if test="siteCode != null and siteCode != ''">
+    		and site_code = #{siteCode}
+    	</if>
+    </select>
+    
+     <!-- 通过spuId-平台名称-站点名称更新 -->
+    <update id="updateBySpuPlatformSite" parameterType="com.rondaful.cloud.commodity.entity.SpuCategory">
+    	update t_spu_category set update_time=now(),
+    	version = #{version,jdbcType=BIGINT} + 1,
+    	plat_category_id = #{platCategoryId,jdbcType=BIGINT},
+    	category_level_3 = #{categoryLevel3,jdbcType=BIGINT},
+      	category_path = #{categoryPath,jdbcType=VARCHAR}
+    	where spu = #{spu}
+    	and	platform = #{platform}
+    	<if test="siteCode != null and siteCode != ''">
+    		and site_code = #{siteCode}
+    	</if>
+     	and version = #{version}
+    </update>
+</mapper>

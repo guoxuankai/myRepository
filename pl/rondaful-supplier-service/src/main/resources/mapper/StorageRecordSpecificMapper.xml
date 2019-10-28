@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.StorageRecordSpecificMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.storage.StorageRecordSpecific">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sm_code" jdbcType="VARCHAR" property="smCode" />
+        <result column="weight" jdbcType="DECIMAL" property="weight" />
+        <result column="volume" jdbcType="DECIMAL" property="volume" />
+        <result column="transit_warehouse_code" jdbcType="VARCHAR" property="transitWarehouseCode" />
+        <result column="pickup_form" jdbcType="INTEGER" property="pickupForm" />
+        <result column="customs_type" jdbcType="INTEGER" property="customsType" />
+        <result column="clearance_file" jdbcType="VARCHAR" property="clearanceFile" />
+        <result column="invoice_base64" jdbcType="VARCHAR" property="invoiceBase64" />
+        <result column="collecting_service" jdbcType="INTEGER" property="collectingService" />
+        <result column="collecting_time" jdbcType="TIMESTAMP" property="collectingTime" />
+        <result column="value_add_service" jdbcType="VARCHAR" property="valueAddService" />
+        <result column="clearance_service" jdbcType="INTEGER" property="clearanceService" />
+        <result column="export_company" jdbcType="INTEGER" property="exportCompany" />
+        <result column="import_company" jdbcType="INTEGER" property="importCompany" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, sm_code, weight, volume, transit_warehouse_code, pickup_form, customs_type, clearance_file, 
+        invoice_base64, collecting_service, collecting_time, value_add_service, clearance_service, 
+        export_company, import_company
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_storage_record_specific
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_storage_record_specific
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordSpecific">
+        insert into t_storage_record_specific (id, sm_code, weight, 
+            volume, transit_warehouse_code, pickup_form, 
+            customs_type, clearance_file, invoice_base64, 
+            collecting_service, collecting_time, 
+            value_add_service, clearance_service, export_company, 
+            import_company)
+        values (#{id,jdbcType=BIGINT}, #{smCode,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, 
+            #{volume,jdbcType=DECIMAL}, #{transitWarehouseCode,jdbcType=VARCHAR}, #{pickupForm,jdbcType=INTEGER}, 
+            #{customsType,jdbcType=INTEGER}, #{clearanceFile,jdbcType=VARCHAR}, #{invoiceBase64,jdbcType=VARCHAR}, 
+            #{collectingService,jdbcType=INTEGER}, #{collectingTime,jdbcType=TIMESTAMP}, 
+            #{valueAddService,jdbcType=VARCHAR}, #{clearanceService,jdbcType=INTEGER}, #{exportCompany,jdbcType=INTEGER}, 
+            #{importCompany,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordSpecific">
+        insert into t_storage_record_specific
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="smCode != null">
+                sm_code,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="volume != null">
+                volume,
+            </if>
+            <if test="transitWarehouseCode != null">
+                transit_warehouse_code,
+            </if>
+            <if test="pickupForm != null">
+                pickup_form,
+            </if>
+            <if test="customsType != null">
+                customs_type,
+            </if>
+            <if test="clearanceFile != null">
+                clearance_file,
+            </if>
+            <if test="invoiceBase64 != null">
+                invoice_base64,
+            </if>
+            <if test="collectingService != null">
+                collecting_service,
+            </if>
+            <if test="collectingTime != null">
+                collecting_time,
+            </if>
+            <if test="valueAddService != null">
+                value_add_service,
+            </if>
+            <if test="clearanceService != null">
+                clearance_service,
+            </if>
+            <if test="exportCompany != null">
+                export_company,
+            </if>
+            <if test="importCompany != null">
+                import_company,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="smCode != null">
+                #{smCode,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="volume != null">
+                #{volume,jdbcType=DECIMAL},
+            </if>
+            <if test="transitWarehouseCode != null">
+                #{transitWarehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="pickupForm != null">
+                #{pickupForm,jdbcType=INTEGER},
+            </if>
+            <if test="customsType != null">
+                #{customsType,jdbcType=INTEGER},
+            </if>
+            <if test="clearanceFile != null">
+                #{clearanceFile,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceBase64 != null">
+                #{invoiceBase64,jdbcType=VARCHAR},
+            </if>
+            <if test="collectingService != null">
+                #{collectingService,jdbcType=INTEGER},
+            </if>
+            <if test="collectingTime != null">
+                #{collectingTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="valueAddService != null">
+                #{valueAddService,jdbcType=VARCHAR},
+            </if>
+            <if test="clearanceService != null">
+                #{clearanceService,jdbcType=INTEGER},
+            </if>
+            <if test="exportCompany != null">
+                #{exportCompany,jdbcType=INTEGER},
+            </if>
+            <if test="importCompany != null">
+                #{importCompany,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordSpecific">
+        update t_storage_record_specific
+        <set>
+            <if test="smCode != null">
+                sm_code = #{smCode,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="volume != null">
+                volume = #{volume,jdbcType=DECIMAL},
+            </if>
+            <if test="transitWarehouseCode != null">
+                transit_warehouse_code = #{transitWarehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="pickupForm != null">
+                pickup_form = #{pickupForm,jdbcType=INTEGER},
+            </if>
+            <if test="customsType != null">
+                customs_type = #{customsType,jdbcType=INTEGER},
+            </if>
+            <if test="clearanceFile != null">
+                clearance_file = #{clearanceFile,jdbcType=VARCHAR},
+            </if>
+            <if test="invoiceBase64 != null">
+                invoice_base64 = #{invoiceBase64,jdbcType=VARCHAR},
+            </if>
+            <if test="collectingService != null">
+                collecting_service = #{collectingService,jdbcType=INTEGER},
+            </if>
+            <if test="collectingTime != null">
+                collecting_time = #{collectingTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="valueAddService != null">
+                value_add_service = #{valueAddService,jdbcType=VARCHAR},
+            </if>
+            <if test="clearanceService != null">
+                clearance_service = #{clearanceService,jdbcType=INTEGER},
+            </if>
+            <if test="exportCompany != null">
+                export_company = #{exportCompany,jdbcType=INTEGER},
+            </if>
+            <if test="importCompany != null">
+                import_company = #{importCompany,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordSpecific">
+        update t_storage_record_specific
+        set sm_code = #{smCode,jdbcType=VARCHAR},
+            weight = #{weight,jdbcType=DECIMAL},
+            volume = #{volume,jdbcType=DECIMAL},
+            transit_warehouse_code = #{transitWarehouseCode,jdbcType=VARCHAR},
+            pickup_form = #{pickupForm,jdbcType=INTEGER},
+            customs_type = #{customsType,jdbcType=INTEGER},
+            clearance_file = #{clearanceFile,jdbcType=VARCHAR},
+            invoice_base64 = #{invoiceBase64,jdbcType=VARCHAR},
+            collecting_service = #{collectingService,jdbcType=INTEGER},
+            collecting_time = #{collectingTime,jdbcType=TIMESTAMP},
+            value_add_service = #{valueAddService,jdbcType=VARCHAR},
+            clearance_service = #{clearanceService,jdbcType=INTEGER},
+            export_company = #{exportCompany,jdbcType=INTEGER},
+            import_company = #{importCompany,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecordSpecific" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_storage_record_specific
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="smCode != null and smCode != ''">
+                 and sm_code = #{smCode,jdbcType=VARCHAR}
+            </if>
+            <if test="weight != null and weight != ''">
+                 and weight = #{weight,jdbcType=DECIMAL}
+            </if>
+            <if test="volume != null and volume != ''">
+                 and volume = #{volume,jdbcType=DECIMAL}
+            </if>
+            <if test="transitWarehouseCode != null and transitWarehouseCode != ''">
+                 and transit_warehouse_code = #{transitWarehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="pickupForm != null and pickupForm != ''">
+                 and pickup_form = #{pickupForm,jdbcType=INTEGER}
+            </if>
+            <if test="customsType != null and customsType != ''">
+                 and customs_type = #{customsType,jdbcType=INTEGER}
+            </if>
+            <if test="clearanceFile != null and clearanceFile != ''">
+                 and clearance_file = #{clearanceFile,jdbcType=VARCHAR}
+            </if>
+            <if test="invoiceBase64 != null and invoiceBase64 != ''">
+                 and invoice_base64 = #{invoiceBase64,jdbcType=VARCHAR}
+            </if>
+            <if test="collectingService != null and collectingService != ''">
+                 and collecting_service = #{collectingService,jdbcType=INTEGER}
+            </if>
+            <if test="collectingTime != null and collectingTime != ''">
+                 and collecting_time = #{collectingTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="valueAddService != null and valueAddService != ''">
+                 and value_add_service = #{valueAddService,jdbcType=VARCHAR}
+            </if>
+            <if test="clearanceService != null and clearanceService != ''">
+                 and clearance_service = #{clearanceService,jdbcType=INTEGER}
+            </if>
+            <if test="exportCompany != null and exportCompany != ''">
+                 and export_company = #{exportCompany,jdbcType=INTEGER}
+            </if>
+            <if test="importCompany != null and importCompany != ''">
+                 and import_company = #{importCompany,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+</mapper>

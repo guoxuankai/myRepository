@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.NewSupplierUserMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.NewSupplierUser">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="top_user_id" jdbcType="INTEGER" property="topUserId" />
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="supply_chain_company" jdbcType="VARCHAR" property="supplyChainCompany" />
+        <result column="company_name_user" jdbcType="VARCHAR" property="companyNameUser" />
+        <result column="phone_code" jdbcType="VARCHAR" property="phoneCode" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="country" jdbcType="INTEGER" property="country" />
+        <result column="province" jdbcType="INTEGER" property="province" />
+        <result column="city" jdbcType="INTEGER" property="city" />
+        <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+        <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+        <result column="closed_circle" jdbcType="VARCHAR" property="closedCircle" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="max_commodity" jdbcType="INTEGER" property="maxCommodity" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="image_site" jdbcType="VARCHAR" property="imageSite" />
+        <result column="qq" jdbcType="VARCHAR" property="qq" />
+        <result column="post_code" jdbcType="VARCHAR" property="postCode" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="recommend" jdbcType="VARCHAR" property="recommend" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.user.entity.NewSupplierUser">
+        <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, top_user_id, parent_id, login_name, user_name, supply_chain_company, company_name_user, 
+        phone_code, phone, pass_word, mobile, email, status, country, province, city, department_id, 
+        job_name, closed_circle, create_by, create_date, update_by, update_date, max_commodity, 
+        address, image_site, qq, post_code, version,recommend
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        remark
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_supplier_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_supplier_user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.NewSupplierUser"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into t_supplier_user (id, top_user_id, parent_id, 
+            login_name, user_name, supply_chain_company, 
+            company_name_user, phone_code, phone, 
+            pass_word, mobile, email, 
+            status, country, province, 
+            city, department_id, job_name, 
+            closed_circle, create_by, create_date, 
+            update_by, update_date, max_commodity, 
+            address, image_site, qq, 
+            post_code, version, remark,recommend
+            )
+        values (#{id,jdbcType=INTEGER}, #{topUserId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, 
+            #{loginName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{supplyChainCompany,jdbcType=VARCHAR}, 
+            #{companyNameUser,jdbcType=VARCHAR}, #{phoneCode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+            #{passWord,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{country,jdbcType=INTEGER}, #{province,jdbcType=INTEGER}, 
+            #{city,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, #{jobName,jdbcType=VARCHAR}, 
+            #{closedCircle,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
+            #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{maxCommodity,jdbcType=INTEGER},
+            #{address,jdbcType=VARCHAR}, #{imageSite,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
+            #{postCode,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{remark,jdbcType=LONGVARCHAR}, #{recommend,jdbcType=LONGVARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.NewSupplierUser" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into t_supplier_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="topUserId != null">
+                top_user_id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="loginName != null">
+                login_name,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="supplyChainCompany != null">
+                supply_chain_company,
+            </if>
+            <if test="companyNameUser != null">
+                company_name_user,
+            </if>
+            <if test="phoneCode != null">
+                phone_code,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="passWord != null">
+                pass_word,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="departmentId != null">
+                department_id,
+            </if>
+            <if test="jobName != null">
+                job_name,
+            </if>
+            <if test="closedCircle != null">
+                closed_circle,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="maxCommodity != null">
+                max_commodity,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="imageSite != null">
+                image_site,
+            </if>
+            <if test="qq != null">
+                qq,
+            </if>
+            <if test="postCode != null">
+                post_code,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="recommend != null">
+                recommend,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="topUserId != null">
+                #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="loginName != null">
+                #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompany != null">
+                #{supplyChainCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="companyNameUser != null">
+                #{companyNameUser,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCode != null">
+                #{phoneCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="passWord != null">
+                #{passWord,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=INTEGER},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=INTEGER},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="jobName != null">
+                #{jobName,jdbcType=VARCHAR},
+            </if>
+            <if test="closedCircle != null">
+                #{closedCircle,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="maxCommodity != null">
+                #{maxCommodity,jdbcType=INTEGER},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="imageSite != null">
+                #{imageSite,jdbcType=VARCHAR},
+            </if>
+            <if test="qq != null">
+                #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="postCode != null">
+                #{postCode,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="recommend != null">
+                #{recommend,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.NewSupplierUser">
+        update t_supplier_user
+        <set>
+            <if test="topUserId != null">
+                top_user_id = #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompany != null">
+                supply_chain_company = #{supplyChainCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="companyNameUser != null">
+                company_name_user = #{companyNameUser,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCode != null">
+                phone_code = #{phoneCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone!=''">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="passWord != null and passWord != '' ">
+                pass_word = #{passWord,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email!=''">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=INTEGER},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=INTEGER},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="jobName != null">
+                job_name = #{jobName,jdbcType=VARCHAR},
+            </if>
+            <if test="closedCircle != null">
+                closed_circle = #{closedCircle,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="maxCommodity != null">
+                max_commodity = #{maxCommodity,jdbcType=INTEGER},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="imageSite != null">
+                image_site = #{imageSite,jdbcType=VARCHAR},
+            </if>
+            <if test="qq != null">
+                qq = #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="postCode != null">
+                post_code = #{postCode,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="recommend != null">
+                recommend = #{recommend,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.NewSupplierUser">
+        update t_supplier_user
+        set top_user_id = #{topUserId,jdbcType=INTEGER},
+            parent_id = #{parentId,jdbcType=INTEGER},
+            login_name = #{loginName,jdbcType=VARCHAR},
+            user_name = #{userName,jdbcType=VARCHAR},
+            supply_chain_company = #{supplyChainCompany,jdbcType=VARCHAR},
+            company_name_user = #{companyNameUser,jdbcType=VARCHAR},
+            phone_code = #{phoneCode,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            pass_word = #{passWord,jdbcType=VARCHAR},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            email = #{email,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            country = #{country,jdbcType=INTEGER},
+            province = #{province,jdbcType=INTEGER},
+            city = #{city,jdbcType=INTEGER},
+            department_id = #{departmentId,jdbcType=INTEGER},
+            job_name = #{jobName,jdbcType=VARCHAR},
+            closed_circle = #{closedCircle,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            max_commodity = #{maxCommodity,jdbcType=INTEGER},
+            address = #{address,jdbcType=VARCHAR},
+            image_site = #{imageSite,jdbcType=VARCHAR},
+            qq = #{qq,jdbcType=VARCHAR},
+            post_code = #{postCode,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.NewSupplierUser" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_supplier_user
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="topUserId != null and topUserId != ''">
+                 and top_user_id = #{topUserId,jdbcType=INTEGER}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                 and parent_id = #{parentId,jdbcType=INTEGER}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                 and login_name = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="userName != null and userName != ''">
+                 and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="supplyChainCompany != null and supplyChainCompany != ''">
+                 and supply_chain_company = #{supplyChainCompany,jdbcType=VARCHAR}
+            </if>
+            <if test="companyNameUser != null and companyNameUser != ''">
+                 and company_name_user = #{companyNameUser,jdbcType=VARCHAR}
+            </if>
+            <if test="phoneCode != null and phoneCode != ''">
+                 and phone_code = #{phoneCode,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != ''">
+                 and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="passWord != null and passWord != ''">
+                 and pass_word = #{passWord,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                 and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                 and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="country != null and country != ''">
+                 and country = #{country,jdbcType=INTEGER}
+            </if>
+            <if test="province != null and province != ''">
+                 and province = #{province,jdbcType=INTEGER}
+            </if>
+            <if test="city != null and city != ''">
+                 and city = #{city,jdbcType=INTEGER}
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                 and department_id = #{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="jobName != null and jobName != ''">
+                 and job_name = #{jobName,jdbcType=VARCHAR}
+            </if>
+            <if test="closedCircle != null and closedCircle != ''">
+                 and closed_circle = #{closedCircle,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="maxCommodity != null and maxCommodity != ''">
+                 and max_commodity = #{maxCommodity,jdbcType=INTEGER}
+            </if>
+            <if test="remark != null and remark != ''">
+                 and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="address != null and address != ''">
+                 and address = #{address,jdbcType=VARCHAR}
+            </if>
+            <if test="imageSite != null and imageSite != ''">
+                 and image_site = #{imageSite,jdbcType=VARCHAR}
+            </if>
+            <if test="qq != null and qq != ''">
+                 and qq = #{qq,jdbcType=VARCHAR}
+            </if>
+            <if test="postCode != null and postCode != ''">
+                 and post_code = #{postCode,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getPageBack"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_supplier_user
+        where top_user_id = 0
+        <if test="status !=null or status==0">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="companyNameUser !=null and companyNameUser!=''">
+            and company_name_user = #{companyNameUser,jdbcType=VARCHAR}
+        </if>
+        <if test="supplyChainCompany !=null and supplyChainCompany!=''">
+            and supply_chain_company = #{supplyChainCompany,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime !=null and endTime !=null">
+            <if test="dateType ==1">
+                and create_date
+            </if>
+            <if test="dateType ==2">
+                and update_date
+            </if>
+            between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="userIds!=null and userIds.size()>0">
+            and id in
+            <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                #{item,jdbcType=INTEGER}
+            </foreach>
+        </if>
+        order by create_date desc
+    </select>
+
+    <select id="getChildPage"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_supplier_user
+        where top_user_id = #{topUserId,jdbcType=INTEGER}
+        <if test="loginName!=null and loginName!=''">
+            and login_name = #{loginName,jdbcType=VARCHAR}
+        </if>
+        <if test="userName!=null and userName!=''">
+            and user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="departmentId!=null and departmentId!=''">
+            and department_id = #{departmentId,jdbcType=INTEGER}
+        </if>
+        <if test="jobName!=null and jobName !=''">
+            and job_name  like concat('%',#{jobName,jdbcType=LONGVARCHAR},'%')
+        </if>
+        <if test="startTime!=null and endTime!=null">
+            and create_date  between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="userIds!=null and userIds.size()>0">
+            and id in
+            <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                #{item,jdbcType=INTEGER}
+            </foreach>
+        </if>
+        order by create_date desc
+    </select>
+
+    <select id="getByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_supplier_user
+        where login_name = #{loginName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getTopUser"  resultMap="BaseResultMap">
+        select
+        id,login_name,`status`
+        from t_supplier_user
+        where top_user_id = 0
+        <if test="userIds !=null and userIds.size()>0">
+            and  id in
+            <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getChildName" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+        select
+        id,login_name,`status`,user_name
+        from t_supplier_user
+        where top_user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getByPhone" parameterType="java.lang.String"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_supplier_user
+        where phone = #{phone,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getByEmail" parameterType="java.lang.String"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_supplier_user
+        where email = #{email,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getsByDep" parameterType="java.lang.Integer"  resultType="java.lang.Integer">
+        select
+        count(id)
+        from t_supplier_user
+        where department_id = #{departmentId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getsByStatus" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_supplier_user
+        where top_user_id = 0 and status = #{status,jdbcType=INTEGER}
+    </select>
+    <select id="getTotalAccount" parameterType="java.lang.String"  resultType="java.lang.Integer">
+        select count(id) from t_supplier_user where  supply_chain_company = #{supplyChainId,jdbcType=VARCHAR}
+    </select>
+</mapper>

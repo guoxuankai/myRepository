@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressPublishListingUIExtMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressPublishListingUIExt">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="listing_id" jdbcType="BIGINT" property="listingId" />
+        <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.seller.entity.AliexpressPublishListingUIExt">
+        <result column="ext" jdbcType="LONGVARCHAR" property="ext" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, creation_time
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        ext
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from aliexpress_publish_listing_ui_ext
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_publish_listing_ui_ext
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingUIExt">
+        insert into aliexpress_publish_listing_ui_ext (id, listing_id, creation_time, 
+            ext)
+        values (#{id,jdbcType=BIGINT}, #{listingId,jdbcType=BIGINT}, #{creationTime,jdbcType=TIMESTAMP},
+            #{ext,jdbcType=LONGVARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingUIExt">
+        insert into aliexpress_publish_listing_ui_ext
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="creationTime != null">
+                creation_time,
+            </if>
+            <if test="ext != null">
+                ext,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="creationTime != null">
+                #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ext != null">
+                #{ext,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingUIExt">
+        update aliexpress_publish_listing_ui_ext
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="creationTime != null">
+                creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="ext != null">
+                ext = #{ext,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingUIExt">
+        update aliexpress_publish_listing_ui_ext
+        set listing_id = #{listingId,jdbcType=BIGINT},
+            creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            ext = #{ext,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingUIExt">
+        update aliexpress_publish_listing_ui_ext
+        set listing_id = #{listingId,jdbcType=BIGINT},
+            creation_time = #{creationTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingUIExt" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from aliexpress_publish_listing_ui_ext
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="listingId != null and listingId != ''">
+                 and listing_id = #{listingId,jdbcType=BIGINT}
+            </if>
+            <if test="creationTime != null and creationTime != ''">
+                 and creation_time = #{creationTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="ext != null and ext != ''">
+                 and ext = #{ext,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getExtByListingId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from aliexpress_publish_listing_ui_ext
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </select>
+</mapper>

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.CommodityDetailsMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.CommodityDetails">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="commodity_id" jdbcType="BIGINT" property="commodityId" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="commodity_desc" jdbcType="VARCHAR" property="commodityDesc" />
+        <result column="packing_list" jdbcType="VARCHAR" property="packingList" />
+        <result column="search_keywords" jdbcType="VARCHAR" property="searchKeywords" />
+        <result column="product_features_cn" jdbcType="VARCHAR" property="productFeaturesCn" />
+        <result column="product_features_en" jdbcType="VARCHAR" property="productFeaturesEn" />
+        <result column="master_picture" jdbcType="VARCHAR" property="masterPicture" />
+        <result column="additional_picture" jdbcType="VARCHAR" property="additionalPicture" />
+        <result column="strength_1" jdbcType="VARCHAR" property="strength1" />
+        <result column="strength_2" jdbcType="VARCHAR" property="strength2" />
+        <result column="strength_3" jdbcType="VARCHAR" property="strength3" />
+        <result column="strength_4" jdbcType="VARCHAR" property="strength4" />
+        <result column="strength_5" jdbcType="VARCHAR" property="strength5" />
+        <result column="prove_picture" jdbcType="VARCHAR" property="provePicture" />
+        <result column="attentions" jdbcType="VARCHAR" property="attentions" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, commodity_id, version, 
+     	commodity_desc, packing_list,
+        search_keywords, product_features_cn, product_features_en, 
+        master_picture, additional_picture,
+        strength_1,strength_2,strength_3,strength_4,strength_5,prove_picture,attentions
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_details
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <select id="selectByCommodityId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_details
+        where commodity_id = #{commodityId,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_commodity_details
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteCommodityDetailsByCommodityId" parameterType="java.lang.Long">
+        delete from t_commodity_details
+        where commodity_id = #{0}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.CommodityDetails">
+        insert into t_commodity_details (id, commodity_id, version, 
+            commodity_desc, packing_list,search_keywords, 
+            product_features_cn, product_features_en,master_picture, additional_picture,
+            strength_1,strength_2,strength_3,strength_4,strength_5,prove_picture,
+            attentions
+            )
+        values (#{id,jdbcType=BIGINT}, #{commodityId,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, 
+            #{commodityDesc,jdbcType=VARCHAR},
+            #{packingList,jdbcType=VARCHAR}, #{searchKeywords,jdbcType=VARCHAR}, 
+            #{productFeaturesCn,jdbcType=VARCHAR}, 
+            #{productFeaturesEn,jdbcType=VARCHAR}, #{masterPicture,jdbcType=VARCHAR}, #{additionalPicture,jdbcType=VARCHAR},
+            #{strength1,jdbcType=VARCHAR},#{strength2,jdbcType=VARCHAR},#{strength3,jdbcType=VARCHAR},#{strength4,jdbcType=VARCHAR},
+            #{strength5,jdbcType=VARCHAR},#{provePicture,jdbcType=VARCHAR},#{attentions,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityDetails">
+        insert into t_commodity_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="commodityId != null">
+                commodity_id,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="commodityDesc != null">
+                commodity_desc,
+            </if>
+            <if test="packingList != null">
+                packing_list,
+            </if>
+            <if test="searchKeywords != null">
+                search_keywords,
+            </if>
+            <if test="productFeaturesCn != null">
+                product_features_cn,
+            </if>
+            <if test="productFeaturesEn != null">
+                product_features_en,
+            </if>
+            <if test="masterPicture != null">
+                master_picture,
+            </if>
+            <if test="additionalPicture != null and additionalPicture != ''">
+                additional_picture,
+            </if>
+            <if test="strength1 != null">
+                strength_1,
+            </if>
+            <if test="strength2 != null">
+                strength_2,
+            </if>
+            <if test="strength3 != null">
+                strength_3,
+            </if>
+            <if test="strength4 != null">
+                strength_4,
+            </if>
+            <if test="strength5 != null">
+                strength_5,
+            </if>
+            <if test="provePicture != null">
+                prove_picture,
+            </if>
+            <if test="attentions != null">
+                attentions,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="commodityId != null">
+                #{commodityId,jdbcType=BIGINT},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="commodityDesc != null">
+                #{commodityDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="packingList != null">
+                #{packingList,jdbcType=VARCHAR},
+            </if>
+            <if test="searchKeywords != null">
+                #{searchKeywords,jdbcType=VARCHAR},
+            </if>
+            <if test="productFeaturesCn != null">
+                #{productFeaturesCn,jdbcType=VARCHAR},
+            </if>
+            <if test="productFeaturesEn != null">
+                #{productFeaturesEn,jdbcType=VARCHAR},
+            </if>
+            <if test="masterPicture != null">
+                #{masterPicture,jdbcType=VARCHAR},
+            </if>
+            <if test="additionalPicture != null and additionalPicture != ''">
+                #{additionalPicture,jdbcType=VARCHAR},
+            </if>
+            <if test="strength1 != null">
+               #{strength1,jdbcType=VARCHAR},
+            </if>
+            <if test="strength2 != null">
+                #{strength2,jdbcType=VARCHAR},
+            </if>
+            <if test="strength3 != null">
+                #{strength3,jdbcType=VARCHAR},
+            </if>
+            <if test="strength4 != null">
+                #{strength4,jdbcType=VARCHAR},
+            </if>
+            <if test="strength5 != null">
+                #{strength5,jdbcType=VARCHAR},
+            </if>
+            <if test="provePicture != null">
+                #{provePicture,jdbcType=VARCHAR},
+            </if>
+            <if test="attentions != null">
+                #{attentions,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityDetails">
+        update t_commodity_details
+        <set>
+            <if test="commodityId != null">
+                commodity_id = #{commodityId,jdbcType=BIGINT},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+            <if test="commodityDesc != null">
+                commodity_desc = #{commodityDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="packingList != null">
+                packing_list = #{packingList,jdbcType=VARCHAR},
+            </if>
+            <if test="searchKeywords != null">
+                search_keywords = #{searchKeywords,jdbcType=VARCHAR},
+            </if>
+            <if test="productFeaturesCn != null">
+                product_features_cn = #{productFeaturesCn,jdbcType=VARCHAR},
+            </if>
+            <if test="productFeaturesEn != null">
+                product_features_en = #{productFeaturesEn,jdbcType=VARCHAR},
+            </if>
+            <if test="masterPicture != null and masterPicture != ''">
+                master_picture = #{masterPicture,jdbcType=VARCHAR},
+            </if>
+            <if test="additionalPicture != null and additionalPicture != ''">
+                additional_picture = #{additionalPicture,jdbcType=VARCHAR},
+            </if>
+            <if test="strength1 != null">
+               strength_1 = #{strength1,jdbcType=VARCHAR},
+            </if>
+            <if test="strength2 != null">
+                strength_2 = #{strength2,jdbcType=VARCHAR},
+            </if>
+            <if test="strength3 != null">
+                strength_3 = #{strength3,jdbcType=VARCHAR},
+            </if>
+            <if test="strength4 != null">
+                strength_4 = #{strength4,jdbcType=VARCHAR},
+            </if>
+            <if test="strength5 != null">
+                strength_5 = #{strength5,jdbcType=VARCHAR},
+            </if>
+            <if test="provePicture != null and provePicture != ''">
+                prove_picture = #{provePicture,jdbcType=VARCHAR},
+            </if>
+            <if test="attentions != null and attentions != ''">
+                attentions = #{attentions,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.CommodityDetails">
+        update t_commodity_details
+        set commodity_id = #{commodityId,jdbcType=BIGINT},
+            version = #{version,jdbcType=BIGINT} + 1,
+            commodity_desc = #{commodityDesc,jdbcType=VARCHAR},
+            packing_list = #{packingList,jdbcType=VARCHAR},
+            search_keywords = #{searchKeywords,jdbcType=VARCHAR},
+            product_features_cn = #{productFeaturesCn,jdbcType=VARCHAR},
+            product_features_en = #{productFeaturesEn,jdbcType=VARCHAR},
+            master_picture = #{masterPicture,jdbcType=VARCHAR},
+            additional_picture = #{additionalPicture,jdbcType=VARCHAR},
+            strength_1 = #{strength1,jdbcType=VARCHAR},
+            strength_2 = #{strength2,jdbcType=VARCHAR},
+            strength_3 = #{strength3,jdbcType=VARCHAR},
+            strength_4 = #{strength4,jdbcType=VARCHAR},
+            strength_5 = #{strength5,jdbcType=VARCHAR},
+            prove_picture = #{provePicture,jdbcType=VARCHAR},
+            attentions = #{attentions,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.commodity.entity.CommodityDetails" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_details
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="commodityId != null">
+                 and commodity_id = #{commodityId,jdbcType=BIGINT}
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="commodityDesc != null">
+                 and commodity_desc = #{commodityDesc,jdbcType=VARCHAR}
+            </if>
+            <if test="packingList != null">
+                 and packing_list = #{packingList,jdbcType=VARCHAR}
+            </if>
+            <if test="searchKeywords != null">
+                 and search_keywords = #{searchKeywords,jdbcType=VARCHAR}
+            </if>
+            <if test="productFeaturesCn != null">
+                 and product_features_cn = #{productFeaturesCn,jdbcType=VARCHAR}
+            </if>
+            <if test="productFeaturesEn != null">
+                 and product_features_en = #{productFeaturesEn,jdbcType=VARCHAR}
+            </if>
+            <if test="masterPicture != null">
+                 and master_picture = #{masterPicture,jdbcType=VARCHAR}
+            </if>
+            <if test="additionalPicture != null">
+                 and additional_picture = #{additionalPicture,jdbcType=VARCHAR}
+            </if>
+            <if test="strength1 != null">
+                and strength_1 = #{strength1,jdbcType=VARCHAR}
+            </if>
+            <if test="strength2 != null">
+                and strength_2 = #{strength2,jdbcType=VARCHAR}
+            </if>
+            <if test="strength3 != null">
+                and strength_3 = #{strength3,jdbcType=VARCHAR}
+            </if>
+            <if test="strength4 != null">
+                and strength_4 = #{strength4,jdbcType=VARCHAR}
+            </if>
+            <if test="strength5 != null">
+                and strength_5 = #{strength5,jdbcType=VARCHAR}
+            </if>
+            <if test="provePicture != null">
+                and prove_picture = #{provePicture,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    
+    <select id="getAllDetailBySupplierId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    	SELECT
+			t1.*
+		FROM
+			t_commodity_details t1, t_commodity_base t2 
+        where t1.commodity_id=t2.id
+        and t2.supplier_id=#{supplierId}
+        <if test="isImg != null and isImg=='Yes'">
+        	<![CDATA[ and t1.master_picture not like CONCAT(CONCAT('%', 'brandslink'), '%') ]]>
+        </if>
+        order by t1.id asc
+		limit ${startInx},${size}
+    </select>
+    
+    <select id="getAllDetailCountBySupplierId" parameterType="java.util.Map" resultType="int">
+    	SELECT
+			count(*)
+		FROM
+			t_commodity_details t1, t_commodity_base t2 
+        where t1.commodity_id=t2.id
+        <if test="isImg != null and isImg=='Yes'">
+        	<![CDATA[ and t1.master_picture not like CONCAT(CONCAT('%', 'brandslink'), '%') ]]>
+        </if>
+        and t2.supplier_id=#{supplierId}
+    </select>
+</mapper>

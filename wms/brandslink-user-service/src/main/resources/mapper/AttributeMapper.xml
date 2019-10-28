@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.user.mapper.AttributeMapper">
+    
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.user.entity.Attribute">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="attribute_name_cn" jdbcType="VARCHAR" property="attributeNameCn" />
+        <result column="attribute_name_en" jdbcType="VARCHAR" property="attributeNameEn" />
+        <result column="attribute_describe" jdbcType="VARCHAR" property="attributeDescribe" />
+        <result column="attribute_value" jdbcType="VARCHAR" property="attributeValue" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, attribute_name_cn, attribute_name_en, attribute_describe, attribute_value, version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_attribute
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_attribute
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.user.entity.Attribute">
+        insert into t_attribute (id, attribute_name_cn, attribute_name_en, 
+            attribute_describe, attribute_value, version
+            )
+        values (#{id,jdbcType=BIGINT}, #{attributeNameCn,jdbcType=VARCHAR}, #{attributeNameEn,jdbcType=VARCHAR}, 
+            #{attributeDescribe,jdbcType=VARCHAR}, #{attributeValue,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.user.entity.Attribute">
+        insert into t_attribute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="attributeNameCn != null">
+                attribute_name_cn,
+            </if>
+            <if test="attributeNameEn != null">
+                attribute_name_en,
+            </if>
+            <if test="attributeDescribe != null">
+                attribute_describe,
+            </if>
+            <if test="attributeValue != null">
+                attribute_value,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="attributeNameCn != null">
+                #{attributeNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeNameEn != null">
+                #{attributeNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeDescribe != null">
+                #{attributeDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeValue != null">
+                #{attributeValue,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.user.entity.Attribute">
+        update t_attribute
+        <set>
+            <if test="attributeNameCn != null">
+                attribute_name_cn = #{attributeNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeNameEn != null">
+                attribute_name_en = #{attributeNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeDescribe != null">
+                attribute_describe = #{attributeDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeValue != null">
+                attribute_value = #{attributeValue,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <update id="update" parameterType="com.brandslink.cloud.user.entity.Attribute">
+        update t_attribute
+        <set>
+            <if test="attributeNameCn != null">
+                attribute_name_cn = #{attributeNameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeNameEn != null">
+                attribute_name_en = #{attributeNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeDescribe != null">
+                attribute_describe = #{attributeDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeValue != null">
+                attribute_value = #{attributeValue,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.user.entity.Attribute">
+        update t_attribute
+        set attribute_name_cn = #{attributeNameCn,jdbcType=VARCHAR},
+            attribute_name_en = #{attributeNameEn,jdbcType=VARCHAR},
+            attribute_describe = #{attributeDescribe,jdbcType=VARCHAR},
+            attribute_value = #{attributeValue,jdbcType=VARCHAR},
+            version = #{version,jdbcType=BIGINT} + 1
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.brandslink.cloud.user.entity.Attribute" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_attribute
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="attributeNameCn != null">
+                 and attribute_name_cn = #{attributeNameCn,jdbcType=VARCHAR}
+            </if>
+            <if test="attributeNameEn != null">
+                 and attribute_name_en = #{attributeNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="attributeDescribe != null">
+                 and attribute_describe = #{attributeDescribe,jdbcType=VARCHAR}
+            </if>
+            <if test="attributeValue != null">
+                 and attribute_value like CONCAT(CONCAT('%', #{attributeValue}), '%')
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+</mapper>

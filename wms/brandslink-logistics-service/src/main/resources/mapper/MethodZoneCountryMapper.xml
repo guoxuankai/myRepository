@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.logistics.mapper.MethodZoneCountryMapper">
+
+    <select id="selectBatchMethodZoneCountryList"
+            parameterType="com.brandslink.cloud.logistics.model.MethodZoneCountryModel"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_method_zone_country
+        where 1=1
+        and method_id = #{methodId,jdbcType=BIGINT}
+        and country in
+        <foreach collection="list" item = "item" open="(" separator="," close=")">
+            #{item.country,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="selectSharedZoneCountryByZoneID" resultType="java.lang.Long">
+        select
+        c.id id
+        from t_method_zone_country c
+        where zone_id = #{zoneId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectZoneIDByMethodIDCountry"
+            resultType="com.brandslink.cloud.logistics.model.MethodZoneCountryModel">
+        select
+        c.zone_id zoneId,
+        c.country country,
+        c.country_name countryName
+        from t_method_zone_country c
+        where 1=1
+        and c.method_id = #{methodId,jdbcType=BIGINT}
+        and c.country in
+        <foreach collection="countryArray" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteByZoneId">
+        delete from t_method_zone_country
+        where zone_id = #{zoneId,jdbcType=VARCHAR}
+    </delete>
+
+    <!--##################################################################################################-->
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.logistics.model.MethodZoneCountryModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="method_id" jdbcType="BIGINT" property="methodId"/>
+        <result column="zone_id" jdbcType="BIGINT" property="zoneId"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="country_name" jdbcType="VARCHAR" property="countryName"/>
+        <result column="is_remote_fee" jdbcType="TINYINT" property="isRemoteFee"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, method_id, zone_id, country, country_name, is_remote_fee
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_method_zone_country
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_method_zone_country
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.logistics.model.MethodZoneCountryModel">
+        insert into t_method_zone_country (id, method_id, zone_id, 
+            country, country_name, is_remote_fee
+            )
+        values (#{id,jdbcType=BIGINT}, #{methodId,jdbcType=BIGINT}, #{zoneId,jdbcType=BIGINT}, 
+            #{country,jdbcType=VARCHAR}, #{countryName,jdbcType=VARCHAR}, #{isRemoteFee,jdbcType=TINYINT}
+            )
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.brandslink.cloud.logistics.model.MethodZoneCountryModel">
+        insert into t_method_zone_country
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="methodId != null">
+                method_id,
+            </if>
+            <if test="zoneId != null">
+                zone_id,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="countryName != null">
+                country_name,
+            </if>
+            <if test="isRemoteFee != null">
+                is_remote_fee,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="methodId != null">
+                #{methodId,jdbcType=BIGINT},
+            </if>
+            <if test="zoneId != null">
+                #{zoneId,jdbcType=BIGINT},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="countryName != null">
+                #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="isRemoteFee != null">
+                #{isRemoteFee,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.brandslink.cloud.logistics.model.MethodZoneCountryModel">
+        update t_method_zone_country
+        <set>
+            <if test="methodId != null">
+                method_id = #{methodId,jdbcType=BIGINT},
+            </if>
+            <if test="zoneId != null">
+                zone_id = #{zoneId,jdbcType=BIGINT},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="countryName != null">
+                country_name = #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="isRemoteFee != null">
+                is_remote_fee = #{isRemoteFee,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.logistics.model.MethodZoneCountryModel">
+        update t_method_zone_country
+        set method_id = #{methodId,jdbcType=BIGINT},
+            zone_id = #{zoneId,jdbcType=BIGINT},
+            country = #{country,jdbcType=VARCHAR},
+            country_name = #{countryName,jdbcType=VARCHAR},
+            is_remote_fee = #{isRemoteFee,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.logistics.model.MethodZoneCountryModel"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_method_zone_country
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="methodId != null and methodId != ''">
+                and method_id = #{methodId,jdbcType=BIGINT}
+            </if>
+            <if test="zoneId != null and zoneId != ''">
+                and zone_id = #{zoneId,jdbcType=BIGINT}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="countryName != null and countryName != ''">
+                and country_name = #{countryName,jdbcType=VARCHAR}
+            </if>
+            <if test="isRemoteFee != null and isRemoteFee != ''">
+                and is_remote_fee = #{isRemoteFee,jdbcType=TINYINT}
+            </if>
+        </trim>
+    </select>
+</mapper>

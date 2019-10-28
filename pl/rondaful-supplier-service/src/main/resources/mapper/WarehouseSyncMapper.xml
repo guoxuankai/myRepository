@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WarehouseSyncMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.WarehouseSync">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName"/>
+        <result column="warehouse_name_en" jdbcType="VARCHAR" property="warehouseNameEn"/>
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode"/>
+        <result column="country_code" jdbcType="VARCHAR" property="countryCode"/>
+        <result column="warehouse_type" jdbcType="VARCHAR" property="warehouseType"/>
+        <result column="warehouse_provider" jdbcType="VARCHAR" property="warehouseProvider"/>
+        <result column="status" jdbcType="BIT" property="status" />
+      <!--   <result column="is_available" jdbcType="BIT" property="isAvailable" /> -->
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="company_code" jdbcType="VARCHAR" property="companyCode"/>
+        <result column="country_name" jdbcType="VARCHAR" property="countryName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, warehouse_name,warehouse_name_en, warehouse_code, country_code,warehouse_type, warehouse_provider,
+        create_date,status,company_code
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_sync
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- ERP同步批量插入仓库列表 -->
+    <insert id="syncWarehouse" parameterType="java.util.ArrayList">
+        insert into t_warehouse_sync
+        (warehouse_name, warehouse_code,country_code, warehouse_type, warehouse_provider, supplier_id,supplier,supplier_company_name,create_date,company_code,status)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.warehouseName,jdbcType=VARCHAR}, #{item.warehouseCode,jdbcType=VARCHAR},#{item.countryCode,jdbcType=VARCHAR},
+            #{item.warehouseType,jdbcType=VARCHAR}, #{item.warehouseProvider,jdbcType=VARCHAR}, #{item.supplierId,jdbcType=VARCHAR},
+             #{item.supplier,jdbcType=VARCHAR}, #{item.supplierCompanyName,jdbcType=VARCHAR},
+            now(),#{item.companyCode,jdbcType=VARCHAR},#{item.status,jdbcType=BIT})
+        </foreach>
+    </insert>
+    <!-- 根据仓库类型获得仓库信息 -->
+    <select id="selectByWarehouseType" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_sync
+        where warehouse_type =#{warehouseType,jdbcType=VARCHAR}
+    </select>
+	<!-- 取得可用的仓库列表 -->
+ 	<select id="selectValidWarehouse" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_sync
+        where status=1 
+           <if test="warehouseCodeList !=null and warehouseCodeList.size>0">
+               	and warehouse_code in
+           <foreach collection="warehouseCodeList" item="item" open="(" close=")" separator=",">
+           		 #{item}
+           		</foreach>
+            </if>
+         <if test="warehouseType != null">
+            and warehouse_type =  #{warehouseType,jdbcType=VARCHAR} 
+         </if>
+         <if test="warehouseCode !=null">
+         	and warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+         </if>
+         <if test="countryCode != null">
+         	and country_code = #{countryCode,jdbcType=VARCHAR}
+         </if>
+         <if test ="supplier != null">
+         	and supplier_id = #{supplier,jdbcType=VARCHAR}
+         </if>
+    </select>
+     <!-- 根据仓库名称获得仓库信息 -->
+    <select id="selectWarehouseByParam" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_sync
+        where  status =1
+        <if test="warehouseName != null">
+       	 and warehouse_name =#{warehouseName,jdbcType=VARCHAR}
+        </if>
+        <if test="warehouseCode != null">
+       	 and  warehouse_code =#{warehouseCode,jdbcType=VARCHAR}
+        </if>
+        <if test="companyCode != null">
+       	 and  company_code =#{companyCode,jdbcType=VARCHAR}
+        </if>
+        <if test="warehouseProvider != null">
+       	 and  warehouse_provider =#{warehouseProvider,jdbcType=VARCHAR}
+        </if>
+    </select>
+    
+    
+    <select id="selectWarehouseListByObjectParam" parameterType="com.rondaful.cloud.supplier.entity.WarehouseSync" resultMap="BaseResultMap">
+    	select t.id, warehouse_name,warehouse_name_en, warehouse_code, t.country_code,warehouse_type, warehouse_provider,
+        t.create_date,t.status,company_code,m.country_name 
+        from t_warehouse_sync t INNER JOIN t_country_map m on t.country_code = m.country_code
+        <trim prefix="where" prefixOverrides="and">
+            <if test="statusStr != null and statusStr == 1">
+                 and t.status = 1
+            </if>
+            <if test="statusStr != null and statusStr == 0">
+                 and t.status = 0
+            </if>
+            <if test="companyCode != null">
+            	and t.company_code = #{companyCode,jdbcType=VARCHAR}
+            </if>
+            <if test="countryCode != null">
+            	and t.country_code = #{countryCode,jdbcType=VARCHAR}
+            </if>
+              <if test="warehouseCodeList !=null and warehouseCodeList.size() >0">AND t.warehouse_code in 
+			<foreach collection="warehouseCodeList" item="s"  open="(" close=")" separator=","> 
+				#{s}
+			</foreach>
+		</if>
+        </trim>
+    </select>
+    
+        
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.WarehouseSync">
+        update t_warehouse_sync
+        <set>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="selectAvailableWareHouse" resultMap="BaseResultMap" parameterType="String">
+    select t.warehouse_provider,GROUP_CONCAT(CONCAT_WS('|',t.id,t.warehouse_name)) as warehouse_name from t_warehouse_sync t where t.`status` =1 
+    <if test="wareHouseName !=null">
+    	and warehouse_name like CONCAT('%',#{wareHouseName},'%')
+    </if>
+    GROUP BY warehouse_provider
+     </select>
+
+    <select id="getsHouseName" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+         s.id,s.warehouse_name_en, s.warehouse_code, s.country_code,s.warehouse_type, s.warehouse_provider,
+        s.create_date,s.status,s.company_code,CONCAT(ifnull(concat(a.custom_name,'-'),""),s.warehouse_name) as warehouse_name
+        from t_warehouse_sync s left join warehouse_authorize a on s.company_code = a.company_code
+        where s.supplier_id is null or s.supplier_id=#{userId,jdbcType=INTEGER}
+        and s.status = 1
+    </select>
+
+    <select id="getsNameByCode" resultMap="BaseResultMap">
+        select
+         s.id,s.warehouse_name_en, s.warehouse_code, s.country_code,s.warehouse_type, s.warehouse_provider,
+        s.create_date,s.status,s.company_code,CONCAT(ifnull(concat(a.custom_name,'-'),""),s.warehouse_name) as warehouse_name
+        from t_warehouse_sync s left join warehouse_authorize a on s.company_code = a.company_code
+        where s.warehouse_code in
+        <foreach collection="codes" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

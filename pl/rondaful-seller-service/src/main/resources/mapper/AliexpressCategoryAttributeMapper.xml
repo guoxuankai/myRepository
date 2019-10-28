@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressCategoryAttributeMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressCategoryAttribute">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="attribute_id" jdbcType="BIGINT" property="attributeId" />
+        <result column="attribute_show_type_value" jdbcType="VARCHAR" property="attributeShowTypeValue" />
+        <result column="customized_name" jdbcType="BIT" property="customizedName" />
+        <result column="customized_pic" jdbcType="BIT" property="customizedPic" />
+        <result column="input_type" jdbcType="VARCHAR" property="inputType" />
+        <result column="key_attribute" jdbcType="BIT" property="keyAttribute" />
+        <result column="attribute_name" jdbcType="VARCHAR" property="attributeName" />
+        <result column="attribute_name_en" jdbcType="VARCHAR" property="attributeNameEn" />
+        <result column="attribute_name_all" jdbcType="VARCHAR" property="attributeNameAll" />
+        <result column="required" jdbcType="BIT" property="required" />
+        <result column="sku" jdbcType="BIT" property="sku" />
+        <result column="sku_style_value" jdbcType="VARCHAR" property="skuStyleValue" />
+        <result column="spec" jdbcType="INTEGER" property="spec" />
+        <result column="units" jdbcType="VARCHAR" property="units" />
+        <result column="visible" jdbcType="BIT" property="visible" />
+    </resultMap>
+
+    <resultMap id="BaseResultSelectValueMap" type="com.rondaful.cloud.seller.entity.AliexpressCategoryAttribute">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="attribute_id" jdbcType="BIGINT" property="attributeId" />
+        <result column="attribute_show_type_value" jdbcType="VARCHAR" property="attributeShowTypeValue" />
+        <result column="customized_name" jdbcType="BIT" property="customizedName" />
+        <result column="customized_pic" jdbcType="BIT" property="customizedPic" />
+        <result column="input_type" jdbcType="VARCHAR" property="inputType" />
+        <result column="key_attribute" jdbcType="BIT" property="keyAttribute" />
+        <result column="attribute_name" jdbcType="VARCHAR" property="attributeName" />
+        <result column="attribute_name_en" jdbcType="VARCHAR" property="attributeNameEn" />
+        <result column="attribute_name_all" jdbcType="VARCHAR" property="attributeNameAll" />
+        <result column="required" jdbcType="BIT" property="required" />
+        <result column="sku" jdbcType="BIT" property="sku" />
+        <result column="sku_style_value" jdbcType="VARCHAR" property="skuStyleValue" />
+        <result column="spec" jdbcType="INTEGER" property="spec" />
+        <result column="units" jdbcType="VARCHAR" property="units" />
+        <result column="visible" jdbcType="BIT" property="visible" />
+
+        <association property="attributeSelectList"
+                     column="{categoryId=id,attributeId=attribute_id,}"
+                     select="com.rondaful.cloud.seller.mapper.AliexpressCategoryAttributeSelectMapper.getCategoryAttributeSelectByAttributeId">
+        </association>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, attribute_id, attribute_show_type_value, customized_name, customized_pic,
+        input_type, key_attribute, attribute_name, attribute_name_en, attribute_name_all, 
+        required, sku, sku_style_value, spec, units, visible
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_category_attribute
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_category_attribute
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressCategoryAttribute">
+        insert into aliexpress_category_attribute (id, attribute_id,
+            attribute_show_type_value, customized_name, customized_pic, 
+            input_type, key_attribute, attribute_name, 
+            attribute_name_en, attribute_name_all, required, 
+            sku, sku_style_value, spec, 
+            units, visible)
+        values (#{id,jdbcType=BIGINT}, #{attributeId,jdbcType=BIGINT},
+            #{attributeShowTypeValue,jdbcType=VARCHAR}, #{customizedName,jdbcType=BIT}, #{customizedPic,jdbcType=BIT}, 
+            #{inputType,jdbcType=VARCHAR}, #{keyAttribute,jdbcType=BIT}, #{attributeName,jdbcType=VARCHAR}, 
+            #{attributeNameEn,jdbcType=VARCHAR}, #{attributeNameAll,jdbcType=VARCHAR}, #{required,jdbcType=BIT}, 
+            #{sku,jdbcType=BIT}, #{skuStyleValue,jdbcType=VARCHAR}, #{spec,jdbcType=INTEGER}, 
+            #{units,jdbcType=VARCHAR}, #{visible,jdbcType=BIT})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressCategoryAttribute">
+        insert into aliexpress_category_attribute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="attributeId != null">
+                attribute_id,
+            </if>
+            <if test="attributeShowTypeValue != null">
+                attribute_show_type_value,
+            </if>
+            <if test="customizedName != null">
+                customized_name,
+            </if>
+            <if test="customizedPic != null">
+                customized_pic,
+            </if>
+            <if test="inputType != null">
+                input_type,
+            </if>
+            <if test="keyAttribute != null">
+                key_attribute,
+            </if>
+            <if test="attributeName != null">
+                attribute_name,
+            </if>
+            <if test="attributeNameEn != null">
+                attribute_name_en,
+            </if>
+            <if test="attributeNameAll != null">
+                attribute_name_all,
+            </if>
+            <if test="required != null">
+                required,
+            </if>
+            <if test="sku != null">
+                sku,
+            </if>
+            <if test="skuStyleValue != null">
+                sku_style_value,
+            </if>
+            <if test="spec != null">
+                spec,
+            </if>
+            <if test="units != null">
+                units,
+            </if>
+            <if test="visible != null">
+                visible,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="attributeId != null">
+                #{attributeId,jdbcType=BIGINT},
+            </if>
+            <if test="attributeShowTypeValue != null">
+                #{attributeShowTypeValue,jdbcType=VARCHAR},
+            </if>
+            <if test="customizedName != null">
+                #{customizedName,jdbcType=BIT},
+            </if>
+            <if test="customizedPic != null">
+                #{customizedPic,jdbcType=BIT},
+            </if>
+            <if test="inputType != null">
+                #{inputType,jdbcType=VARCHAR},
+            </if>
+            <if test="keyAttribute != null">
+                #{keyAttribute,jdbcType=BIT},
+            </if>
+            <if test="attributeName != null">
+                #{attributeName,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeNameEn != null">
+                #{attributeNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeNameAll != null">
+                #{attributeNameAll,jdbcType=VARCHAR},
+            </if>
+            <if test="required != null">
+                #{required,jdbcType=BIT},
+            </if>
+            <if test="sku != null">
+                #{sku,jdbcType=BIT},
+            </if>
+            <if test="skuStyleValue != null">
+                #{skuStyleValue,jdbcType=VARCHAR},
+            </if>
+            <if test="spec != null">
+                #{spec,jdbcType=INTEGER},
+            </if>
+            <if test="units != null">
+                #{units,jdbcType=VARCHAR},
+            </if>
+            <if test="visible != null">
+                #{visible,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressCategoryAttribute">
+        update aliexpress_category_attribute
+        <set>
+            <if test="attributeId != null">
+                attribute_id = #{attributeId,jdbcType=BIGINT},
+            </if>
+            <if test="attributeShowTypeValue != null">
+                attribute_show_type_value = #{attributeShowTypeValue,jdbcType=VARCHAR},
+            </if>
+            <if test="customizedName != null">
+                customized_name = #{customizedName,jdbcType=BIT},
+            </if>
+            <if test="customizedPic != null">
+                customized_pic = #{customizedPic,jdbcType=BIT},
+            </if>
+            <if test="inputType != null">
+                input_type = #{inputType,jdbcType=VARCHAR},
+            </if>
+            <if test="keyAttribute != null">
+                key_attribute = #{keyAttribute,jdbcType=BIT},
+            </if>
+            <if test="attributeName != null">
+                attribute_name = #{attributeName,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeNameEn != null">
+                attribute_name_en = #{attributeNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="attributeNameAll != null">
+                attribute_name_all = #{attributeNameAll,jdbcType=VARCHAR},
+            </if>
+            <if test="required != null">
+                required = #{required,jdbcType=BIT},
+            </if>
+            <if test="sku != null">
+                sku = #{sku,jdbcType=BIT},
+            </if>
+            <if test="skuStyleValue != null">
+                sku_style_value = #{skuStyleValue,jdbcType=VARCHAR},
+            </if>
+            <if test="spec != null">
+                spec = #{spec,jdbcType=INTEGER},
+            </if>
+            <if test="units != null">
+                units = #{units,jdbcType=VARCHAR},
+            </if>
+            <if test="visible != null">
+                visible = #{visible,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressCategoryAttribute">
+        update aliexpress_category_attribute
+        set attribute_id = #{attributeId,jdbcType=BIGINT},
+            attribute_show_type_value = #{attributeShowTypeValue,jdbcType=VARCHAR},
+            customized_name = #{customizedName,jdbcType=BIT},
+            customized_pic = #{customizedPic,jdbcType=BIT},
+            input_type = #{inputType,jdbcType=VARCHAR},
+            key_attribute = #{keyAttribute,jdbcType=BIT},
+            attribute_name = #{attributeName,jdbcType=VARCHAR},
+            attribute_name_en = #{attributeNameEn,jdbcType=VARCHAR},
+            attribute_name_all = #{attributeNameAll,jdbcType=VARCHAR},
+            required = #{required,jdbcType=BIT},
+            sku = #{sku,jdbcType=BIT},
+            sku_style_value = #{skuStyleValue,jdbcType=VARCHAR},
+            spec = #{spec,jdbcType=INTEGER},
+            units = #{units,jdbcType=VARCHAR},
+            visible = #{visible,jdbcType=BIT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressCategoryAttribute" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_category_attribute
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="attributeId != null and attributeId != ''">
+                 and attribute_id = #{attributeId,jdbcType=BIGINT}
+            </if>
+            <if test="attributeShowTypeValue != null and attributeShowTypeValue != ''">
+                 and attribute_show_type_value = #{attributeShowTypeValue,jdbcType=VARCHAR}
+            </if>
+            <if test="customizedName != null and customizedName != ''">
+                 and customized_name = #{customizedName,jdbcType=BIT}
+            </if>
+            <if test="customizedPic != null and customizedPic != ''">
+                 and customized_pic = #{customizedPic,jdbcType=BIT}
+            </if>
+            <if test="inputType != null and inputType != ''">
+                 and input_type = #{inputType,jdbcType=VARCHAR}
+            </if>
+            <if test="keyAttribute != null and keyAttribute != ''">
+                 and key_attribute = #{keyAttribute,jdbcType=BIT}
+            </if>
+            <if test="attributeName != null and attributeName != ''">
+                 and attribute_name = #{attributeName,jdbcType=VARCHAR}
+            </if>
+            <if test="attributeNameEn != null and attributeNameEn != ''">
+                 and attribute_name_en = #{attributeNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="attributeNameAll != null and attributeNameAll != ''">
+                 and attribute_name_all = #{attributeNameAll,jdbcType=VARCHAR}
+            </if>
+            <if test="required != null and required != ''">
+                 and required = #{required,jdbcType=BIT}
+            </if>
+            <if test="sku != null and sku != ''">
+                 and sku = #{sku,jdbcType=BIT}
+            </if>
+            <if test="skuStyleValue != null and skuStyleValue != ''">
+                 and sku_style_value = #{skuStyleValue,jdbcType=VARCHAR}
+            </if>
+            <if test="spec != null and spec != ''">
+                 and spec = #{spec,jdbcType=INTEGER}
+            </if>
+            <if test="units != null and units != ''">
+                 and units = #{units,jdbcType=VARCHAR}
+            </if>
+            <if test="visible != null and visible != ''">
+                 and visible = #{visible,jdbcType=BIT}
+            </if>
+        </trim>
+    </select>
+
+
+    <select id="getAliexpressCategoryAttributeByCategoryIdList" resultMap="BaseResultSelectValueMap">
+       SELECT
+        cak.category_id AS id, cak.attribute_id, cak.attribute_show_type_value, cak.customized_name, cak.customized_pic,
+        cak.input_type, cak.key_attribute, ca.attribute_name, ca.attribute_name_en, ca.attribute_name_all,
+        cak.required, cak.sku, cak.sku_style_value, cak.spec, cak.units, cak.visible
+        FROM aliexpress_category_attribute_key cak ,
+
+        aliexpress_category_attribute ca
+
+        WHERE ca.status=0 AND cak.status=0 AND ca.attribute_id=cak.attribute_id
+        AND cak.category_id = #{categoryId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getCategoryAttributeByCategoryId" resultMap="BaseResultMap">
+       SELECT
+        cak.category_id AS id, cak.attribute_id, cak.attribute_show_type_value, cak.customized_name, cak.customized_pic,
+        cak.input_type, cak.key_attribute, ca.attribute_name, ca.attribute_name_en, ca.attribute_name_all,
+        cak.required, cak.sku, cak.sku_style_value, cak.spec, cak.units, cak.visible
+        FROM aliexpress_category_attribute_key cak ,
+
+        aliexpress_category_attribute ca
+
+        WHERE ca.status=0 AND cak.status=0 AND ca.attribute_id=cak.attribute_id
+        AND cak.category_id = #{categoryId,jdbcType=BIGINT}
+        ORDER BY cak.spec ASC
+    </select>
+
+    <select id="getAttributeByCategoryAttributeIdsList" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_category_attribute
+        where status=0
+        <if test="categoryAttributeIds != null">
+            and attribute_id in
+            <foreach collection="categoryAttributeIds" item="id" open="(" close=")" separator=",">
+                #{id,jdbcType=INTEGER}
+            </foreach>
+        </if>
+
+    </select>
+
+
+</mapper>

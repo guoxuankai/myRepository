@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.SysAccountFlowMapper">
+    
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.SysAccountFlow">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="sys_account_id" jdbcType="INTEGER" property="sysAccountId" />
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+        <result column="source_no" jdbcType="VARCHAR" property="sourceNo" />
+        <result column="cost_type" jdbcType="TINYINT" property="costType" />
+        <result column="before_money" jdbcType="DECIMAL" property="beforeMoney" />
+        <result column="bill_money" jdbcType="DECIMAL" property="billMoney" />
+        <result column="after_money" jdbcType="DECIMAL" property="afterMoney" />
+        <result column="order_type" jdbcType="TINYINT" property="orderType" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id,sys_account_id,order_no,source_no,cost_type,before_money,bill_money,after_money,order_type,create_by,create_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select   <include refid="Base_Column_List" /> from tf_sys_account_flow where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tf_sys_account_flow where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.finance.pojo.entity.SysAccountFlow">
+        insert into tf_sys_account_flow (sys_account_id,order_no,source_no,cost_type,before_money,bill_money,after_money,order_type,create_by,create_time)
+        values (#{sysAccountId,jdbcType=INTEGER},#{orderNo,jdbcType=VARCHAR},#{sourceNo,jdbcType=VARCHAR},#{costType,jdbcType=TINYINT},
+         #{beforeMoney,jdbcType=DECIMAL},#{billMoney,jdbcType=DECIMAL},#{afterMoney,jdbcType=DECIMAL},#{orderType,jdbcType=TINYINT},
+         #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.finance.pojo.entity.SysAccountFlow">
+        insert into tf_sys_account_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysAccountId != null">
+                sys_account_id,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="sourceNo != null">
+                source_no,
+            </if>
+            <if test="costType != null">
+                cost_type,
+            </if>
+            <if test="beforeMoney != null">
+                before_money,
+            </if>
+            <if test="billMoney != null">
+                bill_money,
+            </if>
+            <if test="afterMoney != null">
+                after_money,
+            </if>
+            <if test="orderType != null">
+                order_type,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="sysAccountId != null">
+                #{sysAccountId,jdbcType=INTEGER},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceNo != null">
+                #{sourceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="costType != null">
+                #{costType,jdbcType=TINYINT},
+            </if>
+            <if test="beforeMoney != null">
+                #{beforeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="billMoney != null">
+                #{billMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="afterMoney != null">
+                #{afterMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="orderType != null">
+                #{orderType,jdbcType=TINYINT},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.finance.pojo.entity.SysAccountFlow">
+        update tf_sys_account_flow
+        <set>
+            <if test="sysAccountId != null">
+                sys_account_id = #{sysAccountId,jdbcType=INTEGER},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceNo != null">
+                source_no = #{sourceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="costType != null">
+                cost_type = #{costType,jdbcType=TINYINT},
+            </if>
+            <if test="beforeMoney != null">
+                before_money=#{beforeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="billMoney != null">
+                bill_money=#{billMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="afterMoney != null">
+                after_money=#{afterMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="orderType != null">
+                order_type = #{orderType,jdbcType=TINYINT},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.finance.pojo.entity.SysAccountFlow">
+        update tf_sys_account_flow
+        set sys_account_id = #{sysAccountId,jdbcType=INTEGER},
+        order_no = #{orderNo,jdbcType=VARCHAR},
+        source_no = #{sourceNo,jdbcType=VARCHAR},
+        cost_type = #{costType,jdbcType=TINYINT},
+        before_money=#{beforeMoney,jdbcType=DECIMAL},
+        bill_money=#{billMoney,jdbcType=DECIMAL},
+        after_money=#{afterMoney,jdbcType=DECIMAL},
+        order_type = #{orderType,jdbcType=TINYINT},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.brandslink.cloud.finance.pojo.entity.SysAccountFlow" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_sys_account_flow
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="sysAccountId != null and sysAccountId != ''">
+                 and sys_account_id = #{sysAccountId,jdbcType=INTEGER}
+            </if>
+            <if test="orderNo != null and orderNo != ''">
+                 and order_no = #{orderNo,jdbcType=VARCHAR}
+            </if>
+            <if test="sourceNo != null and sourceNo != ''">
+                 and source_no = #{sourceNo,jdbcType=VARCHAR}
+            </if>
+            <if test="costType != null and costType != ''">
+                 and cost_type = #{costType,jdbcType=TINYINT}
+            </if>
+            <if test="beforeMoney != null">
+                before_money=#{beforeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="billMoney != null">
+                bill_money=#{billMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="afterMoney != null">
+                after_money=#{afterMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="orderType != null and orderType != ''">
+                 and order_type = #{orderType,jdbcType=TINYINT}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getList" parameterType="com.brandslink.cloud.finance.pojo.vo.SysAccountFlowVo"
+        resultType="com.brandslink.cloud.finance.pojo.dto.SysAccountFlowDto">
+        select * from(select id,order_no as orderNo,source_no as sourceNo,bill_money as billMoney,
+        after_money as afterMoney,cost_type as costType,order_type as orderType,create_time as createTime
+        from tf_sys_account_flow where 1=1
+        <if test="orderType != null and orderType != ''">
+            order_type=#{orderType}
+        </if>
+        <if test="costType != null and costType != ''">
+            cost_type=#{costType}
+        </if>
+        <if test="createStartTime != null and createEndTime != null ">
+            create_time between #{createStartTime} and #{createEndTime}
+        </if>
+        )a order by #{sortField} ${sortType}
+    </select>
+</mapper>

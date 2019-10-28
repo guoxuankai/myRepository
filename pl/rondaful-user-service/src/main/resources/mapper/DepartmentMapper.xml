@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.DepartmentMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.Department">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="platform" jdbcType="TINYINT" property="platform" />
+        <result column="level" jdbcType="INTEGER" property="level" />
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+        <result column="position_name" jdbcType="VARCHAR" property="positionName" />
+        <result column="attribution" jdbcType="INTEGER" property="attribution" />
+        <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, platform, `level`, parent_id, department_name, position_name, attribution, creat_time,
+        create_by, update_time, update_by, version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_department
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_department
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.Department">
+        insert into t_department (id, platform, `level`,
+            parent_id, department_name, position_name, 
+            attribution, creat_time, create_by, 
+            update_time, update_by, version
+            )
+        values (#{id,jdbcType=INTEGER}, #{platform,jdbcType=TINYINT}, #{level,jdbcType=INTEGER},
+            #{parentId,jdbcType=INTEGER}, #{departmentName,jdbcType=VARCHAR}, #{positionName,jdbcType=VARCHAR}, 
+            #{attribution,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.Department">
+        insert into t_department
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="platform != null">
+                platform,
+            </if>
+            <if test="level != null">
+                `level`,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="departmentName != null">
+                department_name,
+            </if>
+            <if test="positionName != null">
+                position_name,
+            </if>
+            <if test="attribution != null">
+                attribution,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="platform != null">
+                #{platform,jdbcType=TINYINT},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="departmentName != null">
+                #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="positionName != null">
+                #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="attribution != null">
+                #{attribution,jdbcType=INTEGER},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.Department">
+        update t_department
+        <set>
+            <if test="platform != null">
+                platform = #{platform,jdbcType=TINYINT},
+            </if>
+            <if test="level != null">
+                `level` = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="departmentName != null">
+                department_name = #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="positionName != null">
+                position_name = #{positionName,jdbcType=VARCHAR},
+            </if>
+            <if test="attribution != null">
+                attribution = #{attribution,jdbcType=INTEGER},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.Department">
+        update t_department
+        set platform = #{platform,jdbcType=TINYINT},
+            `level` = #{level,jdbcType=INTEGER},
+            parent_id = #{parentId,jdbcType=INTEGER},
+            department_name = #{departmentName,jdbcType=VARCHAR},
+            position_name = #{positionName,jdbcType=VARCHAR},
+            attribution = #{attribution,jdbcType=INTEGER},
+            creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.Department" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_department
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="platform != null and platform != ''">
+                 and platform = #{platform,jdbcType=TINYINT}
+            </if>
+            <if test="level != null and level != ''">
+                 and `level` = #{level,jdbcType=INTEGER}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                 and parent_id = #{parentId,jdbcType=INTEGER}
+            </if>
+            <if test="departmentName != null and departmentName != ''">
+                 and department_name = #{departmentName,jdbcType=VARCHAR}
+            </if>
+            <if test="positionName != null and positionName != ''">
+                 and position_name = #{positionName,jdbcType=VARCHAR}
+            </if>
+            <if test="attribution != null and attribution != ''">
+                 and attribution = #{attribution,jdbcType=INTEGER}
+            </if>
+            <if test="creatTime != null and creatTime != ''">
+                 and creat_time = #{creatTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getByPlatform"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_department
+        where platform = #{platform,jdbcType=TINYINT}
+        <if test="attribution !=null and attribution!=''">
+            and attribution = #{attribution,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getByParentId"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_department
+        where parent_id = #{parentId,jdbcType=INTEGER}
+    </select>
+</mapper>

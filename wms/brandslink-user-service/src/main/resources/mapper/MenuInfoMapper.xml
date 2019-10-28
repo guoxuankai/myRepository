@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.user.mapper.MenuInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.user.entity.MenuInfo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="seq" jdbcType="INTEGER" property="seq"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="belong" jdbcType="INTEGER" property="belong"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime"/>
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.brandslink.cloud.user.entity.MenuInfo">
+        <result column="url" jdbcType="LONGVARCHAR" property="url"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, parent_id, name, seq, level, type, belong, icon, remark, create_time, create_by,
+        last_update_time, last_update_by, version
+    </sql>
+
+    <sql id="Blob_Column_List">
+        url
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_menu_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_menu_info
+        where belong = #{flag,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectMenusAllByUserIdForWms" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_menu_info
+        where id in
+        (select m.menu_id from t_role_menu_info m where m.role_id in (select ur.role_id from t_user_role_info ur where
+        ur.user_id = #{id,jdbcType=INTEGER}))
+        and belong = #{flag,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectMenusAllByUserIdForOms" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_menu_info
+        where id in
+        (select m.menu_id from t_customer_role_menu_info m where m.role_id in (select ur.role_id from
+        t_customer_user_role_info ur where
+        ur.user_id = #{id,jdbcType=INTEGER}))
+        and belong = #{flag,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAllByUserIdOfMenus" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_menu_info
+        <choose>
+            <when test="flag == 2">
+                where id in
+                (select m.menu_id from t_customer_role_menu_info m where m.role_id in (select ur.role_id from
+                t_customer_user_role_info ur where
+                ur.user_id = #{id,jdbcType=INTEGER}) and belong = 0)
+            </when>
+            <when test="flag == 3">
+                where 1=1
+            </when>
+            <otherwise>
+                where id in
+                (select m.menu_id from t_role_menu_info m where m.role_id in (select ur.role_id from t_user_role_info ur
+                where
+                ur.user_id = #{id,jdbcType=INTEGER}) and belong = #{flag,jdbcType=INTEGER})
+            </otherwise>
+        </choose>
+        and belong = #{flag,jdbcType=INTEGER}
+        <if test="filter == 1">
+            and type = 0
+        </if>
+        <if test="filter == 2">
+            and type != 1
+        </if>
+    </select>
+
+    <select id="selectMaxSeqByParentId" parameterType="java.lang.Integer" resultType="java.lang.Byte">
+        select
+        max(seq)
+        from t_menu_info
+        where parent_id = #{parentId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_menu_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteRoleMenuByMenuIdForWms" parameterType="java.lang.Integer">
+        delete from t_role_menu_info
+        where menu_id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteRoleMenuByMenuIdForOms" parameterType="java.lang.Integer">
+        delete from t_customer_role_menu_info
+        where menu_id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.user.entity.MenuInfo">
+        insert into t_menu_info (id, parent_id, name,
+            seq, level, type, belong,
+            icon, remark, create_time,
+            create_by, last_update_time, last_update_by,
+            version, url)
+        values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+            #{seq,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{belong,jdbcType=INTEGER},
+            #{icon,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR},
+            #{version,jdbcType=INTEGER}, #{url,jdbcType=LONGVARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.user.entity.MenuInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_menu_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="seq != null">
+                seq,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="belong != null">
+                belong,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time,
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="seq != null">
+                #{seq,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="belong != null">
+                #{belong,jdbcType=INTEGER},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.user.entity.MenuInfo">
+        update t_menu_info
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="seq != null">
+                seq = #{seq,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="belong != null">
+                belong = #{belong,jdbcType=INTEGER},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.user.entity.MenuInfo">
+        update t_menu_info
+        set parent_id = #{parentId,jdbcType=INTEGER},
+            name = #{name,jdbcType=VARCHAR},
+            seq = #{seq,jdbcType=INTEGER},
+            level = #{level,jdbcType=INTEGER},
+            type = #{type,jdbcType=INTEGER},
+            belong = #{belong,jdbcType=INTEGER},
+            icon = #{icon,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.user.entity.MenuInfo" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_menu_info
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                and parent_id = #{parentId,jdbcType=INTEGER}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="seq != null and seq != ''">
+                and seq = #{seq,jdbcType=INTEGER}
+            </if>
+            <if test="level != null and level != ''">
+                and level = #{level,jdbcType=INTEGER}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="belong != null and belong != ''">
+                and belong = #{belong,jdbcType=INTEGER}
+            </if>
+            <if test="icon != null and icon != ''">
+                and icon = #{icon,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="lastUpdateTime != null and lastUpdateTime != ''">
+                and last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="lastUpdateBy != null and lastUpdateBy != ''">
+                and last_update_by = #{lastUpdateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null and version != ''">
+                and version = #{version,jdbcType=INTEGER}
+            </if>
+            <if test="url != null and url != ''">
+                and url = #{url,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectNameByParentId" resultType="java.lang.Integer">
+        select
+        count(1)
+        from t_menu_info
+        where
+        name = #{name,jdbcType=VARCHAR}
+        <if test="id != null">
+            and id != #{id,jdbcType=INTEGER}
+        </if>
+        <choose>
+            <when test="parentId != null">
+                and parent_id = #{parentId,jdbcType=INTEGER}
+            </when>
+            <otherwise>
+                and parent_id = (select parent_id from t_menu_info where id = #{id,jdbcType=INTEGER})
+            </otherwise>
+        </choose>
+        and belong = #{belong,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectHomeMenuIds" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select id from t_menu_info
+        where name = '首页' and belong = #{belong,jdbcType=INTEGER}
+        union all
+        select id from t_menu_info
+        where parent_id = (select id from t_menu_info where name = '首页' and belong = #{belong,jdbcType=INTEGER})
+        union all
+        select id from t_menu_info
+        where name in ('我的资料','基础数据') and belong = #{belong,jdbcType=INTEGER}
+        union all
+        select id from t_menu_info
+        where parent_id = (select id from t_menu_info where name = '我的资料')
+    </select>
+
+</mapper>

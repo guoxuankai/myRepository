@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.UpcmanageMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.Upcmanage">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="numberBatch" jdbcType="CHAR" property="numberbatch" />
+        <result column="numberType" jdbcType="CHAR" property="numbertype" />
+        <result column="number" jdbcType="VARCHAR" property="number" />
+        <result column="usedplatform" jdbcType="INTEGER" property="usedplatform" />
+        <result column="createdtime" jdbcType="TIMESTAMP" property="createdtime" />
+        <result column="useStatus" jdbcType="INTEGER" property="usestatus" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="oneself_type" jdbcType="INTEGER" property="oneselfType" />
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="parentAccount" jdbcType="VARCHAR" property="parentaccount" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, numberBatch, numberType, number, usedplatform, createdtime, useStatus, status,
+        account, parentAccount,oneself_type
+    </sql>
+
+
+    <!-- 模糊查询upc列表信息 -->
+    <select id="fuzzyFindAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from upcmanage
+        <where>
+            <if test="numberbatch != null and numberbatch != '' ">
+                and numberBatch = #{numberbatch,jdbcType=CHAR}
+            </if>
+            <if test="numbertype != null and numbertype != '' ">
+                and numberType = #{numbertype,jdbcType=CHAR}
+            </if>
+            <if test="number != null and number != '' ">
+                and number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="account != null and account != '' ">
+                and account = #{account,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 查询upc列表信息 -->
+    <select id="findAll"  parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from upcmanage
+        where account = #{account,jdbcType=VARCHAR}
+    </select>
+
+
+    <!-- 查询UPC信息 -->
+    <select id="selectObject"  resultType="String">
+        select	number from upcmanage
+        where numberType = #{numberType,jdbcType=CHAR} and account = #{account,jdbcType=VARCHAR}
+        <![CDATA[ and  useStatus = 0 ]]>
+        <if test="oneselfType != null ">
+          and oneself_type=#{oneselfType,jdbcType=INTEGER}
+        </if>
+        <if test="usedplatform != null ">
+            <if test=' usedplatform == "1" '>
+                <![CDATA[	and ((usedplatform = 2 and status = 1) or status = 0)]]>
+            </if>
+            <if test=' usedplatform == "2" '>
+                <![CDATA[	and ((usedplatform = 1 and status = 1) or status = 0)]]>
+            </if>
+        </if>
+        order by oneself_type asc
+        limit #{number}
+
+    </select>
+
+
+    <!-- 查询UPC可用数量 -->
+    <select id="selectEableCounts"  resultType="Integer">
+        select	count(*) from upcmanage
+        where numberType = #{numberType,jdbcType=CHAR} and account = #{account,jdbcType=VARCHAR}
+        <![CDATA[ and  useStatus = 0 ]]>
+        <if test="oneselfType != null ">
+            and oneself_type=#{oneselfType,jdbcType=INTEGER}
+        </if>
+        <if test="usedplatform != null ">
+            <if test=' usedplatform == "1" '>
+                <![CDATA[	and ((usedplatform = 2 and status = 1) or status = 0)]]>
+            </if>
+            <if test=' usedplatform == "2" '>
+                <![CDATA[	and ((usedplatform = 1 and status = 1) or status = 0)]]>
+            </if>
+        </if>
+    </select>
+
+
+    <!-- 查询UPC使用平台信息 -->
+    <select id="selectUsedplatform"  resultType="Integer">
+    	select	usedplatform  from upcmanage
+    	where number = #{number,jdbcType=VARCHAR}
+    </select>
+
+
+    <!-- 刊登时upc码的状态修改 -->
+    <update id="updateUPCStatus" >
+    	update upcmanage
+    	set status = #{status},usedplatform = #{usedplatform,jdbcType=INTEGER}
+    	where number = #{number,jdbcType=VARCHAR}
+    </update>
+
+
+    <!-- 通过id停用upc码 -->
+    <update id="updateStatusById" >
+    	update upcmanage
+    	set useStatus = #{usestatus}
+    	where  id = #{id}
+    </update>
+
+    <!-- 通过批次停用或启用upc码 -->
+    <update id="updateStatusByNumberBatch" >
+        update upcmanage
+        set useStatus = #{usestatus,jdbcType=INTEGER}
+        where account = #{account,jdbcType=VARCHAR}   and numberBatch in
+        <foreach collection="numberBatch" item="numberbatch" open="(" separator="," close=")">
+            #{numberbatch}
+        </foreach>
+    </update>
+
+    <!-- 通过类型停用或启用upc码 -->
+    <update id="updateStatusByNumberType" >
+    	update upcmanage
+    	set useStatus = #{usestatus,jdbcType=INTEGER}
+    	where numberType = #{numberType,jdbcType=CHAR} and account = #{account,jdbcType=VARCHAR} 
+    </update>
+
+
+    <!-- 停用或启用全部upc码 -->
+    <update id="updateAllStatus" >
+    	update upcmanage
+    	set useStatus = #{usestatus,jdbcType=INTEGER}
+    	where account = #{account,jdbcType=VARCHAR} 
+    </update>
+
+
+    <!-- 停用已使用的upc码 -->
+    <update id="updateStatusNumbers" >
+        update upcmanage
+        set status = #{status,jdbcType=INTEGER}
+        where number in
+        <foreach collection="list" item="number" open="(" separator="," close=")">
+            #{number}
+        </foreach>
+    </update>
+
+
+    <!-- 查询upc总数 -->
+    <select id="selectTotal"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)  from upcmanage  where account = #{account,jdbcType=VARCHAR}
+    </select>
+
+
+    <!-- 查询ebay的UPC已用码 -->
+    <select id="selectEbayUPCUsed"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'UPC' and (<![CDATA[usedplatform = 1 or usedplatform = 3]]>) and useStatus = 0
+    </select>
+    <!-- 查询ebay的UPC可用码 -->
+    <select id="selectEbayUPCUseable"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'UPC' and (<![CDATA[usedplatform = 2 or status = 0]]>) and useStatus = 0
+    </select>
+
+    <!-- 查询ebay的EAN已用码 -->
+    <select id="selectEbayEANUsed"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'EAN' and (<![CDATA[usedplatform = 1 or usedplatform = 3]]>) and useStatus = 0
+    </select>
+    <!-- 查询ebay的EAN可用码 -->
+    <select id="selectEbayEANUseable"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'EAN' and (<![CDATA[usedplatform = 2 or status = 0]]>) and useStatus = 0
+    </select>
+
+    <!-- 查询ebay的ISAN已用码 -->
+    <select id="selectEbayISANUsed"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'ISBN' and (<![CDATA[usedplatform = 1 or usedplatform = 3]]>) and useStatus = 0
+    </select>
+    <!-- 查询ebay的ISAN可用码 -->
+    <select id="selectEbayISANUseable"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'ISBN' and (<![CDATA[usedplatform = 2 or status = 0]]>) and useStatus = 0
+    </select>
+
+
+
+    <!-- 查询amazonUPC已用码 -->
+    <select id="selectAmazonUPCUsed"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'UPC' and (<![CDATA[usedplatform = 2 or usedplatform = 3]]>) and useStatus = 0
+    </select>
+    <!-- 查询amazonUPC可用码 -->
+    <select id="selectAmazonUPCUseable"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'UPC' and (<![CDATA[usedplatform = 1 or status = 0]]>) and useStatus = 0
+    </select>
+
+    <!-- 查询amazonEAN已用码 -->
+    <select id="selectAmazonEANUsed"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'EAN' and (<![CDATA[usedplatform = 2 or usedplatform = 3]]>) and useStatus = 0
+    </select>
+    <!-- 查询amazonEAN可用码 -->
+    <select id="selectAmazonEANUseable"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'EAN' and (<![CDATA[usedplatform = 1 or status = 0]]>) and useStatus = 0
+    </select>
+
+    <!-- 查询amazonISAN已用码 -->
+    <select id="selectAmazonISANUsed"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'ISBN' and (<![CDATA[usedplatform = 2 or usedplatform = 3]]>) and useStatus = 0
+    </select>
+    <!-- 查询amazonISAN可用码 -->
+    <select id="selectAmazonISANUseable"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'ISBN' and (<![CDATA[usedplatform = 1 or status = 0]]>) and useStatus = 0
+    </select>
+
+
+
+	<!-- 查询EbayUPC停用码 -->
+    <select id="selectUPCDead"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'UPC' and useStatus = 1
+    </select>
+	<!-- 查询EbayEAN停用码 -->
+    <select id="selectEANDead"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'EAN' and useStatus = 1 
+    </select>
+	<!-- 查询EbayISBN停用码 -->
+    <select id="selectISBNDead"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where account = #{account,jdbcType=VARCHAR} and numberType = 'ISBN' and useStatus = 1 
+    </select>
+    
+
+
+	 <!-- 查询所有商品编码批次 -->
+    <select id="checkNumberBatch"  parameterType="java.lang.String"  resultType="java.lang.String">
+        select  distinct numberBatch
+        from upcmanage  where account = #{account,jdbcType=VARCHAR}
+    </select>
+
+
+    <!-- 查询插入的upc是否重复 -->
+    <select id="checkNumber"  parameterType="java.lang.String"  resultType="Integer">
+        select  count(*)
+        from upcmanage  where number = #{number,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from upcmanage
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from upcmanage
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.Upcmanage">
+        insert into upcmanage (id, numberBatch, numberType,
+            number, usedplatform, createdtime,
+            useStatus, status, account,
+            parentAccount,oneself_type)
+        values (#{id,jdbcType=INTEGER}, #{numberbatch,jdbcType=CHAR}, #{numbertype,jdbcType=CHAR},
+            #{number,jdbcType=VARCHAR}, #{usedplatform,jdbcType=INTEGER}, #{createdtime,jdbcType=TIMESTAMP},
+            #{usestatus,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR},
+            #{parentaccount,jdbcType=VARCHAR},#{oneselfType,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.Upcmanage">
+        insert into upcmanage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="numberbatch != null">
+                numberBatch,
+            </if>
+            <if test="numbertype != null">
+                numberType,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="usedplatform != null">
+                usedplatform,
+            </if>
+            <if test="createdtime != null">
+                createdtime,
+            </if>
+            <if test="usestatus != null">
+                useStatus,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="oneselfType != null">
+                oneself_type,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="parentaccount != null">
+                parentAccount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="numberbatch != null">
+                #{numberbatch,jdbcType=CHAR},
+            </if>
+            <if test="numbertype != null">
+                #{numbertype,jdbcType=CHAR},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="usedplatform != null">
+                #{usedplatform,jdbcType=INTEGER},
+            </if>
+            <if test="createdtime != null">
+                #{createdtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="usestatus != null">
+                #{usestatus,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="oneselfType != null">
+                #{oneselfType,jdbcType=INTEGER},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="parentaccount != null">
+                #{parentaccount,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.Upcmanage">
+        update upcmanage
+        <set>
+            <if test="numberbatch != null">
+                numberBatch = #{numberbatch,jdbcType=CHAR},
+            </if>
+            <if test="numbertype != null">
+                numberType = #{numbertype,jdbcType=CHAR},
+            </if>
+            <if test="number != null">
+                number = #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="usedplatform != null">
+                usedplatform = #{usedplatform,jdbcType=INTEGER},
+            </if>
+            <if test="createdtime != null">
+                createdtime = #{createdtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="usestatus != null">
+                useStatus = #{usestatus,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="oneselfType != null">
+                oneself_type = #{oneselfType,jdbcType=INTEGER},
+            </if>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="parentaccount != null">
+                parentAccount = #{parentaccount,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.Upcmanage">
+        update upcmanage
+        set numberBatch = #{numberbatch,jdbcType=CHAR},
+            numberType = #{numbertype,jdbcType=CHAR},
+            number = #{number,jdbcType=VARCHAR},
+            usedplatform = #{usedplatform,jdbcType=INTEGER},
+            createdtime = #{createdtime,jdbcType=TIMESTAMP},
+            useStatus = #{usestatus,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            account = #{account,jdbcType=VARCHAR},
+            parentAccount = #{parentaccount,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.Upcmanage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from upcmanage
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="numberbatch != null and numberbatch != ''">
+                and numberBatch = #{numberbatch,jdbcType=CHAR}
+            </if>
+            <if test="numbertype != null and numbertype != ''">
+                and numberType = #{numbertype,jdbcType=CHAR}
+            </if>
+            <if test="number != null and number != ''">
+                and number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="usedplatform != null and usedplatform != ''">
+                and usedplatform = #{usedplatform,jdbcType=INTEGER}
+            </if>
+            <if test="createdtime != null and createdtime != ''">
+                and createdtime = #{createdtime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="usestatus != null and usestatus != ''">
+                and useStatus = #{usestatus,jdbcType=INTEGER}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="account != null and account != ''">
+                and account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="parentaccount != null and parentaccount != ''">
+                and parentAccount = #{parentaccount,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

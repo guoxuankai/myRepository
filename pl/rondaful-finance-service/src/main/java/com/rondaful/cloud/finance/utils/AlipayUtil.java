@@ -1,0 +1,29 @@
+package com.rondaful.cloud.finance.utils;
+
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+
+public class AlipayUtil {
+
+	public static final String APP_ID = "2018121062528169";
+	public static final String APP_PRIVATE_KEY = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCTKrwmcB+fn5kAhhlDBkb9ZhSv0MOof2hkRXfIPriO/z4P202W6U+9+HYGun8uHgXnSvyCYFxTo1menWy1riUKi2RX9m9/v0ohj9sWOHt2NhHdJs5gv4V69Og1AojWV7ilgLgDiszCcO+51prIAlVe09qZiLe4ZNbCN1czCwf/jOGYPIStunDlWdYqo9wl7a5z1KWsTI+1S3wZ3Yfkxs3rwnblDBX9nc+Rx15jDEhPJ5gmVE/97PfAESkCRMfuu2YyYSPxgYI/+vxx+svCpEeYuT9sj4qihRMprs6M4xcTmWo1KYD5IoTIZGxc78byBg2cq5wnzqgz4+OpG2YRpxYnAgMBAAECggEAEVOiu1PQJVcBCJLBPqbqjMMMBHcr0hbOD6AuLiFUUWGzyOIlDHODs/Ygz0H930whnc2yVRdLR32f+5DFT86lBczLj5+wGPZIoBLz1HXp800CZWtAORvTd1qGTFd0DOhfEP1KrQAWg34Qe2zM5GeB7Zw7zH/QQaF9t3gUiCnwUyHwQr7lCz5ssVNJ/yyglcmSMFwN3yiEJ2bwKC4BrAIh2XgmCXbPNnw3xG4p6ZWPkgSASysyziSwf7ynpffCdQyc87cOwgDToesKlFTbhIYqMSJAn/A1yWo+X4JZVEXpZwK6VZXn87o6/8GKFq5niIDAdZrpAUJKME14irQyf3rWIQKBgQDyygszLDz10G3s7OJzFTUMzM4qb5rp9byAQ9AiupBKmcsk6dcwplRc+eOAJ1JDY/H6JPb62g4RDbn2KV3WRBSjAzotjgHfSmCajdGoxHRY/ddT/aQ08GzcPDN+TtAQEQpxRqeokYh3HwPy/itZAcuo9Wyr/3ysyDMOwq/Cy2MviwKBgQCbLLYJX2aoFEIyJpOiDREEl0p8/QvH/ZCXRTFMaeu8IkGnqMPNrOeQkIbkeqY0+Wg8eTg9mw/qqfEIBvj6iAtsg0pycECtWj3/tKsy31enwq5ejdA0VMwtlGiSxsrG4T5fPdxNqtBf4G8k02d1RhUzvMQX9xuWvVHISWYGJ7KHVQKBgQDHuR1tgz7CmCtVc6j1MsTpOrF+h0DQpa3jdeWKLB72v301aIf1JV7Q/WAA1Ff/yAAO3smtoiNgNAJ+VZkz4d14G/eH8gHoRa8idPe79aAgdPDlzwl94yoqIfvaM8tE7D/C33ScXtv74i/FfQD7v1ZiL0KuWwWcvTQDOHSNsfJt8QKBgEjX81hxBXLPl8eNHm7LLXr3PotwCpDGcpLgc2UIsBXwCtwWuFwb19SgVAJ7pPxnPExvJzycRxuEzVZUV5rcNGirNU6FbYczPrmD6X4HJFHnbQ2MCvoV+IdJDNIiKdy0rh/tnTaEgi8P33ztFLsTvC4+ZdtOMBBSLUsVUaSADCnFAoGBALZeh+ZB/Zj7zXjhgq00Q1SK0/rKqLAUnsY15BdD58eoSS+Vml7z8ScBGanWmpoE3upxuA5mQmcLTAESRkPcU/sfpZCOaz/lXuQLbS7l1D8yYRyC44dBi+HGPiKcPD9P/kxqDryK/4QebbcBGKWH0rKi0rMRxz3sD8Ve0YpFZCQG";
+	public static final String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi88D132N3rf/8pOyCLwZGd/x2jiJiXq6diFLd+9T89sZ+NVyecxAgRCmtSH4s0tqdwdcu4n2uQD8EBFG/1PNEVuvZF4xqi0WTFKlKlg4UchwoFoHdP0c0ledCPFf/FCeVyWArYuJGRgZhR6mJFT3fokzZb8mkOrdd+GtlsTO/Bzai8qAASvtoqLWG790sxb07OFOBK0NnqDsS8MtLaIiBiuyqe/T2eVzkGqA/Puf86tV/JTKkGo48Kjmwb5YZZbAniu4IFLZ95lyjhC8Flk1uyP8o1XZbqp/umAdxyqysQ/SeltYxbAczoGefiqGZJKM7pAt1NgurHV02tmHbWpYlwIDAQAB";
+	public static final String SIGN_TYPE = "RSA2";
+	public static final String FORMAT = "json";
+	public static final String CHARSET = "UTF-8";
+	public static final String URL = "https://openapi.alipay.com/gateway.do";
+
+	public static final String NOTIFY_URL = "";
+	public static final String RETURN_URL = "http://localhost:1011/alipay/page/returnUrl";
+
+	private static AlipayClient alipayClient = null;
+
+	public static AlipayClient getClient() {
+		if (alipayClient == null) {
+			alipayClient = new DefaultAlipayClient(URL, APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY,
+					SIGN_TYPE);
+		}
+		return alipayClient;
+	}
+
+}

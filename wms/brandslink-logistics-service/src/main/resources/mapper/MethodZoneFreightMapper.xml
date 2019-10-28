@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.logistics.mapper.MethodZoneFreightMapper">
+
+    <resultMap id="selectZoneByIDResultMap" type="com.brandslink.cloud.logistics.model.MethodZoneFreightModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="method_id" jdbcType="BIGINT" property="methodId"/>
+        <result column="logistics_method_code" jdbcType="VARCHAR" property="logisticsMethodCode"/>
+        <result column="logistics_method_name" jdbcType="VARCHAR" property="logisticsMethodName"/>
+        <result column="unsupport_cargo" jdbcType="OTHER" property="unsupportCargo"
+                typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        <result column="promise_days" jdbcType="OTHER" property="promiseDays"
+                typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+        <result column="weight_range" jdbcType="OTHER" property="weightRange"
+                typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+        <result column="limit_length" jdbcType="OTHER" property="limitLength"
+                typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+        <result column="is_count_bulk" jdbcType="TINYINT" property="isCountBulk"/>
+        <result column="count_bulk_rule" jdbcType="OTHER" property="countBulkRule"
+                typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+        <result column="charge_mode" jdbcType="TINYINT" property="chargeMode"/>
+        <result column="rule_first_renew" jdbcType="OTHER" property="ruleFirstRenew"
+                typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler"/>
+        <result column="rule_subsection" jdbcType="OTHER" property="ruleSubsection"
+                typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler"/>
+        <result column="after_charge" jdbcType="DECIMAL" property="afterCharge"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+
+        <collection property="zoneCountryList" javaType="ArrayList"
+                    ofType="com.brandslink.cloud.logistics.model.MethodZoneCountryModel"
+                    column="id">
+            <id column="cid" property="id"/>
+            <result column="zone_id" property="zoneId"/>
+            <result column="country" property="country"/>
+            <result column="country_name" property="countryName"/>
+            <result column="is_remote_fee" property="isRemoteFee"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectZoneByID" parameterType="java.lang.Long" resultMap="selectZoneByIDResultMap">
+        select
+        z.*,
+        c.id AS cid,
+        c.zone_id,
+        c.country,
+        c.country_name,
+        c.is_remote_fee
+        from t_method_zone_freight z left join t_method_zone_country c on z.id = c.zone_id
+        where 1=1
+        and z.id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <resultMap id="selectMethodZoneListResultMap" type="com.brandslink.cloud.logistics.model.MethodZoneFreightModel">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="method_id" jdbcType="BIGINT" property="methodId" />
+        <result column="logistics_method_code" jdbcType="VARCHAR" property="logisticsMethodCode" />
+        <result column="logistics_method_name" jdbcType="VARCHAR" property="logisticsMethodName" />
+        <result column="unsupport_cargo" jdbcType="OTHER" property="unsupportCargo" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler" />
+        <result column="promise_days" jdbcType="OTHER" property="promiseDays" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler" />
+        <result column="weight_range" jdbcType="OTHER" property="weightRange" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler" />
+        <result column="limit_length" jdbcType="OTHER" property="limitLength" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler" />
+        <result column="is_count_bulk" jdbcType="TINYINT" property="isCountBulk" />
+        <result column="count_bulk_rule" jdbcType="OTHER" property="countBulkRule" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler" />
+        <result column="charge_mode" jdbcType="TINYINT" property="chargeMode" />
+        <result column="rule_first_renew" jdbcType="OTHER" property="ruleFirstRenew" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler" />
+        <result column="rule_subsection" jdbcType="OTHER" property="ruleSubsection" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler" />
+        <result column="after_charge" jdbcType="DECIMAL" property="afterCharge" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+
+        <collection property="zoneCountryList" javaType="ArrayList"
+                    ofType="com.brandslink.cloud.logistics.model.MethodZoneCountryModel"
+                    column="id">
+            <id column="cid" property="id"/>
+            <result column="country" property="country"/>
+            <result column="country_name" property="countryName"/>
+            <result column="is_remote_fee" property="isRemoteFee"/>
+        </collection>
+    </resultMap>
+    <select id="selectMethodZoneList" parameterType="java.lang.Long" resultMap="selectMethodZoneListResultMap">
+        select
+        z.id,
+        z.method_id,
+        z.logistics_method_code,
+        z.logistics_method_name,
+        z.unsupport_cargo,
+        z.promise_days,
+        z.weight_range,
+        z.limit_length,
+        z.is_count_bulk,
+        z.charge_mode,
+        z.create_date,
+        z.create_by,
+        z.update_date,
+        z.update_by,
+        c.id AS cid,
+        c.country,
+        c.country_name,
+        c.is_remote_fee
+        from t_method_zone_freight z left join t_method_zone_country c on z.id = c.zone_id
+        where 1=1
+        and z.method_id = #{methodId,jdbcType=BIGINT}
+    </select>
+
+    <update id="updateMethodInfoByMethodID" parameterType="com.brandslink.cloud.logistics.model.MethodZoneFreightModel">
+        update t_method_zone_freight
+        set
+            logistics_method_code = #{logisticsMethodCode,jdbcType=VARCHAR},
+            logistics_method_name = #{logisticsMethodName,jdbcType=VARCHAR}
+        where method_id = #{methodId,jdbcType=BIGINT}
+    </update>
+
+    <!--###################################################################################################-->
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.logistics.model.MethodZoneFreightModel">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="method_id" jdbcType="BIGINT" property="methodId" />
+        <result column="logistics_method_code" jdbcType="VARCHAR" property="logisticsMethodCode" />
+        <result column="logistics_method_name" jdbcType="VARCHAR" property="logisticsMethodName" />
+        <result column="unsupport_cargo" jdbcType="OTHER" property="unsupportCargo" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler" />
+        <result column="promise_days" jdbcType="OTHER" property="promiseDays" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler" />
+        <result column="weight_range" jdbcType="OTHER" property="weightRange" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler" />
+        <result column="limit_length" jdbcType="OTHER" property="limitLength" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler" />
+        <result column="is_count_bulk" jdbcType="TINYINT" property="isCountBulk" />
+        <result column="count_bulk_rule" jdbcType="OTHER" property="countBulkRule" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler" />
+        <result column="charge_mode" jdbcType="TINYINT" property="chargeMode" />
+        <result column="rule_first_renew" jdbcType="OTHER" property="ruleFirstRenew" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler" />
+        <result column="rule_subsection" jdbcType="OTHER" property="ruleSubsection" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler" />
+        <result column="after_charge" jdbcType="DECIMAL" property="afterCharge" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, method_id, logistics_method_code, logistics_method_name, unsupport_cargo, promise_days, 
+        weight_range, limit_length, is_count_bulk, count_bulk_rule, charge_mode, rule_first_renew, 
+        rule_subsection, after_charge, create_date, create_by, update_date,
+        update_by
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_method_zone_freight
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_method_zone_freight
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.logistics.model.MethodZoneFreightModel">
+        insert into t_method_zone_freight (id, method_id, logistics_method_code, 
+            logistics_method_name, unsupport_cargo, 
+            promise_days, 
+            weight_range, 
+            limit_length, 
+            is_count_bulk, count_bulk_rule, 
+            charge_mode, rule_first_renew, 
+            rule_subsection, 
+            after_charge, create_date,
+            create_by, update_date, update_by
+            )
+        values (#{id,jdbcType=BIGINT}, #{methodId,jdbcType=BIGINT}, #{logisticsMethodCode,jdbcType=VARCHAR}, 
+            #{logisticsMethodName,jdbcType=VARCHAR}, #{unsupportCargo,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler}, 
+            #{promiseDays,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler}, 
+            #{weightRange,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler}, 
+            #{limitLength,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler}, 
+            #{isCountBulk,jdbcType=TINYINT}, #{countBulkRule,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler}, 
+            #{chargeMode,jdbcType=TINYINT}, #{ruleFirstRenew,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler}, 
+            #{ruleSubsection,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler}, 
+            #{afterCharge,jdbcType=DECIMAL}, #{createDate,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.brandslink.cloud.logistics.model.MethodZoneFreightModel">
+        insert into t_method_zone_freight
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="methodId != null">
+                method_id,
+            </if>
+            <if test="logisticsMethodCode != null">
+                logistics_method_code,
+            </if>
+            <if test="logisticsMethodName != null">
+                logistics_method_name,
+            </if>
+            <if test="unsupportCargo != null">
+                unsupport_cargo,
+            </if>
+            <if test="promiseDays != null">
+                promise_days,
+            </if>
+            <if test="weightRange != null">
+                weight_range,
+            </if>
+            <if test="limitLength != null">
+                limit_length,
+            </if>
+            <if test="isCountBulk != null">
+                is_count_bulk,
+            </if>
+            <if test="countBulkRule != null">
+                count_bulk_rule,
+            </if>
+            <if test="chargeMode != null">
+                charge_mode,
+            </if>
+            <if test="ruleFirstRenew != null">
+                rule_first_renew,
+            </if>
+            <if test="ruleSubsection != null">
+                rule_subsection,
+            </if>
+            <if test="afterCharge != null">
+                after_charge,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="methodId != null">
+                #{methodId,jdbcType=BIGINT},
+            </if>
+            <if test="logisticsMethodCode != null">
+                #{logisticsMethodCode,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsMethodName != null">
+                #{logisticsMethodName,jdbcType=VARCHAR},
+            </if>
+            <if test="unsupportCargo != null">
+                #{unsupportCargo,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="promiseDays != null">
+                #{promiseDays,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            </if>
+            <if test="weightRange != null">
+                #{weightRange,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            </if>
+            <if test="limitLength != null">
+                #{limitLength,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            </if>
+            <if test="isCountBulk != null">
+                #{isCountBulk,jdbcType=TINYINT},
+            </if>
+            <if test="countBulkRule != null">
+                #{countBulkRule,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            </if>
+            <if test="chargeMode != null">
+                #{chargeMode,jdbcType=TINYINT},
+            </if>
+            <if test="ruleFirstRenew != null">
+                #{ruleFirstRenew,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            </if>
+            <if test="ruleSubsection != null">
+                #{ruleSubsection,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="afterCharge != null">
+                #{afterCharge,jdbcType=DECIMAL},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.logistics.model.MethodZoneFreightModel">
+        update t_method_zone_freight
+        <set>
+            <if test="methodId != null">
+                method_id = #{methodId,jdbcType=BIGINT},
+            </if>
+            <if test="logisticsMethodCode != null">
+                logistics_method_code = #{logisticsMethodCode,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsMethodName != null">
+                logistics_method_name = #{logisticsMethodName,jdbcType=VARCHAR},
+            </if>
+            <if test="unsupportCargo != null">
+                unsupport_cargo = #{unsupportCargo,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="promiseDays != null">
+                promise_days = #{promiseDays,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            </if>
+            <if test="weightRange != null">
+                weight_range = #{weightRange,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            </if>
+            <if test="limitLength != null">
+                limit_length = #{limitLength,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            </if>
+            <if test="isCountBulk != null">
+                is_count_bulk = #{isCountBulk,jdbcType=TINYINT},
+            </if>
+            <if test="countBulkRule != null">
+                count_bulk_rule = #{countBulkRule,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            </if>
+            <if test="chargeMode != null">
+                charge_mode = #{chargeMode,jdbcType=TINYINT},
+            </if>
+            <if test="ruleFirstRenew != null">
+                rule_first_renew = #{ruleFirstRenew,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            </if>
+            <if test="ruleSubsection != null">
+                rule_subsection = #{ruleSubsection,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            </if>
+            <if test="afterCharge != null">
+                after_charge = #{afterCharge,jdbcType=DECIMAL},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.logistics.model.MethodZoneFreightModel">
+        update t_method_zone_freight
+        set method_id = #{methodId,jdbcType=BIGINT},
+            logistics_method_code = #{logisticsMethodCode,jdbcType=VARCHAR},
+            logistics_method_name = #{logisticsMethodName,jdbcType=VARCHAR},
+            unsupport_cargo = #{unsupportCargo,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            promise_days = #{promiseDays,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            weight_range = #{weightRange,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            limit_length = #{limitLength,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            is_count_bulk = #{isCountBulk,jdbcType=TINYINT},
+            count_bulk_rule = #{countBulkRule,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            charge_mode = #{chargeMode,jdbcType=TINYINT},
+            rule_first_renew = #{ruleFirstRenew,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler},
+            rule_subsection = #{ruleSubsection,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler},
+            after_charge = #{afterCharge,jdbcType=DECIMAL},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.logistics.model.MethodZoneFreightModel" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_method_zone_freight
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="methodId != null and methodId != ''">
+                 and method_id = #{methodId,jdbcType=BIGINT}
+            </if>
+            <if test="logisticsMethodCode != null and logisticsMethodCode != ''">
+                 and logistics_method_code = #{logisticsMethodCode,jdbcType=VARCHAR}
+            </if>
+            <if test="logisticsMethodName != null and logisticsMethodName != ''">
+                 and logistics_method_name = #{logisticsMethodName,jdbcType=VARCHAR}
+            </if>
+            <if test="unsupportCargo != null and unsupportCargo != ''">
+                 and unsupport_cargo = #{unsupportCargo,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler}
+            </if>
+            <if test="promiseDays != null and promiseDays != ''">
+                 and promise_days = #{promiseDays,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler}
+            </if>
+            <if test="weightRange != null and weightRange != ''">
+                 and weight_range = #{weightRange,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler}
+            </if>
+            <if test="limitLength != null and limitLength != ''">
+                 and limit_length = #{limitLength,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler}
+            </if>
+            <if test="isCountBulk != null and isCountBulk != ''">
+                 and is_count_bulk = #{isCountBulk,jdbcType=TINYINT}
+            </if>
+            <if test="countBulkRule != null and countBulkRule != ''">
+                 and count_bulk_rule = #{countBulkRule,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler}
+            </if>
+            <if test="chargeMode != null and chargeMode != ''">
+                 and charge_mode = #{chargeMode,jdbcType=TINYINT}
+            </if>
+            <if test="ruleFirstRenew != null and ruleFirstRenew != ''">
+                 and rule_first_renew = #{ruleFirstRenew,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ObjectJsonHandler}
+            </if>
+            <if test="ruleSubsection != null and ruleSubsection != ''">
+                 and rule_subsection = #{ruleSubsection,jdbcType=OTHER,typeHandler=com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler}
+            </if>
+            <if test="afterCharge != null and afterCharge != ''">
+                 and after_charge = #{afterCharge,jdbcType=DECIMAL}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

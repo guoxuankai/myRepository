@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WareHouseAuthorizeMapper">
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.WareHouseAuthorize">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="custom_name" jdbcType="VARCHAR" property="customName"/>
+        <result column="app_key" jdbcType="VARCHAR" property="appKey"/>
+        <result column="app_token" jdbcType="VARCHAR" property="appToken"/>
+        <result column="service_id" jdbcType="INTEGER" property="serviceId"/>
+        <result column="company_code" jdbcType="VARCHAR" property="companyCode"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, custom_name, app_key, app_token, service_id, company_code, status, create_time, 
+    create_user, update_time, update_user
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from warehouse_authorize
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from warehouse_authorize
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.WareHouseAuthorize">
+    insert into warehouse_authorize (id, custom_name, app_key, 
+      app_token, service_id, company_code, 
+      status, create_time, create_user, 
+      update_time, update_user)
+    values (#{id,jdbcType=INTEGER}, #{customName,jdbcType=VARCHAR}, #{appKey,jdbcType=VARCHAR}, 
+      #{appToken,jdbcType=VARCHAR}, #{serviceId,jdbcType=INTEGER}, #{companyCode,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.WareHouseAuthorize">
+        insert into warehouse_authorize
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="customName != null">
+                custom_name,
+            </if>
+            <if test="appKey != null">
+                app_key,
+            </if>
+            <if test="appToken != null">
+                app_token,
+            </if>
+            <if test="serviceId != null">
+                service_id,
+            </if>
+            <if test="companyCode != null">
+                company_code,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="customName != null">
+                #{customName,jdbcType=VARCHAR},
+            </if>
+            <if test="appKey != null">
+                #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="appToken != null">
+                #{appToken,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceId != null">
+                #{serviceId,jdbcType=INTEGER},
+            </if>
+            <if test="companyCode != null">
+                #{companyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.WareHouseAuthorize">
+        update warehouse_authorize
+        <set>
+            <if test="customName != null">
+                custom_name = #{customName,jdbcType=VARCHAR},
+            </if>
+            <if test="appKey != null">
+                app_key = #{appKey,jdbcType=VARCHAR},
+            </if>
+            <if test="appToken != null">
+                app_token = #{appToken,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceId != null">
+                service_id = #{serviceId,jdbcType=INTEGER},
+            </if>
+            <if test="companyCode != null">
+                company_code = #{companyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.WareHouseAuthorize">
+    update warehouse_authorize
+    set custom_name = #{customName,jdbcType=VARCHAR},
+      app_key = #{appKey,jdbcType=VARCHAR},
+      app_token = #{appToken,jdbcType=VARCHAR},
+      service_id = #{serviceId,jdbcType=INTEGER},
+      company_code = #{companyCode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.WareHouseAuthorize" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from warehouse_authorize
+        <trim prefix="where" prefixOverrides="and">
+            and status != 2
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="customName != null and customName != ''">
+                and custom_name = #{customName,jdbcType=VARCHAR}
+            </if>
+            <if test="appKey != null and appKey != ''">
+                and app_key = #{appKey,jdbcType=VARCHAR}
+            </if>
+            <if test="appToken != null and appToken != ''">
+                and app_token = #{appToken,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="serviceId != null and serviceId != ''">
+                and service_id = #{serviceId,jdbcType=INTEGER}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="createUser != null and createUser != ''">
+                and create_user = #{createUser,jdbcType=VARCHAR}
+            </if>
+            <if test="updateUser != null and updateUser != ''">
+                and update_user = #{updateUser,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="companyCode != null and companyCode != ''">
+                and company_code = #{companyCode,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getServiceProviderId" resultType="java.lang.Integer">
+        select t.service_id from warehouse_authorize t INNER JOIN warehouse_service_provider s on t.service_id = s.id
+        and t.company_code
+        in
+        <foreach collection="list" item="s" open="(" close=")" separator=",">
+            #{s}
+        </foreach>
+        GROUP BY t.service_id
+    </select>
+
+    <select id="selectAuthorizeBywarehouseCode" parameterType="java.lang.String"
+            resultType="com.rondaful.cloud.supplier.dto.AuthorizeDTO">
+    	SELECT 
+			au.app_key appKey,au.app_token appToken,
+			au.custom_name customName,au.company_code companyCode
+		FROM warehouse_authorize au
+		INNER JOIN t_warehouse_sync sync ON sync.company_code = au.company_code
+		WHERE sync.warehouse_code = #{warehouseCode} AND au.status = 1
+    </select>
+
+    <select id="getAuthorizeByCompanyCodeList" parameterType="java.util.List"
+            resultType="com.rondaful.cloud.supplier.dto.AuthorizeDTO">
+    	SELECT
+			au.app_key appKey,
+			au.app_token appToken,
+			au.custom_name customName,
+			au.company_code companyCode
+		FROM warehouse_authorize au
+		WHERE au.status = 1 AND au.company_code IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <!-- 查询已授权的账号 -->
+     <select id="getAuthorizeList" resultType="com.rondaful.cloud.supplier.dto.AuthorizeDTO">
+    	SELECT
+			au.app_key appKey,
+			au.app_token appToken,
+			au.custom_name customName,
+			au.company_code companyCode
+		FROM warehouse_authorize au
+		WHERE au.status = 1 
+    </select>
+    <!-- 查询已授权的账号 -->
+     <select id="getAuthorizeByCompanyCode" parameterType="java.lang.String" resultType="com.rondaful.cloud.supplier.dto.AuthorizeDTO">
+    	SELECT
+			au.app_key appKey,
+			au.app_token appToken,
+			au.custom_name customName,
+			au.company_code companyCode
+		FROM warehouse_authorize au
+		WHERE  au.company_code = #{companyCode,jdbcType=VARCHAR}
+    </select>
+</mapper>

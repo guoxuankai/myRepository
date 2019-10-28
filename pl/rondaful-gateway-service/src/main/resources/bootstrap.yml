@@ -1,0 +1,148 @@
+#应用名称
+spring:
+  application:
+           name: rondaful-gateway-service
+  #配置中心
+  cloud:
+    config:
+      profile: dev
+      name: config,default
+      username: rondaful
+      password: rondaful123
+      discovery:
+        enabled: true
+        service-id: rondaful-config-service
+      label: master
+
+
+
+#应用端口
+server:
+    port: 8105
+
+
+
+
+#服务发现
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://rondaful:rondaful123@localhost:8000/eureka/
+    #刷新本地缓存时间
+    registryFetchIntervalSeconds: 5
+  instance:
+    status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/swagger-ui.html
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+    #服务过期时间配置,超过这个时间没有接收到心跳EurekaServer就会将这个实例剔除
+    lease-expiration-duration-in-seconds: 15
+    #服务刷新时间配置，每隔这个时间会主动心跳一次
+    lease-renewal-interval-in-seconds: 5
+
+
+
+
+#路由设置
+zuul:
+   routes:
+     commodity-service:
+        path: /commodity/**
+        serviceId: rondaful-commodity-service
+        sensitive-headers: #过滤指定敏感头部信息headers
+        custom-sensitive-headers: true
+     finance-service:
+       path: /finance/**
+       serviceId: rondaful-finance-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     order-service:
+       path: /order/**
+       serviceId: rondaful-order-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     seller-service:
+       path: /seller/**
+       serviceId: rondaful-seller-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     supplier-service:
+       path: /supplier/**
+       serviceId: rondaful-supplier-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     user-service:
+       path: /user/**
+       serviceId: rondaful-user-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     cms-service:
+       path: /cms/**
+       serviceId: rondaful-cms-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+#zuul.routes.add-proxy-headers=true
+#zuul.sensitive-headers=
+
+
+
+
+
+#接口调试授权
+gateway:
+   username: aaa
+   password: rondaful@123
+
+
+---
+spring:
+  profiles: test
+  cloud:
+    config:
+      profile: test
+
+
+
+#应用端口
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:rondaful_https.pfx
+    key-store-password: Lhv41Jk5
+    key-store-type: PKCS12
+
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://rondaful:rondaful123@172.16.2.203:8000/eureka/
+
+
+
+
+---
+spring:
+  profiles: prod
+  cloud:
+    config:
+      profile: prod
+
+
+#应用端口
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:rondaful_https.pfx
+    key-store-password: Lhv41Jk5
+    key-store-type: PKCS12
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://rondaful:rondaful123@192.168.0.4:50105/eureka/
+
+
+
+---
+

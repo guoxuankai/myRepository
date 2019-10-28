@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.FuzzyQueryMapper">
+
+  <resultMap id="BaseResultMapUser" type="com.rondaful.cloud.user.entity.User">
+    <id column="user_id" jdbcType="INTEGER" property="userid" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="enabled" jdbcType="VARCHAR" property="enabled" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="employee_id" jdbcType="VARCHAR" property="employeeId" />
+    <result column="org_id" jdbcType="VARCHAR" property="orgId" />
+    <result column="platform_type" jdbcType="INTEGER" property="platformType" />
+    <result column="closed_circle" jdbcType="INTEGER" property="closedCircle" />
+    <result column="linkman" jdbcType="VARCHAR" property="linkman" />
+    <result column="site" jdbcType="VARCHAR" property="site" />
+    <result column="supply_chain_company" jdbcType="VARCHAR" property="supplyChainCompany" />
+  </resultMap>
+
+  
+  <sql id="Base_Column_List">
+    user_id, parent_id, username, password, 
+      phone, mobile, email, status,      
+     	 del_flag, login_name, enabled, remarks, create_date, update_date,  
+     		 employee_id, org_id, platform_type,closed_circle,linkman,site,supply_chain_company
+  </sql>
+
+    <!--操作账号管理-操作员模糊查询 -->
+    <select id="getOperationUsernamr" resultType="java.lang.String" parameterType="java.util.Map" >
+        select username from
+        <if test="platformType == 0">sys_supplier_user</if>
+        <if test="platformType == 1">sys_seller_user</if>
+        <if test="platformType == 2">sys_manage_user</if>
+        <where>
+            <if test="username != null">username like CONCAT('%',#{username},'%')</if>
+            <if test="userid != null">and (user_id = #{userid,jdbcType=INTEGER} or parent_id = #{userid,jdbcType=INTEGER})</if>
+        </where>
+    </select>
+
+    <!-- 角色管理-角色代码模糊搜索 - 查找用户对应角色id -->
+    <select id="getroleFuzzyQueryRoleId"  parameterType="java.lang.Integer" resultType="java.lang.Integer">
+      select role_id from sys_user_role where
+       <if test="userid != null">user_id = #{userid,jdbcType=INTEGER}</if>
+    </select>
+
+    <!-- 角色管理-角色代码模糊搜索 - 查找用户对应角色code -->
+    <select id="getroleFuzzyQuery" parameterType="java.util.Map" resultType="java.lang.String">
+        select role_code from sys_role
+        <where>
+            1=1
+            <if test="roleIds != null"> and rid in ( <foreach collection="roleIds" item="roleIds" index="index" separator=",">#{roleIds}</foreach>)</if>
+            <if test="roleCode != null">and role_code like CONCAT('%',#{roleCode},'%')</if>
+        </where>
+    </select>
+
+    <!-- 供应商管理-供应商公司模糊搜索 -->
+    <select id="getSpplierCompanyFuzzyQuery" parameterType="java.lang.String" resultType="java.lang.String">
+        select company_name from sys_supplier_companyinfo
+        <where>
+            <if test="spplierCompany != null">company_name like CONCAT('%',#{spplierCompany},'%') </if>
+        </where>
+    </select>
+
+
+</mapper>
+
+

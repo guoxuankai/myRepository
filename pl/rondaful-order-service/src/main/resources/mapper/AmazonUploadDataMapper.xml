@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.AmazonUploadDataMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.Amazon.AmazonUploadData">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="pl_seller_account" jdbcType="VARCHAR" property="plSellerAccount" />
+        <result column="amazon_seller_account" jdbcType="VARCHAR" property="amazonSellerAccount" />
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId" />
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="orderitem_id" jdbcType="VARCHAR" property="orderitemId" />
+        <result column="feed_type" jdbcType="VARCHAR" property="feedType" />
+        <result column="feed_submission_id" jdbcType="VARCHAR" property="feedSubmissionId" />
+        <result column="message_id" jdbcType="INTEGER" property="messageId" />
+        <result column="submitted_date" jdbcType="VARCHAR" property="submittedDate" />
+        <result column="feed_processing_status" jdbcType="VARCHAR" property="feedProcessingStatus" />
+        <result column="upload_status" jdbcType="INTEGER" property="uploadStatus" />
+        <result column="result_code" jdbcType="VARCHAR" property="resultCode" />
+        <result column="result_message_code" jdbcType="INTEGER" property="resultMessageCode" />
+        <result column="result_description" jdbcType="VARCHAR" property="resultDescription" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, pl_seller_account, amazon_seller_account, marketplace_id, order_id, orderitem_id, 
+        feed_type, feed_submission_id, message_id, submitted_date, feed_processing_status, 
+        upload_status, result_code, result_message_code, result_description, remark, create_date, 
+        update_date
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tbl_amazon_upload_data
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectSubMaxTimeBySiteIdAndSellerId" resultType="java.lang.String">
+        select
+        max(submitted_date)
+        from tbl_amazon_upload_data
+        where marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+        and amazon_seller_account = #{amazonSellerId,jdbcType=VARCHAR}
+        and feed_processing_status!='_DONE_'
+        and upload_status=0
+        AND DATE_SUB(CURDATE(), INTERVAL 90 DAY) &lt;= date(submitted_date)
+    </select>
+
+    <select id="selectSubMinTimeBySiteIdAndSellerId" resultType="java.lang.String">
+        select
+        min(submitted_date)
+        from tbl_amazon_upload_data
+        where marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+        and amazon_seller_account = #{amazonSellerId,jdbcType=VARCHAR}
+        and feed_processing_status!='_DONE_'
+        and upload_status=0
+         AND DATE_SUB(CURDATE(), INTERVAL 90 DAY) &lt;= date(submitted_date)
+    </select>
+
+    <update id="updateProcessStatus" parameterType="java.lang.String" >
+         update tbl_amazon_upload_data
+        <set>
+            <if test="feedProcessingStatus != null">
+                feed_processing_status = #{feedProcessingStatus,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where feed_submission_id = #{feedSubmissionId,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectData" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tbl_amazon_upload_data
+        where amazon_seller_account = #{amazonSellerId,jdbcType=VARCHAR}
+        and marketplace_id =  #{marketplaceId,jdbcType=VARCHAR}
+        and upload_status = 0
+        and feed_processing_status = '_DONE_'
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tbl_amazon_upload_data
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonUploadData">
+        insert into tbl_amazon_upload_data (id, pl_seller_account, amazon_seller_account, 
+            marketplace_id, order_id, orderitem_id, 
+            feed_type, feed_submission_id, message_id, 
+            submitted_date, feed_processing_status, 
+            upload_status, result_code, result_message_code, 
+            result_description, remark, create_date, 
+            update_date)
+        values (#{id,jdbcType=INTEGER}, #{plSellerAccount,jdbcType=VARCHAR}, #{amazonSellerAccount,jdbcType=VARCHAR}, 
+            #{marketplaceId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{orderitemId,jdbcType=VARCHAR}, 
+            #{feedType,jdbcType=VARCHAR}, #{feedSubmissionId,jdbcType=VARCHAR}, #{messageId,jdbcType=INTEGER}, 
+            #{submittedDate,jdbcType=VARCHAR}, #{feedProcessingStatus,jdbcType=VARCHAR}, 
+            #{uploadStatus,jdbcType=INTEGER}, #{resultCode,jdbcType=VARCHAR}, #{resultMessageCode,jdbcType=INTEGER}, 
+            #{resultDescription,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+            #{updateDate,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonUploadData">
+        insert into tbl_amazon_upload_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="plSellerAccount != null">
+                pl_seller_account,
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account,
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="orderitemId != null">
+                orderitem_id,
+            </if>
+            <if test="feedType != null">
+                feed_type,
+            </if>
+            <if test="feedSubmissionId != null">
+                feed_submission_id,
+            </if>
+            <if test="messageId != null">
+                message_id,
+            </if>
+            <if test="submittedDate != null">
+                submitted_date,
+            </if>
+            <if test="feedProcessingStatus != null">
+                feed_processing_status,
+            </if>
+            <if test="uploadStatus != null">
+                upload_status,
+            </if>
+            <if test="resultCode != null">
+                result_code,
+            </if>
+            <if test="resultMessageCode != null">
+                result_message_code,
+            </if>
+            <if test="resultDescription != null">
+                result_description,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="plSellerAccount != null">
+                #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderitemId != null">
+                #{orderitemId,jdbcType=VARCHAR},
+            </if>
+            <if test="feedType != null">
+                #{feedType,jdbcType=VARCHAR},
+            </if>
+            <if test="feedSubmissionId != null">
+                #{feedSubmissionId,jdbcType=VARCHAR},
+            </if>
+            <if test="messageId != null">
+                #{messageId,jdbcType=INTEGER},
+            </if>
+            <if test="submittedDate != null">
+                #{submittedDate,jdbcType=VARCHAR},
+            </if>
+            <if test="feedProcessingStatus != null">
+                #{feedProcessingStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadStatus != null">
+                #{uploadStatus,jdbcType=INTEGER},
+            </if>
+            <if test="resultCode != null">
+                #{resultCode,jdbcType=VARCHAR},
+            </if>
+            <if test="resultMessageCode != null">
+                #{resultMessageCode,jdbcType=INTEGER},
+            </if>
+            <if test="resultDescription != null">
+                #{resultDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <!--更改上传数据状态为成功，排除上传失败的-->
+    <update id="updateUploadStatusSuccessful" >
+        update tbl_amazon_upload_data
+        set  upload_status = 1
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="feedSubmissionId != null and feedSubmissionId!=''">
+                AND feed_submission_id = #{feedSubmissionId,jdbcType=VARCHAR}
+            </if>
+            <if test="messageIdList_Fail != null and messageIdList_Fail.size()>0">
+                and message_id not in
+                <foreach collection="messageIdList_Fail" item="item" index="index" open="(" separator="," close=")">#{item}</foreach>
+            </if>
+        </trim>
+    </update>
+
+    <!--更改上传失败状态并且设置错误信息-->
+    <update id="updateUploadStatusFail">
+          update tbl_amazon_upload_data
+        set  upload_status = 2,
+              result_code = #{resultCode,jdbcType=VARCHAR},
+              result_message_code = #{resultMessageCode,jdbcType=INTEGER},
+              result_description = #{resultDescription,jdbcType=VARCHAR}
+        where message_id = #{messageId,jdbcType=INTEGER}
+        and  feed_submission_id = #{feedSubmissionId,jdbcType=VARCHAR}
+         and  order_id = #{amazonOrderID,jdbcType=VARCHAR}
+           and   orderitem_id = #{amazonOrderItemCode,jdbcType=VARCHAR}
+    </update>
+
+    <!--只更改上传数据结果信息，不更改上传数据结果的状态-->
+    <update id="updateUploadResultInfoOnly">
+          update tbl_amazon_upload_data
+        set   result_code = #{resultCode,jdbcType=VARCHAR},
+              result_message_code = #{resultMessageCode,jdbcType=INTEGER},
+              result_description = #{resultDescription,jdbcType=VARCHAR}
+       where
+           message_id = #{messageId,jdbcType=INTEGER}
+            AND  feed_submission_id = #{feedSubmissionId,jdbcType=VARCHAR}
+            AND  order_id = #{amazonOrderID,jdbcType=VARCHAR}
+            <if test="amazonOrderItemCode != null and amazonOrderItemCode!=''">
+                AND   orderitem_id = #{amazonOrderItemCode,jdbcType=VARCHAR}
+            </if>
+    </update>
+
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonUploadData">
+        update tbl_amazon_upload_data
+        <set>
+            <if test="plSellerAccount != null">
+                pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerAccount != null">
+                amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderitemId != null">
+                orderitem_id = #{orderitemId,jdbcType=VARCHAR},
+            </if>
+            <if test="feedType != null">
+                feed_type = #{feedType,jdbcType=VARCHAR},
+            </if>
+            <if test="feedSubmissionId != null">
+                feed_submission_id = #{feedSubmissionId,jdbcType=VARCHAR},
+            </if>
+            <if test="messageId != null">
+                message_id = #{messageId,jdbcType=INTEGER},
+            </if>
+            <if test="submittedDate != null">
+                submitted_date = #{submittedDate,jdbcType=VARCHAR},
+            </if>
+            <if test="feedProcessingStatus != null">
+                feed_processing_status = #{feedProcessingStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="uploadStatus != null">
+                upload_status = #{uploadStatus,jdbcType=INTEGER},
+            </if>
+            <if test="resultCode != null">
+                result_code = #{resultCode,jdbcType=VARCHAR},
+            </if>
+            <if test="resultMessageCode != null">
+                result_message_code = #{resultMessageCode,jdbcType=INTEGER},
+            </if>
+            <if test="resultDescription != null">
+                result_description = #{resultDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonUploadData">
+        update tbl_amazon_upload_data
+        set pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR},
+            amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            order_id = #{orderId,jdbcType=VARCHAR},
+            orderitem_id = #{orderitemId,jdbcType=VARCHAR},
+            feed_type = #{feedType,jdbcType=VARCHAR},
+            feed_submission_id = #{feedSubmissionId,jdbcType=VARCHAR},
+            message_id = #{messageId,jdbcType=INTEGER},
+            submitted_date = #{submittedDate,jdbcType=VARCHAR},
+            feed_processing_status = #{feedProcessingStatus,jdbcType=VARCHAR},
+            upload_status = #{uploadStatus,jdbcType=INTEGER},
+            result_code = #{resultCode,jdbcType=VARCHAR},
+            result_message_code = #{resultMessageCode,jdbcType=INTEGER},
+            result_description = #{resultDescription,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            update_date = #{updateDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonUploadData" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tbl_amazon_upload_data
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="plSellerAccount != null">
+                 and pl_seller_account = #{plSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="amazonSellerAccount != null">
+                 and amazon_seller_account = #{amazonSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null">
+                 and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId != null">
+                 and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderitemId != null">
+                 and orderitem_id = #{orderitemId,jdbcType=VARCHAR}
+            </if>
+            <if test="feedType != null">
+                 and feed_type = #{feedType,jdbcType=VARCHAR}
+            </if>
+            <if test="feedSubmissionId != null">
+                 and feed_submission_id = #{feedSubmissionId,jdbcType=VARCHAR}
+            </if>
+            <if test="messageId != null">
+                 and message_id = #{messageId,jdbcType=INTEGER}
+            </if>
+            <if test="submittedDate != null">
+                 and submitted_date = #{submittedDate,jdbcType=VARCHAR}
+            </if>
+            <if test="feedProcessingStatus != null">
+                 and feed_processing_status = #{feedProcessingStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="uploadStatus != null">
+                 and upload_status = #{uploadStatus,jdbcType=INTEGER}
+            </if>
+            <if test="resultCode != null">
+                 and result_code = #{resultCode,jdbcType=VARCHAR}
+            </if>
+            <if test="resultMessageCode != null">
+                 and result_message_code = #{resultMessageCode,jdbcType=INTEGER}
+            </if>
+            <if test="resultDescription != null">
+                 and result_description = #{resultDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null">
+                 and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateDate != null">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+</mapper>

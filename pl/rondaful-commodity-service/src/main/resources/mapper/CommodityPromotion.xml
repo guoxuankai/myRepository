@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rondaful.cloud.commodity.mapper.CommodityPromotionMapper">
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.CommodityPromotion">
+        <id column="promotion_id" property="promotionId" jdbcType="INTEGER"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="commodity_id" property="commodityId" jdbcType="BIGINT"/>
+        <result column="create_user_name" property="createUserName" jdbcType="VARCHAR"/>
+        <result column="sale_type" property="saleType" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    promotion_id, create_date,commodity_id,create_user_name,sale_type
+  </sql>
+
+
+    <!-- 添加产品推广信息 -->
+    <insert id="addProductPromotion" parameterType="java.util.List">
+        insert into t_commodity_promotion (sale_type,commodity_id,create_user_name)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.saleType},#{item.commodityId},#{item.createUserName})
+        </foreach>
+
+    </insert>
+
+
+    <!-- 多条件搜索 -->
+
+    <select id="searchPromotion" resultType="String" parameterType="java.util.Map">
+        select commodity_id from t_commodity_promotion
+        <where>
+            <if test="saleType != null and saleType !=''">
+                and sale_type = #{saleType,jdbcType=TINYINT}
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+
+
+    <!-- 查看按钮，根据推广id查询数据 -->
+    <select id="getPromotion" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/> from t_commodity_promotion where promotion_id=#{promotionId}
+  </select>
+
+
+    <!-- 批量删除商品推广信息 -->
+    <delete id="deleteByPromotionId" parameterType="java.util.List">
+        delete from t_commodity_promotion where promotion_id in
+        <foreach collection="list" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+
+    <!-- 查询所有数据 -->
+    <select id="getAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from product_promotion
+    </select>
+
+</mapper>

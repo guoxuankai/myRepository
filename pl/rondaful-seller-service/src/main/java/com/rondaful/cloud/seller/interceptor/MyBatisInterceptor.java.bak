@@ -1,0 +1,61 @@
+package com.rondaful.cloud.seller.interceptor;
+
+import java.util.Properties;
+
+import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Plugin;
+import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.SystemMetaObject;
+import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.RowBounds;
+
+@Intercepts({ @Signature(type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,
+		RowBounds.class, ResultHandler.class }) })
+public class MyBatisInterceptor implements Interceptor {
+
+	String one = " and 1=1";
+	@Override
+	public Object intercept(Invocation invocation) throws Throwable {
+		System.out.println("intercept...intercept:"+invocation.getMethod());
+		
+		invocation.g
+		
+		//动态的改变一下sql运行的参数：以前1号员工，实际从数据库查询3号员工
+		Object target = invocation.getTarget();
+		System.out.println("当前拦截到的对象："+target);
+		//拿到：StatementHandler==>ParameterHandler===>parameterObject
+		//拿到target的元数据
+		MetaObject metaObject = SystemMetaObject.forObject(target);
+		Object value = metaObject.getValue("parameterHandler.parameterObject");
+		System.out.println("sql语句用的参数是："+value);
+		//修改完sql语句要用的参数
+		metaObject.setValue("parameterHandler.parameterObject", 3);
+		//metaObject.getValue()可以取到拦截目标对象StatementHandler 里面的属性；在BaseStatementHandler里看StatementHandler所有可以取到属性
+		Object mappedStatement = metaObject.getValue("parameterHandler.mappedStatement");
+		System.out.println("mappedStatement："+mappedStatement);
+		//执行目标方法
+		Object proceed = invocation.proceed();
+		//返回执行后的返回值
+            
+		return invocation.proceed();
+	}
+
+	@Override
+	public Object plugin(Object target) {
+		// TODO Auto-generated method stub
+		 System.out.println(target);
+		 return Plugin.wrap(target, this);
+	}
+
+	@Override
+	public void setProperties(Properties properties) {
+		// TODO Auto-generated method stub
+		 System.out.println(properties);
+	}
+
+}

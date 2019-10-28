@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.NewSellerUserMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.NewSellerUser">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="level" jdbcType="INTEGER" property="level" />
+        <result column="supply_chain_company" jdbcType="VARCHAR" property="supplyChainCompany" />
+        <result column="top_user_id" jdbcType="INTEGER" property="topUserId" />
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+        <result column="phone_code" jdbcType="VARCHAR" property="phoneCode" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="qq" jdbcType="VARCHAR" property="qq" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="post_code" jdbcType="VARCHAR" property="postCode" />
+        <result column="country" jdbcType="INTEGER" property="country" />
+        <result column="province" jdbcType="INTEGER" property="province" />
+        <result column="city" jdbcType="INTEGER" property="city" />
+        <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+        <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="head_img" jdbcType="VARCHAR" property="headImg" />
+        <result column="auth_by" jdbcType="VARCHAR" property="authBy" />
+        <result column="auth_date" jdbcType="TIMESTAMP" property="authDate" />
+        <result column="upc" jdbcType="INTEGER" property="upc" />
+        <result column="register_source" jdbcType="VARCHAR" property="registerSource" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, level,supply_chain_company, top_user_id, parent_id, login_name, user_name, pass_word, phone_code,phone, mobile,
+        email, status, qq, address, post_code, country, province, city, department_id, job_name, 
+        remark, create_date, create_by, update_date, update_by, version,head_img,auth_by,auth_date,upc,register_source
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_seller_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_seller_user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.NewSellerUser" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into t_seller_user (id, level, supply_chain_company,top_user_id,
+            parent_id, login_name, user_name, 
+            pass_word,phone_code, phone, mobile,
+            email, status, qq, 
+            address, post_code, country, 
+            province, city, department_id, 
+            job_name, remark, create_date, 
+            create_by, update_date, update_by, 
+            version,head_img,upc,register_source)
+        values (#{id,jdbcType=INTEGER}, #{level,jdbcType=INTEGER},#{supplyChainCompany,jdbcType=VARCHAR}, #{topUserId,jdbcType=INTEGER},
+            #{parentId,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+            #{passWord,jdbcType=VARCHAR}, #{phoneCode,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{qq,jdbcType=VARCHAR}, 
+            #{address,jdbcType=VARCHAR}, #{postCode,jdbcType=VARCHAR}, #{country,jdbcType=INTEGER}, 
+            #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, 
+            #{jobName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+            #{createBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+            #{version,jdbcType=INTEGER}, #{headImg,jdbcType=VARCHAR}, #{upc,jdbcType=INTEGER}, #{registerSource,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.NewSellerUser">
+        insert into t_seller_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="supplyChainCompany !=null ">
+                supply_chain_company,
+            </if>
+            <if test="topUserId != null">
+                top_user_id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="loginName != null">
+                login_name,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="passWord != null">
+                pass_word,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="phoneCode != null">
+                phone_code,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="qq != null">
+                qq,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="postCode != null">
+                post_code,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="departmentId != null">
+                department_id,
+            </if>
+            <if test="jobName != null">
+                job_name,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="headImg != null">
+                head_img,
+            </if>
+            <if test="upc != null or upc==0">
+                upc,
+            </if>
+            <if test="registerSource != null">
+                register_source,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="supplyChainCompany != null">
+                #{supplyChainCompany,jdbcType=INTEGER},
+            </if>
+            <if test="topUserId != null">
+                #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="loginName != null">
+                #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="passWord != null">
+                #{passWord,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCode != null">
+                #{phoneCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="qq != null">
+                #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="postCode != null">
+                #{postCode,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=INTEGER},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=INTEGER},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=INTEGER},
+            </if>
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="jobName != null">
+                #{jobName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="headImg != null">
+                #{headImg,jdbcType=VARCHAR},
+            </if>
+            <if test="upc != null or upc==0">
+                #{upc,jdbcType=INTEGER},
+            </if>
+            <if test="registerSource != null ">
+                #{registerSource,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.NewSellerUser">
+        update t_seller_user
+        <set>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="supplyChainCompany != null">
+                supply_chain_company = #{supplyChainCompany,jdbcType=INTEGER},
+            </if>
+            <if test="topUserId != null">
+                top_user_id = #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="loginName != null and phone !=''">
+                login_name = #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="passWord != null and passWord!=''">
+                pass_word = #{passWord,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCode != null">
+                phone_code = #{phoneCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone !=''">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="qq != null">
+                qq = #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="postCode != null">
+                post_code = #{postCode,jdbcType=VARCHAR},
+            </if>
+            country = #{country,jdbcType=INTEGER},
+            province = #{province,jdbcType=INTEGER},
+            city = #{city,jdbcType=INTEGER},
+            <if test="departmentId != null">
+                department_id = #{departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="jobName != null">
+                job_name = #{jobName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+            <if test="headImg != null">
+                head_img = #{headImg,jdbcType=VARCHAR} ,
+            </if>
+            <if test="authDate != null">
+                auth_date = #{authDate,jdbcType=TIMESTAMP} ,
+            </if>
+            <if test="authBy != null">
+                auth_by = #{authBy,jdbcType=VARCHAR} ,
+            </if>
+            <if test="upc != null or upc==0">
+                upc = #{upc,jdbcType=INTEGER} ,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.NewSellerUser">
+        update t_seller_user
+        set level = #{level,jdbcType=INTEGER},
+            supply_chain_company = #{supplyChainCompany,jdbcType=INTEGER},
+            top_user_id = #{topUserId,jdbcType=INTEGER},
+            parent_id = #{parentId,jdbcType=INTEGER},
+            login_name = #{loginName,jdbcType=VARCHAR},
+            user_name = #{userName,jdbcType=VARCHAR},
+            phone_code = #{phoneCode,jdbcType=VARCHAR},
+            phone = #{phone,jdbcType=VARCHAR},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            email = #{email,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            qq = #{qq,jdbcType=VARCHAR},
+            address = #{address,jdbcType=VARCHAR},
+            post_code = #{postCode,jdbcType=VARCHAR},
+            country = #{country,jdbcType=INTEGER},
+            province = #{province,jdbcType=INTEGER},
+            city = #{city,jdbcType=INTEGER},
+            department_id = #{departmentId,jdbcType=INTEGER},
+            job_name = #{jobName,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1,
+            head_img = #{headImg,jdbcType=VARCHAR},
+            auth_date = #{authDate,jdbcType=TIMESTAMP},
+            auth_by = #{authBy,jdbcType=VARCHAR},
+            upc = #{upc,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.NewSellerUser" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_seller_user
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="level != null and level != ''">
+                 and level = #{level,jdbcType=INTEGER}
+            </if>
+            <if test="supplyChainCompany != null">
+                supply_chain_company = #{supplyChainCompany,jdbcType=INTEGER},
+            </if>
+            <if test="topUserId != null and topUserId != ''">
+                 and top_user_id = #{topUserId,jdbcType=INTEGER}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                 and parent_id = #{parentId,jdbcType=INTEGER}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                 and login_name = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="userName != null and userName != ''">
+                 and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="passWord != null and passWord != ''">
+                 and pass_word = #{passWord,jdbcType=VARCHAR}
+            </if>
+            <if test="phone != null and phone != ''">
+                 and phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                 and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                 and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="qq != null and qq != ''">
+                 and qq = #{qq,jdbcType=VARCHAR}
+            </if>
+            <if test="address != null and address != ''">
+                 and address = #{address,jdbcType=VARCHAR}
+            </if>
+            <if test="postCode != null and postCode != ''">
+                 and post_code = #{postCode,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+                 and country = #{country,jdbcType=INTEGER}
+            </if>
+            <if test="province != null and province != ''">
+                 and province = #{province,jdbcType=INTEGER}
+            </if>
+            <if test="city != null and city != ''">
+                 and city = #{city,jdbcType=INTEGER}
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                 and department_id = #{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="jobName != null and jobName != ''">
+                 and job_name = #{jobName,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                 and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+            <if test="headImg != null and headImg != ''">
+                and head_img = #{headImg,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_seller_user
+        where login_name = #{loginName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getBackPage" parameterType="com.rondaful.cloud.user.entity.QuerySellerPageDO"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_seller_user
+        where top_user_id = 0 and status in
+        <foreach collection="status" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        <if test="supplyChainCompany !=null and supplyChainCompany!='' ">
+            and supply_chain_company = #{supplyChainCompany,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime !=null and endTime !=null ">
+            <if test="dateType==1">
+                and auth_date between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="dateType==2">
+                and update_date  between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </if>
+        <if test="userIds != null and userIds.size()>0">
+            and id in
+            <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="phone !=null and phone !='' ">
+            and phone = #{phone,jdbcType=VARCHAR}
+        </if>
+        <if test="loginName != null and loginName != ''">
+            and login_name = #{loginName,jdbcType=VARCHAR}
+        </if>
+        <if test="email != null and email != ''">
+            and email = #{email,jdbcType=VARCHAR}
+        </if>
+        <if test="userName != null and userName != ''">
+            and user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        order by auth_date desc
+    </select>
+
+    <select id="getTop"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_seller_user
+        where top_user_id=0  and `status` =#{status,jdbcType=INTEGER}
+        <if test="userIds !=null and userIds.size()>0 and status ==1">
+            and id in
+            <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        order by update_date desc
+    </select>
+
+    <select id="getSizeByStatus"  resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM t_seller_user WHERE top_user_id=0
+        <if test="status!=null or status==0">
+            AND  `status` = #{status,jdbcType=INTEGER}
+        </if>
+
+    </select>
+
+    <select id="getChildPage"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_seller_user
+        <where>
+            top_user_id = #{topUserId,jdbcType=INTEGER}
+            <if test="loginName!=null and loginName!=''">
+                and login_name = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="userName!=null and userName!=''">
+                and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="departmentId!=null and departmentId!=''">
+                and department_id = #{departmentId,jdbcType=INTEGER}
+            </if>
+            <if test="jobName!=null and jobName !=''">
+                and job_name  like concat('%',#{jobName,jdbcType=LONGVARCHAR},'%')
+            </if>
+            <if test="startTime!=null and endTime!=null">
+                and create_date  between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="userIds!=null and userIds.size()>0">
+                and id in
+                <foreach collection="userIds" item="item" open="(" close=")" separator=",">
+                    #{item,jdbcType=INTEGER}
+                </foreach>
+            </if>
+        </where>
+        order by create_date desc
+    </select>
+
+    <select id="getsName"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_seller_user
+        where `status`=1
+        <if test="userId != null and userId.size() > 0">
+             and id in
+            <foreach collection="userId" item="item" open="(" close=")" separator=",">
+                #{item,jdbcType=INTEGER}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getsChildName"  resultMap="BaseResultMap">
+        select
+        id,login_name,`status`,user_name
+        from t_seller_user
+        where top_user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_seller_user
+        where phone = #{phone,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_seller_user
+        where email = #{email,jdbcType=VARCHAR} limit 1
+    </select>
+
+    <select id="getsByDep" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        count(id)
+        from t_seller_user
+        where department_id = #{departmentId,jdbcType=INTEGER}
+    </select>
+    <select id="getTotalAccount" parameterType="java.lang.String"  resultType="java.lang.Integer">
+        select count(id) from t_seller_user where  supply_chain_company = #{supplyChainId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getMaxId"  resultType="java.lang.Integer">
+        SELECT id FROM t_seller_user ORDER BY id DESC LIMIT 1
+    </select>
+</mapper>

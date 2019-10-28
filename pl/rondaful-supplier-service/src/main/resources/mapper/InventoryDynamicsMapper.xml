@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.InventoryDynamicsMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.InventoryDynamics">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="pinlian_sku" jdbcType="VARCHAR" property="sku" />
+         <result column="supplier_sku" jdbcType="VARCHAR" property="supplierSku" />
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
+        <result column="operate_type" jdbcType="VARCHAR" property="operateType" />
+        <result column="alert_inventory" jdbcType="INTEGER" property="alertInventory" />
+        <result column="operate_date" jdbcType="TIMESTAMP" property="operateDate" />
+        <result column="operate_by" jdbcType="VARCHAR" property="operateBy" />
+        <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+        <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, pinlian_sku,supplier_id,supplier, warehouse_name, operate_type, alert_inventory, operate_date, operate_by
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_inventory_dynamics
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_inventory_dynamics
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insertBatchInventoryDynamics" parameterType="com.rondaful.cloud.supplier.entity.InventoryDynamics">
+        insert into t_inventory_dynamics ( pinlian_sku, supplier_sku,supplier_id, supplier, warehouse_name, warehouse_code, operate_type, alert_inventory, operate_date )
+        values 
+         <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.sku,jdbcType=VARCHAR},#{item.supplierSku,jdbcType=VARCHAR},#{item.supplierId,jdbcType=INTEGER},#{item.supplier,jdbcType=VARCHAR}, #{item.warehouseName,jdbcType=VARCHAR},#{item.warehouseCode,jdbcType=VARCHAR},
+            #{item.operateType,jdbcType=VARCHAR}, #{item.alertInventory,jdbcType=INTEGER}, #{item.operateDate,jdbcType=TIMESTAMP})
+           </foreach>
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.InventoryDynamics">
+        insert into t_inventory_dynamics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="pinlianSku != null">
+                pinlian_sku,
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name,
+            </if>
+            <if test="operateType != null">
+                operate_type,
+            </if>
+            <if test="alertInventory != null">
+                alert_inventory,
+            </if>
+            <if test="operateDate != null">
+                operate_date,
+            </if>
+            <if test="operateBy != null">
+                operate_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="pinlianSku != null">
+                #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="operateType != null">
+                #{operateType,jdbcType=VARCHAR},
+            </if>
+            <if test="alertInventory != null">
+                #{alertInventory,jdbcType=INTEGER},
+            </if>
+            <if test="operateDate != null">
+                #{operateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operateBy != null">
+                #{operateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.InventoryDynamics">
+        update t_inventory_dynamics
+        <set>
+            <if test="pinlianSku != null">
+                pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="operateType != null">
+                operate_type = #{operateType,jdbcType=VARCHAR},
+            </if>
+            <if test="alertInventory != null">
+                alert_inventory = #{alertInventory,jdbcType=INTEGER},
+            </if>
+            <if test="operateDate != null">
+                operate_date = #{operateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operateBy != null">
+                operate_by = #{operateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.InventoryDynamics">
+        update t_inventory_dynamics
+        set pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            operate_type = #{operateType,jdbcType=VARCHAR},
+            alert_inventory = #{alertInventory,jdbcType=INTEGER},
+            operate_date = #{operateDate,jdbcType=TIMESTAMP},
+            operate_by = #{operateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.InventoryDynamics" resultMap="BaseResultMap">
+		SELECT
+			dy.id,
+			dy.pinlian_sku,
+			dy.warehouse_name,
+			dy.operate_type,
+			dy.alert_inventory,
+			dy.operate_date,
+			dy.operate_by,
+			dy.supplier_id,
+			dy.supplier,
+			dy.supplier_sku
+		FROM
+			t_inventory_dynamics dy where 1 = 1 
+         <if test="supplierId != null">
+                 and dy.supplier_id = #{supplierId,jdbcType=INTEGER}
+            </if>
+            <if test="sku != null">
+                 and dy.pinlian_sku like '%' #{sku,jdbcType=VARCHAR} '%'
+            </if>
+             <if test="supplierSku != null">
+                 and dy.supplier_sku like '%' #{supplierSku,jdbcType=VARCHAR} '%'
+            </if>
+            <if test="warehouseName != null">
+                 and dy.warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseCode != null">
+                and dy.warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="operateType != null">
+                 and dy.operate_type = #{operateType,jdbcType=VARCHAR}
+            </if>
+            <if test="beginDate != null and endDate != null ">
+	                 and (operate_date <![CDATA[ >= ]]> str_to_date(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')
+	                  and operate_date <![CDATA[ < ]]>  str_to_date(#{endDate,jdbcType=TIMESTAMP} ,'%Y-%m-%d %H:%i:%s') )
+	         </if>
+            
+    </select>
+   <select id="getInventoryDyListByIds" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT
+			dy.id,
+			dy.pinlian_sku,
+			dy.warehouse_name,
+			dy.operate_type,
+			dy.alert_inventory,
+			dy.operate_date,
+			dy.operate_by,
+			dy.supplier_sku
+		FROM
+			t_inventory_dynamics dy 
+		WHERE
+			1=1 
+          <if test="supplierId != null">
+                 and dy.supplier_id = #{supplierId,jdbcType=INTEGER}
+            </if>
+           <if test="ids != null" >
+             and dy.id in
+            <foreach  item="item" collection="ids" index="index"  open="(" separator="," close=")">#{item}</foreach>
+       		 </if>
+            
+    </select> 
+</mapper>

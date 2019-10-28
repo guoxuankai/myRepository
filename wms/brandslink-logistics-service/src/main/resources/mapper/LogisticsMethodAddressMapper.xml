@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.logistics.mapper.LogisticsMethodAddressMapper">
+    <insert id="insertUpdateSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodAddressModel">
+        insert into t_logistics_method_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="addressName != null">
+                address_name,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="company != null">
+                company,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="district != null">
+                district,
+            </if>
+            <if test="street != null">
+                street,
+            </if>
+            <if test="postcode != null">
+                postcode,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="addressName != null">
+                #{addressName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="company != null">
+                #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="street != null">
+                #{street,jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                #{postcode,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        address_name = VALUES(address_name),
+        type = VALUES(type),
+        name = VALUES(name),
+        company = VALUES(company),
+        country = VALUES(country),
+        state = VALUES(state),
+        city = VALUES(city),
+        district = VALUES(district),
+        street = VALUES(street),
+        postcode = VALUES(postcode),
+        mobile = VALUES(mobile),
+        email = VALUES(email),
+        update_by = VALUES(update_by)
+    </insert>
+
+    <select id="selectByID" resultType="com.brandslink.cloud.logistics.model.LogisticsMethodAddressModel">
+        select
+        <include refid="Base_Column_List"/>
+        from t_logistics_method_address
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="page" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodAddressModel"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_logistics_method_address
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="addressName != null and addressName != ''">
+                and address_name like "%"#{addressName,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type,jdbcType=TINYINT}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="company != null and company != ''">
+                and company = #{company,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null and state != ''">
+                and state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="district != null and district != ''">
+                and district = #{district,jdbcType=VARCHAR}
+            </if>
+            <if test="street != null and street != ''">
+                and street = #{street,jdbcType=VARCHAR}
+            </if>
+            <if test="postcode != null and postcode != ''">
+                and postcode = #{postcode,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="beginDate != null">
+                and unix_timestamp(create_date) <![CDATA[ >= ]]> unix_timestamp(#{beginDate})
+            </if>
+            <if test="endDate != null">
+                and unix_timestamp(create_date) <![CDATA[ <= ]]> unix_timestamp(#{endDate})
+            </if>
+        </trim>
+    </select>
+
+    <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.logistics.model.LogisticsMethodAddressModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="address_name" jdbcType="VARCHAR" property="addressName"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="company" jdbcType="VARCHAR" property="company"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="district" jdbcType="VARCHAR" property="district"/>
+        <result column="street" jdbcType="VARCHAR" property="street"/>
+        <result column="postcode" jdbcType="VARCHAR" property="postcode"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, address_name, type, name, company, country, state, city, district, street, postcode, 
+        mobile, email, create_date, create_by, update_date, update_by
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_logistics_method_address
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_logistics_method_address
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodAddressModel">
+        insert into t_logistics_method_address (id, address_name, type, 
+            name, company, country, 
+            state, city, district, 
+            street, postcode, mobile, 
+            email, create_date, create_by, 
+            update_date, update_by)
+        values (#{id,jdbcType=BIGINT}, #{addressName,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
+            #{name,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, 
+            #{state,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, 
+            #{street,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+            #{email,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodAddressModel">
+        insert into t_logistics_method_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="addressName != null">
+                address_name,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="company != null">
+                company,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="district != null">
+                district,
+            </if>
+            <if test="street != null">
+                street,
+            </if>
+            <if test="postcode != null">
+                postcode,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="addressName != null">
+                #{addressName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=TINYINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="company != null">
+                #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="street != null">
+                #{street,jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                #{postcode,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodAddressModel">
+        update t_logistics_method_address
+        <set>
+            <if test="addressName != null">
+                address_name = #{addressName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="company != null">
+                company = #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                district = #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="street != null">
+                street = #{street,jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                postcode = #{postcode,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodAddressModel">
+        update t_logistics_method_address
+        set address_name = #{addressName,jdbcType=VARCHAR},
+            type = #{type,jdbcType=TINYINT},
+            name = #{name,jdbcType=VARCHAR},
+            company = #{company,jdbcType=VARCHAR},
+            country = #{country,jdbcType=VARCHAR},
+            state = #{state,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            district = #{district,jdbcType=VARCHAR},
+            street = #{street,jdbcType=VARCHAR},
+            postcode = #{postcode,jdbcType=VARCHAR},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            email = #{email,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--<select id="page" parameterType="com.brandslink.cloud.logistics.model.LogisticsMethodAddressModel" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_logistics_method_address
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="addressName != null and addressName != ''">
+                 and address_name = #{addressName,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null and type != ''">
+                 and type = #{type,jdbcType=TINYINT}
+            </if>
+            <if test="name != null and name != ''">
+                 and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="company != null and company != ''">
+                 and company = #{company,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+                 and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null and state != ''">
+                 and state = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null and city != ''">
+                 and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="district != null and district != ''">
+                 and district = #{district,jdbcType=VARCHAR}
+            </if>
+            <if test="street != null and street != ''">
+                 and street = #{street,jdbcType=VARCHAR}
+            </if>
+            <if test="postcode != null and postcode != ''">
+                 and postcode = #{postcode,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                 and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                 and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>-->
+</mapper>

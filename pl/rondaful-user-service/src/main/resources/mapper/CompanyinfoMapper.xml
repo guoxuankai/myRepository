@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.CompanyinfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.Companyinfo">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+        <result column="reg_area" jdbcType="VARCHAR" property="regArea" />
+        <result column="reg_address" jdbcType="VARCHAR" property="regAddress" />
+        <result column="credit_code" jdbcType="VARCHAR" property="creditCode" />
+        <result column="create_date" jdbcType="VARCHAR" property="createDate" />
+        <result column="operating_period" jdbcType="VARCHAR" property="operatingPeriod" />
+        <result column="company_scale" jdbcType="VARCHAR" property="companyScale" />
+        <result column="legalperson_name" jdbcType="VARCHAR" property="legalpersonName" />
+        <result column="legalperson_identitycard" jdbcType="VARCHAR" property="legalpersonIdentitycard" />
+        <result column="identitycard_front_image" jdbcType="VARCHAR" property="identitycardFrontImage" />
+        <result column="identitycard_reverse_image" jdbcType="VARCHAR" property="identitycardReverseImage" />
+        <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+        <result column="company_profile" jdbcType="VARCHAR" property="companyProfile" />
+        <result column="monthly_turnover" jdbcType="VARCHAR" property="monthlyTurnover" />
+        <result column="platform_type" jdbcType="INTEGER" property="platformType" />
+        <result column="brand_licensing" jdbcType="VARCHAR" property="brandLicensing" />
+        <result column="other_certificates" jdbcType="VARCHAR" property="otherCertificates" />
+        <result column="seller_type" jdbcType="INTEGER" property="sellerType" />
+        <result column="management_platform" jdbcType="VARCHAR" property="managementPlatform" />
+        <result column="main_category" jdbcType="VARCHAR" property="mainCategory" />
+		<result column="image_content" jdbcType="VARCHAR" property="imageContent" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, company_name, reg_area, reg_address, credit_code, create_date, operating_period,
+        company_scale, legalperson_name, legalperson_identitycard, identitycard_front_image,
+        identitycard_reverse_image, business_license, company_profile,monthly_turnover,
+        platform_type, brand_licensing, other_certificates,seller_type,management_platform,main_category,image_content
+    </sql>
+
+	
+	<!-- 通过用户id查询卖家信息 -->
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from sys_seller_companyinfo
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+
+
+    <!--判断当前用户的企业信息是否存在-->
+    <select id="isCompanyinfo" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+          <include refid="Base_Column_List"/>
+        from
+        <if test="platformTypes == 0">sys_supplier_companyinfo</if>
+        <if test="platformTypes == 1">sys_seller_companyinfo</if>
+         where user_id = #{userId}
+    </select>
+
+    <!-- 新增用户企业信息 -->
+    <insert id="insertCompanyInfo" parameterType="com.rondaful.cloud.user.entity.Companyinfo" >
+        insert into
+        <if test="platformType == 0">sys_supplier_companyinfo</if>
+        <if test="platformType == 1">sys_seller_companyinfo</if>
+        <if test="platformType == 9">sys_supply_chain_companyinfo</if>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="regArea != null">
+                reg_area,
+            </if>
+            <if test="regAddress != null">
+                reg_address,
+            </if>
+            <if test="creditCode != null">
+                credit_code,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="operatingPeriod != null">
+                operating_period,
+            </if>
+            <if test="companyScale != null">
+                company_scale,
+            </if>
+            <if test="legalpersonName != null">
+                legalperson_name,
+            </if>
+            <if test="legalpersonIdentitycard != null">
+                legalperson_identitycard,
+            </if>
+            <if test="identitycardFrontImage != null">
+                identitycard_front_image,
+            </if>
+            <if test="identitycardReverseImage != null">
+                identitycard_reverse_image,
+            </if>
+            <if test="businessLicense != null">
+                business_license,
+            </if>
+            <if test="companyProfile != null">
+                company_profile,
+            </if>
+            <if test="monthlyTurnover != null">
+                monthly_turnover,
+            </if>
+            <if test="platformType != null">
+                platform_type,
+            </if>
+            <if test="brandLicensing != null">
+                brand_licensing,
+            </if>
+            <if test="otherCertificates != null">
+                other_certificates,
+            </if>
+            <if test="sellerType != null">
+                seller_type,
+            </if>
+            <if test="managementPlatform != null">
+                management_platform,
+            </if>
+            <if test="mainCategory != null">
+                main_category,
+            </if>
+            <if test="imageContent">image_content</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="regArea != null">
+                #{regArea,jdbcType=VARCHAR},
+            </if>
+            <if test="regAddress != null">
+                #{regAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="operatingPeriod != null">
+                #{operatingPeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="companyScale != null">
+                #{companyScale,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonName != null">
+                #{legalpersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonIdentitycard != null">
+                #{legalpersonIdentitycard,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardFrontImage != null">
+                #{identitycardFrontImage,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardReverseImage != null">
+                #{identitycardReverseImage,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="companyProfile != null">
+                #{companyProfile,jdbcType=VARCHAR},
+            </if>
+            <if test="monthlyTurnover != null">
+                #{monthlyTurnover,jdbcType=INTEGER},
+            </if>
+            <if test="platformType != null">
+                #{platformType,jdbcType=INTEGER},
+            </if>
+            <if test="brandLicensing != null">
+                #{brandLicensing,jdbcType=VARCHAR},
+            </if>
+            <if test="otherCertificates != null">
+                #{otherCertificates,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerType != null">#{sellerType,jdbcType=INTEGER},</if>
+            <if test="managementPlatform != null">#{managementPlatform,jdbcType=VARCHAR},</if>
+            <if test="mainCategory != null">#{mainCategory,jdbcType=VARCHAR},</if>
+            <if test="imageContent != null">#{imageContent,jdbcType=VARCHAR}</if>
+        </trim>
+    </insert>
+
+    <select id="getSupplierChainCompanyCompanyInfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_supply_chain_companyinfo
+    </select>
+
+
+    <!-- 修改企业信息 -->
+    <update id="updateCompanyInfo" parameterType="com.rondaful.cloud.user.entity.Companyinfo">
+        update
+        <if test="platformType == 0">sys_supplier_companyinfo</if>
+        <if test="platformType == 1">sys_seller_companyinfo</if>
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="regArea != null">
+                reg_area = #{regArea,jdbcType=VARCHAR},
+            </if>
+            <if test="regAddress != null">
+                reg_address = #{regAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                credit_code = #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="operatingPeriod != null">
+                operating_period = #{operatingPeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="companyScale != null">
+                company_scale = #{companyScale,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonName != null">
+                legalperson_name = #{legalpersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonIdentitycard != null">
+                legalperson_identitycard = #{legalpersonIdentitycard,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardFrontImage != null">
+                identitycard_front_image = #{identitycardFrontImage,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardReverseImage != null">
+                identitycard_reverse_image = #{identitycardReverseImage,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                business_license = #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="companyProfile != null">
+                company_profile = #{companyProfile,jdbcType=VARCHAR},
+            </if>
+            <if test="monthlyTurnover != null">
+                monthly_turnover = #{monthlyTurnover,jdbcType=INTEGER},
+            </if>
+            <if test="platformType != null">
+                platform_type = #{platformType,jdbcType=INTEGER},
+            </if>
+            <if test="brandLicensing != null">
+                brand_licensing = #{brandLicensing,jdbcType=VARCHAR},
+            </if>
+            <if test="otherCertificates != null">
+                other_certificates = #{otherCertificates,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerType != null">seller_type = #{sellerType,jdbcType=INTEGER},</if>
+            <if test="managementPlatform != null">management_platform = #{managementPlatform,jdbcType=VARCHAR},</if>
+            <if test="mainCategory != null">main_category = #{mainCategory,jdbcType=VARCHAR},</if>
+            <if test="imageContent != null">image_content = #{imageContent,jdbcType=VARCHAR}</if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    
+    <!-- 修改企业信息 -->
+    <update id="updateCompanyInfoByUserId" parameterType="com.rondaful.cloud.user.entity.Companyinfo">
+        update  sys_seller_companyinfo
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="regArea != null">
+                reg_area = #{regArea,jdbcType=VARCHAR},
+            </if>
+            <if test="regAddress != null">
+                reg_address = #{regAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                credit_code = #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="operatingPeriod != null">
+                operating_period = #{operatingPeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="companyScale != null">
+                company_scale = #{companyScale,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonName != null">
+                legalperson_name = #{legalpersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonIdentitycard != null">
+                legalperson_identitycard = #{legalpersonIdentitycard,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardFrontImage != null">
+                identitycard_front_image = #{identitycardFrontImage,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardReverseImage != null">
+                identitycard_reverse_image = #{identitycardReverseImage,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                business_license = #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="companyProfile != null">
+                company_profile = #{companyProfile,jdbcType=VARCHAR},
+            </if>
+            <if test="monthlyTurnover != null">
+                monthly_turnover = #{monthlyTurnover,jdbcType=INTEGER},
+            </if>
+            <if test="platformType != null">
+                platform_type = #{platformType,jdbcType=INTEGER},
+            </if>
+            <if test="brandLicensing != null">
+                brand_licensing = #{brandLicensing,jdbcType=VARCHAR},
+            </if>
+            <if test="otherCertificates != null">
+                other_certificates = #{otherCertificates,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerType != null">seller_type = #{sellerType,jdbcType=INTEGER},</if>
+            <if test="managementPlatform != null">management_platform = #{managementPlatform,jdbcType=VARCHAR},</if>
+            <if test="mainCategory != null">main_category = #{mainCategory,jdbcType=VARCHAR},</if>
+            <if test="imageContent != null">image_content = #{imageContent,jdbcType=VARCHAR}</if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    
+    
+    
+
+    <!-- 供应链公司信息修改===>修改企业信息 -->
+    <update id="updateSupplyChainCompany" parameterType="com.rondaful.cloud.user.entity.Companyinfo">
+        update sys_supply_chain_companyinfo
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="regArea != null">
+                reg_area = #{regArea,jdbcType=VARCHAR},
+            </if>
+            <if test="regAddress != null">
+                reg_address = #{regAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="creditCode != null">
+                credit_code = #{creditCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=VARCHAR},
+            </if>
+            <if test="operatingPeriod != null">
+                operating_period = #{operatingPeriod,jdbcType=VARCHAR},
+            </if>
+            <if test="companyScale != null">
+                company_scale = #{companyScale,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonName != null">
+                legalperson_name = #{legalpersonName,jdbcType=VARCHAR},
+            </if>
+            <if test="legalpersonIdentitycard != null">
+                legalperson_identitycard = #{legalpersonIdentitycard,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardFrontImage != null">
+                identitycard_front_image = #{identitycardFrontImage,jdbcType=VARCHAR},
+            </if>
+            <if test="identitycardReverseImage != null">
+                identitycard_reverse_image = #{identitycardReverseImage,jdbcType=VARCHAR},
+            </if>
+            <if test="businessLicense != null">
+                business_license = #{businessLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="companyProfile != null">
+                company_profile = #{companyProfile,jdbcType=VARCHAR},
+            </if>
+            <if test="monthlyTurnover != null">
+                monthly_turnover = #{monthlyTurnover,jdbcType=INTEGER},
+            </if>
+            <if test="platformType != null">
+                platform_type = #{platformType,jdbcType=INTEGER},
+            </if>
+            <if test="brandLicensing != null">
+                brand_licensing = #{brandLicensing,jdbcType=VARCHAR},
+            </if>
+            <if test="otherCertificates != null">
+                other_certificates = #{otherCertificates,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerType != null">seller_type = #{sellerType,jdbcType=INTEGER},</if>
+            <if test="managementPlatform != null">management_platform = #{managementPlatform,jdbcType=VARCHAR},</if>
+            <if test="mainCategory != null">main_category = #{mainCategory,jdbcType=VARCHAR},</if>
+            <if test="imageContent != null">image_content = #{imageContent,jdbcType=VARCHAR}</if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
+   <!-- 供应链公司个人中心===>获取企业信息 -->
+    <select id="getSupplyChainCompanyUserCompanyInfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_supply_chain_companyinfo
+        <where>
+            <if test="userId != null">user_id = #{userId}</if>
+        </where>
+    </select>
+
+    <!-- 供应商个人中心===>获取企业信息 -->
+    <select id="getSupplierCompanyUserCompanyInfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_supplier_companyinfo
+        <where>
+            <if test="userId != null">user_id = #{userId}</if>
+        </where>
+    </select>
+
+    <!-- 卖家个人中心===>获取企业信息 -->
+    <select id="getSellerCompanyUserCompanyInfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_seller_companyinfo
+        <where>
+            <if test="userId != null">user_id = #{userId}</if>
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,120 @@
+#应用名称
+spring:
+  application:
+           name: brandslink-gateway-service
+
+
+
+#应用端口
+server:
+  port: 8443
+
+
+
+#apollo
+app:
+  id: wms-config-service
+apollo:
+  meta: http://120.78.154.137:8145
+  cluster:
+  bootstrap:
+    namespaces:
+    enabled: true
+    eagerLoad:
+      enabled: true
+
+
+#路由设置
+zuul:
+   routes:
+     user-service:
+        path: /user/**
+        serviceId: brandslink-user-service
+        sensitive-headers: #过滤指定敏感头部信息headers
+        custom-sensitive-headers: true
+     logistics-service:
+       path: /logistics/**
+       serviceId: brandslink-logistics-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     report-service:
+       path: /report/**
+       serviceId: brandslink-report-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     outbound-service:
+       path: /outbound/**
+       serviceId: brandslink-outbound-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     inbound-service:
+       path: /inbound/**
+       serviceId: brandslink-inbound-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     center-service:
+       path: /center/**
+       serviceId: brandslink-center-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     warehouse-service:
+       path: /warehouse/**
+       serviceId: brandslink-warehouse-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+     finance-service:
+       path: /finance/**
+       serviceId: brandslink-finance-service
+       sensitive-headers: #过滤指定敏感头部信息headers
+       custom-sensitive-headers: true
+#zuul.routes.add-proxy-headers=true
+#zuul.sensitive-headers=
+
+
+
+
+
+
+
+#服务发现
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://brandslink:brandslink123@172.19.43.62:8100/eureka/
+
+
+
+---
+spring:
+  profiles: test
+
+server:
+  ssl:
+    key-store: classpath:rondaful_https.pfx
+    key-store-password: Lhv41Jk5
+    key-store-type: PKCS12
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://brandslink:brandslink123@172.16.2.214:8100/eureka/
+
+
+apollo:
+  meta: http://120.78.154.137:8146
+
+
+
+
+---
+spring:
+  profiles: prod
+
+
+apollo:
+  meta: http://120.78.154.137:8147
+
+
+---
+

@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.aliexpress.AliexpressOrderMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrder">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="buyer_login_id" jdbcType="VARCHAR" property="buyerLoginId" />
+        <result column="buyer_signer_full_name" jdbcType="VARCHAR" property="buyerSignerFullName" />
+        <result column="biz_type" jdbcType="VARCHAR" property="bizType" />
+        <result column="frozen_status" jdbcType="VARCHAR" property="frozenStatus" />
+        <result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
+        <result column="issue_status" jdbcType="VARCHAR" property="issueStatus" />
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+        <result column="gmt_pay_time" jdbcType="TIMESTAMP" property="gmtPayTime" />
+        <result column="seller_signer_full_name" jdbcType="VARCHAR" property="sellerSignerFullName" />
+        <result column="seller_login_id" jdbcType="VARCHAR" property="sellerLoginId" />
+        <result column="over_time_left" jdbcType="TIMESTAMP" property="overTimeLeft" />
+        <result column="receipt_country" jdbcType="VARCHAR" property="receiptCountry" />
+        <result column="logistics_amount" jdbcType="DECIMAL" property="logisticsAmount" />
+        <result column="logistics_code" jdbcType="VARCHAR" property="logisticsCode" />
+        <result column="logistics_status" jdbcType="VARCHAR" property="logisticsStatus" />
+        <result column="pl_logistics_status" jdbcType="VARCHAR" property="plLogisticsStatus" />
+        <result column="pl_logistics_time" jdbcType="TIMESTAMP" property="plLogisticsTime" />
+        <result column="pl_process_status" jdbcType="TINYINT" property="plProcessStatus" />
+        <result column="pl_account" jdbcType="VARCHAR" property="plAccount" />
+        <result column="pl_seller_id" jdbcType="INTEGER" property="plSellerId" />
+        <result column="call_back_status" jdbcType="TINYINT" property="callBackStatus" />
+        <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="empower_id" jdbcType="INTEGER" property="empowerId" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrder">
+        <result column="memo" jdbcType="LONGVARCHAR" property="memo" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, version, order_id, buyer_login_id, buyer_signer_full_name, biz_type, frozen_status, 
+        order_status, issue_status, gmt_create, gmt_pay_time, seller_signer_full_name, seller_login_id, 
+        over_time_left, receipt_country, logistics_amount, logistics_code, logistics_status, 
+        pl_logistics_status, pl_logistics_time, pl_process_status, pl_account, pl_seller_id, 
+        call_back_status, creat_time, update_time, empower_id
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        memo
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_aliexpress_order
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_aliexpress_order
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrder">
+        insert into t_aliexpress_order (id, version, order_id, 
+            buyer_login_id, buyer_signer_full_name, biz_type, 
+            frozen_status, order_status, issue_status, 
+            gmt_create, gmt_pay_time, seller_signer_full_name, 
+            seller_login_id, over_time_left, receipt_country, 
+            logistics_amount, logistics_code, logistics_status, 
+            pl_logistics_status, pl_logistics_time, 
+            pl_process_status, pl_account, pl_seller_id, 
+            call_back_status, creat_time, update_time, 
+            empower_id, memo)
+        values (#{id,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, 
+            #{buyerLoginId,jdbcType=VARCHAR}, #{buyerSignerFullName,jdbcType=VARCHAR}, #{bizType,jdbcType=VARCHAR}, 
+            #{frozenStatus,jdbcType=VARCHAR}, #{orderStatus,jdbcType=VARCHAR}, #{issueStatus,jdbcType=VARCHAR}, 
+            #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtPayTime,jdbcType=TIMESTAMP}, #{sellerSignerFullName,jdbcType=VARCHAR}, 
+            #{sellerLoginId,jdbcType=VARCHAR}, #{overTimeLeft,jdbcType=TIMESTAMP}, #{receiptCountry,jdbcType=VARCHAR}, 
+            #{logisticsAmount,jdbcType=DECIMAL}, #{logisticsCode,jdbcType=VARCHAR}, #{logisticsStatus,jdbcType=VARCHAR}, 
+            #{plLogisticsStatus,jdbcType=VARCHAR}, #{plLogisticsTime,jdbcType=TIMESTAMP}, 
+            #{plProcessStatus,jdbcType=TINYINT}, #{plAccount,jdbcType=VARCHAR}, #{plSellerId,jdbcType=INTEGER}, 
+            #{callBackStatus,jdbcType=TINYINT}, #{creatTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{empowerId,jdbcType=INTEGER}, #{memo,jdbcType=LONGVARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrder">
+        insert into t_aliexpress_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="buyerLoginId != null">
+                buyer_login_id,
+            </if>
+            <if test="buyerSignerFullName != null">
+                buyer_signer_full_name,
+            </if>
+            <if test="bizType != null">
+                biz_type,
+            </if>
+            <if test="frozenStatus != null">
+                frozen_status,
+            </if>
+            <if test="orderStatus != null">
+                order_status,
+            </if>
+            <if test="issueStatus != null">
+                issue_status,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtPayTime != null">
+                gmt_pay_time,
+            </if>
+            <if test="sellerSignerFullName != null">
+                seller_signer_full_name,
+            </if>
+            <if test="sellerLoginId != null">
+                seller_login_id,
+            </if>
+            <if test="overTimeLeft != null">
+                over_time_left,
+            </if>
+            <if test="receiptCountry != null">
+                receipt_country,
+            </if>
+            <if test="logisticsAmount != null">
+                logistics_amount,
+            </if>
+            <if test="logisticsCode != null">
+                logistics_code,
+            </if>
+            <if test="logisticsStatus != null">
+                logistics_status,
+            </if>
+            <if test="plLogisticsStatus != null">
+                pl_logistics_status,
+            </if>
+            <if test="plLogisticsTime != null">
+                pl_logistics_time,
+            </if>
+            <if test="plProcessStatus != null">
+                pl_process_status,
+            </if>
+            <if test="plAccount != null">
+                pl_account,
+            </if>
+            <if test="plSellerId != null">
+                pl_seller_id,
+            </if>
+            <if test="callBackStatus != null">
+                call_back_status,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerLoginId != null">
+                #{buyerLoginId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerSignerFullName != null">
+                #{buyerSignerFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="bizType != null">
+                #{bizType,jdbcType=VARCHAR},
+            </if>
+            <if test="frozenStatus != null">
+                #{frozenStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="issueStatus != null">
+                #{issueStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtPayTime != null">
+                #{gmtPayTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sellerSignerFullName != null">
+                #{sellerSignerFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerLoginId != null">
+                #{sellerLoginId,jdbcType=VARCHAR},
+            </if>
+            <if test="overTimeLeft != null">
+                #{overTimeLeft,jdbcType=TIMESTAMP},
+            </if>
+            <if test="receiptCountry != null">
+                #{receiptCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsAmount != null">
+                #{logisticsAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticsCode != null">
+                #{logisticsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsStatus != null">
+                #{logisticsStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="plLogisticsStatus != null">
+                #{plLogisticsStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="plLogisticsTime != null">
+                #{plLogisticsTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="plProcessStatus != null">
+                #{plProcessStatus,jdbcType=TINYINT},
+            </if>
+            <if test="plAccount != null">
+                #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="plSellerId != null">
+                #{plSellerId,jdbcType=INTEGER},
+            </if>
+            <if test="callBackStatus != null">
+                #{callBackStatus,jdbcType=TINYINT},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrder">
+        update t_aliexpress_order
+        <set>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+            <if test="buyerLoginId != null">
+                buyer_login_id = #{buyerLoginId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerSignerFullName != null">
+                buyer_signer_full_name = #{buyerSignerFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="bizType != null">
+                biz_type = #{bizType,jdbcType=VARCHAR},
+            </if>
+            <if test="frozenStatus != null">
+                frozen_status = #{frozenStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="issueStatus != null">
+                issue_status = #{issueStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtPayTime != null">
+                gmt_pay_time = #{gmtPayTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sellerSignerFullName != null">
+                seller_signer_full_name = #{sellerSignerFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerLoginId != null">
+                seller_login_id = #{sellerLoginId,jdbcType=VARCHAR},
+            </if>
+            <if test="overTimeLeft != null">
+                over_time_left = #{overTimeLeft,jdbcType=TIMESTAMP},
+            </if>
+            <if test="receiptCountry != null">
+                receipt_country = #{receiptCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsAmount != null">
+                logistics_amount = #{logisticsAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticsCode != null">
+                logistics_code = #{logisticsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsStatus != null">
+                logistics_status = #{logisticsStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="plLogisticsStatus != null">
+                pl_logistics_status = #{plLogisticsStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="plLogisticsTime != null">
+                pl_logistics_time = #{plLogisticsTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="plProcessStatus != null">
+                pl_process_status = #{plProcessStatus,jdbcType=TINYINT},
+            </if>
+            <if test="plAccount != null">
+                pl_account = #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="plSellerId != null">
+                pl_seller_id = #{plSellerId,jdbcType=INTEGER},
+            </if>
+            <if test="callBackStatus != null">
+                call_back_status = #{callBackStatus,jdbcType=TINYINT},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=INTEGER},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where order_id = #{orderId,jdbcType=VARCHAR}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrder">
+        update t_aliexpress_order
+        set version = #{version,jdbcType=BIGINT},
+            order_id = #{orderId,jdbcType=VARCHAR},
+            buyer_login_id = #{buyerLoginId,jdbcType=VARCHAR},
+            buyer_signer_full_name = #{buyerSignerFullName,jdbcType=VARCHAR},
+            biz_type = #{bizType,jdbcType=VARCHAR},
+            frozen_status = #{frozenStatus,jdbcType=VARCHAR},
+            order_status = #{orderStatus,jdbcType=VARCHAR},
+            issue_status = #{issueStatus,jdbcType=VARCHAR},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_pay_time = #{gmtPayTime,jdbcType=TIMESTAMP},
+            seller_signer_full_name = #{sellerSignerFullName,jdbcType=VARCHAR},
+            seller_login_id = #{sellerLoginId,jdbcType=VARCHAR},
+            over_time_left = #{overTimeLeft,jdbcType=TIMESTAMP},
+            receipt_country = #{receiptCountry,jdbcType=VARCHAR},
+            logistics_amount = #{logisticsAmount,jdbcType=DECIMAL},
+            logistics_code = #{logisticsCode,jdbcType=VARCHAR},
+            logistics_status = #{logisticsStatus,jdbcType=VARCHAR},
+            pl_logistics_status = #{plLogisticsStatus,jdbcType=VARCHAR},
+            pl_logistics_time = #{plLogisticsTime,jdbcType=TIMESTAMP},
+            pl_process_status = #{plProcessStatus,jdbcType=TINYINT},
+            pl_account = #{plAccount,jdbcType=VARCHAR},
+            pl_seller_id = #{plSellerId,jdbcType=INTEGER},
+            call_back_status = #{callBackStatus,jdbcType=TINYINT},
+            creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            empower_id = #{empowerId,jdbcType=INTEGER},
+            memo = #{memo,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrder">
+        update t_aliexpress_order
+        set version = #{version,jdbcType=BIGINT} + 1,
+            order_id = #{orderId,jdbcType=VARCHAR},
+            buyer_login_id = #{buyerLoginId,jdbcType=VARCHAR},
+            buyer_signer_full_name = #{buyerSignerFullName,jdbcType=VARCHAR},
+            biz_type = #{bizType,jdbcType=VARCHAR},
+            frozen_status = #{frozenStatus,jdbcType=VARCHAR},
+            order_status = #{orderStatus,jdbcType=VARCHAR},
+            issue_status = #{issueStatus,jdbcType=VARCHAR},
+            gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            gmt_pay_time = #{gmtPayTime,jdbcType=TIMESTAMP},
+            seller_signer_full_name = #{sellerSignerFullName,jdbcType=VARCHAR},
+            seller_login_id = #{sellerLoginId,jdbcType=VARCHAR},
+            over_time_left = #{overTimeLeft,jdbcType=TIMESTAMP},
+            receipt_country = #{receiptCountry,jdbcType=VARCHAR},
+            logistics_amount = #{logisticsAmount,jdbcType=DECIMAL},
+            logistics_code = #{logisticsCode,jdbcType=VARCHAR},
+            logistics_status = #{logisticsStatus,jdbcType=VARCHAR},
+            pl_logistics_status = #{plLogisticsStatus,jdbcType=VARCHAR},
+            pl_logistics_time = #{plLogisticsTime,jdbcType=TIMESTAMP},
+            pl_process_status = #{plProcessStatus,jdbcType=TINYINT},
+            pl_account = #{plAccount,jdbcType=VARCHAR},
+            pl_seller_id = #{plSellerId,jdbcType=INTEGER},
+            call_back_status = #{callBackStatus,jdbcType=TINYINT},
+            creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            empower_id = #{empowerId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrder" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_aliexpress_order
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                 and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerLoginId != null and buyerLoginId != ''">
+                 and buyer_login_id = #{buyerLoginId,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerSignerFullName != null and buyerSignerFullName != ''">
+                 and buyer_signer_full_name = #{buyerSignerFullName,jdbcType=VARCHAR}
+            </if>
+            <if test="bizType != null and bizType != ''">
+                 and biz_type = #{bizType,jdbcType=VARCHAR}
+            </if>
+            <if test="frozenStatus != null and frozenStatus != ''">
+                 and frozen_status = #{frozenStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                 and order_status = #{orderStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="issueStatus != null and issueStatus != ''">
+                 and issue_status = #{issueStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="gmtCreate != null and gmtCreate != ''">
+                 and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="gmtPayTime != null and gmtPayTime != ''">
+                 and gmt_pay_time = #{gmtPayTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="sellerSignerFullName != null and sellerSignerFullName != ''">
+                 and seller_signer_full_name = #{sellerSignerFullName,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerLoginId != null and sellerLoginId != ''">
+                 and seller_login_id = #{sellerLoginId,jdbcType=VARCHAR}
+            </if>
+            <if test="overTimeLeft != null and overTimeLeft != ''">
+                 and over_time_left = #{overTimeLeft,jdbcType=TIMESTAMP}
+            </if>
+            <if test="receiptCountry != null and receiptCountry != ''">
+                 and receipt_country = #{receiptCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="logisticsAmount != null and logisticsAmount != ''">
+                 and logistics_amount = #{logisticsAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="logisticsCode != null and logisticsCode != ''">
+                 and logistics_code = #{logisticsCode,jdbcType=VARCHAR}
+            </if>
+            <if test="logisticsStatus != null and logisticsStatus != ''">
+                 and logistics_status = #{logisticsStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="plLogisticsStatus != null and plLogisticsStatus != ''">
+                 and pl_logistics_status = #{plLogisticsStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="plLogisticsTime != null and plLogisticsTime != ''">
+                 and pl_logistics_time = #{plLogisticsTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="plProcessStatus != null and plProcessStatus != ''">
+                 and pl_process_status = #{plProcessStatus,jdbcType=TINYINT}
+            </if>
+            <if test="plAccount != null and plAccount != ''">
+                 and pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="plSellerId != null and plSellerId != ''">
+                 and pl_seller_id = #{plSellerId,jdbcType=INTEGER}
+            </if>
+            <if test="callBackStatus != null and callBackStatus != ''">
+                 and call_back_status = #{callBackStatus,jdbcType=TINYINT}
+            </if>
+            <if test="creatTime != null and creatTime != ''">
+                 and creat_time = #{creatTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                 and empower_id = #{empowerId,jdbcType=INTEGER}
+            </if>
+            <if test="memo != null and memo != ''">
+                 and memo = #{memo,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="pageByTime" parameterType="com.rondaful.cloud.order.model.aliexpress.request.QueryPageDTO" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_aliexpress_order
+        where
+        <if test="queryType==1">
+            gmt_create  BETWEEN #{startTime,jdbcType=TIMESTAMP} AND #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="queryType==2">
+            pl_logistics_time  BETWEEN #{startTime,jdbcType=TIMESTAMP} AND #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="plProcessStatus != null and plProcessStatus != '' or plProcessStatus==0">
+            and pl_process_status = #{plProcessStatus,jdbcType=TINYINT}
+        </if>
+        <if test="callBackStatus != null and callBackStatus != '' or plProcessStatus==0">
+            and call_back_status = #{callBackStatus,jdbcType=TINYINT}
+        </if>
+        <if test="orderId != null and orderId != ''">
+            and order_id = #{orderId,jdbcType=VARCHAR}
+        </if>
+        <if test="orderStatus != null and orderStatus != '' or plProcessStatus==0">
+            and order_status = #{orderStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="userNames != null and userNames.size()>0 ">
+            and pl_account in
+            <foreach collection="userNames" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="empIds != null and empIds.size()>0 ">
+            and empower_id in
+            <foreach collection="empIds" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        order by gmt_create desc
+    </select>
+
+    <select id="getsByOrderId" parameterType="java.util.List" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_aliexpress_order
+        where order_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            (#{item,jdbcType=VARCHAR})
+        </foreach>
+    </select>
+
+    <update id="updateBatchStatus" parameterType="java.util.Map">
+        <foreach item="value" index="key" collection="map.entrySet()" separator=";" >
+            UPDATE t_aliexpress_order SET pl_process_status= #{value}  WHERE order_id = #{key} and pl_process_status !=1
+        </foreach>
+    </update>
+
+    <insert id="inserts" parameterType="java.util.List">
+        insert into t_aliexpress_order (order_id,
+            buyer_login_id, buyer_signer_full_name, biz_type,
+            frozen_status, order_status, issue_status,
+            gmt_create, gmt_pay_time, seller_signer_full_name,
+            seller_login_id, over_time_left, receipt_country,
+            logistics_amount, logistics_code, logistics_status,
+            pl_logistics_status, pl_logistics_time,
+            pl_process_status, pl_account, pl_seller_id,
+            call_back_status, creat_time, update_time,
+            empower_id, memo)
+        values
+
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.orderId,jdbcType=VARCHAR},
+            #{item.buyerLoginId,jdbcType=VARCHAR}, #{item.buyerSignerFullName,jdbcType=VARCHAR}, #{item.bizType,jdbcType=VARCHAR},
+            #{item.frozenStatus,jdbcType=VARCHAR}, #{item.orderStatus,jdbcType=VARCHAR}, #{item.issueStatus,jdbcType=VARCHAR},
+            #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtPayTime,jdbcType=TIMESTAMP}, #{item.sellerSignerFullName,jdbcType=VARCHAR},
+            #{item.sellerLoginId,jdbcType=VARCHAR}, #{item.overTimeLeft,jdbcType=TIMESTAMP}, #{item.receiptCountry,jdbcType=VARCHAR},
+            #{item.logisticsAmount,jdbcType=DECIMAL}, #{item.logisticsCode,jdbcType=VARCHAR}, #{item.logisticsStatus,jdbcType=VARCHAR},
+            #{item.plLogisticsStatus,jdbcType=VARCHAR}, #{item.plLogisticsTime,jdbcType=TIMESTAMP},
+            #{item.plProcessStatus,jdbcType=TINYINT}, #{item.plAccount,jdbcType=VARCHAR}, #{item.plSellerId,jdbcType=INTEGER},
+            #{item.callBackStatus,jdbcType=TINYINT}, #{item.creatTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.empowerId,jdbcType=INTEGER}, #{item.memo,jdbcType=LONGVARCHAR})
+        </foreach>
+
+    </insert>
+
+    <select id="getByOrderId" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_aliexpress_order
+        where order_id = #{orderd,jdbcType=BIGINT}
+    </select>
+
+    <update id="updateByOrderId" parameterType="com.rondaful.cloud.order.entity.aliexpress.AliexpressOrder">
+        update t_aliexpress_order
+        set
+            order_status = #{orderStatus,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=VARCHAR}
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+</mapper>

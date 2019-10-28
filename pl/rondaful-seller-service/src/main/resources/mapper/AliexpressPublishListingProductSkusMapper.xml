@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressPublishListingProductSkusMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressPublishListingProductSkus">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="publish_listing_id" jdbcType="BIGINT" property="publishListingId" />
+        <result column="product_id" jdbcType="BIGINT" property="productId" />
+        <result column="pl_sku" jdbcType="VARCHAR" property="plSku" />
+        <result column="pl_sku_number" jdbcType="INTEGER" property="plSkuNumber" />
+        <result column="pl_sku_name" jdbcType="VARCHAR" property="plSkuName" />
+        <result column="pl_sku_attribute" jdbcType="VARCHAR" property="plSkuAttribute" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, publish_listing_id, product_id, pl_sku, pl_sku_number, pl_sku_name, pl_sku_attribute
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_product_skus
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_publish_listing_product_skus
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingProductSkus">
+        insert into aliexpress_publish_listing_product_skus (id, publish_listing_id, product_id, 
+            pl_sku, pl_sku_number, pl_sku_name, 
+            pl_sku_attribute)
+        values (#{id,jdbcType=BIGINT}, #{publishListingId,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, 
+            #{plSku,jdbcType=VARCHAR}, #{plSkuNumber,jdbcType=INTEGER}, #{plSkuName,jdbcType=VARCHAR}, 
+            #{plSkuAttribute,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingProductSkus">
+        insert into aliexpress_publish_listing_product_skus
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="publishListingId != null">
+                publish_listing_id,
+            </if>
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="plSku != null">
+                pl_sku,
+            </if>
+            <if test="plSkuNumber != null">
+                pl_sku_number,
+            </if>
+            <if test="plSkuName != null">
+                pl_sku_name,
+            </if>
+            <if test="plSkuAttribute != null">
+                pl_sku_attribute,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="publishListingId != null">
+                #{publishListingId,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null">
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="plSku != null">
+                #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="plSkuNumber != null">
+                #{plSkuNumber,jdbcType=INTEGER},
+            </if>
+            <if test="plSkuName != null">
+                #{plSkuName,jdbcType=VARCHAR},
+            </if>
+            <if test="plSkuAttribute != null">
+                #{plSkuAttribute,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingProductSkus">
+        update aliexpress_publish_listing_product_skus
+        <set>
+            <if test="publishListingId != null">
+                publish_listing_id = #{publishListingId,jdbcType=BIGINT},
+            </if>
+            <if test="productId != null">
+                product_id = #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="plSku != null">
+                pl_sku = #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="plSkuNumber != null">
+                pl_sku_number = #{plSkuNumber,jdbcType=INTEGER},
+            </if>
+            <if test="plSkuName != null">
+                pl_sku_name = #{plSkuName,jdbcType=VARCHAR},
+            </if>
+            <if test="plSkuAttribute != null">
+                pl_sku_attribute = #{plSkuAttribute,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingProductSkus">
+        update aliexpress_publish_listing_product_skus
+        set publish_listing_id = #{publishListingId,jdbcType=BIGINT},
+            product_id = #{productId,jdbcType=BIGINT},
+            pl_sku = #{plSku,jdbcType=VARCHAR},
+            pl_sku_number = #{plSkuNumber,jdbcType=INTEGER},
+            pl_sku_name = #{plSkuName,jdbcType=VARCHAR},
+            pl_sku_attribute = #{plSkuAttribute,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListingProductSkus" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_product_skus
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="publishListingId != null and publishListingId != ''">
+                 and publish_listing_id = #{publishListingId,jdbcType=BIGINT}
+            </if>
+            <if test="productId != null and productId != ''">
+                 and product_id = #{productId,jdbcType=BIGINT}
+            </if>
+            <if test="plSku != null and plSku != ''">
+                 and pl_sku = #{plSku,jdbcType=VARCHAR}
+            </if>
+            <if test="plSkuNumber != null and plSkuNumber != ''">
+                 and pl_sku_number = #{plSkuNumber,jdbcType=INTEGER}
+            </if>
+            <if test="plSkuName != null and plSkuName != ''">
+                 and pl_sku_name = #{plSkuName,jdbcType=VARCHAR}
+            </if>
+            <if test="plSkuAttribute != null and plSkuAttribute != ''">
+                 and pl_sku_attribute = #{plSkuAttribute,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+
+
+    <delete id="delectProductSkus" parameterType="java.lang.Long">
+        delete from aliexpress_publish_listing_product_skus
+        where publish_listing_id = #{publishListingId,jdbcType=BIGINT}
+    </delete>
+
+
+    <select id="getProductSkusByPublishListingId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_product_skus
+        where publish_listing_id = #{publishListingId,jdbcType=BIGINT}
+    </select>
+    <select id="getProductSkusByPublishListingIds" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing_product_skus
+        where publish_listing_id in
+        <foreach collection="publishListingIds" item="publishListingId" open="(" close=")" separator=",">
+            #{publishListingId,jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+
+</mapper>

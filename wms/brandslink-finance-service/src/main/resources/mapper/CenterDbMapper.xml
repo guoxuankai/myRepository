@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.CenterDbMapper">
+    <select id="getWarehouseName" resultType="java.lang.String">
+        select warehouse_name from wms_warehouse where warehouse_code=#{warehouseCode}
+    </select>
+
+    <select id="getBySkuList" resultType="com.brandslink.cloud.finance.pojo.dto.ProductDto">
+        select product_sku as productSku,product_name as productName,customer as customerCode,customer_name as customerName,
+        product_length as productLength,product_width as productWidth,product_height as productHeight,product_volume as productVolume,
+        product_weight as productWeight,package_length as packageLength,package_width as packageWidth,package_height as packageHeight,
+        package_weight as packageWeight from t_product_sku where product_sku in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

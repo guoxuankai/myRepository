@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.CommodityOperateLogMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.CommodityOperateLog">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="creat_time" jdbcType="VARCHAR" property="creatTime" />
+        <result column="operate_by" jdbcType="VARCHAR" property="operateBy" />
+        <result column="operate_info" jdbcType="VARCHAR" property="operateInfo" />
+        <result column="commodity_stat" jdbcType="VARCHAR" property="commodityStat" />
+        <result column="commodity_id" jdbcType="BIGINT" property="commodityId" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, version, creat_time, operate_by, operate_info, commodity_stat, commodity_id
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_operate_log
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_commodity_operate_log
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.CommodityOperateLog">
+        insert into t_commodity_operate_log (id, version, creat_time, 
+            operate_by, operate_info, commodity_stat, 
+            commodity_id)
+        values (#{id,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{creatTime,jdbcType=VARCHAR}, 
+            #{operateBy,jdbcType=VARCHAR}, #{operateInfo,jdbcType=VARCHAR}, #{commodityStat,jdbcType=VARCHAR}, 
+            #{commodityId,jdbcType=BIGINT})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityOperateLog">
+        insert into t_commodity_operate_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+            <if test="operateBy != null">
+                operate_by,
+            </if>
+            <if test="operateInfo != null">
+                operate_info,
+            </if>
+            <if test="commodityStat != null">
+                commodity_stat,
+            </if>
+            <if test="commodityId != null">
+                commodity_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=VARCHAR},
+            </if>
+            <if test="operateBy != null">
+                #{operateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="operateInfo != null">
+                #{operateInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="commodityStat != null">
+                #{commodityStat,jdbcType=VARCHAR},
+            </if>
+            <if test="commodityId != null">
+                #{commodityId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityOperateLog">
+        update t_commodity_operate_log
+        <set>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=VARCHAR},
+            </if>
+            <if test="operateBy != null">
+                operate_by = #{operateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="operateInfo != null">
+                operate_info = #{operateInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="commodityStat != null">
+                commodity_stat = #{commodityStat,jdbcType=VARCHAR},
+            </if>
+            <if test="commodityId != null">
+                commodity_id = #{commodityId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.CommodityOperateLog">
+        update t_commodity_operate_log
+        set version = #{version,jdbcType=BIGINT} + 1,
+            creat_time = #{creatTime,jdbcType=VARCHAR},
+            operate_by = #{operateBy,jdbcType=VARCHAR},
+            operate_info = #{operateInfo,jdbcType=VARCHAR},
+            commodity_stat = #{commodityStat,jdbcType=VARCHAR},
+            commodity_id = #{commodityId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.commodity.entity.CommodityOperateLog" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_operate_log
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="creatTime != null">
+                 and creat_time = #{creatTime,jdbcType=VARCHAR}
+            </if>
+            <if test="operateBy != null">
+                 and operate_by = #{operateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="operateInfo != null">
+                 and operate_info = #{operateInfo,jdbcType=VARCHAR}
+            </if>
+            <if test="commodityStat != null">
+                 and commodity_stat = #{commodityStat,jdbcType=VARCHAR}
+            </if>
+            <if test="commodityId != null">
+                 and commodity_id = #{commodityId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+</mapper>

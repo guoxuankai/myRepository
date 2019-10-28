@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.SkuSalesRecordMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.SkuSalesRecord">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId" />
+        <result column="order_track_id" jdbcType="VARCHAR" property="orderTrackId" />
+        <result column="sku" jdbcType="VARCHAR" property="sku" />
+        <result column="sku_quantity" jdbcType="INTEGER" property="skuQuantity" />
+        <result column="sku_title" jdbcType="VARCHAR" property="skuTitle" />
+        <result column="sku_title_en" jdbcType="VARCHAR" property="skuTitleEn" />
+        <result column="item_url" jdbcType="VARCHAR" property="itemURL" />
+        <result column="item_attr" jdbcType="VARCHAR" property="itemAttr" />
+        <result column="sku_price" jdbcType="DECIMAL" property="skuPrice" />
+        <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
+        <result column="seller_ship_fee" jdbcType="DECIMAL" property="sellerShipFee" />
+        <result column="supplier_ship_fee" jdbcType="DECIMAL" property="supplierShipFee" />
+        <result column="logistic_company_ship_fee" jdbcType="DECIMAL" property="logisticCompanyShipFee" />
+        <result column="seller_sku_per_ship_fee" jdbcType="DECIMAL" property="sellerSkuPerShipFee" />
+        <result column="supplier_sku_per_ship_fee" jdbcType="DECIMAL" property="supplierSkuPerShipFee" />
+        <result column="logistic_company_sku_per_ship_fee" jdbcType="DECIMAL" property="logisticCompanySkuPerShipFee" />
+        <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
+        <result column="delivery_warehouse_id" jdbcType="INTEGER" property="deliveryWarehouseId" />
+        <result column="delivery_warehouse_name" jdbcType="VARCHAR" property="deliveryWarehouseName" />
+        <result column="free_freight" jdbcType="TINYINT" property="freeFreight" />
+        <result column="service_charge" jdbcType="DECIMAL" property="serviceCharge" />
+        <result column="creater" jdbcType="VARCHAR" property="creater" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+        <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+        <result column="supplier_name" jdbcType="VARCHAR" property="supplierName" />
+        <result column="seller_name" jdbcType="VARCHAR" property="sellerName" />
+        <result column="seller_id" jdbcType="INTEGER" property="sellerId" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, sys_order_id, order_track_id, sku, sku_quantity, sku_title,sku_title_en,item_url,item_attr, sku_price, total_amount,
+        seller_ship_fee, supplier_ship_fee, logistic_company_ship_fee, seller_sku_per_ship_fee, 
+        supplier_sku_per_ship_fee, logistic_company_sku_per_ship_fee, delivery_time, delivery_warehouse_id, 
+        delivery_warehouse_name, free_freight, service_charge, creater, create_time, modifier, 
+        modified_time, supplier_id, supplier_name,seller_name,seller_id
+    </sql>
+    <sql id="query_rd_where">
+
+        <trim prefix="where" prefixOverrides="and">
+            <if test="topFlag != null and topFlag == 1">
+                <choose>
+                    <when test='supplierId != null and wIds != null and wIds.size() > 0'>
+                        and delivery_warehouse_id in
+                        <foreach collection="wIds" index="index" item="item" separator="," open="(" close=")">
+                            #{item,jdbcType=INTEGER}
+                        </foreach>
+                    </when>
+                    <when test='suppliers != null and suppliers.size() > 0'>
+                        and supplier_id in
+                        <foreach collection="suppliers" index="index" item="item" separator="," open="(" close=")">
+                            #{item,jdbcType=INTEGER}
+                        </foreach>
+                    </when>
+                    <otherwise>
+                        and 1=2
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="sysOrderId != null and sysOrderId != ''">
+                and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="orderTrackId != null and orderTrackId != ''">
+                and order_track_id = #{orderTrackId,jdbcType=VARCHAR}
+            </if>
+            <if test="sku != null and sku != ''">
+                and sku = #{sku,jdbcType=VARCHAR}
+            </if>
+            <if test="skuQuantity != null and skuQuantity != ''">
+                and sku_quantity = #{skuQuantity,jdbcType=INTEGER}
+            </if>
+            <if test="skuTitle != null and skuTitle != ''">
+                and sku_title = #{skuTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="skuPrice != null and skuPrice != ''">
+                and sku_price = #{skuPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="totalAmount != null and totalAmount != ''">
+                and total_amount = #{totalAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="sellerShipFee != null and sellerShipFee != ''">
+                and seller_ship_fee = #{sellerShipFee,jdbcType=DECIMAL}
+            </if>
+            <if test="supplierShipFee != null and supplierShipFee != ''">
+                and supplier_ship_fee = #{supplierShipFee,jdbcType=DECIMAL}
+            </if>
+            <if test="logisticCompanyShipFee != null and logisticCompanyShipFee != ''">
+                and logistic_company_ship_fee = #{logisticCompanyShipFee,jdbcType=DECIMAL}
+            </if>
+            <if test="sellerSkuPerShipFee != null and sellerSkuPerShipFee != ''">
+                and seller_sku_per_ship_fee = #{sellerSkuPerShipFee,jdbcType=DECIMAL}
+            </if>
+            <if test="supplierSkuPerShipFee != null and supplierSkuPerShipFee != ''">
+                and supplier_sku_per_ship_fee = #{supplierSkuPerShipFee,jdbcType=DECIMAL}
+            </if>
+            <if test="logisticCompanySkuPerShipFee != null and logisticCompanySkuPerShipFee != ''">
+                and logistic_company_sku_per_ship_fee = #{logisticCompanySkuPerShipFee,jdbcType=DECIMAL}
+            </if>
+            <if test="deliveryTime != null and deliveryTime != ''">
+                and delivery_time = #{deliveryTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="beginDate != null and endDate != null ">
+                and (delivery_time <![CDATA[ >= ]]> str_to_date(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')
+                and delivery_time <![CDATA[ <= ]]>str_to_date(#{endDate,jdbcType=TIMESTAMP} ,'%Y-%m-%d %H:%i:%s') )
+            </if>
+            <if test="deliveryWarehouseId != null ">
+                and delivery_warehouse_id = #{deliveryWarehouseId,jdbcType=INTEGER}
+            </if>
+            <if test="deliveryWarehouseName != null and deliveryWarehouseName != ''">
+                and delivery_warehouse_name = #{deliveryWarehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="freeFreight != null ">
+                and free_freight = #{freeFreight,jdbcType=TINYINT}
+            </if>
+            <if test="serviceCharge != null and serviceCharge != ''">
+                and service_charge = #{serviceCharge,jdbcType=DECIMAL}
+            </if>
+            <if test="creater != null and creater != ''">
+                and creater = #{creater,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="modifier != null and modifier != ''">
+                and modifier = #{modifier,jdbcType=VARCHAR}
+            </if>
+            <if test="modifiedTime != null and modifiedTime != ''">
+                and modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                and supplier_id = #{supplierId,jdbcType=INTEGER}
+            </if>
+            <if test="supplierName != null and supplierName != ''">
+                and supplier_name = #{supplierName,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerName != null and sellerName != ''">
+                and seller_name = #{sellerName,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerId != null and sellerId != ''">
+                and seller_id = #{sellerId,jdbcType=INTEGER}
+            </if>
+            <if test='warehouseIdList != null and warehouseIdList.size() > 0'>
+                and delivery_warehouse_id in
+                <foreach collection="warehouseIdList" index="index" item="item" separator="," open="(" close=")">
+                    #{item,jdbcType=INTEGER}
+                </foreach>
+            </if>
+        </trim>
+        order by delivery_time desc
+    </sql>
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.SkuSalesRecord" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_sku_sales_record
+        <include refid="query_rd_where" />
+    </select>
+
+    <select id="statisSkuSales" parameterType="com.rondaful.cloud.order.entity.SkuSalesRecord" resultType="com.rondaful.cloud.order.entity.SkuSalesRecord">
+        select
+        sum(sku_quantity) as totalSkuQty,
+        sum(total_amount) as totalSkuPrice,
+        sum(service_charge) as totalServiceCharge
+        from tb_sku_sales_record
+        <include refid="query_rd_where" />
+    </select>
+
+    <insert id="insertBatchSkuSalesRecord" parameterType="java.util.List">
+        insert into tb_sku_sales_record ( sys_order_id, order_track_id,
+        sku, sku_quantity, sku_title,sku_title_en,item_url,item_attr,
+        sku_price, total_amount, seller_ship_fee,
+        supplier_ship_fee, logistic_company_ship_fee,
+        seller_sku_per_ship_fee, supplier_sku_per_ship_fee,
+        logistic_company_sku_per_ship_fee, delivery_time,
+        delivery_warehouse_id, delivery_warehouse_name,
+        free_freight, service_charge,supplier_id,supplier_name,seller_name,seller_id
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.sysOrderId,jdbcType=VARCHAR}, #{item.orderTrackId,jdbcType=VARCHAR},
+            #{item.sku,jdbcType=VARCHAR}, #{item.skuQuantity,jdbcType=INTEGER}, #{item.skuTitle,jdbcType=VARCHAR},
+            #{item.skuTitleEn,jdbcType=VARCHAR}, #{item.itemURL,jdbcType=VARCHAR}, #{item.itemAttr,jdbcType=VARCHAR},
+            #{item.skuPrice,jdbcType=DECIMAL}, #{item.totalAmount,jdbcType=DECIMAL}, #{item.sellerShipFee,jdbcType=DECIMAL},
+            #{item.supplierShipFee,jdbcType=DECIMAL}, #{item.logisticCompanyShipFee,jdbcType=DECIMAL},
+            #{item.sellerSkuPerShipFee,jdbcType=DECIMAL}, #{item.supplierSkuPerShipFee,jdbcType=DECIMAL},
+            #{item.logisticCompanySkuPerShipFee,jdbcType=DECIMAL}, #{item.deliveryTime,jdbcType=TIMESTAMP},
+            #{item.deliveryWarehouseId,jdbcType=INTEGER}, #{item.deliveryWarehouseName,jdbcType=VARCHAR},
+            #{item.freeFreight,jdbcType=TINYINT}, #{item.serviceCharge,jdbcType=DECIMAL},
+            #{item.supplierId,jdbcType=INTEGER}, #{item.supplierName,jdbcType=VARCHAR},
+            #{item.sellerName,jdbcType=VARCHAR},#{item.sellerId,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tb_sku_sales_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tb_sku_sales_record
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.SkuSalesRecord">
+        insert into tb_sku_sales_record ( sys_order_id, order_track_id,
+            sku, sku_quantity, sku_title,sku_title_en,item_url,item_attr,
+            sku_price, total_amount, seller_ship_fee, 
+            supplier_ship_fee, logistic_company_ship_fee, 
+            seller_sku_per_ship_fee, supplier_sku_per_ship_fee, 
+            logistic_company_sku_per_ship_fee, delivery_time, 
+            delivery_warehouse_id, delivery_warehouse_name, 
+            free_freight, service_charge, creater, 
+            create_time, modifier, modified_time, 
+            supplier_id, supplier_name)
+        values ( #{sysOrderId,jdbcType=VARCHAR}, #{orderTrackId,jdbcType=VARCHAR},
+            #{sku,jdbcType=VARCHAR}, #{skuQuantity,jdbcType=INTEGER}, #{skuTitle,jdbcType=VARCHAR},
+             #{skuTitleEn,jdbcType=VARCHAR}, #{itemURL,jdbcType=VARCHAR}, #{itemAttr,jdbcType=VARCHAR},
+            #{skuPrice,jdbcType=DECIMAL}, #{totalAmount,jdbcType=DECIMAL}, #{sellerShipFee,jdbcType=DECIMAL}, 
+            #{supplierShipFee,jdbcType=DECIMAL}, #{logisticCompanyShipFee,jdbcType=DECIMAL}, 
+            #{sellerSkuPerShipFee,jdbcType=DECIMAL}, #{supplierSkuPerShipFee,jdbcType=DECIMAL}, 
+            #{logisticCompanySkuPerShipFee,jdbcType=DECIMAL}, #{deliveryTime,jdbcType=TIMESTAMP}, 
+            #{deliveryWarehouseId,jdbcType=INTEGER}, #{deliveryWarehouseName,jdbcType=VARCHAR}, 
+            #{freeFreight,jdbcType=BIT}, #{serviceCharge,jdbcType=DECIMAL}, #{creater,jdbcType=VARCHAR},
+            #{createTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}, 
+            #{supplierId,jdbcType=INTEGER}, #{supplierName,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.SkuSalesRecord">
+        insert into tb_sku_sales_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysOrderId != null">
+                sys_order_id,
+            </if>
+            <if test="orderTrackId != null">
+                order_track_id,
+            </if>
+            <if test="sku != null">
+                sku,
+            </if>
+            <if test="skuQuantity != null">
+                sku_quantity,
+            </if>
+            <if test="skuTitle != null">
+                sku_title,
+            </if>
+            <if test="skuPrice != null">
+                sku_price,
+            </if>
+            <if test="totalAmount != null">
+                total_amount,
+            </if>
+            <if test="sellerShipFee != null">
+                seller_ship_fee,
+            </if>
+            <if test="supplierShipFee != null">
+                supplier_ship_fee,
+            </if>
+            <if test="logisticCompanyShipFee != null">
+                logistic_company_ship_fee,
+            </if>
+            <if test="sellerSkuPerShipFee != null">
+                seller_sku_per_ship_fee,
+            </if>
+            <if test="supplierSkuPerShipFee != null">
+                supplier_sku_per_ship_fee,
+            </if>
+            <if test="logisticCompanySkuPerShipFee != null">
+                logistic_company_sku_per_ship_fee,
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time,
+            </if>
+            <if test="deliveryWarehouseId != null">
+                delivery_warehouse_id,
+            </if>
+            <if test="deliveryWarehouseName != null">
+                delivery_warehouse_name,
+            </if>
+            <if test="freeFreight != null">
+                free_freight,
+            </if>
+            <if test="serviceCharge != null">
+                service_charge,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="supplierName != null">
+                supplier_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysOrderId != null">
+                #{sysOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderTrackId != null">
+                #{orderTrackId,jdbcType=VARCHAR},
+            </if>
+            <if test="sku != null">
+                #{sku,jdbcType=VARCHAR},
+            </if>
+            <if test="skuQuantity != null">
+                #{skuQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="skuTitle != null">
+                #{skuTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="skuPrice != null">
+                #{skuPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="totalAmount != null">
+                #{totalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="sellerShipFee != null">
+                #{sellerShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="supplierShipFee != null">
+                #{supplierShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticCompanyShipFee != null">
+                #{logisticCompanyShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="sellerSkuPerShipFee != null">
+                #{sellerSkuPerShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="supplierSkuPerShipFee != null">
+                #{supplierSkuPerShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticCompanySkuPerShipFee != null">
+                #{logisticCompanySkuPerShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="deliveryTime != null">
+                #{deliveryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deliveryWarehouseId != null">
+                #{deliveryWarehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="deliveryWarehouseName != null">
+                #{deliveryWarehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="freeFreight != null">
+                #{freeFreight,jdbcType=TINYINT},
+            </if>
+            <if test="serviceCharge != null">
+                #{serviceCharge,jdbcType=DECIMAL},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="supplierName != null">
+                #{supplierName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.SkuSalesRecord">
+        update tb_sku_sales_record
+        <set>
+            <if test="sysOrderId != null">
+                sys_order_id = #{sysOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderTrackId != null">
+                order_track_id = #{orderTrackId,jdbcType=VARCHAR},
+            </if>
+            <if test="sku != null">
+                sku = #{sku,jdbcType=VARCHAR},
+            </if>
+            <if test="skuQuantity != null">
+                sku_quantity = #{skuQuantity,jdbcType=INTEGER},
+            </if>
+            <if test="skuTitle != null">
+                sku_title = #{skuTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="skuPrice != null">
+                sku_price = #{skuPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="totalAmount != null">
+                total_amount = #{totalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="sellerShipFee != null">
+                seller_ship_fee = #{sellerShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="supplierShipFee != null">
+                supplier_ship_fee = #{supplierShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticCompanyShipFee != null">
+                logistic_company_ship_fee = #{logisticCompanyShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="sellerSkuPerShipFee != null">
+                seller_sku_per_ship_fee = #{sellerSkuPerShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="supplierSkuPerShipFee != null">
+                supplier_sku_per_ship_fee = #{supplierSkuPerShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="logisticCompanySkuPerShipFee != null">
+                logistic_company_sku_per_ship_fee = #{logisticCompanySkuPerShipFee,jdbcType=DECIMAL},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deliveryWarehouseId != null">
+                delivery_warehouse_id = #{deliveryWarehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="deliveryWarehouseName != null">
+                delivery_warehouse_name = #{deliveryWarehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="freeFreight != null">
+                free_freight = #{freeFreight,jdbcType=TINYINT},
+            </if>
+            <if test="serviceCharge != null">
+                service_charge = #{serviceCharge,jdbcType=DECIMAL},
+            </if>
+            <if test="creater != null">
+                creater = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="supplierName != null">
+                supplier_name = #{supplierName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.SkuSalesRecord">
+        update tb_sku_sales_record
+        set sys_order_id = #{sysOrderId,jdbcType=VARCHAR},
+            order_track_id = #{orderTrackId,jdbcType=VARCHAR},
+            sku = #{sku,jdbcType=VARCHAR},
+            sku_quantity = #{skuQuantity,jdbcType=INTEGER},
+            sku_title = #{skuTitle,jdbcType=VARCHAR},
+            sku_price = #{skuPrice,jdbcType=DECIMAL},
+            total_amount = #{totalAmount,jdbcType=DECIMAL},
+            seller_ship_fee = #{sellerShipFee,jdbcType=DECIMAL},
+            supplier_ship_fee = #{supplierShipFee,jdbcType=DECIMAL},
+            logistic_company_ship_fee = #{logisticCompanyShipFee,jdbcType=DECIMAL},
+            seller_sku_per_ship_fee = #{sellerSkuPerShipFee,jdbcType=DECIMAL},
+            supplier_sku_per_ship_fee = #{supplierSkuPerShipFee,jdbcType=DECIMAL},
+            logistic_company_sku_per_ship_fee = #{logisticCompanySkuPerShipFee,jdbcType=DECIMAL},
+            delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+            delivery_warehouse_id = #{deliveryWarehouseId,jdbcType=INTEGER},
+            delivery_warehouse_name = #{deliveryWarehouseName,jdbcType=VARCHAR},
+            free_freight = #{freeFreight,jdbcType=TINYINT},
+            service_charge = #{serviceCharge,jdbcType=DECIMAL},
+            creater = #{creater,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            modifier = #{modifier,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            supplier_id = #{supplierId,jdbcType=INTEGER},
+            supplier_name = #{supplierName,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SkuMapBindMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.SkuMapBind">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="map_id" jdbcType="BIGINT" property="mapId" />
+    <result column="system_sku" jdbcType="VARCHAR" property="systemSku" />
+    <result column="sku_num" jdbcType="INTEGER" property="skuNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, map_id, system_sku, sku_num
+  </sql>
+  
+  <select id="selectByMapId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sku_map_bind
+    where map_id = #{mapId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByMapId">
+    delete from t_sku_map_bind
+    where map_id = #{mapId,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SkuMapBind">
+    insert into t_sku_map_bind (map_id, system_sku, sku_num)
+    values (#{mapId,jdbcType=BIGINT}, #{systemSku,jdbcType=VARCHAR}, #{skuNum,jdbcType=INTEGER})
+  </insert>
+  
+</mapper>

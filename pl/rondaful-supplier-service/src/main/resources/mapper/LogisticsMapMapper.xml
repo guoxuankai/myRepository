@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.LogisticsMapMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.Logistics.LogisticsMap">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="logistics_id" jdbcType="INTEGER" property="logisticsId" />
+        <result column="platform" jdbcType="INTEGER" property="platform" />
+        <result column="platform_logistics" jdbcType="VARCHAR" property="platformLogistics" />
+        <result column="platform_logistics_service" jdbcType="VARCHAR" property="platformLogisticsService" />
+        <result column="back_field" jdbcType="INTEGER" property="backField" />
+        <result column="back_url" jdbcType="VARCHAR" property="backUrl" />
+        <result column="is_onLine" jdbcType="BOOLEAN" property="isOnLine" />
+        <result column="tracking_no_regex" jdbcType="VARCHAR" property="trackingNoRegex" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, logistics_id, platform, platform_logistics, platform_logistics_service, back_field,back_url,is_onLine,tracking_no_regex
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_logistics_map
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_logistics_map
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.Logistics.LogisticsMap">
+        insert into t_logistics_map (id, logistics_id, platform, 
+            platform_logistics, platform_logistics_service, back_field,back_url,is_onLine,tracking_no_regex)
+        values (#{id,jdbcType=INTEGER}, #{logisticsId,jdbcType=INTEGER}, #{platform,jdbcType=INTEGER}, 
+            #{platformLogistics,jdbcType=VARCHAR}, #{platformLogisticsService,jdbcType=VARCHAR}, 
+            #{backField,jdbcType=INTEGER},#{backUrl,jdbcType=VARCHAR},#{isOnLine,jdbcType=BOOLEAN},#{trackingNoRegex,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.Logistics.LogisticsMap">
+        insert into t_logistics_map
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="logisticsId != null">
+                logistics_id,
+            </if>
+            <if test="platform != null">
+                platform,
+            </if>
+            <if test="platformLogistics != null">
+                platform_logistics,
+            </if>
+            <if test="platformLogisticsService != null">
+                platform_logistics_service,
+            </if>
+            <if test="backField != null">
+                back_field,
+            </if>
+            <if test="backUrl != null">
+                back_url,
+            </if>
+            <if test="isOnLine != null">
+                is_onLine,
+            </if>
+            <if test="trackingNoRegex != null">
+                tracking_no_regex,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="logisticsId != null">
+                #{logisticsId,jdbcType=INTEGER},
+            </if>
+            <if test="platform != null">
+                #{platform,jdbcType=INTEGER},
+            </if>
+            <if test="platformLogistics != null">
+                #{platformLogistics,jdbcType=VARCHAR},
+            </if>
+            <if test="platformLogisticsService != null">
+                #{platformLogisticsService,jdbcType=VARCHAR},
+            </if>
+            <if test="backField != null">
+                #{backField,jdbcType=INTEGER},
+            </if>
+            <if test="backUrl != null">
+                #{backUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="isOnLine != null">
+                #{isOnLine,jdbcType=BOOLEAN},
+            </if>
+            <if test="trackingNoRegex != null">
+                #{trackingNoRegex,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.Logistics.LogisticsMap">
+        update t_logistics_map
+        <set>
+            <if test="logisticsId != null">
+                logistics_id = #{logisticsId,jdbcType=INTEGER},
+            </if>
+            <if test="platform != null">
+                platform = #{platform,jdbcType=INTEGER},
+            </if>
+            <if test="platformLogistics != null">
+                platform_logistics = #{platformLogistics,jdbcType=VARCHAR},
+            </if>
+            <if test="platformLogisticsService != null">
+                platform_logistics_service = #{platformLogisticsService,jdbcType=VARCHAR},
+            </if>
+            <if test="backField != null">
+                back_field = #{backField,jdbcType=INTEGER},
+            </if>
+            <if test="backUrl != null">
+                back_url = #{backUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="isOnLine != null">
+                is_onLine = #{isOnLine,jdbcType=BOOLEAN},
+            </if>
+            <if test="trackingNoRegex != null">
+                tracking_no_regex = #{trackingNoRegex,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.Logistics.LogisticsMap">
+        update t_logistics_map
+        set logistics_id = #{logisticsId,jdbcType=INTEGER},
+            platform = #{platform,jdbcType=INTEGER},
+            platform_logistics = #{platformLogistics,jdbcType=VARCHAR},
+            platform_logistics_service = #{platformLogisticsService,jdbcType=VARCHAR},
+            back_field = #{backField,jdbcType=INTEGER},back_url = #{backUrl,jdbcType=VARCHAR},is_onLine = #{isOnLine,jdbcType=BOOLEAN},tracking_no_regex = #{trackingNoRegex,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.Logistics.LogisticsMap" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_logistics_map
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="logisticsId != null and logisticsId != ''">
+                 and logistics_id = #{logisticsId,jdbcType=INTEGER}
+            </if>
+            <if test="platform != null and platform != ''">
+                 and platform = #{platform,jdbcType=INTEGER}
+            </if>
+            <if test="platformLogistics != null and platformLogistics != ''">
+                 and platform_logistics = #{platformLogistics,jdbcType=VARCHAR}
+            </if>
+            <if test="platformLogisticsService != null and platformLogisticsService != ''">
+                 and platform_logistics_service = #{platformLogisticsService,jdbcType=VARCHAR}
+            </if>
+            <if test="backField != null and backField != ''">
+                 and back_field = #{backField,jdbcType=INTEGER}
+            </if>
+            <if test="backUrl != null and backUrl != ''">
+                and back_url = #{backUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="isOnLine != null ">
+                and is_onLine = #{isOnLine,jdbcType=BOLLEAN}
+            </if>
+            <if test="trackingNoRegex != null ">
+                and tracking_no_regex = #{trackingNoRegex,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getByLogisticsId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from t_logistics_map
+        where logistics_id = #{logisticsId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from t_logistics_map where logistics_id = #{logisticsId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_logistics_map (logistics_id, platform,
+            platform_logistics, platform_logistics_service,back_field,back_url,is_onLine,tracking_no_regex)
+        values
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{item.logisticsId,jdbcType=INTEGER}, #{item.platform,jdbcType=INTEGER},
+            #{item.platformLogistics,jdbcType=VARCHAR}, #{item.platformLogisticsService,jdbcType=VARCHAR},#{item.backField,jdbcType=INTEGER},#{item.backUrl,jdbcType=VARCHAR},#{item.isOnLine,jdbcType=BOOLEAN},#{item.trackingNoRegex,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+</mapper>

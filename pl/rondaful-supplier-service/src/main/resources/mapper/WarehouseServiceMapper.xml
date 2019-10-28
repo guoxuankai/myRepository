@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WarehouseServiceMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.basics.WarehouseService">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="service_code" jdbcType="VARCHAR" property="serviceCode" />
+        <result column="service_name" jdbcType="VARCHAR" property="serviceName" />
+        <result column="supply_id" jdbcType="INTEGER" property="supplyId" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="is_open" jdbcType="BIT" property="isOpen" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, service_code, service_name, supply_id, status, is_open
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_warehouse_service
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_warehouse_service
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseService">
+        insert into t_warehouse_service (id, service_code, service_name, 
+            supply_id, status, is_open
+            )
+        values (#{id,jdbcType=INTEGER}, #{serviceCode,jdbcType=VARCHAR}, #{serviceName,jdbcType=VARCHAR}, 
+            #{supplyId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{isOpen,jdbcType=BIT}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseService">
+        insert into t_warehouse_service
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="serviceCode != null">
+                service_code,
+            </if>
+            <if test="serviceName != null">
+                service_name,
+            </if>
+            <if test="supplyId != null">
+                supply_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="isOpen != null">
+                is_open,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="serviceCode != null">
+                #{serviceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceName != null">
+                #{serviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyId != null">
+                #{supplyId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="isOpen != null">
+                #{isOpen,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseService">
+        update t_warehouse_service
+        <set>
+            <if test="serviceCode != null">
+                service_code = #{serviceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="serviceName != null">
+                service_name = #{serviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyId != null">
+                supply_id = #{supplyId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="isOpen != null">
+                is_open = #{isOpen,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseService">
+        update t_warehouse_service
+        set service_code = #{serviceCode,jdbcType=VARCHAR},
+            service_name = #{serviceName,jdbcType=VARCHAR},
+            supply_id = #{supplyId,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            is_open = #{isOpen,jdbcType=BIT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseService" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_warehouse_service
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="serviceCode != null and serviceCode != ''">
+                 and service_code = #{serviceCode,jdbcType=VARCHAR}
+            </if>
+            <if test="serviceName != null and serviceName != ''">
+                 and service_name = #{serviceName,jdbcType=VARCHAR}
+            </if>
+            <if test="supplyId != null and supplyId != ''">
+                 and supply_id = #{supplyId,jdbcType=INTEGER}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="isOpen != null and isOpen != ''">
+                 and is_open = #{isOpen,jdbcType=BIT}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getAll" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_service
+        <if test="type!=null or type==0">
+            where  is_open = #{type,jdbcType=BIT}
+        </if>
+    </select>
+
+    <update id="updateByServiceCode">
+        update t_warehouse_service
+        set supply_id = #{supplyId,jdbcType=INTEGER} where service_code = #{serviceCode,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getBindService"  resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select count(id) from t_warehouse_service where supply_id = #{supplyId,jdbcType=INTEGER}
+    </select>
+</mapper>

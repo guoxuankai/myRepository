@@ -1,0 +1,82 @@
+#应用名称
+spring:
+  application:
+    name: brandslink-user-service
+
+
+#应用端口
+server:
+  port: 8192
+
+scheduler:
+  executor:
+    port: 7772
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://brandslink:brandslink123@172.20.0.195:8100/eureka/
+
+
+
+system:
+  ignore:
+    login:
+      url: /role/getMenusByRequestUrl, /user/getWarehouseDetailByAccount, /customer/getShipperCodeAndName,
+        /menu/getTree**, /customer/getCustomerCodeAndName, /user/getWarehouseDetail, /role/getMenusByRoleList,
+        /user/getAccountNameListByWarehouseId,/customer/signIn,/customer/getAuthCode,/sys/upload
+    response:
+      advice: /rest/api/doc, /actuator/service-registry, /sys/upload
+
+
+brandslink:
+  system:
+    env: env
+
+#apollo
+app:
+  id: wms-config-service
+apollo:
+  meta: http://120.78.154.137:8145
+  cluster:
+  bootstrap:
+    namespaces:
+    enabled: true
+    eagerLoad:
+      enabled: true
+
+
+
+---
+spring:
+  profiles: test
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://brandslink:brandslink123@172.16.2.214:8100/eureka/
+
+
+apollo:
+  meta: http://120.78.154.137:8146
+
+
+---
+spring:
+  profiles: prod
+
+
+#应用端口
+server:
+  port: 50108
+
+
+apollo:
+  meta: http://120.78.154.137:8147
+
+
+
+---
+

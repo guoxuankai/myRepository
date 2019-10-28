@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SkuTortRecordMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.SpuTortRecord">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="system_spu" jdbcType="VARCHAR" property="systemSpu" />
+        <result column="platform" jdbcType="BIT" property="platform" />
+        <result column="seller_account" jdbcType="VARCHAR" property="sellerAccount" />
+        <result column="tort_type" jdbcType="BIT" property="tortType" />
+        <result column="tort_date" jdbcType="DATE" property="tortDate" />
+        <result column="opt_user" jdbcType="VARCHAR" property="optUser" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="img_url"     jdbcType="VARCHAR" property="imgUrl"/>
+        <result column="site_code" jdbcType="VARCHAR" property="siteCode"/>
+        <result column="site_name" jdbcType="VARCHAR" property="siteName"/>
+        <result column="seller_id" jdbcType="BIGINT" property="sellerId"/>
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.commodity.entity.SpuTortRecord">
+        <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, system_spu, platform, seller_account, tort_type, tort_date, opt_user, create_time,
+        update_time,img_url,content,site_code,site_name,seller_id
+    </sql>
+    
+
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        from t_spu_tort
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_spu_tort
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SpuTortRecord">
+        insert into t_spu_tort (id, system_spu, platform,
+            seller_account, tort_type, tort_date, 
+            opt_user, create_time, update_time, 
+            content,seller_id)
+        values (#{id,jdbcType=BIGINT}, #{systemSpu,jdbcType=VARCHAR}, #{platform,jdbcType=BIT}, 
+            #{sellerAccount,jdbcType=VARCHAR}, #{tortType,jdbcType=BIT}, #{tortDate,jdbcType=DATE}, 
+            #{optUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{content,jdbcType=LONGVARCHAR},#{sellerId})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.SpuTortRecord">
+        insert into t_spu_tort
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="systemSpu != null">
+                system_spu,
+            </if>
+            <if test="platform != null">
+                platform,
+            </if>
+            <if test="sellerAccount != null">
+                seller_account,
+            </if>
+            <if test="tortType != null">
+                tort_type,
+            </if>
+            <if test="tortDate != null">
+                tort_date,
+            </if>
+            <if test="optUser != null">
+                opt_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="siteCode !=null">
+                site_code,
+            </if>
+            <if test="siteName != null">
+                site_name,
+            </if>
+            <if test="sellerId != null">
+                seller_id,
+            </if>
+            <if test="imgUrl != null">
+                img_url,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="systemSpu != null">
+                #{systemSpu,jdbcType=VARCHAR},
+            </if>
+            <if test="platform != null">
+                #{platform,jdbcType=BIT},
+            </if>
+            <if test="sellerAccount != null">
+                #{sellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="tortType != null">
+                #{tortType,jdbcType=BIT},
+            </if>
+            <if test="tortDate != null">
+                #{tortDate,jdbcType=DATE},
+            </if>
+            <if test="optUser != null">
+                #{optUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="siteCode != null">
+                #{siteCode,jdbcType=VARCHAR},
+            </if>
+            <if test="siteName != null">
+                #{siteName,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerId != null">
+                #{sellerId,jdbcType=BIGINT},
+            </if>
+            <if test="imgUrl != null">
+                #{imgUrl,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.SpuTortRecord">
+        update t_spu_tort
+        <set>
+            <if test="systemSpu != null">
+                system_spu = #{systemSpu,jdbcType=VARCHAR},
+            </if>
+            <if test="platform != null">
+                platform = #{platform,jdbcType=BIT},
+            </if>
+            <if test="sellerAccount != null">
+                seller_account = #{sellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="tortType != null">
+                tort_type = #{tortType,jdbcType=BIT},
+            </if>
+            <if test="tortDate != null">
+                tort_date = #{tortDate,jdbcType=DATE},
+            </if>
+            <if test="optUser != null">
+                opt_user = #{optUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="imgUrl != null">
+                img_url = #{imgUrl,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="siteCode != null">
+              site_code = #{siteCode,jdbcType=VARCHAR},
+            </if>
+            <if test="siteName != null">
+             site_name = #{siteName,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerId !=null">
+                seller_id = #{sellerId,jdbcType=BIGINT}
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.commodity.entity.SpuTortRecord">
+        update t_spu_tort
+        set system_spu = #{systemSpu,jdbcType=VARCHAR},
+            platform = #{platform,jdbcType=BIT},
+            seller_account = #{sellerAccount,jdbcType=VARCHAR},
+            tort_type = #{tortType,jdbcType=BIT},
+            tort_date = #{tortDate,jdbcType=DATE},
+            opt_user = #{optUser,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            content = #{content,jdbcType=LONGVARCHAR},
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.SpuTortRecord">
+        update t_spu_tort
+        set system_spu = #{systemSpu,jdbcType=VARCHAR},
+            platform = #{platform,jdbcType=BIT},
+            seller_account = #{sellerAccount,jdbcType=VARCHAR},
+            tort_type = #{tortType,jdbcType=BIT},
+            tort_date = #{tortDate,jdbcType=DATE},
+            opt_user = #{optUser,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.commodity.entity.SpuTortRecord" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        from t_spu_tort
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="startTime != null and startTime !=''">
+                and create_time >= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime !=''">
+                and #{endTime,jdbcType=TIMESTAMP} >= create_time
+            </if>
+            <if test="tortStartTime != null and tortStartTime !=''">
+                and tort_date >= #{tortStartTime,jdbcType=DATE}
+            </if>
+            <if test="tortEndTime != null and tortEndTime !=''">
+                and #{tortEndTime,jdbcType=DATE} >= tort_date
+            </if>
+            <if test="systemSpu != null and systemSpu != ''">
+                 and system_spu = #{systemSpu,jdbcType=VARCHAR}
+            </if>
+            <if test="platform != null and platform != ''">
+                 and platform = #{platform,jdbcType=BIT}
+            </if>
+            <if test="sellerAccount != null and sellerAccount != ''">
+                 and seller_account = #{sellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="tortType != null and tortType != ''">
+                 and tort_type = #{tortType,jdbcType=BIT}
+            </if>
+            <if test="tortDate != null and tortDate != ''">
+                 and tort_date = #{tortDate,jdbcType=DATE}
+            </if>
+            <if test="optUser != null and optUser != ''">
+                 and opt_user = #{optUser,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="content != null and content != ''">
+                 and content = #{content,jdbcType=LONGVARCHAR}
+            </if>
+            <if test="sellerId != null and sellerId != ''">
+                and seller_id = #{sellerId,jdbcType=BIGINT}
+            </if>
+        </trim>
+        order by create_time desc
+    </select>
+    
+    <select id="getTortNum" parameterType="com.rondaful.cloud.commodity.entity.SpuTortRecord" resultType="int">
+        select count(*)
+        from t_spu_tort
+        <trim prefix="where" prefixOverrides="and">
+            <if test="systemSpu != null and systemSpu != ''">
+                 and system_spu = #{systemSpu,jdbcType=VARCHAR}
+            </if>
+            <if test="platform != null">
+                 and platform = #{platform}
+            </if>
+            <if test="siteCode != null and siteCode != ''">
+                 and site_code = #{siteCode,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

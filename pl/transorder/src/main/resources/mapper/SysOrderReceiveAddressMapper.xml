@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.transorder.mapper.SysOrderReceiveAddressMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.transorder.entity.system.SysOrderReceiveAddress">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId" />
+        <result column="ship_to_name" jdbcType="VARCHAR" property="shipToName" />
+        <result column="ship_to_country" jdbcType="VARCHAR" property="shipToCountry" />
+        <result column="ship_to_country_name" jdbcType="VARCHAR" property="shipToCountryName" />
+        <result column="ship_to_state" jdbcType="VARCHAR" property="shipToState" />
+        <result column="ship_to_city" jdbcType="VARCHAR" property="shipToCity" />
+        <result column="ship_to_addr_street1" jdbcType="VARCHAR" property="shipToAddrStreet1" />
+        <result column="ship_to_addr_street2" jdbcType="VARCHAR" property="shipToAddrStreet2" />
+        <result column="ship_to_addr_street3" jdbcType="VARCHAR" property="shipToAddrStreet3" />
+        <result column="ship_to_postal_code" jdbcType="VARCHAR" property="shipToPostalCode" />
+        <result column="ship_to_phone" jdbcType="VARCHAR" property="shipToPhone" />
+        <result column="ship_to_email" jdbcType="VARCHAR" property="shipToEmail" />
+        <result column="creater" jdbcType="VARCHAR" property="creater" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, sys_order_id, ship_to_name, ship_to_country, ship_to_country_name, ship_to_state, 
+        ship_to_city, ship_to_addr_street1, ship_to_addr_street2, ship_to_addr_street3, ship_to_postal_code, 
+        ship_to_phone, ship_to_email, creater, create_time, modifier, modified_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tb_sys_order_receive_address
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tb_sys_order_receive_address
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.transorder.entity.system.SysOrderReceiveAddress">
+        insert into tb_sys_order_receive_address (id, sys_order_id, ship_to_name, 
+            ship_to_country, ship_to_country_name, ship_to_state, 
+            ship_to_city, ship_to_addr_street1, ship_to_addr_street2, 
+            ship_to_addr_street3, ship_to_postal_code, 
+            ship_to_phone, ship_to_email, creater, 
+            create_time, modifier, modified_time
+            )
+        values (#{id,jdbcType=BIGINT}, #{sysOrderId,jdbcType=VARCHAR}, #{shipToName,jdbcType=VARCHAR}, 
+            #{shipToCountry,jdbcType=VARCHAR}, #{shipToCountryName,jdbcType=VARCHAR}, #{shipToState,jdbcType=VARCHAR}, 
+            #{shipToCity,jdbcType=VARCHAR}, #{shipToAddrStreet1,jdbcType=VARCHAR}, #{shipToAddrStreet2,jdbcType=VARCHAR}, 
+            #{shipToAddrStreet3,jdbcType=VARCHAR}, #{shipToPostalCode,jdbcType=VARCHAR}, 
+            #{shipToPhone,jdbcType=VARCHAR}, #{shipToEmail,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.transorder.entity.system.SysOrderReceiveAddress">
+        insert into tb_sys_order_receive_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysOrderId != null">
+                sys_order_id,
+            </if>
+            <if test="shipToName != null">
+                ship_to_name,
+            </if>
+            <if test="shipToCountry != null">
+                ship_to_country,
+            </if>
+            <if test="shipToCountryName != null">
+                ship_to_country_name,
+            </if>
+            <if test="shipToState != null">
+                ship_to_state,
+            </if>
+            <if test="shipToCity != null">
+                ship_to_city,
+            </if>
+            <if test="shipToAddrStreet1 != null">
+                ship_to_addr_street1,
+            </if>
+            <if test="shipToAddrStreet2 != null">
+                ship_to_addr_street2,
+            </if>
+            <if test="shipToAddrStreet3 != null">
+                ship_to_addr_street3,
+            </if>
+            <if test="shipToPostalCode != null">
+                ship_to_postal_code,
+            </if>
+            <if test="shipToPhone != null">
+                ship_to_phone,
+            </if>
+            <if test="shipToEmail != null">
+                ship_to_email,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sysOrderId != null">
+                #{sysOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToName != null">
+                #{shipToName,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToCountry != null">
+                #{shipToCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToCountryName != null">
+                #{shipToCountryName,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToState != null">
+                #{shipToState,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToCity != null">
+                #{shipToCity,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToAddrStreet1 != null">
+                #{shipToAddrStreet1,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToAddrStreet2 != null">
+                #{shipToAddrStreet2,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToAddrStreet3 != null">
+                #{shipToAddrStreet3,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToPostalCode != null">
+                #{shipToPostalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToPhone != null">
+                #{shipToPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToEmail != null">
+                #{shipToEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.transorder.entity.system.SysOrderReceiveAddress">
+        update tb_sys_order_receive_address
+        <set>
+            <if test="sysOrderId != null">
+                sys_order_id = #{sysOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToName != null">
+                ship_to_name = #{shipToName,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToCountry != null">
+                ship_to_country = #{shipToCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToCountryName != null">
+                ship_to_country_name = #{shipToCountryName,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToState != null">
+                ship_to_state = #{shipToState,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToCity != null">
+                ship_to_city = #{shipToCity,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToAddrStreet1 != null">
+                ship_to_addr_street1 = #{shipToAddrStreet1,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToAddrStreet2 != null">
+                ship_to_addr_street2 = #{shipToAddrStreet2,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToAddrStreet3 != null">
+                ship_to_addr_street3 = #{shipToAddrStreet3,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToPostalCode != null">
+                ship_to_postal_code = #{shipToPostalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToPhone != null">
+                ship_to_phone = #{shipToPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="shipToEmail != null">
+                ship_to_email = #{shipToEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="creater != null">
+                creater = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.transorder.entity.system.SysOrderReceiveAddress">
+        update tb_sys_order_receive_address
+        set sys_order_id = #{sysOrderId,jdbcType=VARCHAR},
+            ship_to_name = #{shipToName,jdbcType=VARCHAR},
+            ship_to_country = #{shipToCountry,jdbcType=VARCHAR},
+            ship_to_country_name = #{shipToCountryName,jdbcType=VARCHAR},
+            ship_to_state = #{shipToState,jdbcType=VARCHAR},
+            ship_to_city = #{shipToCity,jdbcType=VARCHAR},
+            ship_to_addr_street1 = #{shipToAddrStreet1,jdbcType=VARCHAR},
+            ship_to_addr_street2 = #{shipToAddrStreet2,jdbcType=VARCHAR},
+            ship_to_addr_street3 = #{shipToAddrStreet3,jdbcType=VARCHAR},
+            ship_to_postal_code = #{shipToPostalCode,jdbcType=VARCHAR},
+            ship_to_phone = #{shipToPhone,jdbcType=VARCHAR},
+            ship_to_email = #{shipToEmail,jdbcType=VARCHAR},
+            creater = #{creater,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            modifier = #{modifier,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.transorder.entity.system.SysOrderReceiveAddress" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tb_sys_order_receive_address
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="sysOrderId != null and sysOrderId != ''">
+                 and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToName != null and shipToName != ''">
+                 and ship_to_name = #{shipToName,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToCountry != null and shipToCountry != ''">
+                 and ship_to_country = #{shipToCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToCountryName != null and shipToCountryName != ''">
+                 and ship_to_country_name = #{shipToCountryName,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToState != null and shipToState != ''">
+                 and ship_to_state = #{shipToState,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToCity != null and shipToCity != ''">
+                 and ship_to_city = #{shipToCity,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToAddrStreet1 != null and shipToAddrStreet1 != ''">
+                 and ship_to_addr_street1 = #{shipToAddrStreet1,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToAddrStreet2 != null and shipToAddrStreet2 != ''">
+                 and ship_to_addr_street2 = #{shipToAddrStreet2,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToAddrStreet3 != null and shipToAddrStreet3 != ''">
+                 and ship_to_addr_street3 = #{shipToAddrStreet3,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToPostalCode != null and shipToPostalCode != ''">
+                 and ship_to_postal_code = #{shipToPostalCode,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToPhone != null and shipToPhone != ''">
+                 and ship_to_phone = #{shipToPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="shipToEmail != null and shipToEmail != ''">
+                 and ship_to_email = #{shipToEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="creater != null and creater != ''">
+                 and creater = #{creater,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="modifier != null and modifier != ''">
+                 and modifier = #{modifier,jdbcType=VARCHAR}
+            </if>
+            <if test="modifiedTime != null and modifiedTime != ''">
+                 and modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+</mapper>

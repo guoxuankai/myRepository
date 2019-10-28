@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WarehouseInventoryMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode" />
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
+        <result column="warehouse_name_en" jdbcType="VARCHAR" property="warehouseNameEn" />
+        <result column="supplier_sku" jdbcType="VARCHAR" property="supplierSku" />
+        <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+        <result column="instransit_qty" jdbcType="INTEGER" property="instransitQty" />
+        <result column="available_qty" jdbcType="INTEGER" property="availableQty" />
+        <result column="qty" jdbcType="INTEGER" property="qty" />
+        <result column="waiting_shipping_qty" jdbcType="INTEGER" property="waitingShippingQty" />
+         <result column="allocating_qty" jdbcType="INTEGER" property="allocatingQty" />
+        <result column="defects_qty" jdbcType="INTEGER" property="defectsQty" />
+        <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl" />
+        <result column="warn_val" jdbcType="VARCHAR" property="warnVal" />
+        <!-- <result column="status" jdbcType="TINYINT" property="status" /> -->
+        <result column="pinlian_sku" jdbcType="VARCHAR" property="pinlianSku" />
+        <result column="product_barcode" jdbcType="VARCHAR" property="productBarcode" /> 
+        <result column="pending_qty" jdbcType="INTEGER" property="pendingQty" />
+        <result column="shipped_qty" jdbcType="INTEGER" property="shippedQty" />
+        <result column="sold_shared_qty" jdbcType="INTEGER" property="soldSharedQty" />
+        <result column="stocking_qty" jdbcType="INTEGER" property="stockingQty" />
+        <result column="pi_no_stock_qty" jdbcType="INTEGER" property="pinoStockQty" />
+        <result column="tune_out_qty" jdbcType="INTEGER" property="tuneOutQty" />
+        <result column="tune_in_qty" jdbcType="INTEGER" property="tuneInQty" />
+        <result column="product_sales_value" jdbcType="VARCHAR" property="productSalesValue" />
+        <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy" />
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" /> 
+        <result column="sync_time" jdbcType="TIMESTAMP" property="syncTime" /> 
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, warehouse_code, warehouse_name,supplier_sku,supplier, instransit_qty, available_qty, qty, 
+        waiting_shipping_qty, defects_qty, allocating_qty, picture_url, warn_val,last_update_by,
+        last_update_date,sync_time
+    </sql>
+  
+     <!-- 谷仓同步批量插入仓库库存信息 -->
+    <insert id="syncGranaryInventory" parameterType="java.util.ArrayList">
+        insert into t_warehouse_inventory ( warehouse_code,warehouse_name, warehouse_name_en, pinlian_sku,
+        supplier_id,supplier,supplier_company_name,supplier_sku,commodity_name,commodity_name_en,
+         product_barcode,instransit_qty,pending_qty,available_qty,defects_qty,waiting_shipping_qty,
+		shipped_qty,sold_shared_qty,stocking_qty,pi_no_stock_qty,tune_out_qty,tune_in_qty,product_sales_value,picture_url,source_type,last_update_date)
+        values 
+        <foreach collection="list" item="item" index="index" separator=",">
+        ( #{item.warehouseCode,jdbcType=VARCHAR}, #{item.warehouseName,jdbcType=VARCHAR},#{item.warehouseNameEn,jdbcType=VARCHAR},  #{item.pinlianSku,jdbcType=VARCHAR}, 
+         #{item.supplierId,jdbcType=INTEGER}, #{item.supplier,jdbcType=VARCHAR},#{item.supplierCompanyName,jdbcType=VARCHAR}, 
+           #{item.supplierSku,jdbcType=VARCHAR},#{item.commodityName,jdbcType=VARCHAR},#{item.commodityNameEn,jdbcType=VARCHAR},#{item.productBarcode,jdbcType=VARCHAR},
+            #{item.instransitQty,jdbcType=INTEGER},#{item.pendingQty,jdbcType=INTEGER}, #{item.availableQty,jdbcType=INTEGER}, #{item.defectsQty,jdbcType=INTEGER}, 
+            #{item.waitingShippingQty,jdbcType=INTEGER}, #{item.shippedQty,jdbcType=INTEGER},#{item.soldSharedQty,jdbcType=INTEGER}, #{item.stockingQty,jdbcType=INTEGER},
+            #{item.pinoStockQty,jdbcType=INTEGER}, #{item.tuneOutQty,jdbcType=INTEGER},#{item.tuneInQty,jdbcType=INTEGER},#{item.productSalesValue,jdbcType=VARCHAR},
+             #{item.pictureUrl,jdbcType=VARCHAR},1,now()
+         )
+          </foreach>
+    </insert>
+    <!-- 接收插入谷仓库存 -->
+    <insert id="insertGranaryInventory" parameterType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+        insert into t_warehouse_inventory (warehouse_code,warehouse_name,warehouse_name_en, pinlian_sku, 
+        supplier_id,supplier,supplier_company_name,supplier_sku,commodity_name,commodity_name_en,
+        product_barcode,available_qty,defects_qty,stocking_qty,picture_url,source_type,sync_time,last_update_date)
+        value
+        (#{warehouseCode,jdbcType=VARCHAR},#{warehouseName,jdbcType=VARCHAR},#{warehouseNameEn,jdbcType=VARCHAR}, #{pinlianSku,jdbcType=VARCHAR}, 
+         #{supplierId,jdbcType=INTEGER}, #{supplier,jdbcType=VARCHAR},#{supplierCompanyName,jdbcType=VARCHAR}, 
+         #{supplierSku,jdbcType=VARCHAR},#{commodityName,jdbcType=VARCHAR},#{commodityNameEn,jdbcType=VARCHAR},#{productBarcode,jdbcType=VARCHAR},
+          #{availableQty,jdbcType=INTEGER}, #{defectsQty,jdbcType=INTEGER}, #{stockingQty,jdbcType=INTEGER}, #{item.pictureUrl,jdbcType=VARCHAR},1,#{syncTime,jdbcType=TIMESTAMP},now()
+         )
+    </insert>
+    
+     <!-- 接收更新谷仓库存 -->
+    <update id="updateGranaryInventory" parameterType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+        update  t_warehouse_inventory set available_qty = #{availableQty,jdbcType=INTEGER},
+        defects_qty = #{defectsQty,jdbcType=INTEGER},stocking_qty=#{stockingQty,jdbcType=INTEGER},
+        sync_time=#{syncTime,jdbcType=TIMESTAMP}
+        where pinlian_sku= #{pinlianSku,jdbcType=VARCHAR}
+        and warehouse_code= #{warehouseCode,jdbcType=VARCHAR}
+    </update>
+    
+   <!-- ERP同步批量插入仓库库存信息 -->
+    <insert id="syncWarehouseInventory" parameterType="java.util.ArrayList">
+        insert into t_warehouse_inventory ( warehouse_code,warehouse_name, warehouse_name_en,supplier_sku, 
+        supplier_id,supplier,supplier_company_name,pinlian_sku,commodity_name,commodity_name_en,
+            instransit_qty, available_qty, qty, 
+            waiting_shipping_qty, defects_qty, allocating_qty, 
+            picture_url,source_type,sync_time,last_update_date
+            )
+        values 
+        <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.warehouseCode,jdbcType=VARCHAR}, #{item.warehouseName,jdbcType=VARCHAR}, #{item.warehouseNameEn,jdbcType=VARCHAR}, 
+        #{item.supplierSku,jdbcType=VARCHAR}, #{item.supplierId,jdbcType=INTEGER}, #{item.supplier,jdbcType=VARCHAR},#{item.supplierCompanyName,jdbcType=VARCHAR}, 
+        #{item.pinlianSku,jdbcType=VARCHAR}, #{item.commodityName,jdbcType=VARCHAR},#{item.commodityNameEn,jdbcType=VARCHAR},
+            #{item.instransitQty,jdbcType=INTEGER}, #{item.availableQty,jdbcType=INTEGER}, #{item.qty,jdbcType=INTEGER}, 
+             #{item.waitingShippingQty,jdbcType=INTEGER}, 
+            #{item.defectsQty,jdbcType=INTEGER}, #{item.allocatingQty,jdbcType=INTEGER}, #{item.pictureUrl,jdbcType=VARCHAR}, 
+            0,#{item.syncTime,jdbcType=TIMESTAMP},now()
+            )
+          </foreach>
+    </insert>
+    <!-- 根据供应商sku更新仓库库存信息 -->
+    <update id="updateBysupplierSku" parameterType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+        update t_warehouse_inventory
+        set instransit_qty = #{instransitQty,jdbcType=INTEGER},
+            available_qty = #{availableQty,jdbcType=INTEGER},
+            qty = #{qty,jdbcType=INTEGER},
+            waiting_shipping_qty = #{waitingShippingQty,jdbcType=INTEGER},
+            defects_qty = #{defectsQty,jdbcType=INTEGER},
+            allocating_qty = #{allocatingQty,jdbcType=INTEGER},
+            sync_time=#{syncTime,jdbcType=TIMESTAMP}
+        where supplier_sku=#{supplierSku,jdbcType=VARCHAR}
+        and warehouse_code= #{warehouseCode,jdbcType=VARCHAR}
+    </update>
+    <!-- 根据品连SKU更新仓库库存信息 -->
+   <update id="updateByPinlianSku" parameterType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+        update t_warehouse_inventory
+        set instransit_qty = #{instransitQty,jdbcType=INTEGER},
+       	       pending_qty =  #{pendingQty,jdbcType=INTEGER},
+             available_qty = #{availableQty,jdbcType=INTEGER},
+               defects_qty = #{defectsQty,jdbcType=INTEGER},
+            waiting_shipping_qty = #{waitingShippingQty,jdbcType=INTEGER},
+               defects_qty = #{shippedQty,jdbcType=INTEGER},
+            allocating_qty = #{soldSharedQty,jdbcType=INTEGER},
+            pi_no_stock_qty = #{pinoStockQty,jdbcType=INTEGER},
+               tune_out_qty = #{tuneOutQty,jdbcType=INTEGER},
+                tune_in_qty = #{tuneInQty,jdbcType=INTEGER},
+                  sync_time = #{syncTime,jdbcType=TIMESTAMP}
+        where warehouse_code= #{warehouseCode,jdbcType=VARCHAR}
+        and pinlian_sku= #{pinlianSku,jdbcType=VARCHAR}
+    </update> 
+    <!-- 根据ID批量更新预警值 -->
+     <update id="updateBatchWarnVal" parameterType="java.util.List">
+        update t_warehouse_inventory
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="warn_val =case" suffix="end,">
+                 <foreach collection="list" item="item" index="index">
+                     <!-- <if test="item.warnVal !=null and item.warnVal != -1"> -->
+                         when id=#{item.id} then #{item.warnVal}
+                 </foreach>
+            </trim>
+             last_update_date=now()
+        </trim>
+        where id in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.id,jdbcType=INTEGER}
+        </foreach>
+    </update>
+    <insert id="insertSupplierCommodity" parameterType="java.util.ArrayList">
+        insert into t_supplier_commodity (supplier_id,supplier,supplier_company_name,pinlian_sku, supplier_sku,commodity_name,commodity_name_en,picture_url,create_date )
+        values 
+        <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.supplierId,jdbcType=INTEGER},#{item.supplier,jdbcType=VARCHAR},#{item.supplierCompanyName,jdbcType=VARCHAR}, #{item.pinlianSku,jdbcType=VARCHAR}, #{item.supplierSku,jdbcType=VARCHAR},
+        #{item.commodityName,jdbcType=VARCHAR},#{item.commodityNameEn,jdbcType=VARCHAR},#{item.pictureUrl,jdbcType=VARCHAR},now())
+          </foreach>
+    </insert>
+    <!-- 分页查询取得供应商SKU -->
+    <select id="getAllSupplierSkus" parameterType="java.util.Map" resultType="java.lang.String">
+        select supplier_sku
+         from t_supplier_commodity
+         limit #{pstart,jdbcType=INTEGER},#{psize,jdbcType=INTEGER}
+    </select>
+     <select id="getAllSupplierSkusCount"  resultType="java.lang.Integer">
+        select  count(1) from t_supplier_commodity 
+    </select>
+    <!-- 分页查询仓库库存列表 -->
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.WarehouseInventory" resultType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+       SELECT
+			inv.id id,
+			inv.warehouse_code warehouseCode,
+			inv.warehouse_name warehouseName,
+			inv.warehouse_name_en warehouseNameEn,
+			inv.instransit_qty instransitQty,
+			inv.available_qty availableQty,
+			inv.qty qty,
+			inv.waiting_shipping_qty waitingShippingQty,
+			inv.allocating_qty allocatingQty,
+			inv.defects_qty defectsQty,
+			inv.picture_url pictureUrl,
+			inv.source_type sourceType,
+			inv.product_barcode productBarcode,
+			inv.pending_qty pendingQty,
+			inv.shipped_qty shippedQty,
+			inv.sold_shared_qty soldSharedQty,
+			inv.stocking_qty stockingQty,
+			inv.pi_no_stock_qty pinoStockQty,
+			inv.tune_out_qty tuneOutQty,
+			inv.tune_in_qty tuneInQty,
+			inv.product_sales_value productSalesValue,
+			inv.warn_val warnVal,
+			inv.sync_time syncTime,
+			inv.last_update_date lastUpdateDate,
+			inv.supplier_sku supplierSku,
+			inv.pinlian_sku pinlianSku,
+			inv.commodity_name commodityName,
+			inv.commodity_name_en commodityNameEn,
+			inv.supplier_id supplierId,
+			inv.supplier supplier,
+			inv.supplier_company_name supplierCompanyName,
+			CASE
+				SIGN( inv.available_qty - inv.warn_val)
+				WHEN 0 THEN 0
+				WHEN -1 THEN 0
+				ELSE 1
+			END status
+		FROM t_warehouse_inventory inv INNER JOIN
+			t_warehouse_sync wh on inv.warehouse_code = wh.warehouse_code
+	 <trim prefix="where" prefixOverrides="and">
+	 	and wh.status = 1 
+		 <if test="topFlag != null and topFlag == 0">
+			<choose>
+	            <when test="supplierId != null">
+		            and inv.supplier_id =  #{supplierId,jdbcType=INTEGER} 
+	        	</when>
+	        	<when test='supplies == null or supplies.size() == 0'>
+		            and 1=1
+	        	</when>
+		        <otherwise>
+		            and 1=2
+		        </otherwise>
+	   		 </choose>	
+	       </if> 
+	        <if test="topFlag != null and topFlag == 1">
+			<choose>
+	            <when test='supplierId != null and wCodes != null and wCodes.size() > 0'>
+		            and inv.supplier_id =  #{supplierId,jdbcType=INTEGER} 
+		            and inv.warehouse_code in
+		         	 <foreach collection="wCodes" index="index" item="item" separator="," open="(" close=")">
+		               #{item,jdbcType=INTEGER}
+		            </foreach>
+	        	</when>
+	        	<when test='supplies != null and supplies.size() > 0'>
+		              and inv.supplier_id in
+		         	 <foreach collection="supplies" index="index" item="item" separator="," open="(" close=")">
+		               #{item,jdbcType=INTEGER}
+		            </foreach>
+		         </when>
+		        <otherwise>
+		            and 1=2
+		        </otherwise>
+	   		 </choose>	
+	       </if>
+          <if test="supplier != null and supplier != ''">
+            and inv.supplier =  #{supplier,jdbcType=VARCHAR} 
+         </if> 
+	        <if test='choiceStatus == "1" '>
+			   and  (sign( inv.available_qty -  inv.warn_val) = 1
+						OR  warn_val IS NULL)
+			</if>
+			<if test ='choiceStatus == "0" '>
+               and ( sign( inv.available_qty -  inv.warn_val) = -1
+					OR sign( inv.available_qty -  inv.warn_val) = 0 )
+            </if>
+            <if test="warehouseName != null">
+                and inv.warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseCode != null">
+                and inv.warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+             <if test="warehouseNameEn != null">
+                and inv.warehouse_name_en = #{warehouseNameEn,jdbcType=VARCHAR}
+            </if>
+            
+            <if test="supplierSku != null">
+                and  inv.supplier_sku like CONCAT(CONCAT('%', #{supplierSku,jdbcType=VARCHAR}), '%')
+            </if>
+            <if test="pinlianSku != null">
+                and inv.pinlian_sku like CONCAT(CONCAT('%', #{pinlianSku,jdbcType=VARCHAR}), '%')
+            </if>
+            <if test="commodityName != null">
+                and inv.commodity_name like CONCAT(CONCAT('%', #{commodityName,jdbcType=VARCHAR}), '%')
+            </if>
+             <if test="commodityNameEn != null">
+                and inv.commodity_name_en likeCONCAT(CONCAT('%', #{commodityNameEn,jdbcType=VARCHAR}), '%')
+            </if>
+           </trim>
+    </select>
+    
+    <!-- 根据主键查询仓库信息 -->
+     <select id="selectByPrimaryKey" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_warehouse_inventory
+        where id in
+		<foreach collection="ids" index="index" item="item" separator="," open="(" close=")">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </select>
+    
+     <select id="getInventoryListByIds" parameterType="java.util.Map" resultType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+        SELECT
+			inv.id id,
+			inv.warehouse_code warehouseCode,
+			inv.warehouse_name warehouseName,
+			inv.warehouse_name_en warehouseNameEn,
+			inv.instransit_qty instransitQty,
+			inv.available_qty availableQty,
+			inv.qty qty,
+			inv.waiting_shipping_qty waitingShippingQty,
+			inv.allocating_qty allocatingQty,
+			inv.defects_qty defectsQty,
+			inv.picture_url pictureUrl,
+			inv.source_type sourceType,
+			inv.product_barcode productBarcode,
+			inv.pending_qty pendingQty,
+			inv.shipped_qty shippedQty,
+			inv.sold_shared_qty soldSharedQty,
+			inv.stocking_qty stockingQty,
+			inv.pi_no_stock_qty pinoStockQty,
+			inv.tune_out_qty tuneOutQty,
+			inv.tune_in_qty tuneInQty,
+			inv.product_sales_value productSalesValue,
+			inv.warn_val warnVal,
+			inv.sync_time syncTime,
+			inv.last_update_date lastUpdateDate,
+			inv.supplier_sku supplierSku,
+			inv.pinlian_sku pinlianSku,
+			inv.commodity_name commodityName,
+			inv.commodity_name_en commodityNameEn,
+			inv.supplier_id supplierId,
+			inv.supplier,
+			inv.supplier_company_name supplierCompanyName,
+			CASE
+				SIGN( inv.available_qty - inv.warn_val)
+				WHEN 0 THEN 0
+				WHEN -1 THEN 0
+				ELSE 1
+			END status
+		FROM t_warehouse_inventory inv INNER JOIN
+			t_warehouse_sync wh on inv.warehouse_code = wh.warehouse_code
+		where wh.status = 1 
+         <if test="ids != null" >
+	         and  inv.id in
+			<foreach collection="ids" index="index" item="item" separator="," open="(" close=")">
+	            #{item,jdbcType=INTEGER}
+	        </foreach>
+	       </if>
+        <if test="supplierId != null">
+            and inv.supplier_id =  #{supplierId,jdbcType=INTEGER} 
+         </if>
+    </select>
+    <!-- 根据系统sku,Sku数量查询库存 -->
+    <select id="getInventoryListBySku" parameterType="java.lang.String" resultType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+        select
+		 inv.warehouse_code warehouseCode,
+		 inv.warehouse_name warehouseName,
+		 inv.warehouse_name_en warehouseNameEn,
+		 inv.available_qty availableQty,
+		 inv.source_type sourceType,
+		 inv.pinlian_sku pinlianSku
+		FROM t_warehouse_inventory inv INNER JOIN
+			t_warehouse_sync wh on inv.warehouse_code = wh.warehouse_code
+		where wh.status = 1 
+		and inv.pinlian_sku = #{pinlianSku} 
+    </select>
+    
+     <!-- 根据仓库编码，系统sku,Sku数量查询库存 -->
+    <select id="getInventoryListByParams" parameterType="java.util.Map" resultType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+        select
+		 inv.warehouse_code warehouseCode,
+		 inv.warehouse_name warehouseName,
+		 inv.warehouse_name_en warehouseNameEn,
+		 inv.available_qty availableQty,
+		 inv.source_type sourceType,
+		 inv.pinlian_sku pinlianSku,
+		 inv.supplier_id supplierId,
+		 inv.supplier,
+		CASE 
+		sign( inv.available_qty - #{qty,jdbcType=INTEGER})
+		WHEN - 1 THEN
+			'库存不足'
+		ELSE
+			'正常'
+		END status
+		FROM t_warehouse_inventory inv INNER JOIN
+			t_warehouse_sync wh on inv.warehouse_code = wh.warehouse_code
+		where wh.status = 1 
+		 <if test="supplierId != null">
+            and inv.supplier_id =  #{supplierId,jdbcType=INTEGER} 
+         </if>
+	    <if test="warehouseCode != null">
+         and  inv.warehouse_code=#{warehouseCode,jdbcType=VARCHAR} 
+         </if>
+		<if test="pinlianSku != null">
+         and inv.pinlian_sku = #{pinlianSku,jdbcType=VARCHAR} 
+         </if>
+    </select>
+   	<!-- 查询低于预警仓库库存列表 -->
+    <select id="getInventoryListByWarn"  resultType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+      SELECT
+			inv.id id,
+			inv.warehouse_code warehouseCode,
+			inv.warehouse_name warehouseName,
+			inv.warehouse_name_en warehouseNameEn,
+			inv.instransit_qty instransitQty,
+			inv.available_qty availableQty,
+			inv.qty qty,
+			inv.waiting_shipping_qty waitingShippingQty,
+			inv.allocating_qty allocatingQty,
+			inv.defects_qty defectsQty,
+			inv.picture_url pictureUrl,
+			inv.source_type sourceType,
+			inv.product_barcode productBarcode,
+			inv.pending_qty pendingQty,
+			inv.shipped_qty shippedQty,
+			inv.sold_shared_qty soldSharedQty,
+			inv.stocking_qty stockingQty,
+			inv.pi_no_stock_qty pinoStockQty,
+			inv.tune_out_qty tuneOutQty,
+			inv.tune_in_qty tuneInQty,
+			inv.product_sales_value productSalesValue,
+			inv.warn_val warnVal,
+			inv.sync_time syncTime,
+			inv.last_update_date lastUpdateDate,
+			inv.supplier_sku supplierSku,
+			inv.pinlian_sku pinlianSku,
+			inv.commodity_name commodityName,
+			inv.commodity_name_en commodityNameEn,
+			inv.supplier_id supplierId,
+			inv.supplier,
+			inv.supplier_company_name supplierCompanyName
+			FROM t_warehouse_inventory inv INNER JOIN
+			t_warehouse_sync wh on inv.warehouse_code = wh.warehouse_code
+		where (sign(inv.available_qty -  inv.warn_val ) = - 1
+		OR sign(inv.available_qty - inv.warn_val ) = 0) AND
+		wh.status = 1 
+    </select>
+    
+     <!-- 根据品连SKU取得库存数量 -->
+    <select id="getInventoryListByPlSku" parameterType="java.util.Map" resultType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+        select
+		inv.warehouse_code warehouseCode,
+		inv.warehouse_name warehouseName,
+		inv.warehouse_name_en warehouseNameEn,
+		inv.supplier_sku supplierSku,
+		inv.pinlian_sku pinlianSku,
+		inv.commodity_name commodityName,
+		inv.commodity_name_en commodityNameEn,
+		inv.available_qty availableQty
+		FROM t_warehouse_inventory inv INNER JOIN
+			t_warehouse_sync wh on inv.warehouse_code = wh.warehouse_code
+		where wh.status = 1
+        <if test="skus != null" >
+            and inv.pinlian_sku in
+            <foreach  item="item" collection="skus" index="index"  open="(" separator="," close=")">#{item}</foreach>
+        </if>
+        <if test="pinlianSku != null">
+         	and inv.pinlian_sku = #{pinlianSku,jdbcType=VARCHAR} 
+         </if>
+        <if test="warehouseCode != null">
+         	and  inv.warehouse_code=#{warehouseCode,jdbcType=VARCHAR} 
+        </if>
+        <if test="supplierId != null">
+            and inv.supplier_id =  #{supplierId,jdbcType=INTEGER} 
+         </if>
+    </select>
+    
+     <select id="getInvAvailableQtyByParam" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+		inv.available_qty availableQty
+		FROM t_warehouse_inventory inv INNER JOIN
+			t_warehouse_sync wh on inv.warehouse_code = wh.warehouse_code
+		where wh.status = 1 and inv.pinlian_sku = #{pinlianSku} 
+         and  inv.warehouse_code=#{warehouseCode} 
+    </select>
+    <!-- 根据供应商SKU查询数量 -->
+      <select id="getSkuMapCountBysupplierSkus" parameterType="java.lang.String" resultType="java.lang.Integer">
+     	 SELECT count(1) FROM t_supplier_commodity where  1=1 
+    	 <if test="supplierSku != null">
+         and supplier_sku = #{supplierSku,jdbcType=VARCHAR} 
+         </if>
+      </select>
+      <!-- 根据供应商SKU查询数量 -->
+      <select id="getCommodityBySupplierSku" parameterType="java.lang.String" resultType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+     	 SELECT 
+			supplier_sku supplierSku,
+			pinlian_sku pinlianSku,
+			commodity_name commodityName,
+			commodity_name_en commodityNameEn,
+			supplier_id supplierId,
+			supplier,
+			supplier_company_name supplierCompanyName from  t_supplier_commodity 
+          where supplier_sku = #{supplierSku} 
+      </select>
+       <!-- 根据供应商SKU查询数量 -->
+      <select id="getCommodityByPinlianSku" parameterType="java.lang.String" resultType="com.rondaful.cloud.supplier.entity.WarehouseInventory">
+     	 SELECT 
+			supplier_sku supplierSku,
+			pinlian_sku pinlianSku,
+			commodity_name commodityName,
+			commodity_name_en commodityNameEn,
+			supplier_id supplierId,
+			supplier,
+			supplier_company_name supplierCompanyName from  t_supplier_commodity 
+          where  pinlian_sku = #{pinlianSku} 
+      </select>
+       <!-- 根据商品编码查询库存数量 -->
+      <select id="getInvByPinlianSku" parameterType="java.util.Map" resultType="java.lang.Integer">
+     	 SELECT count(1) FROM t_warehouse_inventory where  1=1 
+         <if test="pinlianSku != null">
+         	 and pinlian_sku= #{pinlianSku,jdbcType=VARCHAR} 
+         </if>
+          <if test="warehouseCode != null">
+          	  and warehouse_code= #{warehouseCode,jdbcType=VARCHAR}
+         </if>
+      </select>
+      <!-- 更新商品信息 -->
+      <update id="updateCommodityByPinlianSku" parameterType="java.util.Map" >
+     	update t_supplier_commodity set picture_url = #{pictureUrl,jdbcType=VARCHAR}
+    	where pinlian_sku= #{pinlianSku,jdbcType=VARCHAR} 
+      </update>
+      
+      
+       <!-- 根据供应商Id查询库存商品总数-->
+      <select id="getInvCommidtyTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+     	  SELECT count(0) FROM (select
+		pinlian_sku pinlianSku
+		FROM t_warehouse_inventory
+		where 1=1
+		 <if test="supplierId != null">
+            and supplier_id =  #{supplierId,jdbcType=INTEGER} 
+         </if>)table_count
+      </select>
+      <!-- 根据供应商Id查询低于预警库存商品总数 -->
+      <select id="getWarnInvCommidtyTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+     	  SELECT count(0) FROM (select
+			pinlian_sku pinlianSku
+		FROM t_warehouse_inventory
+		where 1=1 and
+		( sign(  available_qty -  warn_val ) = - 1
+		OR sign(  available_qty -  warn_val ) = 0)
+		 <if test="supplierId != null">
+            and supplier_id =  #{supplierId,jdbcType=INTEGER} 
+         </if>)table_count
+      </select>
+        <!-- 根据供应商Id查询入库仓库数 -->
+      <select id="getEntInvWareHouseCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+     	  SELECT count(0) FROM (select
+		DISTINCT (warehouse_code)
+		FROM t_warehouse_inventory
+		where 1=1
+		 <if test="supplierId != null">
+            and supplier_id =  #{supplierId,jdbcType=INTEGER} 
+         </if>)table_count
+      </select>
+       <!-- 根据品连sku查询商品数 -->
+      <select id="getCommityCountBySku" parameterType="java.lang.String" resultType="java.lang.Integer">
+     	  SELECT count(0) FROM t_supplier_commodity where 1=1
+     	   <if test="pinlianSku != null">
+            and pinlian_sku =  #{pinlianSku,jdbcType=INTEGER} 
+          </if>
+      </select>
+       <!-- 取得谷仓账号信息 -->
+      <select id="getGranaryAccountInfo" parameterType="java.util.Map"  resultType="com.rondaful.cloud.supplier.entity.GoodcangAccountinfo">
+     	 SELECT
+		  id,
+		  goodcang_name goodcangName,
+		  app_tocken appTocken ,
+		  app_key appKey,
+		  company_code companyCode
+		FROM t_goodcang_accountinfo
+		where 1=1
+		<if test="companyCode != null">
+       	 and  company_code =#{companyCode,jdbcType=VARCHAR}
+        </if>
+      </select>
+</mapper>

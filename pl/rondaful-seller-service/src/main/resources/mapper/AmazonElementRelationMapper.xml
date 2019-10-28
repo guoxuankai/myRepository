@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonElementRelationMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.amazon.AmazonElementRelation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parent_element_id" jdbcType="INTEGER" property="parentElementId" />
+    <result column="element_id" jdbcType="INTEGER" property="elementId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="min_occurs" jdbcType="INTEGER" property="minOccurs" />
+    <result column="max_occurs" jdbcType="INTEGER" property="maxOccurs" />
+    <result column="is_element" jdbcType="BIT" property="isElement" />
+    <result column="parent_type_id" jdbcType="INTEGER" property="parentTypeId" />
+    <result column="doc" jdbcType="VARCHAR" property="doc" />
+    <result column="restriction" jdbcType="VARCHAR" property="restriction" />
+    <result column="type_id" jdbcType="INTEGER" property="typeId" />
+    <result column="base" jdbcType="VARCHAR" property="base" />
+    <result column="sequence" jdbcType="SMALLINT" property="sequence" />
+    <result column="type_class_id" jdbcType="BIT" property="typeClassId" />
+    <result column="check_id" jdbcType="SMALLINT" property="checkId" />
+    <result column="loop" jdbcType="BIT" property="loop" />
+    <result column="variation" jdbcType="BIT" property="variation" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parent_element_id, element_id, name, type, create_time, min_occurs, max_occurs, 
+    is_element, parent_type_id, doc, restriction, type_id, base, sequence, type_class_id, 
+    check_id, loop, variation
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from amazon_element_relation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from amazon_element_relation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonElementRelation">
+    insert into amazon_element_relation (id, parent_element_id, element_id, 
+      name, type, create_time, 
+      min_occurs, max_occurs, is_element, 
+      parent_type_id, doc, restriction, 
+      type_id, base, sequence, 
+      type_class_id, check_id, loop, 
+      variation)
+    values (#{id,jdbcType=INTEGER}, #{parentElementId,jdbcType=INTEGER}, #{elementId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{createTime,jdbcType=INTEGER}, 
+      #{minOccurs,jdbcType=INTEGER}, #{maxOccurs,jdbcType=INTEGER}, #{isElement,jdbcType=BIT}, 
+      #{parentTypeId,jdbcType=INTEGER}, #{doc,jdbcType=VARCHAR}, #{restriction,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=INTEGER}, #{base,jdbcType=VARCHAR}, #{sequence,jdbcType=SMALLINT}, 
+      #{typeClassId,jdbcType=BIT}, #{checkId,jdbcType=SMALLINT}, #{loop,jdbcType=BIT}, 
+      #{variation,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonElementRelation">
+    insert into amazon_element_relation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parentElementId != null">
+        parent_element_id,
+      </if>
+      <if test="elementId != null">
+        element_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="minOccurs != null">
+        min_occurs,
+      </if>
+      <if test="maxOccurs != null">
+        max_occurs,
+      </if>
+      <if test="isElement != null">
+        is_element,
+      </if>
+      <if test="parentTypeId != null">
+        parent_type_id,
+      </if>
+      <if test="doc != null">
+        doc,
+      </if>
+      <if test="restriction != null">
+        restriction,
+      </if>
+      <if test="typeId != null">
+        type_id,
+      </if>
+      <if test="base != null">
+        base,
+      </if>
+      <if test="sequence != null">
+        sequence,
+      </if>
+      <if test="typeClassId != null">
+        type_class_id,
+      </if>
+      <if test="checkId != null">
+        check_id,
+      </if>
+      <if test="loop != null">
+        loop,
+      </if>
+      <if test="variation != null">
+        variation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="parentElementId != null">
+        #{parentElementId,jdbcType=INTEGER},
+      </if>
+      <if test="elementId != null">
+        #{elementId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="minOccurs != null">
+        #{minOccurs,jdbcType=INTEGER},
+      </if>
+      <if test="maxOccurs != null">
+        #{maxOccurs,jdbcType=INTEGER},
+      </if>
+      <if test="isElement != null">
+        #{isElement,jdbcType=BIT},
+      </if>
+      <if test="parentTypeId != null">
+        #{parentTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="doc != null">
+        #{doc,jdbcType=VARCHAR},
+      </if>
+      <if test="restriction != null">
+        #{restriction,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="base != null">
+        #{base,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null">
+        #{sequence,jdbcType=SMALLINT},
+      </if>
+      <if test="typeClassId != null">
+        #{typeClassId,jdbcType=BIT},
+      </if>
+      <if test="checkId != null">
+        #{checkId,jdbcType=SMALLINT},
+      </if>
+      <if test="loop != null">
+        #{loop,jdbcType=BIT},
+      </if>
+      <if test="variation != null">
+        #{variation,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonElementRelation">
+    update amazon_element_relation
+    <set>
+      <if test="parentElementId != null">
+        parent_element_id = #{parentElementId,jdbcType=INTEGER},
+      </if>
+      <if test="elementId != null">
+        element_id = #{elementId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="minOccurs != null">
+        min_occurs = #{minOccurs,jdbcType=INTEGER},
+      </if>
+      <if test="maxOccurs != null">
+        max_occurs = #{maxOccurs,jdbcType=INTEGER},
+      </if>
+      <if test="isElement != null">
+        is_element = #{isElement,jdbcType=BIT},
+      </if>
+      <if test="parentTypeId != null">
+        parent_type_id = #{parentTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="doc != null">
+        doc = #{doc,jdbcType=VARCHAR},
+      </if>
+      <if test="restriction != null">
+        restriction = #{restriction,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="base != null">
+        base = #{base,jdbcType=VARCHAR},
+      </if>
+      <if test="sequence != null">
+        sequence = #{sequence,jdbcType=SMALLINT},
+      </if>
+      <if test="typeClassId != null">
+        type_class_id = #{typeClassId,jdbcType=BIT},
+      </if>
+      <if test="checkId != null">
+        check_id = #{checkId,jdbcType=SMALLINT},
+      </if>
+      <if test="loop != null">
+        loop = #{loop,jdbcType=BIT},
+      </if>
+      <if test="variation != null">
+        variation = #{variation,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonElementRelation">
+    update amazon_element_relation
+    set parent_element_id = #{parentElementId,jdbcType=INTEGER},
+      element_id = #{elementId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=INTEGER},
+      min_occurs = #{minOccurs,jdbcType=INTEGER},
+      max_occurs = #{maxOccurs,jdbcType=INTEGER},
+      is_element = #{isElement,jdbcType=BIT},
+      parent_type_id = #{parentTypeId,jdbcType=INTEGER},
+      doc = #{doc,jdbcType=VARCHAR},
+      restriction = #{restriction,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=INTEGER},
+      base = #{base,jdbcType=VARCHAR},
+      sequence = #{sequence,jdbcType=SMALLINT},
+      type_class_id = #{typeClassId,jdbcType=BIT},
+      check_id = #{checkId,jdbcType=SMALLINT},
+      loop = #{loop,jdbcType=BIT},
+      variation = #{variation,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.StorageRecordMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.storage.StorageRecord">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId" />
+        <result column="reference_no" jdbcType="VARCHAR" property="referenceNo" />
+        <result column="transit_type" jdbcType="INTEGER" property="transitType" />
+        <result column="receiving_shipping_type" jdbcType="VARCHAR" property="receivingShippingType" />
+        <result column="tracking_number" jdbcType="VARCHAR" property="trackingNumber" />
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode" />
+        <result column="eta_date" jdbcType="VARCHAR" property="etaDate" />
+        <result column="receiving_desc" jdbcType="VARCHAR" property="receivingDesc" />
+        <result column="verify" jdbcType="INTEGER" property="verify" />
+        <result column="import_company" jdbcType="VARCHAR" property="importCompany" />
+        <result column="sa_contacter" jdbcType="VARCHAR" property="saContacter" />
+        <result column="sa_contact_phone" jdbcType="VARCHAR" property="saContactPhone" />
+        <result column="sa_country_code" jdbcType="VARCHAR" property="saCountryCode" />
+        <result column="sa_state" jdbcType="VARCHAR" property="saState" />
+        <result column="sa_city" jdbcType="VARCHAR" property="saCity" />
+        <result column="sa_region" jdbcType="VARCHAR" property="saRegion" />
+        <result column="sa_address1" jdbcType="VARCHAR" property="saAddress1" />
+        <result column="sa_address2" jdbcType="VARCHAR" property="saAddress2" />
+        <result column="receiving_code" jdbcType="VARCHAR" property="receivingCode" />
+        <result column="top_user_id" jdbcType="INTEGER" property="topUserId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="firm_code" jdbcType="VARCHAR" property="firmCode" />
+        <result column="quality_type" jdbcType="INTEGER" property="qualityType" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, warehouse_id, reference_no, transit_type, receiving_shipping_type, tracking_number, 
+        warehouse_code, eta_date, receiving_desc, verify, import_company, sa_contacter, sa_contact_phone, 
+        sa_country_code, sa_state, sa_city, sa_region, sa_address1, sa_address2, receiving_code, 
+        top_user_id, create_time, create_by, update_time, update_by, firm_code, quality_type
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_storage_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_storage_record
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecord">
+        insert into t_storage_record (id, warehouse_id, reference_no, 
+            transit_type, receiving_shipping_type, tracking_number, 
+            warehouse_code, eta_date, receiving_desc, 
+            verify, import_company, sa_contacter, 
+            sa_contact_phone, sa_country_code, sa_state, 
+            sa_city, sa_region, sa_address1, 
+            sa_address2, receiving_code, top_user_id, 
+            create_time, create_by, update_time, 
+            update_by, firm_code, quality_type)
+        values (#{id,jdbcType=BIGINT}, #{warehouseId,jdbcType=INTEGER}, #{referenceNo,jdbcType=VARCHAR}, 
+            #{transitType,jdbcType=INTEGER}, #{receivingShippingType,jdbcType=VARCHAR}, #{trackingNumber,jdbcType=VARCHAR},
+            #{warehouseCode,jdbcType=VARCHAR}, #{etaDate,jdbcType=VARCHAR}, #{receivingDesc,jdbcType=VARCHAR}, 
+            #{verify,jdbcType=INTEGER}, #{importCompany,jdbcType=VARCHAR}, #{saContacter,jdbcType=VARCHAR}, 
+            #{saContactPhone,jdbcType=VARCHAR}, #{saCountryCode,jdbcType=VARCHAR}, #{saState,jdbcType=VARCHAR}, 
+            #{saCity,jdbcType=VARCHAR}, #{saRegion,jdbcType=VARCHAR}, #{saAddress1,jdbcType=VARCHAR}, 
+            #{saAddress2,jdbcType=VARCHAR}, #{receivingCode,jdbcType=VARCHAR}, #{topUserId,jdbcType=INTEGER}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{updateBy,jdbcType=VARCHAR}, #{firmCode,jdbcType=VARCHAR}, #{qualityType,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecord">
+        insert into t_storage_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="referenceNo != null">
+                reference_no,
+            </if>
+            <if test="transitType != null">
+                transit_type,
+            </if>
+            <if test="receivingShippingType != null">
+                receiving_shipping_type,
+            </if>
+            <if test="trackingNumber != null">
+                tracking_number,
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code,
+            </if>
+            <if test="etaDate != null">
+                eta_date,
+            </if>
+            <if test="receivingDesc != null">
+                receiving_desc,
+            </if>
+            <if test="verify != null">
+                verify,
+            </if>
+            <if test="importCompany != null">
+                import_company,
+            </if>
+            <if test="saContacter != null">
+                sa_contacter,
+            </if>
+            <if test="saContactPhone != null">
+                sa_contact_phone,
+            </if>
+            <if test="saCountryCode != null">
+                sa_country_code,
+            </if>
+            <if test="saState != null">
+                sa_state,
+            </if>
+            <if test="saCity != null">
+                sa_city,
+            </if>
+            <if test="saRegion != null">
+                sa_region,
+            </if>
+            <if test="saAddress1 != null">
+                sa_address1,
+            </if>
+            <if test="saAddress2 != null">
+                sa_address2,
+            </if>
+            <if test="receivingCode != null">
+                receiving_code,
+            </if>
+            <if test="topUserId != null">
+                top_user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="firmCode != null">
+                update_time,
+            </if>
+            <if test="qualityType != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="referenceNo != null">
+                #{referenceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="transitType != null">
+                #{transitType,jdbcType=INTEGER},
+            </if>
+            <if test="receivingShippingType != null">
+                #{receivingShippingType,jdbcType=VARCHAR},
+            </if>
+            <if test="trackingNumber != null">
+                #{trackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="etaDate != null">
+                #{etaDate,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingDesc != null">
+                #{receivingDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="verify != null">
+                #{verify,jdbcType=INTEGER},
+            </if>
+            <if test="importCompany != null">
+                #{importCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="saContacter != null">
+                #{saContacter,jdbcType=VARCHAR},
+            </if>
+            <if test="saContactPhone != null">
+                #{saContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="saCountryCode != null">
+                #{saCountryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="saState != null">
+                #{saState,jdbcType=VARCHAR},
+            </if>
+            <if test="saCity != null">
+                #{saCity,jdbcType=VARCHAR},
+            </if>
+            <if test="saRegion != null">
+                #{saRegion,jdbcType=VARCHAR},
+            </if>
+            <if test="saAddress1 != null">
+                #{saAddress1,jdbcType=VARCHAR},
+            </if>
+            <if test="saAddress2 != null">
+                #{saAddress2,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingCode != null">
+                #{receivingCode,jdbcType=VARCHAR},
+            </if>
+            <if test="topUserId != null">
+                #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="firmCode != null">
+                #{firmCode,jdbcType=VARCHAR},
+            </if>
+            <if test="qualityType != null">
+                #{qualityType,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecord">
+        update t_storage_record
+        <set>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="referenceNo != null">
+                reference_no = #{referenceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="transitType != null">
+                transit_type = #{transitType,jdbcType=INTEGER},
+            </if>
+            <if test="receivingShippingType != null">
+                receiving_shipping_type = #{receivingShippingType,jdbcType=VARCHAR},
+            </if>
+            <if test="trackingNumber != null">
+                tracking_number = #{trackingNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="etaDate != null">
+                eta_date = #{etaDate,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingDesc != null">
+                receiving_desc = #{receivingDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="verify != null">
+                verify = #{verify,jdbcType=INTEGER},
+            </if>
+            <if test="importCompany != null">
+                import_company = #{importCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="saContacter != null">
+                sa_contacter = #{saContacter,jdbcType=VARCHAR},
+            </if>
+            <if test="saContactPhone != null">
+                sa_contact_phone = #{saContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="saCountryCode != null">
+                sa_country_code = #{saCountryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="saState != null">
+                sa_state = #{saState,jdbcType=VARCHAR},
+            </if>
+            <if test="saCity != null">
+                sa_city = #{saCity,jdbcType=VARCHAR},
+            </if>
+            <if test="saRegion != null">
+                sa_region = #{saRegion,jdbcType=VARCHAR},
+            </if>
+            <if test="saAddress1 != null">
+                sa_address1 = #{saAddress1,jdbcType=VARCHAR},
+            </if>
+            <if test="saAddress2 != null">
+                sa_address2 = #{saAddress2,jdbcType=VARCHAR},
+            </if>
+            <if test="receivingCode != null">
+                receiving_code = #{receivingCode,jdbcType=VARCHAR},
+            </if>
+            <if test="topUserId != null">
+                top_user_id = #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="firmCode != null">
+                firm_code = #{firmCode,jdbcType=TIMESTAMP},
+            </if>
+            <if test="qualityType != null">
+                quality_type = #{qualityType,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecord">
+        update t_storage_record
+        set warehouse_id = #{warehouseId,jdbcType=INTEGER},
+            reference_no = #{referenceNo,jdbcType=VARCHAR},
+            transit_type = #{transitType,jdbcType=INTEGER},
+            receiving_shipping_type = #{receivingShippingType,jdbcType=VARCHAR},
+            tracking_number = #{trackingNumber,jdbcType=VARCHAR},
+            warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            eta_date = #{etaDate,jdbcType=VARCHAR},
+            receiving_desc = #{receivingDesc,jdbcType=VARCHAR},
+            verify = #{verify,jdbcType=INTEGER},
+            import_company = #{importCompany,jdbcType=VARCHAR},
+            sa_contacter = #{saContacter,jdbcType=VARCHAR},
+            sa_contact_phone = #{saContactPhone,jdbcType=VARCHAR},
+            sa_country_code = #{saCountryCode,jdbcType=VARCHAR},
+            sa_state = #{saState,jdbcType=VARCHAR},
+            sa_city = #{saCity,jdbcType=VARCHAR},
+            sa_region = #{saRegion,jdbcType=VARCHAR},
+            sa_address1 = #{saAddress1,jdbcType=VARCHAR},
+            sa_address2 = #{saAddress2,jdbcType=VARCHAR},
+            receiving_code = #{receivingCode,jdbcType=VARCHAR},
+            top_user_id = #{topUserId,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            quality_type = #{qualityType,jdbcType=INTEGER},
+            firm_code = #{firmCode,jdbcType=VARCHAR},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.storage.StorageRecord" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_storage_record
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="warehouseId != null and warehouseId != ''">
+                 and warehouse_id = #{warehouseId,jdbcType=INTEGER}
+            </if>
+            <if test="referenceNo != null and referenceNo != ''">
+                 and reference_no = #{referenceNo,jdbcType=VARCHAR}
+            </if>
+            <if test="transitType != null and transitType != ''">
+                 and transit_type = #{transitType,jdbcType=INTEGER}
+            </if>
+            <if test="receivingShippingType != null and receivingShippingType != ''">
+                 and receiving_shipping_type = #{receivingShippingType,jdbcType=VARCHAR}
+            </if>
+            <if test="trackingNumber != null and trackingNumber != ''">
+                 and tracking_number = #{trackingNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseCode != null and warehouseCode != ''">
+                 and warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="etaDate != null and etaDate != ''">
+                 and eta_date = #{etaDate,jdbcType=VARCHAR}
+            </if>
+            <if test="receivingDesc != null and receivingDesc != ''">
+                 and receiving_desc = #{receivingDesc,jdbcType=VARCHAR}
+            </if>
+            <if test="verify != null and verify != ''">
+                 and verify = #{verify,jdbcType=INTEGER}
+            </if>
+            <if test="importCompany != null and importCompany != ''">
+                 and import_company = #{importCompany,jdbcType=VARCHAR}
+            </if>
+            <if test="saContacter != null and saContacter != ''">
+                 and sa_contacter = #{saContacter,jdbcType=VARCHAR}
+            </if>
+            <if test="saContactPhone != null and saContactPhone != ''">
+                 and sa_contact_phone = #{saContactPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="saCountryCode != null and saCountryCode != ''">
+                 and sa_country_code = #{saCountryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="saState != null and saState != ''">
+                 and sa_state = #{saState,jdbcType=VARCHAR}
+            </if>
+            <if test="saCity != null and saCity != ''">
+                 and sa_city = #{saCity,jdbcType=VARCHAR}
+            </if>
+            <if test="saRegion != null and saRegion != ''">
+                 and sa_region = #{saRegion,jdbcType=VARCHAR}
+            </if>
+            <if test="saAddress1 != null and saAddress1 != ''">
+                 and sa_address1 = #{saAddress1,jdbcType=VARCHAR}
+            </if>
+            <if test="saAddress2 != null and saAddress2 != ''">
+                 and sa_address2 = #{saAddress2,jdbcType=VARCHAR}
+            </if>
+            <if test="receivingCode != null and receivingCode != ''">
+                 and receiving_code = #{receivingCode,jdbcType=VARCHAR}
+            </if>
+            <if test="topUserId != null and topUserId != ''">
+                 and top_user_id = #{topUserId,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="firmCode != null and firmCode != ''">
+                and firm_code = #{firmCode,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityType != null and qualityType != 0">
+                and quality_type = #{qualityType,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getsPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_storage_record
+        <where>
+            <if test="receivingCode !=null and receivingCode!=''">
+                receiving_code = #{receivingCode,jdbcType=VARCHAR}
+            </if>
+            <if test="verify !=null">
+                and verify = #{verify,jdbcType=INTEGER}
+            </if>
+            <if test="warehouseIds !=null and warehouseIds.size()&gt;0">
+                and warehouse_id in
+                <foreach close=")" collection="warehouseIds" index="index" item="item" open="(" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="supplierIds !=null and supplierIds.size()&gt;0">
+                and top_user_id in
+                <foreach close=")" collection="supplierIds" index="index" item="item" open="(" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY create_time desc
+    </select>
+
+    <select id="getSyncStatus" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_storage_record
+        where warehouse_id in
+        <foreach close=")" collection="warehouseIds" index="index" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+        and verify in (0,1,2)
+    </select>
+
+    <select id="getSyncWmsStatus" resultType="java.lang.String">
+        select
+        receiving_code
+        from t_storage_record
+        where warehouse_id in
+        <foreach close=")" collection="warehouseIds" index="index" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+        and verify 2
+    </select>
+
+    <update id="batchUpdate">
+        <foreach close="" collection="list" index="index" item="item" open="" separator=";">
+            update t_storage_record set verify = #{item.verify,jdbcType=INTEGER},update_time = #{item.updateTime,jdbcType=TIMESTAMP} where id = #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+</mapper>

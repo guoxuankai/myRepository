@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressPublishListingMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressPublishListing">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="empower_id" jdbcType="BIGINT" property="empowerId" />
+        <result column="publish_account" jdbcType="VARCHAR" property="publishAccount" />
+        <result column="pl_account" jdbcType="VARCHAR" property="plAccount" />
+        <result column="category_id1" jdbcType="BIGINT" property="categoryId1" />
+        <result column="category_id2" jdbcType="BIGINT" property="categoryId2" />
+        <result column="category_id3" jdbcType="BIGINT" property="categoryId3" />
+        <result column="category_id4" jdbcType="BIGINT" property="categoryId4" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="publish_type" jdbcType="INTEGER" property="publishType" />
+        <result column="pl_spu_sku" jdbcType="VARCHAR" property="plSpuSku" />
+        <result column="publish_status" jdbcType="INTEGER" property="publishStatus" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="product_image" jdbcType="VARCHAR" property="productImage" />
+        <result column="publish_product_image" jdbcType="VARCHAR" property="publishProductImage" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+        <result column="success_time" jdbcType="TIMESTAMP" property="successTime" />
+        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+        <result column="online_time" jdbcType="TIMESTAMP" property="onlineTime" />
+        <result column="end_times" jdbcType="TIMESTAMP" property="endTimes" />
+        <result column="item_id" jdbcType="BIGINT" property="itemId" />
+        <result column="seller_id" jdbcType="VARCHAR" property="sellerId" />
+        <result column="delete_status" jdbcType="BIT" property="deleteStatus" />
+        <result column="create_id" jdbcType="BIGINT" property="createId" />
+        <result column="create_name" jdbcType="VARCHAR" property="createName" />
+        <result column="platform_listing" jdbcType="INTEGER" property="platformListing" />
+        <result column="update_status" jdbcType="INTEGER" property="updateStatus" />
+        <result column="pl_spu" jdbcType="VARCHAR" property="plSpu" />
+    </resultMap>
+    
+    <resultMap id="SearchResultMap" type="com.rondaful.cloud.seller.dto.AliexpressPublishListingDTO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="publish_account" jdbcType="VARCHAR" property="publishAccount" />
+        <result column="publish_status" jdbcType="INTEGER" property="publishStatus" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="pl_spu_sku" jdbcType="VARCHAR" property="plSpuSku" />
+        <result column="pl_spu" jdbcType="VARCHAR" property="plSpu" />
+        <result column="item_id" jdbcType="BIGINT" property="itemId" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="success_time" jdbcType="TIMESTAMP" property="successTime" />
+        <result column="product_image" jdbcType="VARCHAR" property="productImage" />
+        <result column="publish_type" jdbcType="INTEGER" property="publishType" />
+        <result column="platform_listing" jdbcType="INTEGER" property="platformListing" />
+        <result column="update_status" jdbcType="INTEGER" property="updateStatus" />
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode" />
+        <association property="listProduct"
+                     column="id"
+                     select="com.rondaful.cloud.seller.mapper.AliexpressPublishListingProductMapper.getPublishListingProductByListingId">
+        </association>
+    </resultMap>
+
+    <resultMap id="SearchResultExcel" type="com.rondaful.cloud.seller.dto.AliexpressPublishListingExcelDTO">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="online_time" jdbcType="TIMESTAMP" property="onlineTime" />
+        <result column="success_time" jdbcType="TIMESTAMP" property="successTime" />
+        <result column="item_id" jdbcType="BIGINT" property="itemId" />
+        <result column="publish_status" jdbcType="INTEGER" property="publishStatus" />
+        <result column="update_status" jdbcType="INTEGER" property="updateStatus" />
+        <result column="publish_account" jdbcType="VARCHAR" property="publishAccount" />
+        <result column="categoryId" jdbcType="BIGINT" property="categoryId" />
+        <result column="pl_spu" jdbcType="VARCHAR" property="plSpu" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="reduce_strategy" jdbcType="VARCHAR" property="reduceStrategy" />
+        <result column="delivery_time" jdbcType="INTEGER" property="deliveryTime" />
+        <result column="unit" jdbcType="INTEGER" property="unit" />
+        <result column="product_image" jdbcType="VARCHAR" property="productImage" />
+        <result column="product_details" jdbcType="VARCHAR" property="productDetails" />
+        <result column="packaging_weight" jdbcType="DECIMAL" property="packagingWeight" />
+        <result column="package_length" jdbcType="INTEGER" property="packageLength" />
+        <result column="package_width" jdbcType="INTEGER" property="packageWidth" />
+        <result column="package_height" jdbcType="INTEGER" property="packageHeight" />
+        <result column="freight_template_id" jdbcType="BIGINT" property="freightTemplateId" />
+        <result column="promise_template_id" jdbcType="BIGINT" property="promiseTemplateId" />
+        <result column="group_id" jdbcType="BIGINT" property="groupId" />
+        <result column="freightTemplateName" jdbcType="VARCHAR" property="freightTemplateName" />
+        <result column="promiseTemplateName" jdbcType="VARCHAR" property="promiseTemplateName" />
+        <result column="groupName" jdbcType="VARCHAR" property="groupName" />
+
+        <result column="publish_type" jdbcType="INTEGER" property="publishType" />
+        <result column="platform_listing" jdbcType="INTEGER" property="platformListing" />
+
+
+    </resultMap>
+
+    
+    <sql id="Base_Column_List">
+        id, empower_id, publish_account, pl_account, category_id1, category_id2, category_id3, 
+        category_id4, title, publish_type, pl_spu_sku, publish_status, create_time, update_time, 
+        product_image, publish_product_image, remark, version, pl_spu,
+        success_time, publish_time, online_time, end_times, item_id, seller_id, delete_status, create_id, create_name,platform_listing,update_status
+    </sql>
+
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_publish_listing
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListing">
+        insert into aliexpress_publish_listing (id, empower_id, publish_account, 
+            pl_account, category_id1, category_id2, 
+            category_id3, category_id4, title, 
+            publish_type, pl_spu_sku, publish_status, 
+            create_time, update_time, product_image, 
+            remark, pl_spu, version, success_time,
+            publish_time, online_time, end_times, 
+            item_id, seller_id, delete_status, 
+            create_id, create_name,platform_listing,update_status)
+        values (#{id,jdbcType=BIGINT}, #{empowerId,jdbcType=BIGINT}, #{publishAccount,jdbcType=VARCHAR}, 
+            #{plAccount,jdbcType=VARCHAR}, #{categoryId1,jdbcType=BIGINT}, #{categoryId2,jdbcType=BIGINT}, 
+            #{categoryId3,jdbcType=BIGINT}, #{categoryId4,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+            #{publishType,jdbcType=INTEGER}, #{plSpuSku,jdbcType=VARCHAR}, #{publishStatus,jdbcType=INTEGER}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{productImage,jdbcType=VARCHAR}, 
+            #{remark,jdbcType=VARCHAR},#{plSpu,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{successTime,jdbcType=TIMESTAMP},
+            #{publishTime,jdbcType=TIMESTAMP}, #{onlineTime,jdbcType=TIMESTAMP}, #{endTimes,jdbcType=TIMESTAMP}, 
+            #{itemId,jdbcType=BIGINT}, #{sellerId,jdbcType=VARCHAR}, #{deleteStatus,jdbcType=BIT}, 
+            #{create_id,jdbcType=BIGINT},#{createName,jdbcType=VARCHAR},
+            #{platformListing,jdbcType=INTEGER},#{updateStatus,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListing">
+        insert into aliexpress_publish_listing
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+            <if test="publishAccount != null">
+                publish_account,
+            </if>
+            <if test="plAccount != null">
+                pl_account,
+            </if>
+            <if test="categoryId1 != null">
+                category_id1,
+            </if>
+            <if test="categoryId2 != null">
+                category_id2,
+            </if>
+            <if test="categoryId3 != null">
+                category_id3,
+            </if>
+            <if test="categoryId4 != null">
+                category_id4,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="publishType != null">
+                publish_type,
+            </if>
+            <if test="plSpuSku != null">
+                pl_spu_sku,
+            </if>
+            <if test="publishStatus != null">
+                publish_status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="productImage != null">
+                product_image,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="plSpu != null">
+                pl_spu,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="successTime != null">
+                success_time,
+            </if>
+            <if test="publishTime != null">
+                publish_time,
+            </if>
+            <if test="onlineTime != null">
+                online_time,
+            </if>
+            <if test="endTimes != null">
+                end_times,
+            </if>
+            <if test="itemId != null">
+                item_id,
+            </if>
+            <if test="sellerId != null">
+                seller_id,
+            </if>
+            <if test="deleteStatus != null">
+                delete_status,
+            </if>
+            <if test="createId != null">
+                create_id,
+            </if>
+            <if test="createName != null">
+                create_name,
+            </if>
+            <if test="platformListing != null">
+                platform_listing,
+            </if>
+            <if test="updateStatus != null">
+                update_status,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=BIGINT},
+            </if>
+            <if test="publishAccount != null">
+                #{publishAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="plAccount != null">
+                #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId1 != null">
+                #{categoryId1,jdbcType=BIGINT},
+            </if>
+            <if test="categoryId2 != null">
+                #{categoryId2,jdbcType=BIGINT},
+            </if>
+            <if test="categoryId3 != null">
+                #{categoryId3,jdbcType=BIGINT},
+            </if>
+            <if test="categoryId4 != null">
+                #{categoryId4,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="publishType != null">
+                #{publishType,jdbcType=INTEGER},
+            </if>
+            <if test="plSpuSku != null">
+                #{plSpuSku,jdbcType=VARCHAR},
+            </if>
+            <if test="publishStatus != null">
+                #{publishStatus,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="productImage != null">
+                #{productImage,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="plSpu != null">
+                #{plSpu,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="successTime != null">
+                #{successTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="publishTime != null">
+                #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="onlineTime != null">
+                #{onlineTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTimes != null">
+                #{endTimes,jdbcType=TIMESTAMP},
+            </if>
+            <if test="itemId != null">
+                #{itemId,jdbcType=BIGINT},
+            </if>
+            <if test="sellerId != null">
+                #{sellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteStatus != null">
+                #{deleteStatus,jdbcType=BIT},
+            </if>
+            <if test="createId != null">
+                #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createName != null">
+                #{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="platformListing != null">
+                #{platformListing,jdbcType=INTEGER},
+            </if>
+            <if test="updateStatus != null">
+                #{updateStatus,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListing">
+        update aliexpress_publish_listing
+        <set>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=BIGINT},
+            </if>
+            <if test="publishAccount != null">
+                publish_account = #{publishAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="plAccount != null">
+                pl_account = #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId1 != null">
+                category_id1 = #{categoryId1,jdbcType=BIGINT},
+            </if>
+            <if test="categoryId2 != null">
+                category_id2 = #{categoryId2,jdbcType=BIGINT},
+            </if>
+            <if test="categoryId3 != null">
+                category_id3 = #{categoryId3,jdbcType=BIGINT},
+            </if>
+            <if test="categoryId4 != null">
+                category_id4 = #{categoryId4,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="publishType != null">
+                publish_type = #{publishType,jdbcType=INTEGER},
+            </if>
+            <if test="plSpuSku != null">
+                pl_spu_sku = #{plSpuSku,jdbcType=VARCHAR},
+            </if>
+            <if test="publishStatus != null">
+                publish_status = #{publishStatus,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="productImage != null">
+                product_image = #{productImage,jdbcType=VARCHAR},
+            </if>
+            <if test="publishProductImage != null">
+                publish_product_image = #{publishProductImage,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+            <if test="successTime != null">
+                success_time = #{successTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="publishTime != null">
+                publish_time = #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="onlineTime != null">
+                online_time = #{onlineTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTimes != null">
+                end_times = #{endTimes,jdbcType=TIMESTAMP},
+            </if>
+            <if test="itemId != null">
+                item_id = #{itemId,jdbcType=BIGINT},
+            </if>
+            <if test="sellerId != null">
+                seller_id = #{sellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="deleteStatus != null">
+                delete_status = #{deleteStatus,jdbcType=BIT},
+            </if>
+            <if test="plSpu != null">
+                pl_spu = #{plSpu,jdbcType=VARCHAR},
+            </if>
+            <if test="createId != null">
+                create_id = #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createName != null">
+                create_name = #{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="platformListing != null">
+                platform_listing = #{platformListing,jdbcType=VARCHAR},
+            </if>
+            <if test="updateStatus != null">
+                update_status = #{updateStatus,jdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListing">
+        update aliexpress_publish_listing
+        set empower_id = #{empowerId,jdbcType=BIGINT},
+            publish_account = #{publishAccount,jdbcType=VARCHAR},
+            pl_account = #{plAccount,jdbcType=VARCHAR},
+            category_id1 = #{categoryId1,jdbcType=BIGINT},
+            category_id2 = #{categoryId2,jdbcType=BIGINT},
+            category_id3 = #{categoryId3,jdbcType=BIGINT},
+            category_id4 = #{categoryId4,jdbcType=BIGINT},
+            title = #{title,jdbcType=VARCHAR},
+            publish_type = #{publishType,jdbcType=INTEGER},
+            pl_spu_sku = #{plSpuSku,jdbcType=VARCHAR},
+            publish_status = #{publishStatus,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            product_image = #{productImage,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            pl_spu = #{plSpu,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER},
+            success_time = #{successTime,jdbcType=TIMESTAMP},
+            publish_time = #{publishTime,jdbcType=TIMESTAMP},
+            online_time = #{onlineTime,jdbcType=TIMESTAMP},
+            end_times = #{endTimes,jdbcType=TIMESTAMP},
+            item_id = #{itemId,jdbcType=BIGINT},
+            seller_id = #{sellerId,jdbcType=VARCHAR},
+            delete_status = #{deleteStatus,jdbcType=BIT}
+
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListing">
+        update aliexpress_publish_listing
+        set empower_id = #{empowerId,jdbcType=BIGINT},
+            publish_account = #{publishAccount,jdbcType=VARCHAR},
+            pl_account = #{plAccount,jdbcType=VARCHAR},
+            category_id1 = #{categoryId1,jdbcType=BIGINT},
+            category_id2 = #{categoryId2,jdbcType=BIGINT},
+            category_id3 = #{categoryId3,jdbcType=BIGINT},
+            category_id4 = #{categoryId4,jdbcType=BIGINT},
+            title = #{title,jdbcType=VARCHAR},
+            publish_type = #{publishType,jdbcType=INTEGER},
+            pl_spu_sku = #{plSpuSku,jdbcType=VARCHAR},
+            publish_status = #{publishStatus,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            product_image = #{productImage,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1,
+            success_time = #{successTime,jdbcType=TIMESTAMP},
+            publish_time = #{publishTime,jdbcType=TIMESTAMP},
+            online_time = #{onlineTime,jdbcType=TIMESTAMP},
+            end_times = #{endTimes,jdbcType=TIMESTAMP},
+            item_id = #{itemId,jdbcType=BIGINT},
+            seller_id = #{sellerId,jdbcType=VARCHAR},
+            delete_status = #{deleteStatus,jdbcType=BIT},
+            create_id = #{createId,jdbcType=BIGINT},
+            create_name = #{createName,jdbcType=VARCHAR},
+            platform_listing = #{platformListing,jdbcType=INTEGER},
+            update_status = #{updateStatus,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressPublishListing" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                 and empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+            <if test="publishAccount != null and publishAccount != ''">
+                 and publish_account = #{publishAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="plAccount != null and plAccount != ''">
+                 and pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="categoryId1 != null and categoryId1 != ''">
+                 and category_id1 = #{categoryId1,jdbcType=BIGINT}
+            </if>
+            <if test="categoryId2 != null and categoryId2 != ''">
+                 and category_id2 = #{categoryId2,jdbcType=BIGINT}
+            </if>
+            <if test="categoryId3 != null and categoryId3 != ''">
+                 and category_id3 = #{categoryId3,jdbcType=BIGINT}
+            </if>
+            <if test="categoryId4 != null and categoryId4 != ''">
+                 and category_id4 = #{categoryId4,jdbcType=BIGINT}
+            </if>
+            <if test="title != null and title != ''">
+                 and title = #{title,jdbcType=VARCHAR}
+            </if>
+            <if test="publishType != null and publishType != ''">
+                 and publish_type = #{publishType,jdbcType=INTEGER}
+            </if>
+            <if test="plSpuSku != null and plSpuSku != ''">
+                 and pl_spu_sku = #{plSpuSku,jdbcType=VARCHAR}
+            </if>
+            <if test="publishStatus != null and publishStatus != ''">
+                 and publish_status = #{publishStatus,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="productImage != null and productImage != ''">
+                 and product_image = #{productImage,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                 and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+            <if test="successTime != null and successTime != ''">
+                 and success_time = #{successTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="publishTime != null and publishTime != ''">
+                 and publish_time = #{publishTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="onlineTime != null and onlineTime != ''">
+                 and online_time = #{onlineTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTimes != null and endTimes != ''">
+                 and end_times = #{endTimes,jdbcType=TIMESTAMP}
+            </if>
+            <if test="itemId != null and itemId != ''">
+                 and item_id = #{itemId,jdbcType=BIGINT}
+            </if>
+            <if test="sellerId != null and sellerId != ''">
+                 and seller_id = #{sellerId,jdbcType=VARCHAR}
+            </if>
+            <if test="deleteStatus != null and deleteStatus != ''">
+                 and delete_status = #{deleteStatus,jdbcType=BIT}
+            </if>
+        </trim>
+    </select>
+
+    <select id="findPage" parameterType="com.rondaful.cloud.seller.vo.AliexpressPublishListingSearchVO" resultMap="SearchResultMap">
+        select
+        listing.id, listing.empower_id, listing.publish_account, listing.pl_account, listing.category_id1, listing.category_id2, listing.category_id3,
+        listing.category_id4, listing.title, listing.publish_type, listing.pl_spu_sku, listing.publish_status, listing.create_time, listing.update_time,
+        listing.product_image, listing.publish_product_image, listing.remark, listing.version, listing.pl_spu,
+        listing.success_time, listing.publish_time, listing.online_time, listing.end_times, listing.item_id,
+        listing.seller_id, listing.delete_status, listing.create_id, listing.create_name,listing.platform_listing,listing.update_status,
+        detail.warehouse_code
+        from aliexpress_publish_listing listing
+        inner join aliexpress_publish_listing_detail detail on detail.publish_listing_id=listing.id
+        <include refid="pageSearch"/>
+
+        order by listing.create_time desc
+    </select>
+
+    <select id="findAllExcel" parameterType="com.rondaful.cloud.seller.vo.AliexpressPublishListingSearchVO" resultMap="SearchResultExcel">
+        SELECT listing.id,listing.create_time,listing.online_time,listing.success_time ,listing.item_id,
+            listing.publish_status,listing.update_status,listing.publish_account,
+            (
+            IFNULL(listing.category_id4,IFNULL(listing.category_id3,IFNULL(listing.category_id2,IFNULL(listing.category_id1,0))))
+            ) AS categoryId,
+            listing.pl_spu,listing.title,listing.product_image,
+            detail.reduce_strategy ,detail.delivery_time ,detail.unit,
+            detail.product_details ,detail.packaging_weight
+            ,detail.package_length ,detail.package_width,detail.package_height,
+
+            detail.freight_template_id,freight.template_name AS freightTemplateName,
+            detail.promise_template_id,promise.promise_template_name AS promiseTemplateName,
+            detail.group_id,ag.group_name AS groupName
+
+            FROM aliexpress_publish_listing listing
+            INNER JOIN aliexpress_publish_listing_detail detail ON detail.publish_listing_id=listing.id
+            LEFT JOIN aliexpress_freight_template freight ON freight.template_id = detail.freight_template_id AND freight.empower_id=listing.empower_id
+            LEFT JOIN aliexpress_promise_template promise ON promise.promise_template_id = detail.promise_template_id AND promise.empower_id=listing.empower_id
+            LEFT JOIN aliexpress_group ag ON ag.group_id = detail.group_id AND ag.empower_id=listing.empower_id
+
+            <include refid="pageSearch"/>
+            <if test="ids != null ">
+                and listing.id in
+                <foreach collection="ids" item="id" index="index" separator ="," open="(" close=")">
+                    #{id,jdbcType=BIGINT}
+                </foreach>
+            </if>
+    </select>
+
+    <sql id="pageSearch">
+            where listing.delete_status = 1
+            <if test="publishStatus != null and publishStatus != ''">
+                and listing.publish_status = #{publishStatus,jdbcType=INTEGER}
+            </if>
+            <if test="updateStatus != null and updateStatus != ''">
+                and listing.update_status = #{updateStatus,jdbcType=INTEGER}
+            </if>
+
+            <if test="empowerId != null and empowerId != ''">
+                and listing.empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+            <if test="publishAccount != null and publishAccount != ''">
+                and listing.publish_account = #{publishAccount,jdbcType=VARCHAR}
+            </if>
+
+            <if test="plAccount != null and plAccount != ''">
+                and listing.pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+
+            <if test="title != null and title != ''">
+                and listing.title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
+            </if>
+
+            <choose>
+                <when test="@com.rondaful.cloud.Ognl@isNotEmpty(timeType)">
+                    <if test="@com.rondaful.cloud.Ognl@isNotEmpty(startTime )">
+                        and
+                        <if test="timeType == '1'.toString()">DATE_FORMAT(listing.create_time,'%Y-%m-%d %H:%i:%s')</if>
+                        <if test="timeType == '2'.toString()">DATE_FORMAT(listing.update_time,'%Y-%m-%d %H:%i:%s')</if>
+                        <if test="timeType == '3'.toString()">DATE_FORMAT(listing.success_time,'%Y-%m-%d %H:%i:%s')</if>
+                        >= DATE_FORMAT( #{startTime}, '%Y-%m-%d %H:%i:%s')
+                    </if>
+                    <if test="@com.rondaful.cloud.Ognl@isNotEmpty(endTime )">
+                        and
+                        <if test="timeType == '1'.toString()">DATE_FORMAT(listing.create_time,'%Y-%m-%d %H:%i:%s')</if>
+                        <if test="timeType == '2'.toString()">DATE_FORMAT(listing.update_time,'%Y-%m-%d %H:%i:%s')</if>
+                        <if test="timeType == '3'.toString()">DATE_FORMAT(listing.success_time,'%Y-%m-%d %H:%i:%s')</if>
+                        &lt;= DATE_FORMAT( #{endTime}, '%Y-%m-%d %H:%i:%s')
+                    </if>
+                </when>
+                <otherwise></otherwise>
+            </choose>
+
+            <if test="itemId != null and itemId != ''">
+                and listing.item_id = #{itemId,jdbcType=BIGINT}
+            </if>
+            <if test="sellerId != null and sellerId != ''">
+                and listing.seller_id = #{sellerId,jdbcType=VARCHAR}
+            </if>
+
+            <if test="empowerIds != null">
+                and listing.empower_id in
+                <foreach collection="empowerIds" item="eid" index="index" separator ="," open="(" close=")">
+                    #{eid,jdbcType=BIGINT}
+                </foreach>
+            </if>
+
+            <if test="plSku != null and plSku != ''">
+                and listing.id in(select publish_listing_id from aliexpress_publish_listing_product where pl_sku = #{plSku,jdbcType=VARCHAR})
+            </if>
+            <if test="platformSku != null and platformSku != ''">
+                and listing.id in(select publish_listing_id from aliexpress_publish_listing_product where platform_sku = #{platformSku,jdbcType=VARCHAR})
+            </if>
+
+
+
+    </sql>
+
+    <select id="getAllMobile" resultType="com.rondaful.cloud.seller.entity.aliexpress.AliexpressPublishListingMobile">
+        SELECT
+            apl.id,
+            DATEDIFF(NOW(),apl.success_time) AS publishDays,
+            apl.success_time AS successTime,
+            apl.product_image AS productImage,
+            apl.publish_status AS publishStatus,
+            apl.title AS productName,
+            apl.publish_account AS publishAccount
+        FROM aliexpress_publish_listing apl
+        WHERE apl.delete_status = 1
+          AND  apl.seller_id = #{sellerId,jdbcType=VARCHAR}
+         AND apl.publish_status IN (6,7)
+        <if test="empowerIds != null">
+            and apl.empower_id in
+            <foreach collection="empowerIds" item="eid" index="index" separator ="," open="(" close=")">
+                #{eid,jdbcType=BIGINT}
+            </foreach>
+        </if>
+         order by apl.create_time desc
+    </select>
+    <select id="getAliexpressPublishListingMobileById" resultType="com.rondaful.cloud.seller.entity.aliexpress.AliexpressPublishListingMobile">
+        SELECT
+            apl.id,
+            DATEDIFF(NOW(),apl.success_time) AS publishDays,
+            apl.success_time AS successTime,
+            apl.product_image AS productImage,
+            apl.publish_status AS publishStatus,
+            apl.title AS productName,
+            apl.publish_account AS publishAccount,
+            apl.remark as remark,
+            detail.product_details as productDetails
+
+        FROM aliexpress_publish_listing apl
+        INNER JOIN aliexpress_publish_listing_detail detail ON detail.publish_listing_id=apl.id
+        where apl.id = #{id,jdbcType=BIGINT}
+
+    </select>
+
+    <select id="getAliexpressPublishListingByItemId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_publish_listing
+
+        where delete_status = 1 and item_id = #{itemId,jdbcType=BIGINT} and empower_id = #{empowerId,jdbcType=BIGINT}
+
+    </select>
+
+
+
+    <select id="getAliexpressPublishModelList" resultType="com.rondaful.cloud.seller.entity.aliexpress.AliexpressPublishModel">
+        SELECT
+            apl.id,
+            apl.empower_id AS empowerId,
+            apl.publish_status AS publishStatus,
+            apl.item_id AS itemId
+        FROM aliexpress_publish_listing apl
+        WHERE
+            apl.delete_status = 1
+            AND apl.publish_status = #{publishStatus,jdbcType=INTEGER}
+        <if test="publishStatus == 2">
+            AND DATE_FORMAT(ADDDATE(NOW(), INTERVAL -30 MINUTE),'%Y-%m-%d %H:%i:%s')>=apl.update_time
+        </if>
+    </select>
+
+    <select id="getUserNameCount" resultType="java.lang.Integer">
+        SELECT
+            count(1)
+        FROM aliexpress_publish_listing apl
+        WHERE apl.delete_status = 1
+        AND  apl.pl_account = #{plAccount,jdbcType=VARCHAR}
+        AND apl.publish_status IN (6,7)
+    </select>
+
+    <select id="getAliexpressSkuNumber" resultType="java.util.Map">
+        SELECT product.pl_sku,COUNT(1) AS numbers FROM aliexpress_publish_listing_product product
+        INNER JOIN aliexpress_publish_listing listing  ON product.publish_listing_id=listing.id
+        WHERE listing.publish_status IN (4,6,7) AND product.pl_sku IS NOT NULL
+        GROUP BY product.pl_sku
+    </select>
+
+
+    <select id="getAliexpressResultPublishListingVO" resultType="com.rondaful.cloud.seller.vo.ResultPublishListingVO">
+        SELECT logistics_type as logisticsType,SUBSTRING_INDEX(warehouse_code,',',1) as warehouseId FROM aliexpress_publish_listing_detail detail
+        INNER JOIN aliexpress_publish_listing listing  ON detail.publish_listing_id=listing.id
+        WHERE empower_id=#{empowerId,jdbcType=BIGINT} and detail.publish_listing_id IN (
+        SELECT publish_listing_id FROM aliexpress_publish_listing_product product WHERE        
+         product.platform_sku IN
+        <foreach collection="platformSkus" item="platformSku"  open="(" close=")" separator=",">
+            #{platformSku,jdbcType=VARCHAR}
+        </foreach>
+        )
+        and warehouse_code is not null
+    </select>
+
+
+
+
+
+
+</mapper>

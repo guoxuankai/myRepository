@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.rondaful.cloud.finance.mapper.RechargeRecordMapper">
+	<resultMap id="BaseResultMap"
+		type="com.rondaful.cloud.finance.entity.RechargeRecord">
+		<id column="recharge_id" jdbcType="INTEGER" property="rechargeId" />
+		<result column="recharge_no" jdbcType="CHAR"
+			property="rechargeNo" />
+		<result column="recharge_account" jdbcType="CHAR"
+			property="rechargeAccount" />
+		<result column="recharge_amount" jdbcType="DECIMAL"
+			property="rechargeAmount" />
+		<result column="recharge_type" jdbcType="CHAR"
+			property="rechargeType" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="transfer_receipt_url" jdbcType="CHAR"
+			property="transferReceiptUrl" />
+		<result column="modify_time" jdbcType="TIMESTAMP"
+			property="modifyTime" />
+		<result column="examine_status" jdbcType="CHAR"
+			property="examineStatus" />
+		<result column="tb_status" jdbcType="CHAR" property="tbStatus" />
+		<result column="remark" jdbcType="CHAR" property="remark" />
+		<result column="version" jdbcType="INTEGER" property="version" />
+		<result column="seller_name" jdbcType="CHAR"
+			property="sellerName" />
+		<result column="seller_id" jdbcType="INTEGER"
+			property="sellerId" />
+		<result column="trans_serial_no" jdbcType="CHAR"
+			property="transSerialNo" />
+		<result column="annotation" jdbcType="CHAR"
+			property="annotation" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		recharge_id, recharge_no, recharge_account,
+		recharge_amount, recharge_type,
+		create_time,
+		transfer_receipt_url,
+		modify_time, examine_status, tb_status, remark, version, seller_name,
+		seller_id, trans_serial_no, annotation
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from rdf_pl_recharge_record
+		where recharge_id =
+		#{rechargeId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from rdf_pl_recharge_record
+		where recharge_id =
+		#{rechargeId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.rondaful.cloud.finance.entity.RechargeRecord">
+		insert into rdf_pl_recharge_record (recharge_id,
+		recharge_no,
+		recharge_account,
+		recharge_amount, recharge_type,
+		create_time,
+		transfer_receipt_url, modify_time, examine_status,
+		tb_status, remark, version,
+		seller_name, seller_id, trans_serial_no,
+		annotation)
+		values (#{rechargeId,jdbcType=INTEGER},
+		#{rechargeNo,jdbcType=CHAR},
+		#{rechargeAccount,jdbcType=CHAR},
+		#{rechargeAmount,jdbcType=DECIMAL}, #{rechargeType,jdbcType=CHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{transferReceiptUrl,jdbcType=CHAR},
+		#{modifyTime,jdbcType=TIMESTAMP},
+		#{examineStatus,jdbcType=CHAR},
+		#{tbStatus,jdbcType=CHAR}, #{remark,jdbcType=CHAR},
+		#{version,jdbcType=INTEGER},
+		#{sellerName,jdbcType=CHAR},
+		#{sellerId,jdbcType=INTEGER},
+		#{transSerialNo,jdbcType=CHAR},
+		#{annotation,jdbcType=CHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.rondaful.cloud.finance.entity.RechargeRecord">
+		insert into rdf_pl_recharge_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="rechargeId != null">
+				recharge_id,
+			</if>
+			<if test="rechargeNo != null">
+				recharge_no,
+			</if>
+			<if test="rechargeAccount != null">
+				recharge_account,
+			</if>
+			<if test="rechargeAmount != null">
+				recharge_amount,
+			</if>
+			<if test="rechargeType != null">
+				recharge_type,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="transferReceiptUrl != null">
+				transfer_receipt_url,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+			<if test="examineStatus != null">
+				examine_status,
+			</if>
+			<if test="tbStatus != null">
+				tb_status,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="sellerName != null">
+				seller_name,
+			</if>
+			<if test="sellerId != null">
+				seller_id,
+			</if>
+			<if test="transSerialNo != null">
+				trans_serial_no,
+			</if>
+			<if test="annotation != null">
+				annotation,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="rechargeId != null">
+				#{rechargeId,jdbcType=INTEGER},
+			</if>
+			<if test="rechargeNo != null">
+				#{rechargeNo,jdbcType=CHAR},
+			</if>
+			<if test="rechargeAccount != null">
+				#{rechargeAccount,jdbcType=CHAR},
+			</if>
+			<if test="rechargeAmount != null">
+				#{rechargeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="rechargeType != null">
+				#{rechargeType,jdbcType=CHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="transferReceiptUrl != null">
+				#{transferReceiptUrl,jdbcType=CHAR},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="examineStatus != null">
+				#{examineStatus,jdbcType=CHAR},
+			</if>
+			<if test="tbStatus != null">
+				#{tbStatus,jdbcType=CHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=CHAR},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=INTEGER},
+			</if>
+			<if test="sellerName != null">
+				#{sellerName,jdbcType=CHAR},
+			</if>
+			<if test="sellerId != null">
+				#{sellerId,jdbcType=INTEGER},
+			</if>
+			<if test="transSerialNo != null">
+				#{transSerialNo,jdbcType=CHAR},
+			</if>
+			<if test="annotation != null">
+				#{annotation,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.rondaful.cloud.finance.entity.RechargeRecord">
+		update rdf_pl_recharge_record
+		<set>
+			<if test="rechargeNo != null">
+				recharge_no = #{rechargeNo,jdbcType=CHAR},
+			</if>
+			<if test="rechargeAccount != null">
+				recharge_account = #{rechargeAccount,jdbcType=CHAR},
+			</if>
+			<if test="rechargeAmount != null">
+				recharge_amount = #{rechargeAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="rechargeType != null">
+				recharge_type = #{rechargeType,jdbcType=CHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="transferReceiptUrl != null">
+				transfer_receipt_url =
+				#{transferReceiptUrl,jdbcType=CHAR},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="examineStatus != null">
+				examine_status = #{examineStatus,jdbcType=CHAR},
+			</if>
+			<if test="tbStatus != null">
+				tb_status = #{tbStatus,jdbcType=CHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=CHAR},
+			</if>
+			<if test="version != null">
+				version = #{version,jdbcType=INTEGER}+1,
+			</if>
+			<if test="sellerName != null">
+				seller_name = #{sellerName,jdbcType=CHAR},
+			</if>
+			<if test="sellerId != null">
+				seller_id = #{sellerId,jdbcType=INTEGER},
+			</if>
+			<if test="transSerialNo != null">
+				trans_serial_no = #{transSerialNo,jdbcType=CHAR},
+			</if>
+			<if test="annotation != null">
+				annotation = #{annotation,jdbcType=CHAR},
+			</if>
+		</set>
+		where recharge_id = #{rechargeId,jdbcType=INTEGER} and
+		tb_status='normal' and version=#{version,jdbcType=INTEGER}
+		<if test="examineStatus != null">
+			and examine_status = '待审核'
+		</if>
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.rondaful.cloud.finance.entity.RechargeRecord">
+		update rdf_pl_recharge_record
+		set recharge_no =
+		#{rechargeNo,jdbcType=CHAR},
+		recharge_account =
+		#{rechargeAccount,jdbcType=CHAR},
+		recharge_amount =
+		#{rechargeAmount,jdbcType=DECIMAL},
+		recharge_type =
+		#{rechargeType,jdbcType=CHAR},
+		transfer_receipt_url =
+		#{transferReceiptUrl,jdbcType=CHAR},
+		examine_status =
+		#{examineStatus,jdbcType=CHAR},
+		remark = #{remark,jdbcType=CHAR},
+		version =
+		#{version,jdbcType=INTEGER}+1,
+		seller_name =
+		#{sellerName,jdbcType=CHAR},
+		seller_id = #{sellerId,jdbcType=INTEGER},
+		trans_serial_no = #{transSerialNo,jdbcType=CHAR},
+		annotation =
+		#{annotation,jdbcType=CHAR}
+		where recharge_id =
+		#{rechargeId,jdbcType=INTEGER} and tb_status='normal' and
+		version=#{version,jdbcType=INTEGER}
+		and examine_status = '审核不通过'
+	</update>
+</mapper>

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.ProcurementMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.procurement.Procurement">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId" />
+        <result column="provider_id" jdbcType="INTEGER" property="providerId" />
+        <result column="sum_price" jdbcType="DECIMAL" property="sumPrice" />
+        <result column="buyer" jdbcType="VARCHAR" property="buyer" />
+        <result column="sum_freight" jdbcType="VARCHAR" property="sumFreight" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="top_user_id" jdbcType="INTEGER" property="topUserId" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="audit_by" jdbcType="VARCHAR" property="auditBy" />
+        <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime" />
+        <result column="remake" jdbcType="VARCHAR" property="remake" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, warehouse_id, provider_id, sum_price, buyer, sum_freight, status, create_time, 
+        top_user_id, create_by, update_by, update_time, audit_by, audit_time, remake
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_procurement
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_procurement
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.procurement.Procurement">
+        insert into t_procurement (id, warehouse_id, provider_id, 
+            sum_price, buyer, sum_freight, 
+            status, create_time, top_user_id, 
+            create_by, update_by, update_time, 
+            audit_by, audit_time, remake
+            )
+        values (#{id,jdbcType=BIGINT}, #{warehouseId,jdbcType=INTEGER}, #{providerId,jdbcType=INTEGER}, 
+            #{sumPrice,jdbcType=DECIMAL}, #{buyer,jdbcType=VARCHAR}, #{sumFreight,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{topUserId,jdbcType=INTEGER}, 
+            #{createBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{auditBy,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP}, #{remake,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.procurement.Procurement">
+        insert into t_procurement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="providerId != null">
+                provider_id,
+            </if>
+            <if test="sumPrice != null">
+                sum_price,
+            </if>
+            <if test="buyer != null">
+                buyer,
+            </if>
+            <if test="sumFreight != null">
+                sum_freight,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="topUserId != null">
+                top_user_id,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="auditBy != null">
+                audit_by,
+            </if>
+            <if test="auditTime != null">
+                audit_time,
+            </if>
+            <if test="remake != null">
+                remake,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="providerId != null">
+                #{providerId,jdbcType=INTEGER},
+            </if>
+            <if test="sumPrice != null">
+                #{sumPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="buyer != null">
+                #{buyer,jdbcType=VARCHAR},
+            </if>
+            <if test="sumFreight != null">
+                #{sumFreight,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="topUserId != null">
+                #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditBy != null">
+                #{auditBy,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null">
+                #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remake != null">
+                #{remake,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.procurement.Procurement">
+        update t_procurement
+        <set>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="providerId != null">
+                provider_id = #{providerId,jdbcType=INTEGER},
+            </if>
+            <if test="sumPrice != null">
+                sum_price = #{sumPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="buyer != null">
+                buyer = #{buyer,jdbcType=VARCHAR},
+            </if>
+            <if test="sumFreight != null">
+                sum_freight = #{sumFreight,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="topUserId != null">
+                top_user_id = #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditBy != null">
+                audit_by = #{auditBy,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remake != null">
+                remake = #{remake,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.procurement.Procurement">
+        update t_procurement
+        set warehouse_id = #{warehouseId,jdbcType=INTEGER},
+            provider_id = #{providerId,jdbcType=INTEGER},
+            sum_price = #{sumPrice,jdbcType=DECIMAL},
+            buyer = #{buyer,jdbcType=VARCHAR},
+            sum_freight = #{sumFreight,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            top_user_id = #{topUserId,jdbcType=INTEGER},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            audit_by = #{auditBy,jdbcType=VARCHAR},
+            audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            remake = #{remake,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.procurement.Procurement" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_procurement
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="warehouseId != null and warehouseId != ''">
+                 and warehouse_id = #{warehouseId,jdbcType=INTEGER}
+            </if>
+            <if test="providerId != null and providerId != ''">
+                 and provider_id = #{providerId,jdbcType=INTEGER}
+            </if>
+            <if test="sumPrice != null and sumPrice != ''">
+                 and sum_price = #{sumPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="buyer != null and buyer != ''">
+                 and buyer = #{buyer,jdbcType=VARCHAR}
+            </if>
+            <if test="sumFreight != null and sumFreight != ''">
+                 and sum_freight = #{sumFreight,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="topUserId != null and topUserId != ''">
+                 and top_user_id = #{topUserId,jdbcType=INTEGER}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="auditBy != null and auditBy != ''">
+                 and audit_by = #{auditBy,jdbcType=VARCHAR}
+            </if>
+            <if test="auditTime != null and auditTime != ''">
+                 and audit_time = #{auditTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="remake != null and remake != ''">
+                 and remake = #{remake,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getsPage"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_procurement
+        <where>
+            <if test="warehouseId !=null ">
+                warehouse_id = #{warehouseId,jdbcType=INTEGER}
+            </if>
+            <if test="status !=null or status==0">
+                and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="providerId !=null" >
+                and provider_id = #{providerId,jdbcType=INTEGER}
+            </if>
+            <if test=" startTime !=null and endTime !=null">
+                and audit_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_procurement (id, warehouse_id, provider_id,
+            sum_price, buyer, sum_freight,
+            status, create_time, top_user_id,
+            create_by, update_by, update_time,
+            audit_by, audit_time, remake)
+        values
+        <foreach collection="list" item="item" separator="," index="index" >
+            (#{item.id,jdbcType=BIGINT}, #{item.warehouseId,jdbcType=INTEGER}, #{item.providerId,jdbcType=INTEGER},
+            #{item.sumPrice,jdbcType=DECIMAL}, #{item.buyer,jdbcType=VARCHAR}, #{item.sumFreight,jdbcType=VARCHAR},
+            #{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.topUserId,jdbcType=INTEGER},
+            #{item.createBy,jdbcType=VARCHAR}, #{item.updateBy,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.auditBy,jdbcType=VARCHAR}, #{item.auditTime,jdbcType=TIMESTAMP}, #{item.remake,jdbcType=VARCHAR})
+        </foreach>
+
+    </insert>
+</mapper>

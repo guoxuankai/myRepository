@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.PublishStyleTypeMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.PublishStyleType">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="platform" jdbcType="INTEGER" property="platform" />
+        <result column="style_type_name" jdbcType="VARCHAR" property="styleTypeName" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="system_is" jdbcType="BIT" property="systemIs" />
+        <result column="pl_account" jdbcType="VARCHAR" property="plAccount" />
+        <result column="create_id" jdbcType="BIGINT" property="createId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, platform, style_type_name, remark, system_is, pl_account, create_id, create_time, 
+        update_time, status
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from publish_style_type
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from publish_style_type
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.PublishStyleType">
+        insert into publish_style_type (id, platform, style_type_name, 
+            remark, system_is, pl_account, 
+            create_id, create_time, update_time, 
+            status)
+        values (#{id,jdbcType=BIGINT}, #{platform,jdbcType=INTEGER}, #{styleTypeName,jdbcType=VARCHAR}, 
+            #{remark,jdbcType=VARCHAR}, #{systemIs,jdbcType=BIT}, #{plAccount,jdbcType=VARCHAR}, 
+            #{createId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{status,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.PublishStyleType">
+        insert into publish_style_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="platform != null">
+                platform,
+            </if>
+            <if test="styleTypeName != null">
+                style_type_name,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="systemIs != null">
+                system_is,
+            </if>
+            <if test="plAccount != null">
+                pl_account,
+            </if>
+            <if test="createId != null">
+                create_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="platform != null">
+                #{platform,jdbcType=INTEGER},
+            </if>
+            <if test="styleTypeName != null">
+                #{styleTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="systemIs != null">
+                #{systemIs,jdbcType=BIT},
+            </if>
+            <if test="plAccount != null">
+                #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="createId != null">
+                #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.PublishStyleType">
+        update publish_style_type
+        <set>
+            <if test="platform != null">
+                platform = #{platform,jdbcType=INTEGER},
+            </if>
+            <if test="styleTypeName != null">
+                style_type_name = #{styleTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="systemIs != null">
+                system_is = #{systemIs,jdbcType=BIT},
+            </if>
+            <if test="plAccount != null">
+                pl_account = #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="createId != null">
+                create_id = #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.PublishStyleType">
+        update publish_style_type
+        set platform = #{platform,jdbcType=INTEGER},
+            style_type_name = #{styleTypeName,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            system_is = #{systemIs,jdbcType=BIT},
+            pl_account = #{plAccount,jdbcType=VARCHAR},
+            create_id = #{createId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.PublishStyleType" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from publish_style_type
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="platform != null and platform != ''">
+                 and platform = #{platform,jdbcType=INTEGER}
+            </if>
+            <if test="styleTypeName != null and styleTypeName != ''">
+                 and style_type_name = #{styleTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                 and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="systemIs != null and systemIs != ''">
+                 and system_is = #{systemIs,jdbcType=BIT}
+            </if>
+            <if test="plAccount != null and plAccount != ''">
+                 and pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="createId != null and createId != ''">
+                 and create_id = #{createId,jdbcType=BIGINT}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+    <select id="findPublishStyleTypePage" parameterType="com.rondaful.cloud.seller.vo.PublishStyleTypeSearchVO" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from publish_style_type
+        <trim prefix="where" prefixOverrides="and">
+            and status = 0
+            <if test="platform != null and platform != ''">
+                and platform = #{platform,jdbcType=INTEGER}
+            </if>
+            <if test="systemIs != null">
+                and system_is = #{systemIs,jdbcType=BIT}
+            </if>
+            <if test="plAccount != null and plAccount != ''">
+                and pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="createId != null and createId != ''">
+                and create_id = #{createId,jdbcType=BIGINT}
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(cStartTime )">
+                and create_time >= DATE_FORMAT( #{cStartTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(cEndTime )">
+                and create_time &lt;= DATE_FORMAT( #{cEndTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(uStartTime )">
+                and update_time >= DATE_FORMAT( #{uStartTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="@com.rondaful.cloud.Ognl@isNotEmpty(uEndTime )">
+                and update_time &lt;= DATE_FORMAT( #{uEndTime}, '%Y-%m-%d %H:%i:%s')
+            </if>
+
+            <if test="styleTypeName != null and styleTypeName != ''">
+                and style_type_name like CONCAT('%',#{styleTypeName,jdbcType=VARCHAR},'%')
+
+            </if>
+
+        </trim>
+        order by create_time desc
+    </select>
+
+
+    <select id="getPublishStyleTypeAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from publish_style_type
+        <trim prefix="where" prefixOverrides="and">
+            and status = 0
+            and platform = #{platform,jdbcType=INTEGER}
+            <if test="createId != null and createId != ''">
+                and (create_id = #{createId,jdbcType=BIGINT} or create_id=0)
+            </if>
+            <if test="systemIs != null">
+                and system_is = #{systemIs,jdbcType=BIT}
+            </if>
+        </trim>
+    </select>
+
+
+    <select id="checkStyleTypeName" resultType="java.lang.Integer">
+        select count(1) from publish_style_type where status=0
+        <if test="id != null and id != ''">
+            and id != #{id,jdbcType=BIGINT}
+        </if>
+        and pl_account = #{plAccount,jdbcType=VARCHAR}
+        and style_type_name = #{styleTypeName,jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>

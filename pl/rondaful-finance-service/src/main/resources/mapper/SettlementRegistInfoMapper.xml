@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.rondaful.cloud.finance.mapper.SettlementRegistInfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.rondaful.cloud.finance.entity.SettlementRegistInfo">
+		<id column="register_id" jdbcType="INTEGER" property="registerId" />
+		<result column="supplier_id" jdbcType="INTEGER"
+			property="supplierId" />
+		<result column="supplier_name" jdbcType="CHAR"
+			property="supplierName" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="settlement_cycle" jdbcType="CHAR"
+			property="settlementCycle" />
+		<result column="last_settlement_time" jdbcType="TIMESTAMP"
+			property="lastSettlementTime" />
+		<result column="version" jdbcType="INTEGER" property="version" />
+		<result column="tb_status" jdbcType="CHAR" property="tbStatus" />
+		<result column="next_settlement_time" jdbcType="TIMESTAMP"
+			property="nextSettlementTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		register_id, supplier_id, supplier_name, create_time,
+		settlement_cycle,
+		last_settlement_time,
+		version,
+		tb_status,next_settlement_time
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from rdf_pl_settlement_regist_info
+		where register_id =
+		#{registerId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from rdf_pl_settlement_regist_info
+		where
+		register_id = #{registerId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.rondaful.cloud.finance.entity.SettlementRegistInfo">
+		insert into rdf_pl_settlement_regist_info (
+		supplier_id,
+		supplier_name,
+		settlement_cycle,
+		next_settlement_time)
+		select #{supplierId,jdbcType=INTEGER},
+		#{supplierName,jdbcType=CHAR},#{settlementCycle,jdbcType=CHAR},#{nextSettlementTime,jdbcType=TIMESTAMP}
+		FROM DUAL
+		WHERE NOT EXISTS(
+		SELECT 1
+		FROM
+		rdf_pl_settlement_regist_info
+		WHERE supplier_id=#{supplierId} and tb_status='normal');
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.rondaful.cloud.finance.entity.SettlementRegistInfo">
+		insert into rdf_pl_settlement_regist_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="registerId != null">
+				register_id,
+			</if>
+			<if test="supplierId != null">
+				supplier_id,
+			</if>
+			<if test="supplierName != null">
+				supplier_name,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="settlementCycle != null">
+				settlement_cycle,
+			</if>
+			<if test="lastSettlementTime != null">
+				last_settlement_time,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="tbStatus != null">
+				tb_status,
+			</if>
+			<if test="nextSettlementTime != null">
+				next_settlement_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="registerId != null">
+				#{registerId,jdbcType=INTEGER},
+			</if>
+			<if test="supplierId != null">
+				#{supplierId,jdbcType=INTEGER},
+			</if>
+			<if test="supplierName != null">
+				#{supplierName,jdbcType=CHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="settlementCycle != null">
+				#{settlementCycle,jdbcType=CHAR},
+			</if>
+			<if test="lastSettlementTime != null">
+				#{lastSettlementTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=INTEGER},
+			</if>
+			<if test="tbStatus != null">
+				#{tbStatus,jdbcType=CHAR},
+			</if>
+			<if test="nextSettlementTime != null">
+				#{nextSettlementTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.rondaful.cloud.finance.entity.SettlementRegistInfo">
+		update rdf_pl_settlement_regist_info
+		<set>
+			<if test="supplierId != null">
+				supplier_id = #{supplierId,jdbcType=INTEGER},
+			</if>
+			<if test="supplierName != null">
+				supplier_name = #{supplierName,jdbcType=CHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="settlementCycle != null">
+				settlement_cycle = #{settlementCycle,jdbcType=CHAR},
+			</if>
+			<if test="lastSettlementTime != null">
+				last_settlement_time =
+				#{lastSettlementTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="version != null">
+				version = #{version,jdbcType=INTEGER},
+			</if>
+			<if test="tbStatus != null">
+				tb_status = #{tbStatus,jdbcType=CHAR},
+			</if>
+			<if test="nextSettlementTime != null">
+				next_settlement_time =
+				#{nextSettlementTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where register_id = #{registerId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.rondaful.cloud.finance.entity.SettlementRegistInfo">
+		update rdf_pl_settlement_regist_info
+		set supplier_id =
+		#{supplierId,jdbcType=INTEGER},
+		supplier_name =
+		#{supplierName,jdbcType=CHAR},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		settlement_cycle =
+		#{settlementCycle,jdbcType=CHAR},
+		last_settlement_time =
+		#{lastSettlementTime,jdbcType=TIMESTAMP},
+		version =
+		#{version,jdbcType=INTEGER},
+		tb_status =
+		#{tbStatus,jdbcType=CHAR},next_settlement_time =
+		#{nextSettlementTime,jdbcType=TIMESTAMP}
+		where register_id =
+		#{registerId,jdbcType=INTEGER}
+	</update>
+</mapper>

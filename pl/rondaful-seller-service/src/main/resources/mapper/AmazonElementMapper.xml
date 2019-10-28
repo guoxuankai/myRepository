@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonElementMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.amazon.AmazonElement">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="doc" jdbcType="VARCHAR" property="doc" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="update_time" jdbcType="INTEGER" property="updateTime" />
+    <result column="defined" jdbcType="BIT" property="defined" />
+    <result column="type_id" jdbcType="INTEGER" property="typeId" />
+    <result column="type_class_id" jdbcType="BIT" property="typeClassId" />
+    <result column="site" jdbcType="INTEGER" property="site" />
+    <result column="variation" jdbcType="BIT" property="variation" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, type, type_name, doc, create_time, update_time, defined, type_id, type_class_id, 
+    site, variation
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from amazon_element
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from amazon_element
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonElement">
+    insert into amazon_element (id, name, type, 
+      type_name, doc, create_time, 
+      update_time, defined, type_id, 
+      type_class_id, site, variation
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{typeName,jdbcType=VARCHAR}, #{doc,jdbcType=VARCHAR}, #{createTime,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=INTEGER}, #{defined,jdbcType=BIT}, #{typeId,jdbcType=INTEGER}, 
+      #{typeClassId,jdbcType=BIT}, #{site,jdbcType=INTEGER}, #{variation,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonElement">
+    insert into amazon_element
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="typeName != null">
+        type_name,
+      </if>
+      <if test="doc != null">
+        doc,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="defined != null">
+        defined,
+      </if>
+      <if test="typeId != null">
+        type_id,
+      </if>
+      <if test="typeClassId != null">
+        type_class_id,
+      </if>
+      <if test="site != null">
+        site,
+      </if>
+      <if test="variation != null">
+        variation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null">
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="doc != null">
+        #{doc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="defined != null">
+        #{defined,jdbcType=BIT},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="typeClassId != null">
+        #{typeClassId,jdbcType=BIT},
+      </if>
+      <if test="site != null">
+        #{site,jdbcType=INTEGER},
+      </if>
+      <if test="variation != null">
+        #{variation,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonElement">
+    update amazon_element
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null">
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="doc != null">
+        doc = #{doc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="defined != null">
+        defined = #{defined,jdbcType=BIT},
+      </if>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="typeClassId != null">
+        type_class_id = #{typeClassId,jdbcType=BIT},
+      </if>
+      <if test="site != null">
+        site = #{site,jdbcType=INTEGER},
+      </if>
+      <if test="variation != null">
+        variation = #{variation,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.amazon.AmazonElement">
+    update amazon_element
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      type_name = #{typeName,jdbcType=VARCHAR},
+      doc = #{doc,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=INTEGER},
+      defined = #{defined,jdbcType=BIT},
+      type_id = #{typeId,jdbcType=INTEGER},
+      type_class_id = #{typeClassId,jdbcType=BIT},
+      site = #{site,jdbcType=INTEGER},
+      variation = #{variation,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

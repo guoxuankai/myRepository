@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.DeliveryRecordMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.DeliveryRecord">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="delivery_id" jdbcType="VARCHAR" property="deliveryId" />
+        <result column="source_order" jdbcType="VARCHAR" property="sysOrderId" />
+        <result column="total_sell_price" jdbcType="DECIMAL" property="orderAmount" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+       <!--  <result column="delivery_date" jdbcType="TIMESTAMP" property="deliveryTime" /> -->
+        <result column="receive_date" jdbcType="TIMESTAMP" property="receiveDate" />
+        <result column="reject_date" jdbcType="TIMESTAMP" property="rejectDate" />
+        <result column="ship_to_country_name" jdbcType="VARCHAR" property="shipToCountryName" />
+        <result column="delivery_warehouse" jdbcType="VARCHAR" property="deliveryWarehouse" />
+        <result column="delivery_warehouse_code" jdbcType="VARCHAR" property="deliveryWarehouseCode" />
+        <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
+        <result column="actual_ship_cost" jdbcType="DECIMAL" property="actualShipCost" />
+       
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, delivery_id, source_order, total_sell_price, create_date, receive_date, reject_date, 
+         ship_to_country_name, delivery_warehouse, delivery_warehouse_code,actual_ship_cost,order_status
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_delivery_record
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_delivery_record
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insertBatchDeliveryRecord" parameterType="java.util.List">
+        insert into t_delivery_record ( delivery_id, source_order, 
+            create_date, ship_to_country_name, 
+            delivery_warehouse,delivery_warehouse_code,total_sell_price, actual_ship_cost,order_status) values
+             <foreach collection="list" item="item" index="index" separator=",">
+             ( #{item.deliveryId,jdbcType=VARCHAR}, #{item.sysOrderId,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.shipToCountryName,jdbcType=VARCHAR},  #{item.deliveryWarehouse,jdbcType=VARCHAR}, 
+            #{item.deliveryWarehouseCode,jdbcType=VARCHAR}, #{item.orderAmount,jdbcType=DECIMAL},#{item.actualShipCost,jdbcType=DECIMAL}, #{item.orderStatus,jdbcType=TINYINT})
+            </foreach>
+    </insert>
+    <!-- 根据系统订单更新状态 -->
+    <update id="updateOrderStatusBySourceOrder" parameterType="java.util.Map">
+        update t_delivery_record 
+        set reject_date=str_to_date(#{rejectDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s'),
+        order_status=#{orderStatus,jdbcType=TINYINT}
+         where source_order=#{sysOrderId,jdbcType=VARCHAR} 
+    </update>
+    
+    <select id="getDeliveryRecord" parameterType="com.rondaful.cloud.supplier.entity.DeliveryRecord" resultMap="BaseResultMap">
+		 SELECT
+				 <include refid="Base_Column_List" />
+			FROM
+			t_delivery_record dr
+			 where 1=1 and EXISTS (
+	                SELECT delivery_id FROM t_delivery_detail dt WHERE dr.delivery_id = dt.delivery_id 
+					<if test="supplierId != null">
+			            and dt.supplier_id =  #{supplierId,jdbcType=INTEGER} 
+			         </if>
+         			<if test='supplies != null and supplies.size() > 0'>
+              				and dt.supplier_id in
+         	 			<foreach collection="supplies" index="index" item="item" separator="," open="(" close=")">
+		              		 #{item,jdbcType=INTEGER}
+		           	 	</foreach>
+        			 </if>
+			          
+			         )
+         	<if test='wCodes != null and wCodes.size() > 0'>
+              and delivery_warehouse_code in
+         		 <foreach collection="wCodes" index="index" item="item" separator="," open="(" close=")">
+               		#{item,jdbcType=INTEGER}
+            	</foreach>
+        	 </if>
+            <if test="deliveryId != null">
+                 and delivery_id = #{deliveryId,jdbcType=VARCHAR}
+        	 </if>
+            <if test="sysOrderId != null">
+                 and source_order = #{sysOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test='choiceType == "0"'>
+	            <if test="beginDate != null and endDate != null ">
+	                 and (create_date <![CDATA[ >= ]]> str_to_date(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')
+	                  and create_date <![CDATA[ <= ]]> str_to_date(#{endDate,jdbcType=TIMESTAMP} ,'%Y-%m-%d %H:%i:%s') )
+	            </if>
+            </if>
+            <if test='choiceType == "1"'>
+	            <if test="beginDate != null and endDate != null ">
+	                 and (receive_date <![CDATA[ >= ]]> str_to_date(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')
+	                  and receive_date <![CDATA[ <= ]]>str_to_date(#{endDate,jdbcType=TIMESTAMP} ,'%Y-%m-%d %H:%i:%s') )
+	            </if>
+            </if>
+            <if test='choiceType == "2"'>
+	            <if test="beginDate != null and endDate != null ">
+	                 and (reject_date <![CDATA[ >= ]]>str_to_date(#{beginDate,jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%s')
+	                  and reject_date <![CDATA[ <= ]]> str_to_date(#{endDate,jdbcType=TIMESTAMP} ,'%Y-%m-%d %H:%i:%s') )
+	            </if>
+            </if>
+            <if test="orderStatus != null">
+                 and order_status = #{orderStatus,jdbcType=TINYINT}
+            </if>
+            order by create_date DESC
+    </select>
+</mapper>

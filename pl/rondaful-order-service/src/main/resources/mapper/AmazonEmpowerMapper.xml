@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.AmazonEmpowerMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.Amazon.AmazonEmpower">
+        <id column="empower_id" jdbcType="INTEGER" property="empowerId" />
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="pl_account" jdbcType="VARCHAR" property="plAccount" />
+        <result column="pl_account_id" jdbcType="INTEGER" property="plAccountId" />
+        <result column="mws_token" jdbcType="VARCHAR" property="mwsToken" />
+        <result column="amazon_seller_id" jdbcType="VARCHAR" property="amazonSellerId" />
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="is_sync" jdbcType="TINYINT" property="isSync" />
+        <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        empower_id, account, pl_account,pl_account_id, mws_token, amazon_seller_id, marketplace_id, status, is_sync,
+        createTime, updateTime
+    </sql>
+
+    <select id="queryLastUpdateTime" parameterType="java.lang.String" resultType="java.util.Date">
+        select  max(updateTime)
+        from tbl_amazon_empower
+        where  amazon_seller_id = #{sellerId,jdbcType=VARCHAR}
+    </select>
+    <!--服务启动初始化数据-->
+    <update id="updateAmazonEmpowerDataReset" >
+        update tbl_amazon_empower
+        <set>
+                is_sync = 0
+        </set>
+        where is_sync = 1
+    </update>
+
+    <!--根据SellerID查询亚马逊授权Token-->
+    <select id="selectMWSTokenBySellerId" parameterType="java.lang.String" resultType="java.lang.String">
+        select mws_token
+        from tbl_amazon_empower
+        where amazon_seller_id =  #{sellerId,jdbcType=VARCHAR}
+        and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询品连账号的订单同步状态-->
+    <select id="selectSyncStatus" parameterType="java.lang.String" resultType="java.lang.Byte" >
+        select is_sync
+        from tbl_amazon_empower
+        where pl_account = #{plAccount,jdbcType=VARCHAR}
+        group by is_sync
+    </select>
+    <!--通过品连账号更改同步状态-->
+    <update id="updateIsSync" parameterType="java.lang.String" >
+        update tbl_amazon_empower
+        <set>
+            <if test="syncStatus != null">
+                is_sync = #{syncStatus,jdbcType=TINYINT}
+            </if>
+        </set>
+        where pl_account = #{plAccount,jdbcType=VARCHAR}
+        and amazon_seller_id = #{sellerId,jdbcType=VARCHAR}
+        and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectInfoByAccount" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tbl_amazon_empower
+        where pl_account = #{plAccount,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tbl_amazon_empower
+        where empower_id = #{empowerId,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tbl_amazon_empower
+        where empower_id = #{empowerId,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonEmpower">
+        insert into tbl_amazon_empower (empower_id, account, pl_account,pl_account_id,
+            mws_token, amazon_seller_id, marketplace_id, 
+            status, is_sync, createTime, 
+            updateTime)
+        values (#{empowerId,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{plAccount,jdbcType=VARCHAR},#{plAccountId,jdbcType=INTEGER},
+            #{mwsToken,jdbcType=VARCHAR}, #{amazonSellerId,jdbcType=VARCHAR}, #{marketplaceId,jdbcType=VARCHAR}, 
+            #{status,jdbcType=TINYINT}, #{isSync,jdbcType=TINYINT}, #{createtime,jdbcType=TIMESTAMP}, 
+            #{updatetime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonEmpower">
+        insert into tbl_amazon_empower
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="plAccount != null">
+                pl_account,
+            </if>
+            <if test="plAccountId != null">
+                pl_account_id,
+            </if>
+            <if test="mwsToken != null">
+                mws_token,
+            </if>
+            <if test="amazonSellerId != null">
+                amazon_seller_id,
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="isSync != null">
+                is_sync,
+            </if>
+            <if test="createtime != null">
+                createTime,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=INTEGER},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="plAccount != null">
+                #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="plAccountId != null">
+                #{plAccountId,jdbcType=INTEGER},
+            </if>
+            <if test="mwsToken != null">
+                #{mwsToken,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerId != null">
+                #{amazonSellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="isSync != null">
+                #{isSync,jdbcType=TINYINT},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <!--有则更新无则插入 ,is_sync=values(is_sync),createTime=values
+        (createTime),updateTime=values(updateTime)-->
+    <insert id="insertBulk" parameterType="java.util.ArrayList">
+            insert into tbl_amazon_empower
+        <trim prefix=" (" suffix=")" >
+            empower_id,
+           account, pl_account,pl_account_id,
+            mws_token,
+            amazon_seller_id, marketplace_id,
+            status, is_sync, createTime,
+            updateTime
+        </trim>
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.empowerId,jdbcType=INTEGER},
+            #{item.account,jdbcType=VARCHAR},
+            #{item.plAccount,jdbcType=VARCHAR},
+            #{item.plAccountId,jdbcType=INTEGER},
+            #{item.mwsToken,jdbcType=VARCHAR},
+            #{item.amazonSellerId,jdbcType=VARCHAR}, #{item.marketplaceId,jdbcType=VARCHAR},
+            #{item.status,jdbcType=TINYINT}, #{item.isSync,jdbcType=TINYINT}, #{item.createtime,jdbcType=TIMESTAMP},
+            #{item.updatetime,jdbcType=TIMESTAMP})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+       account=values(account),pl_account=values(pl_account),pl_account_id=values(pl_account_id),mws_token=values
+        (mws_token),amazon_seller_id=values(amazon_seller_id),marketplace_id=values
+        (marketplace_id),status=values(status)
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonEmpower">
+        update tbl_amazon_empower
+        <set>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=INTEGER},
+            </if>
+             <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="plAccount != null">
+                pl_account = #{plAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="plAccountId != null">
+                pl_account_id = #{plAccountId,jdbcType=INTEGER},
+            </if>
+            <if test="mwsToken != null">
+                mws_token = #{mwsToken,jdbcType=VARCHAR},
+            </if>
+            <if test="amazonSellerId != null">
+                amazon_seller_id = #{amazonSellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="isSync != null">
+                is_sync = #{isSync,jdbcType=TINYINT},
+            </if>
+            <if test="createtime != null">
+                createTime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonEmpower">
+        update tbl_amazon_empower
+        set
+            account = #{account,jdbcType=VARCHAR},
+            pl_account = #{plAccount,jdbcType=VARCHAR},
+            pl_account_id = #{plAccountId,jdbcType=INTEGER},
+            mws_token = #{mwsToken,jdbcType=VARCHAR},
+            amazon_seller_id = #{amazonSellerId,jdbcType=VARCHAR},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            status = #{status,jdbcType=TINYINT},
+            is_sync = #{isSync,jdbcType=TINYINT},
+            createTime = #{createtime,jdbcType=TIMESTAMP},
+            updateTime = #{updatetime,jdbcType=TIMESTAMP}
+        where empower_id = #{empowerId,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.Amazon.AmazonEmpower" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tbl_amazon_empower
+        <trim prefix="where" prefixOverrides="and">
+            <if test="empowerId != null">
+                 and empower_id = #{empowerId,jdbcType=INTEGER}
+            </if>
+            <if test="account != null">
+                 and account = #{account,jdbcType=VARCHAR}
+            </if>
+            <if test="plAccount != null">
+                 and pl_account = #{plAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="plAccountId != null">
+                 and pl_account_id = #{plAccountId,jdbcType=INTEGER}
+            </if>
+            <if test="mwsToken != null">
+                 and mws_token = #{mwsToken,jdbcType=VARCHAR}
+            </if>
+            <if test="amazonSellerId != null">
+                 and amazon_seller_id = #{amazonSellerId,jdbcType=VARCHAR}
+            </if>
+            <if test="marketplaceId != null">
+                 and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                 and status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="isSync != null">
+                 and is_sync = #{isSync,jdbcType=TINYINT}
+            </if>
+            <if test="createtime != null">
+                 and createTime = #{createtime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updatetime != null">
+                 and updateTime = #{updatetime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+</mapper>

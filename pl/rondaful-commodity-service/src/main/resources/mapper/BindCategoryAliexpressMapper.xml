@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.BindCategoryAliexpressMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.BindCategoryAliexpress">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pinlian_categoty3_id" jdbcType="BIGINT" property="pinlianCategoty3Id" />
+    <result column="ali_category_ids" jdbcType="VARCHAR" property="aliCategoryIds" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, pinlian_categoty3_id, ali_category_ids, update_time, 
+    version
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_bind_category_aliexpress
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_bind_category_aliexpress
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.BindCategoryAliexpress">
+    insert into t_bind_category_aliexpress (pinlian_categoty3_id, ali_category_ids)
+    values (#{pinlianCategoty3Id,jdbcType=BIGINT}, #{aliCategoryIds,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.BindCategoryAliexpress">
+    insert into t_bind_category_aliexpress
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="pinlianCategoty3Id != null">
+        pinlian_categoty3_id,
+      </if>
+      <if test="aliCategoryIds != null and aliCategoryIds != ''">
+        ali_category_ids,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="pinlianCategoty3Id != null">
+        #{pinlianCategoty3Id,jdbcType=BIGINT},
+      </if>
+      <if test="aliCategoryIds != null and aliCategoryIds != ''">
+        #{aliCategoryIds,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.BindCategoryAliexpress">
+    update t_bind_category_aliexpress
+    <set>
+      <if test="pinlianCategoty3Id != null">
+        pinlian_categoty3_id = #{pinlianCategoty3Id,jdbcType=BIGINT},
+      </if>
+      <if test="aliCategoryIds != null and aliCategoryIds != ''">
+        ali_category_ids = #{aliCategoryIds,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT} + 1,
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+    and version = #{version,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.BindCategoryAliexpress">
+    update t_bind_category_aliexpress
+    set pinlian_categoty3_id = #{pinlianCategoty3Id,jdbcType=BIGINT},
+      ali_category_ids = #{aliCategoryIds,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  	<select id="getBindByCategoryId" resultType="com.rondaful.cloud.commodity.entity.BindCategoryAliexpress">
+    	SELECT
+			id,
+			pinlian_categoty3_id pinlianCategoty3Id,
+			ali_category_ids aliCategoryIds,
+			version
+		FROM
+			t_bind_category_aliexpress
+		WHERE
+			pinlian_categoty3_id = #{pinlianCategoty3Id}
+    </select>
+  
+</mapper>

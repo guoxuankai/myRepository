@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.logistics.mapper.PlatformInfoMapper">
+    <insert id="insertUpdateSelective" useGeneratedKeys="true" keyProperty="id">
+        insert into t_platform_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="platformCode != null">
+                platform_code,
+            </if>
+            <if test="platformCn != null">
+                platform_cn,
+            </if>
+            <if test="platformEn != null">
+                platform_en,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="platformCode != null">
+                #{platformCode,jdbcType=VARCHAR},
+            </if>
+            <if test="platformCn != null">
+                #{platformCn,jdbcType=VARCHAR},
+            </if>
+            <if test="platformEn != null">
+                #{platformEn,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        ON DUPLICATE KEY UPDATE
+        platform_code = VALUES(platform_code),
+        platform_cn = VALUES(platform_cn),
+        platform_en = VALUES(platform_en),
+        is_valid = VALUES(is_valid),
+        update_by = VALUES(update_by)
+    </insert>
+
+    <select id="page" parameterType="com.brandslink.cloud.logistics.model.PlatformInfoModel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_platform_info
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="platformCode != null and platformCode != ''">
+                and platform_code = #{platformCode,jdbcType=VARCHAR}
+            </if>
+            <if test="platformCn != null and platformCn != ''">
+                and platform_cn like "%"#{platformCn,jdbcType=VARCHAR}"%"
+            </if>
+            <if test="platformEn != null and platformEn != ''">
+                and platform_en = #{platformEn,jdbcType=VARCHAR}
+            </if>
+            <if test="isValid != null and isValid != ''">
+                and is_valid = #{isValid,jdbcType=TINYINT}
+            </if>
+            <if test="beginDate != null">
+                and unix_timestamp(create_date) <![CDATA[ >= ]]> unix_timestamp(#{beginDate})
+            </if>
+            <if test="endDate != null">
+                and unix_timestamp(create_date) <![CDATA[ <= ]]> unix_timestamp(#{endDate})
+            </if>
+        </trim>
+        order by is_valid ASC
+    </select>
+
+    <!--$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$-->
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.logistics.model.PlatformInfoModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="platform_code" jdbcType="VARCHAR" property="platformCode"/>
+        <result column="platform_cn" jdbcType="VARCHAR" property="platformCn"/>
+        <result column="platform_en" jdbcType="VARCHAR" property="platformEn"/>
+        <result column="is_valid" jdbcType="TINYINT" property="isValid"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, platform_code, platform_cn, platform_en, is_valid, create_date, create_by, update_date, 
+        update_by
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_platform_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_platform_info
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.logistics.model.PlatformInfoModel">
+        insert into t_platform_info (id, platform_code, platform_cn,
+            platform_en, is_valid, create_date,
+            create_by, update_date, update_by
+            )
+        values (#{id,jdbcType=BIGINT}, #{platformCode,jdbcType=VARCHAR}, #{platformCn,jdbcType=VARCHAR},
+            #{platformEn,jdbcType=VARCHAR}, #{isValid,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.logistics.model.PlatformInfoModel">
+        insert into t_platform_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="platformCode != null">
+                platform_code,
+            </if>
+            <if test="platformCn != null">
+                platform_cn,
+            </if>
+            <if test="platformEn != null">
+                platform_en,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="platformCode != null">
+                #{platformCode,jdbcType=VARCHAR},
+            </if>
+            <if test="platformCn != null">
+                #{platformCn,jdbcType=VARCHAR},
+            </if>
+            <if test="platformEn != null">
+                #{platformEn,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.logistics.model.PlatformInfoModel">
+        update t_platform_info
+        <set>
+            <if test="platformCode != null">
+                platform_code = #{platformCode,jdbcType=VARCHAR},
+            </if>
+            <if test="platformCn != null">
+                platform_cn = #{platformCn,jdbcType=VARCHAR},
+            </if>
+            <if test="platformEn != null">
+                platform_en = #{platformEn,jdbcType=VARCHAR},
+            </if>
+            <if test="isValid != null">
+                is_valid = #{isValid,jdbcType=TINYINT},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.logistics.model.PlatformInfoModel">
+        update t_platform_info
+        set platform_code = #{platformCode,jdbcType=VARCHAR},
+            platform_cn = #{platformCn,jdbcType=VARCHAR},
+            platform_en = #{platformEn,jdbcType=VARCHAR},
+            is_valid = #{isValid,jdbcType=TINYINT},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--<select id="page" parameterType="com.brandslink.cloud.logistics.entity.PlatformInfo" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_platform_info
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="platformCode != null and platformCode != ''">
+                 and platform_code = #{platformCode,jdbcType=VARCHAR}
+            </if>
+            <if test="platformCn != null and platformCn != ''">
+                 and platform_cn = #{platformCn,jdbcType=VARCHAR}
+            </if>
+            <if test="platformEn != null and platformEn != ''">
+                 and platform_en = #{platformEn,jdbcType=VARCHAR}
+            </if>
+            <if test="isValid != null and isValid != ''">
+                 and is_valid = #{isValid,jdbcType=TINYINT}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                 and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>-->
+</mapper>

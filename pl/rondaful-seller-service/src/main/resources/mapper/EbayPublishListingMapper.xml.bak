@@ -1,0 +1,1120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishListingMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishListing">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="itemId" jdbcType="VARCHAR" property="itemid" />
+        <result column="site" jdbcType="VARCHAR" property="site" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+        <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="picture" jdbcType="VARCHAR" property="picture" />
+        <result column="product_category_1" jdbcType="VARCHAR" property="productCategory1" />
+        <result column="product_category_2" jdbcType="VARCHAR" property="productCategory2" />
+        <result column="store_category_1" jdbcType="VARCHAR" property="storeCategory1" />
+        <result column="store_category_2" jdbcType="VARCHAR" property="storeCategory2" />
+        <result column="listing_type" jdbcType="INTEGER" property="listingType" />
+        <result column="listing_duration" jdbcType="VARCHAR" property="listingDuration" />
+        <result column="product_listing_details" jdbcType="VARCHAR" property="productListingDetails" />
+        <result column="platform_sku" jdbcType="VARCHAR" property="platformSku" />
+        <result column="pl_sku" jdbcType="VARCHAR" property="plSku" />
+        <result column="pl_spu" jdbcType="VARCHAR" property="plSpu" />
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="start_price" jdbcType="DECIMAL" property="startPrice" />
+        <result column="best_offer_enabled" jdbcType="BIT" property="bestOfferEnabled" />
+        <result column="auto_accept_price" jdbcType="DECIMAL" property="autoAcceptPrice" />
+        <result column="minimum_best_offer_price" jdbcType="DECIMAL" property="minimumBestOfferPrice" />
+        <result column="condition_id" jdbcType="VARCHAR" property="conditionId" />
+        <result column="condition_description" jdbcType="VARCHAR" property="conditionDescription" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="buy_it_now_price" jdbcType="DECIMAL" property="buyItNowPrice" />
+        <result column="floor_price" jdbcType="DECIMAL" property="floorPrice" />
+        <result column="paypal" jdbcType="VARCHAR" property="paypal" />
+        <result column="payment_option" jdbcType="VARCHAR" property="paymentOption" />
+        <result column="payment_detail" jdbcType="VARCHAR" property="paymentDetail" />
+        <result column="disable_buyer_requirements" jdbcType="BIT" property="disableBuyerRequirements" />
+        <result column="dispatch_time_max" jdbcType="INTEGER" property="dispatchTimeMax" />
+        <result column="local" jdbcType="VARCHAR" property="local" />
+        <result column="country" jdbcType="VARCHAR" property="country" />
+        <result column="zip_code" jdbcType="VARCHAR" property="zipCode" />
+        <result column="return_policy" jdbcType="VARCHAR" property="returnPolicy" />
+        <result column="publish_account" jdbcType="VARCHAR" property="publishAccount" />
+        <result column="empower_id" jdbcType="INTEGER" property="empowerId" />
+        <result column="seller" jdbcType="VARCHAR" property="seller" />
+        <result column="currency" jdbcType="VARCHAR" property="currency" />
+        <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
+        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+        <result column="end_times" jdbcType="TIMESTAMP" property="endTimes" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="online_time" jdbcType="TIMESTAMP" property="onlineTime" />
+
+        <result column="gallery_type_code" jdbcType="VARCHAR" property="galleryTypeCode" />
+        <result column="auto_pay" jdbcType="BIT" property="autoPay" />
+        <result column="create_id" jdbcType="BIGINT" property="createId" />
+        <result column="create_name" jdbcType="VARCHAR" property="createName" />
+        <result column="platform_listing" jdbcType="INTEGER" property="platformListing" />
+        <result column="update_status" jdbcType="INTEGER" property="updateStatus" />
+
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.seller.entity.EbayPublishListing">
+        <result column="listing_desc" jdbcType="LONGVARCHAR" property="listingDesc" />
+        <result column="listing_desc_original" jdbcType="LONGVARCHAR" property="listingDescOriginal" />
+        <result column="ext" jdbcType="LONGVARCHAR" property="ext" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, itemId, site, title, sub_title, remarks, status, picture, product_category_1,
+        product_category_2, store_category_1, store_category_2, listing_type, listing_duration,
+        product_listing_details, platform_sku, pl_sku,pl_spu, quantity, start_price, best_offer_enabled,
+        auto_accept_price, minimum_best_offer_price, condition_id, condition_description,
+        description, buy_it_now_price, floor_price, paypal, payment_option, payment_detail,
+        disable_buyer_requirements, dispatch_time_max, local, country, zip_code, return_policy,
+        publish_account, empower_id, seller, currency, creation_time, publish_time, end_times,
+        update_time, online_time,gallery_type_code, auto_pay, create_id, create_name,update_status,platform_listing
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        listing_desc,listing_desc_original
+    </sql>
+    
+    <sql id="Blob_Column_List_ext">
+        ext
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        ,
+        <include refid="Blob_Column_List_ext" />
+        from ebay_publish_listing
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_publish_listing
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListing">
+        insert into ebay_publish_listing (id, itemId, site, 
+            title, sub_title, remarks, 
+            status, picture, product_category_1, 
+            product_category_2, store_category_1, store_category_2, 
+            listing_type, listing_duration, product_listing_details, 
+            platform_sku, pl_sku,pl_spu, quantity,
+            start_price, best_offer_enabled, auto_accept_price, 
+            minimum_best_offer_price, condition_id, condition_description, 
+            description, buy_it_now_price, floor_price,
+            paypal, payment_option, payment_detail,
+            disable_buyer_requirements, dispatch_time_max,
+            local, country, zip_code,
+            return_policy, publish_account, empower_id,
+            seller, currency, creation_time,
+            publish_time, end_times, update_time,
+            online_time, listing_desc,listing_desc_original,gallery_type_code, auto_pay, create_id, create_name,update_status,platform_listing)
+        values (#{id,jdbcType=INTEGER}, #{itemid,jdbcType=VARCHAR}, #{site,jdbcType=VARCHAR},
+            #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR},
+            #{status,jdbcType=INTEGER}, #{picture,jdbcType=VARCHAR}, #{productCategory1,jdbcType=VARCHAR},
+            #{productCategory2,jdbcType=VARCHAR}, #{storeCategory1,jdbcType=VARCHAR}, #{storeCategory2,jdbcType=VARCHAR},
+            #{listingType,jdbcType=INTEGER}, #{listingDuration,jdbcType=VARCHAR}, #{productListingDetails,jdbcType=VARCHAR},
+            #{platformSku,jdbcType=VARCHAR}, #{plSku,jdbcType=VARCHAR}, #{plSpu,jdbcType=VARCHAR}, #{quantity,jdbcType=INTEGER},
+            #{startPrice,jdbcType=DECIMAL}, #{bestOfferEnabled,jdbcType=BIT}, #{autoAcceptPrice,jdbcType=DECIMAL},
+            #{minimumBestOfferPrice,jdbcType=DECIMAL}, #{conditionId,jdbcType=VARCHAR}, #{conditionDescription,jdbcType=VARCHAR},
+            #{description,jdbcType=VARCHAR}, #{buyItNowPrice,jdbcType=DECIMAL}, #{floorPrice,jdbcType=DECIMAL},
+            #{paypal,jdbcType=VARCHAR}, #{paymentOption,jdbcType=VARCHAR}, #{paymentDetail,jdbcType=VARCHAR},
+            #{disableBuyerRequirements,jdbcType=BIT}, #{dispatchTimeMax,jdbcType=INTEGER},
+            #{local,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR},
+            #{returnPolicy,jdbcType=VARCHAR}, #{publishAccount,jdbcType=VARCHAR}, #{empowerId,jdbcType=INTEGER},
+            #{seller,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, #{creationTime,jdbcType=TIMESTAMP},
+            #{publishTime,jdbcType=TIMESTAMP}, #{endTimes,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+            #{onlineTime,jdbcType=TIMESTAMP}, #{listingDesc,jdbcType=LONGVARCHAR},#{listingDescOriginal,jdbcType=LONGVARCHAR},
+            #{galleryTypeCode,jdbcType=VARCHAR},#{autoPay,jdbcType=BIT},#{create_id,jdbcType=BIGINT},#{createName,jdbcType=VARCHAR},
+            #{updateStatus,jdbcType=INTEGER},#{platformListing,jdbcType=INTEGER})
+    </insert>
+    
+   <insert id="insertSelective" keyProperty="id" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListing" useGeneratedKeys="true">
+        insert into ebay_publish_listing
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="itemid != null">
+                itemId,
+            </if>
+            <if test="site != null">
+                site,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="subTitle != null">
+                sub_title,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="picture != null">
+                picture,
+            </if>
+            <if test="productCategory1 != null">
+                product_category_1,
+            </if>
+            <if test="productCategory2 != null">
+                product_category_2,
+            </if>
+            <if test="storeCategory1 != null">
+                store_category_1,
+            </if>
+            <if test="storeCategory2 != null">
+                store_category_2,
+            </if>
+            <if test="listingType != null">
+                listing_type,
+            </if>
+            <if test="listingDuration != null">
+                listing_duration,
+            </if>
+            <if test="productListingDetails != null">
+                product_listing_details,
+            </if>
+            <if test="platformSku != null">
+                platform_sku,
+            </if>
+            <if test="plSku != null">
+                pl_sku,
+            </if>
+            <if test="plSpu != null">
+                pl_spu,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="startPrice != null">
+                start_price,
+            </if>
+            <if test="bestOfferEnabled != null">
+                best_offer_enabled,
+            </if>
+            <if test="autoAcceptPrice != null">
+                auto_accept_price,
+            </if>
+            <if test="minimumBestOfferPrice != null">
+                minimum_best_offer_price,
+            </if>
+            <if test="conditionId != null">
+                condition_id,
+            </if>
+            <if test="conditionDescription != null">
+                condition_description,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="buyItNowPrice != null">
+                buy_it_now_price,
+            </if>
+            <if test="floorPrice != null">
+                floor_price,
+            </if>
+            <if test="paypal != null">
+                paypal,
+            </if>
+            <if test="paymentOption != null">
+                payment_option,
+            </if>
+            <if test="paymentDetail != null">
+                payment_detail,
+            </if>
+            <if test="disableBuyerRequirements != null">
+                disable_buyer_requirements,
+            </if>
+            <if test="dispatchTimeMax != null">
+                dispatch_time_max,
+            </if>
+            <if test="local != null">
+                local,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="zipCode != null">
+                zip_code,
+            </if>
+            <if test="returnPolicy != null">
+                return_policy,
+            </if>
+            <if test="publishAccount != null">
+                publish_account,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+            <if test="seller != null">
+                seller,
+            </if>
+            <if test="currency != null">
+                currency,
+            </if>
+            <if test="creationTime != null">
+                creation_time,
+            </if>
+            <if test="publishTime != null">
+                publish_time,
+            </if>
+            <if test="endTimes != null">
+                end_times,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="onlineTime != null">
+                online_time,
+            </if>
+            <if test="listingDesc != null">
+                listing_desc,
+            </if>
+            <if test="listingDescOriginal != null">
+              listing_desc_original,
+            </if>
+            <if test="galleryTypeCode != null">
+                gallery_type_code,
+            </if>
+            <if test="autoPay != null">
+                auto_pay,
+            </if>
+            <if test="createId != null">
+                create_id,
+            </if>
+            <if test="createName != null">
+                create_name,
+            </if>
+            <if test="updateStatus != null">
+                update_status,
+            </if>
+            <if test="platformListing != null">
+                platform_listing,
+            </if>
+            <if test="ext != null">
+                ext,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="itemid != null">
+                #{itemid,jdbcType=VARCHAR},
+            </if>
+            <if test="site != null">
+                #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="subTitle != null">
+                #{subTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="picture != null">
+                #{picture,jdbcType=VARCHAR},
+            </if>
+            <if test="productCategory1 != null">
+                #{productCategory1,jdbcType=VARCHAR},
+            </if>
+            <if test="productCategory2 != null">
+                #{productCategory2,jdbcType=VARCHAR},
+            </if>
+            <if test="storeCategory1 != null">
+                #{storeCategory1,jdbcType=VARCHAR},
+            </if>
+            <if test="storeCategory2 != null">
+                #{storeCategory2,jdbcType=VARCHAR},
+            </if>
+            <if test="listingType != null">
+                #{listingType,jdbcType=INTEGER},
+            </if>
+            <if test="listingDuration != null">
+                #{listingDuration,jdbcType=VARCHAR},
+            </if>
+            <if test="productListingDetails != null">
+                #{productListingDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSku != null">
+                #{platformSku,jdbcType=VARCHAR},
+            </if>
+            <if test="plSku != null">
+                #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="plSpu != null">
+                #{plSpu,jdbcType=VARCHAR},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="startPrice != null">
+                #{startPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="bestOfferEnabled != null">
+                #{bestOfferEnabled,jdbcType=BIT},
+            </if>
+            <if test="autoAcceptPrice != null">
+                #{autoAcceptPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="minimumBestOfferPrice != null">
+                #{minimumBestOfferPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="conditionId != null">
+                #{conditionId,jdbcType=VARCHAR},
+            </if>
+            <if test="conditionDescription != null">
+                #{conditionDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="buyItNowPrice != null">
+                #{buyItNowPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="floorPrice != null">
+                #{floorPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="paypal != null">
+                #{paypal,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentOption != null">
+                #{paymentOption,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentDetail != null">
+                #{paymentDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="disableBuyerRequirements != null">
+                #{disableBuyerRequirements,jdbcType=BIT},
+            </if>
+            <if test="dispatchTimeMax != null">
+                #{dispatchTimeMax,jdbcType=INTEGER},
+            </if>
+            <if test="local != null">
+                #{local,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="zipCode != null">
+                #{zipCode,jdbcType=VARCHAR},
+            </if>
+            <if test="returnPolicy != null">
+                #{returnPolicy,jdbcType=VARCHAR},
+            </if>
+            <if test="publishAccount != null">
+                #{publishAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=INTEGER},
+            </if>
+            <if test="seller != null">
+                #{seller,jdbcType=VARCHAR},
+            </if>
+            <if test="currency != null">
+                #{currency,jdbcType=VARCHAR},
+            </if>
+            <if test="creationTime != null">
+                #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="publishTime != null">
+                #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTimes != null">
+                #{endTimes,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="onlineTime != null">
+                #{onlineTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="listingDesc != null">
+                #{listingDesc,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="listingDescOriginal != null">
+                #{listingDescOriginal,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="galleryTypeCode != null">
+                #{galleryTypeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="autoPay != null">
+                #{autoPay,jdbcType=BIT},
+            </if>
+            <if test="createId != null">
+                #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createName != null">
+                #{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateStatus != null">
+                #{updateStatus,jdbcType=INTEGER},
+            </if>
+            <if test="platformListing != null">
+                #{platformListing,jdbcType=INTEGER},
+            </if>
+            <if test="ext != null">
+                #{ext,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListing">
+        update ebay_publish_listing
+        <set>
+            <if test="itemid != null">
+                itemId = #{itemid,jdbcType=VARCHAR},
+            </if>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="subTitle != null">
+                sub_title = #{subTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="picture != null">
+                picture = #{picture,jdbcType=VARCHAR},
+            </if>
+            <if test="productCategory1 != null">
+                product_category_1 = #{productCategory1,jdbcType=VARCHAR},
+            </if>
+            <if test="productCategory2 != null">
+                product_category_2 = #{productCategory2,jdbcType=VARCHAR},
+            </if>
+            <if test="storeCategory1 != null">
+                store_category_1 = #{storeCategory1,jdbcType=VARCHAR},
+            </if>
+            <if test="storeCategory2 != null">
+                store_category_2 = #{storeCategory2,jdbcType=VARCHAR},
+            </if>
+            <if test="listingType != null">
+                listing_type = #{listingType,jdbcType=INTEGER},
+            </if>
+            <if test="listingDuration != null">
+                listing_duration = #{listingDuration,jdbcType=VARCHAR},
+            </if>
+            <if test="productListingDetails != null">
+                product_listing_details = #{productListingDetails,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSku != null">
+                platform_sku = #{platformSku,jdbcType=VARCHAR},
+            </if>
+            <if test="plSku != null">
+                pl_sku = #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="plSpu != null">
+                pl_spu = #{plSpu,jdbcType=VARCHAR},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="startPrice != null">
+                start_price = #{startPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="bestOfferEnabled != null">
+                best_offer_enabled = #{bestOfferEnabled,jdbcType=BIT},
+            </if>
+            <if test="autoAcceptPrice != null">
+                auto_accept_price = #{autoAcceptPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="minimumBestOfferPrice != null">
+                minimum_best_offer_price = #{minimumBestOfferPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="conditionId != null">
+                condition_id = #{conditionId,jdbcType=VARCHAR},
+            </if>
+            <if test="conditionDescription != null">
+                condition_description = #{conditionDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="buyItNowPrice != null">
+                buy_it_now_price = #{buyItNowPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="floorPrice != null">
+                floor_price = #{floorPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="paypal != null">
+                paypal = #{paypal,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentOption != null">
+                payment_option = #{paymentOption,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentDetail != null">
+                payment_detail = #{paymentDetail,jdbcType=VARCHAR},
+            </if>
+            <if test="disableBuyerRequirements != null">
+                disable_buyer_requirements = #{disableBuyerRequirements,jdbcType=BIT},
+            </if>
+            <if test="dispatchTimeMax != null">
+                dispatch_time_max = #{dispatchTimeMax,jdbcType=INTEGER},
+            </if>
+            <if test="local != null">
+                local = #{local,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="zipCode != null">
+                zip_code = #{zipCode,jdbcType=VARCHAR},
+            </if>
+            <if test="returnPolicy != null">
+                return_policy = #{returnPolicy,jdbcType=VARCHAR},
+            </if>
+            <if test="publishAccount != null">
+                publish_account = #{publishAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=INTEGER},
+            </if>
+            <if test="seller != null">
+                seller = #{seller,jdbcType=VARCHAR},
+            </if>
+            <if test="currency != null">
+                currency = #{currency,jdbcType=VARCHAR},
+            </if>
+            <if test="creationTime != null">
+                creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="publishTime != null">
+                publish_time = #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTimes != null">
+                end_times = #{endTimes,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="onlineTime != null">
+                online_time = #{onlineTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="listingDesc != null">
+                listing_desc = #{listingDesc,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="listingDescOriginal != null">
+                listing_desc_original = #{listingDescOriginal,jdbcType=LONGVARCHAR},
+            </if>
+             <if test="ext != null">
+                ext = #{ext,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="galleryTypeCode != null">
+                gallery_type_code = #{galleryTypeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="autoPay != null">
+                auto_pay = #{autoPay,jdbcType=BIT},
+            </if>
+            <if test="createId != null">
+                create_id = #{createId,jdbcType=BIGINT},
+            </if>
+            <if test="createName != null">
+                create_name = #{createName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateStatus != null">
+                update_status = #{updateStatus,jdbcType=INTEGER},
+            </if>
+            <if test="platformListing != null">
+                platform_listing = #{platformListing,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListing">
+        update ebay_publish_listing
+        set itemId = #{itemid,jdbcType=VARCHAR},
+            site = #{site,jdbcType=VARCHAR},
+            title = #{title,jdbcType=VARCHAR},
+            sub_title = #{subTitle,jdbcType=VARCHAR},
+            remarks = #{remarks,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            picture = #{picture,jdbcType=VARCHAR},
+            product_category_1 = #{productCategory1,jdbcType=VARCHAR},
+            product_category_2 = #{productCategory2,jdbcType=VARCHAR},
+            store_category_1 = #{storeCategory1,jdbcType=VARCHAR},
+            store_category_2 = #{storeCategory2,jdbcType=VARCHAR},
+            listing_type = #{listingType,jdbcType=INTEGER},
+            listing_duration = #{listingDuration,jdbcType=VARCHAR},
+            product_listing_details = #{productListingDetails,jdbcType=VARCHAR},
+            platform_sku = #{platformSku,jdbcType=VARCHAR},
+            pl_sku = #{plSku,jdbcType=VARCHAR},
+            pl_spu = #{plSpu,jdbcType=VARCHAR},
+            quantity = #{quantity,jdbcType=INTEGER},
+            start_price = #{startPrice,jdbcType=DECIMAL},
+            best_offer_enabled = #{bestOfferEnabled,jdbcType=BIT},
+            auto_accept_price = #{autoAcceptPrice,jdbcType=DECIMAL},
+            minimum_best_offer_price = #{minimumBestOfferPrice,jdbcType=DECIMAL},
+            condition_id = #{conditionId,jdbcType=VARCHAR},
+            condition_description = #{conditionDescription,jdbcType=VARCHAR},
+            description = #{description,jdbcType=VARCHAR},
+            buy_it_now_price = #{buyItNowPrice,jdbcType=DECIMAL},
+            floor_price = #{floorPrice,jdbcType=DECIMAL},
+            paypal = #{paypal,jdbcType=VARCHAR},
+            payment_option = #{paymentOption,jdbcType=VARCHAR},
+            payment_detail = #{paymentDetail,jdbcType=VARCHAR},
+            disable_buyer_requirements = #{disableBuyerRequirements,jdbcType=BIT},
+            dispatch_time_max = #{dispatchTimeMax,jdbcType=INTEGER},
+            local = #{local,jdbcType=VARCHAR},
+            country = #{country,jdbcType=VARCHAR},
+            zip_code = #{zipCode,jdbcType=VARCHAR},
+            return_policy = #{returnPolicy,jdbcType=VARCHAR},
+            publish_account = #{publishAccount,jdbcType=VARCHAR},
+            empower_id = #{empowerId,jdbcType=INTEGER},
+            seller = #{seller,jdbcType=VARCHAR},
+            currency = #{currency,jdbcType=VARCHAR},
+            creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            publish_time = #{publishTime,jdbcType=TIMESTAMP},
+            end_times = #{endTimes,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            online_time = #{onlineTime,jdbcType=TIMESTAMP},
+            listing_desc = #{listingDesc,jdbcType=LONGVARCHAR},
+            listing_desc_original = #{listingDescOriginal,jdbcType=LONGVARCHAR},
+            ext = #{ext,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListing">
+        update ebay_publish_listing
+        set itemId = #{itemid,jdbcType=VARCHAR},
+            site = #{site,jdbcType=VARCHAR},
+            title = #{title,jdbcType=VARCHAR},
+            sub_title = #{subTitle,jdbcType=VARCHAR},
+            remarks = #{remarks,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            picture = #{picture,jdbcType=VARCHAR},
+            product_category_1 = #{productCategory1,jdbcType=VARCHAR},
+            product_category_2 = #{productCategory2,jdbcType=VARCHAR},
+            store_category_1 = #{storeCategory1,jdbcType=VARCHAR},
+            store_category_2 = #{storeCategory2,jdbcType=VARCHAR},
+            listing_type = #{listingType,jdbcType=INTEGER},
+            listing_duration = #{listingDuration,jdbcType=VARCHAR},
+            product_listing_details = #{productListingDetails,jdbcType=VARCHAR},
+            platform_sku = #{platformSku,jdbcType=VARCHAR},
+            pl_sku = #{plSku,jdbcType=VARCHAR},
+            pl_spu = #{plSpu,jdbcType=VARCHAR},
+            quantity = #{quantity,jdbcType=INTEGER},
+            start_price = #{startPrice,jdbcType=DECIMAL},
+            best_offer_enabled = #{bestOfferEnabled,jdbcType=BIT},
+            auto_accept_price = #{autoAcceptPrice,jdbcType=DECIMAL},
+            minimum_best_offer_price = #{minimumBestOfferPrice,jdbcType=DECIMAL},
+            condition_id = #{conditionId,jdbcType=VARCHAR},
+            condition_description = #{conditionDescription,jdbcType=VARCHAR},
+            description = #{description,jdbcType=VARCHAR},
+            buy_it_now_price = #{buyItNowPrice,jdbcType=DECIMAL},
+            floor_price = #{floorPrice,jdbcType=DECIMAL},
+            paypal = #{paypal,jdbcType=VARCHAR},
+            payment_option = #{paymentOption,jdbcType=VARCHAR},
+            payment_detail = #{paymentDetail,jdbcType=VARCHAR},
+            disable_buyer_requirements = #{disableBuyerRequirements,jdbcType=BIT},
+            dispatch_time_max = #{dispatchTimeMax,jdbcType=INTEGER},
+            local = #{local,jdbcType=VARCHAR},
+            country = #{country,jdbcType=VARCHAR},
+            zip_code = #{zipCode,jdbcType=VARCHAR},
+            return_policy = #{returnPolicy,jdbcType=VARCHAR},
+            publish_account = #{publishAccount,jdbcType=VARCHAR},
+            empower_id = #{empowerId,jdbcType=INTEGER},
+            seller = #{seller,jdbcType=VARCHAR},
+            currency = #{currency,jdbcType=VARCHAR},
+            creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            publish_time = #{publishTime,jdbcType=TIMESTAMP},
+            end_times = #{endTimes,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            online_time = #{onlineTime,jdbcType=TIMESTAMP},
+            gallery_type_code = #{galleryTypeCode,jdbcType=VARCHAR},
+            auto_pay = #{autoPay,jdbcType=BIT},
+            create_id = #{createId,jdbcType=BIGINT},
+            create_name = #{createName,jdbcType=VARCHAR},
+            update_status = #{updateStatus,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListing" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from ebay_publish_listing
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="itemid != null">
+                 and itemId = #{itemid,jdbcType=VARCHAR}
+            </if>
+            <if test="site != null">
+                 and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="title != null">
+                 and title = #{title,jdbcType=VARCHAR}
+            </if>
+            <if test="subTitle != null">
+                 and sub_title = #{subTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="remarks != null">
+                 and remarks = #{remarks,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="picture != null">
+                 and picture = #{picture,jdbcType=VARCHAR}
+            </if>
+            <if test="productCategory1 != null">
+                 and product_category_1 = #{productCategory1,jdbcType=VARCHAR}
+            </if>
+            <if test="productCategory2 != null">
+                 and product_category_2 = #{productCategory2,jdbcType=VARCHAR}
+            </if>
+            <if test="storeCategory1 != null">
+                 and store_category_1 = #{storeCategory1,jdbcType=VARCHAR}
+            </if>
+            <if test="storeCategory2 != null">
+                 and store_category_2 = #{storeCategory2,jdbcType=VARCHAR}
+            </if>
+            <if test="listingType != null">
+                 and listing_type = #{listingType,jdbcType=INTEGER}
+            </if>
+            <if test="listingDuration != null">
+                 and listing_duration = #{listingDuration,jdbcType=VARCHAR}
+            </if>
+            <if test="productListingDetails != null">
+                 and product_listing_details = #{productListingDetails,jdbcType=VARCHAR}
+            </if>
+            <if test="platformSku != null">
+                 and platform_sku = #{platformSku,jdbcType=VARCHAR}
+            </if>
+            <if test="plSku != null">
+                 and pl_sku = #{plSku,jdbcType=VARCHAR}
+            </if>
+            <if test="quantity != null">
+                 and quantity = #{quantity,jdbcType=INTEGER}
+            </if>
+            <if test="startPrice != null">
+                 and start_price = #{startPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="bestOfferEnabled != null">
+                 and best_offer_enabled = #{bestOfferEnabled,jdbcType=BIT}
+            </if>
+            <if test="autoAcceptPrice != null">
+                 and auto_accept_price = #{autoAcceptPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="minimumBestOfferPrice != null">
+                 and minimum_best_offer_price = #{minimumBestOfferPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="conditionId != null">
+                 and condition_id = #{conditionId,jdbcType=VARCHAR}
+            </if>
+            <if test="conditionDescription != null">
+                 and condition_description = #{conditionDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="description != null">
+                 and description = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="buyItNowPrice != null">
+                 and buy_it_now_price = #{buyItNowPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="floorPrice != null">
+                 and floor_price = #{floorPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="paypal != null">
+                 and paypal = #{paypal,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentOption != null">
+                 and payment_option = #{paymentOption,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentDetail != null">
+                 and payment_detail = #{paymentDetail,jdbcType=VARCHAR}
+            </if>
+            <if test="disableBuyerRequirements != null">
+                 and disable_buyer_requirements = #{disableBuyerRequirements,jdbcType=BIT}
+            </if>
+            <if test="dispatchTimeMax != null">
+                 and dispatch_time_max = #{dispatchTimeMax,jdbcType=INTEGER}
+            </if>
+            <if test="local != null">
+                 and local = #{local,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null">
+                 and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="zipCode != null">
+                 and zip_code = #{zipCode,jdbcType=VARCHAR}
+            </if>
+            <if test="returnPolicy != null">
+                 and return_policy = #{returnPolicy,jdbcType=VARCHAR}
+            </if>
+            <if test="publishAccount != null">
+                 and publish_account = #{publishAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="empowerId != null">
+                 and empower_id = #{empowerId,jdbcType=INTEGER}
+            </if>
+            <if test="seller != null">
+                 and seller = #{seller,jdbcType=VARCHAR}
+            </if>
+            <if test="currency != null">
+                 and currency = #{currency,jdbcType=VARCHAR}
+            </if>
+            <if test="creationTime != null">
+                 and creation_time = #{creationTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="publishTime != null">
+                 and publish_time = #{publishTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTimes != null">
+                 and end_times = #{endTimes,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="onlineTime != null">
+                 and online_time = #{onlineTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="listingDesc != null">
+                 and listing_desc = #{listingDesc,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+    
+    <select id="pageExt" parameterType="com.rondaful.cloud.seller.vo.PublishListingSearchVO" resultMap="BaseResultMap">
+        select id,itemId,substring_index(picture,',',1) as picture,listing_duration,listing_type,site,publish_account,title,remarks,status,pl_sku,platform_sku,start_price,quantity,
+        creation_time, publish_time, end_times, pl_spu,
+        update_time, online_time,update_status
+        from ebay_publish_listing
+        <trim prefix="where" prefixOverrides="and">
+        		and status !=6
+            <if test="itemId != null and itemId !=''">
+                 and itemId = #{itemId,jdbcType=VARCHAR}
+            </if>
+            <if test="site != null and site !=''">
+                 and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="title != null and title !=''">
+                 and title like  concat('%',#{title},'%')
+            </if>
+            <if test="status != null and status !=''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="updateStatus != null and updateStatus !=''">
+                and update_status = #{updateStatus,jdbcType=INTEGER}
+            </if>
+            <if test="platformSku != null and platformSku !=''">
+                 and platform_sku = #{platformSku,jdbcType=VARCHAR}
+            </if>
+            <if test="plSku != null and plSku !=''">
+                 and (pl_sku = #{plSku,jdbcType=VARCHAR}
+                 or
+                 (id in (SELECT listing_id FROM ebay_publish_listing_variant WHERE pl_sku=#{plSku,jdbcType=VARCHAR}))
+                 )
+            </if>
+            <if test="plSpu != null and plSpu !=''">
+                and pl_spu like concat('%',#{plSpu,jdbcType=VARCHAR},'%')
+            </if>
+         	<if test="publishAccount != null and publishAccount !=''">
+                 and publish_account = #{publishAccount,jdbcType=VARCHAR}
+            </if>
+             <if test="seller != null">
+                 and seller = #{seller,jdbcType=VARCHAR}
+            </if>
+            <if test="empowerIds != null">
+                and empower_id in
+                <foreach collection="empowerIds" item="eid" index="index" separator ="," open="(" close=")">
+                    #{eid,jdbcType=BIGINT}
+                </foreach>
+            </if>
+          <!--   1==创建时间  2==发布时间  3==上线时间  4==下线时间 -->
+            <if test="startTime !=null and startTime!=''  and (endTime ==null or endTime =='')">
+            	<if test="timeType ==1">
+            	<![CDATA[and creation_time >= str_to_date(#{startTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            	<if test="timeType ==2">
+            	<![CDATA[and publish_time >= str_to_date(#{startTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            	<if test="timeType ==3">
+            	<![CDATA[and online_time >= str_to_date(#{startTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            	<if test="timeType ==4">
+            	<![CDATA[and end_times >= str_to_date(#{startTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            </if>
+            <if test="(startTime ==null or startTime =='')and endTime !=null and endTime !='' ">
+            	<if test="timeType ==1">
+            	<![CDATA[and creation_time <= str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            	<if test="timeType ==2">
+            	<![CDATA[and publish_time <= str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            	<if test="timeType ==3">
+            	<![CDATA[and online_time <= str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            	<if test="timeType ==4">
+            	<![CDATA[and end_times <= str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            </if>
+            <if test="startTime !=null and startTime !='' and endTime !=null and endTime !=''">
+            	<if test="timeType ==1">
+       				 <![CDATA[and creation_time >= str_to_date(#{startTime},'%Y-%m-%d %H:%i:%s') and creation_time <= str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            	<if test="timeType ==2">
+       				 <![CDATA[and publish_time >= str_to_date(#{startTime},'%Y-%m-%d %H:%i:%s') and publish_time <= str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            	
+            	<if test="timeType ==3">
+       				 <![CDATA[and online_time >= str_to_date(#{startTime},'%Y-%m-%d %H:%i:%s') and online_time <= str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            	
+            	<if test="timeType ==4">
+       				 <![CDATA[and end_times >= str_to_date(#{startTime},'%Y-%m-%d %H:%i:%s') and end_times <= str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s')]]>
+            	</if>
+            </if>
+
+        </trim>
+        order by id desc
+    </select>
+    
+    <select id="findListingByTask" resultType="java.lang.Integer">
+    select t.id from ebay_publish_listing t where t.status =4 and  <![CDATA[ DATE_ADD(t.online_time,INTERVAL substring_index(t.listing_duration,"_",-1) day) <= NOW()]]>
+    </select>
+    
+    
+    <resultMap id="BaseResultMapByApp" type="com.rondaful.cloud.seller.dto.EbayPublishListingAPPDTO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="itemId" jdbcType="VARCHAR" property="itemId" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="picture" jdbcType="VARCHAR" property="picture" />
+        <result column="listing_type" jdbcType="INTEGER" property="listingType" />
+        <result column="listing_duration" jdbcType="VARCHAR" property="listingDuration" />
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="online_time" jdbcType="VARCHAR" property="onlineTime"/>
+        <result column="publish_account" jdbcType="VARCHAR" property ="storeName"/>
+    </resultMap>
+    
+     <select id="pageByApp" parameterType="com.rondaful.cloud.seller.vo.PublishListingAppSearchVO" resultMap="BaseResultMapByApp">
+        select title,id,itemId, substring_index(picture,',',1) as picture,listing_duration,listing_type,status,online_time,publish_account
+      	from ebay_publish_listing
+        <trim prefix="where" prefixOverrides="and">
+               status in ('3','4')
+          	 <if test="seller != null">
+                 and seller = #{seller,jdbcType=VARCHAR}
+            </if>
+            <if test="empowerIds != null">
+                and empower_id in
+                <foreach collection="empowerIds" item="eid" index="index" separator ="," open="(" close=")">
+                    #{eid,jdbcType=BIGINT}
+                </foreach>
+            </if>
+        </trim>
+        order by id desc
+    </select>
+    
+    <select id="getOnlineCountBySeller"  resultType="java.lang.Integer">
+    	select count(1) from ebay_publish_listing where  status in ('3','4') and seller = ${seller}
+    </select>
+    <select id="countPlatformSku"  resultType="java.lang.Integer">
+    	select count(1) from ebay_publish_listing
+    	where platform_sku = #{platformSku,jdbcType=VARCHAR}
+        <if test="id != null">
+            and id!= #{id,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <select id="getDispatchTimeMax" parameterType="com.rondaful.cloud.seller.vo.EbayMaxTimeVO"  resultType="java.util.Map">
+        SELECT dispatch_Time_Max as maxTime,itemId FROM `ebay_publish_listing`
+        WHERE status !=6
+        <if test="empowerId != null">
+            and empower_id = #{empowerId,jdbcType=INTEGER}
+        </if>
+        <if test="site != null">
+            and site = #{site,jdbcType=VARCHAR}
+        </if>
+        and itemid in
+        <foreach collection="itemIds" item="itemId" index="index" separator ="," open="(" close=")">
+            #{itemId,jdbcType=VARCHAR}
+        </foreach>
+
+    </select>
+
+
+    <select id="getEbayPublishListingByItemId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing
+        where itemid = #{itemId,jdbcType=VARCHAR} and status !=6
+    </select>
+
+
+
+    <select id="getEbayHistoryPage" parameterType="com.rondaful.cloud.seller.vo.PublishListingSearchVO" resultType="java.lang.String">
+        select DISTINCT pl_spu
+        from ebay_publish_listing
+        <trim prefix="where" prefixOverrides="and">
+            and status !=6
+            <if test="itemId != null and itemId !=''">
+                and itemId = #{itemId,jdbcType=VARCHAR}
+            </if>
+            <if test="site != null and site !=''">
+                and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="title != null and title !=''">
+                and title like  concat('%',#{title},'%')
+            </if>
+            <if test="status != null and status !=''">
+                and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="updateStatus != null and updateStatus !=''">
+                and update_status = #{updateStatus,jdbcType=INTEGER}
+            </if>
+            <if test="platformSku != null and platformSku !=''">
+                and platform_sku = #{platformSku,jdbcType=VARCHAR}
+            </if>
+            <if test="plSku != null and plSku !=''">
+                and (pl_sku = #{plSku,jdbcType=VARCHAR}
+                or
+                (id in (SELECT listing_id FROM ebay_publish_listing_variant WHERE pl_sku=#{plSku,jdbcType=VARCHAR}))
+                )
+            </if>
+            <if test="plSpu != null and plSpu !=''">
+                and pl_spu like concat('%',#{plSpu,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="publishAccount != null and publishAccount !=''">
+                and publish_account = #{publishAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="seller != null">
+                and seller = #{seller,jdbcType=VARCHAR}
+            </if>
+            <if test="empowerIds != null">
+                and empower_id in
+                <foreach collection="empowerIds" item="eid" index="index" separator ="," open="(" close=")">
+                    #{eid,jdbcType=BIGINT}
+                </foreach>
+            </if>
+
+        </trim>
+        order by id desc
+    </select>
+
+</mapper>

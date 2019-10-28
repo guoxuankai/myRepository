@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishListingOperationLogMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishListingOperationLog">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="listing_id" jdbcType="INTEGER" property="listingId" />
+        <result column="operation_user_id" jdbcType="BIGINT" property="operationUserId" />
+        <result column="operation_user" jdbcType="VARCHAR" property="operationUser" />
+        <result column="operation_type" jdbcType="VARCHAR" property="operationType" />
+        <result column="operation_time" jdbcType="TIMESTAMP" property="operationTime" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.seller.entity.EbayPublishListingOperationLog">
+        <result column="operation_content" jdbcType="LONGVARCHAR" property="operationContent" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, operation_user_id, operation_user, operation_type, operation_time
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        operation_content
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from ebay_publish_listing_operation_log
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_publish_listing_operation_log
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingOperationLog">
+        insert into ebay_publish_listing_operation_log (id, listing_id, operation_user_id, 
+            operation_user, operation_type, operation_time, 
+            operation_content)
+        values (#{id,jdbcType=INTEGER}, #{listingId,jdbcType=INTEGER}, #{operationUserId,jdbcType=BIGINT}, 
+            #{operationUser,jdbcType=VARCHAR}, #{operationType,jdbcType=VARCHAR}, #{operationTime,jdbcType=TIMESTAMP}, 
+            #{operationContent,jdbcType=LONGVARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingOperationLog">
+        insert into ebay_publish_listing_operation_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="operationUserId != null">
+                operation_user_id,
+            </if>
+            <if test="operationUser != null">
+                operation_user,
+            </if>
+            <if test="operationType != null">
+                operation_type,
+            </if>
+            <if test="operationTime != null">
+                operation_time,
+            </if>
+            <if test="operationContent != null">
+                operation_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=INTEGER},
+            </if>
+            <if test="operationUserId != null">
+                #{operationUserId,jdbcType=BIGINT},
+            </if>
+            <if test="operationUser != null">
+                #{operationUser,jdbcType=VARCHAR},
+            </if>
+            <if test="operationType != null">
+                #{operationType,jdbcType=VARCHAR},
+            </if>
+            <if test="operationTime != null">
+                #{operationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operationContent != null">
+                #{operationContent,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingOperationLog">
+        update ebay_publish_listing_operation_log
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=INTEGER},
+            </if>
+            <if test="operationUserId != null">
+                operation_user_id = #{operationUserId,jdbcType=BIGINT},
+            </if>
+            <if test="operationUser != null">
+                operation_user = #{operationUser,jdbcType=VARCHAR},
+            </if>
+            <if test="operationType != null">
+                operation_type = #{operationType,jdbcType=VARCHAR},
+            </if>
+            <if test="operationTime != null">
+                operation_time = #{operationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operationContent != null">
+                operation_content = #{operationContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingOperationLog">
+        update ebay_publish_listing_operation_log
+        set listing_id = #{listingId,jdbcType=INTEGER},
+            operation_user_id = #{operationUserId,jdbcType=BIGINT},
+            operation_user = #{operationUser,jdbcType=VARCHAR},
+            operation_type = #{operationType,jdbcType=VARCHAR},
+            operation_time = #{operationTime,jdbcType=TIMESTAMP},
+            operation_content = #{operationContent,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingOperationLog">
+        update ebay_publish_listing_operation_log
+        set listing_id = #{listingId,jdbcType=INTEGER},
+            operation_user_id = #{operationUserId,jdbcType=BIGINT},
+            operation_user = #{operationUser,jdbcType=VARCHAR},
+            operation_type = #{operationType,jdbcType=VARCHAR},
+            operation_time = #{operationTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingOperationLog" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from ebay_publish_listing_operation_log
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="listingId != null and listingId != ''">
+                 and listing_id = #{listingId,jdbcType=INTEGER}
+            </if>
+            <if test="operationUserId != null and operationUserId != ''">
+                 and operation_user_id = #{operationUserId,jdbcType=BIGINT}
+            </if>
+            <if test="operationUser != null and operationUser != ''">
+                 and operation_user = #{operationUser,jdbcType=VARCHAR}
+            </if>
+            <if test="operationType != null and operationType != ''">
+                 and operation_type = #{operationType,jdbcType=VARCHAR}
+            </if>
+            <if test="operationTime != null and operationTime != ''">
+                 and operation_time = #{operationTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="operationContent != null and operationContent != ''">
+                 and operation_content = #{operationContent,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+        order by operation_time desc
+    </select>
+</mapper>

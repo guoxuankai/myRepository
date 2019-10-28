@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.SupplierMapper">
+
+    <resultMap id="BaseResultMapUser" type="com.rondaful.cloud.user.entity.User">
+        <id column="user_id" jdbcType="INTEGER" property="userid"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+        <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="enabled" jdbcType="VARCHAR" property="enabled"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="employee_id" jdbcType="VARCHAR" property="employeeId"/>
+        <result column="org_id" jdbcType="VARCHAR" property="orgId"/>
+        <result column="platform_type" jdbcType="INTEGER" property="platformType"/>
+        <result column="closed_circle" jdbcType="INTEGER" property="closedCircle"/>
+        <result column="linkman" jdbcType="VARCHAR" property="linkman"/>
+        <result column="site" jdbcType="VARCHAR" property="site"/>
+        <result column="supply_chain_company" jdbcType="VARCHAR" property="supplyChainCompany"/>
+        <result column="image_site" jdbcType="VARCHAR" property="imageSite"/>
+        <result column="company_name_user" jdbcType="VARCHAR" property="companyNameUser" />
+        <result column="qq" jdbcType="VARCHAR" property="qq" />
+        <result column="postcode" jdbcType="VARCHAR" property="postcode" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    user_id, parent_id, username,
+      phone, mobile, email, status,      
+     	 del_flag, login_name, enabled, remarks, create_date, update_date,  
+     		 employee_id, org_id, platform_type,closed_circle,linkman,site,supply_chain_company,image_site,company_name_user,qq,postcode
+  </sql>
+
+    <sql id="Base_Column_List_02">
+    user_id, parent_id, username,password,
+      phone, mobile, email, status,
+     	 del_flag, login_name, enabled, remarks, create_date, update_date,
+     		 employee_id, org_id, platform_type,closed_circle,linkman,site,supply_chain_company,image_site,company_name_user,qq,postcode
+  </sql>
+
+    <!-- 供应商登录===》 根据手机，邮箱，用户名找到用户 -->
+    <select id="getSupplierUserByPhoneOrEmail" parameterType="java.util.Map" resultMap="BaseResultMapUser">
+        select
+          <include refid="Base_Column_List_02"/>
+        from
+          sys_supplier_user
+        <where>
+            <if test="username != null and username != '' ">username = #{username}</if>
+             <if test="username != null and username != '' ">or phone = #{username}</if>
+             <if test="phone != null and phone != '' " >or username = #{phone}</if>
+            <if test="phone != null and phone != '' ">or phone = #{phone}</if>
+             <if test="email != null">or username = #{email} </if>
+             <if test="email != null">or email = #{email}</if>
+             <if test="userId != null">and user_id = #{userId}</if>
+        </where>
+    </select>
+
+    <!-- 个人中心 ===》 根据账号id获取用户信息 -->
+    <select id="getSupplierUserById" resultMap="BaseResultMapUser">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_supplier_user
+        where user_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- 供应商登录===》 根据子账户的parentId找到他的父级账户 -->
+    <select id="getSupplierParentUserBySubUserParentId" resultMap="BaseResultMapUser">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_supplier_user where user_id = #{parentId,jdbcType=INTEGER}
+    </select>
+
+    <!--手机发送验证码：判断当前手机是否被注册 -->
+    <select id="isSupplierUsernameByPhoneAndEmail" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from sys_supplier_user
+        <where>
+            <if test="phone != null">
+                username = #{phone,jdbcType=VARCHAR} or phone = #{phone,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null">
+                username = #{email,jdbcType=VARCHAR} or email = #{email,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据用户的手机号码，平台类型找到对应的用户信息 -->
+    <select id="getSupplierUserByPhoneAndPlatformType" resultMap="BaseResultMapUser" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List_02"/>
+        from sys_supplier_user where 1=1
+        <if test="phone != null">
+            and (phone = #{phone, jdbcType=VARCHAR} or username =  #{phone, jdbcType=VARCHAR})
+        </if>
+        <if test="email != null">
+            and (email = #{email, jdbcType=VARCHAR} or username =  #{email, jdbcType=VARCHAR})
+        </if>
+    </select>
+
+    <!-- 用户密码 ===>修改 -->
+    <update id="supplierPasswordUpadate" parameterType="java.util.Map">
+        update sys_supplier_user
+        <set>
+            <if test="newPassword != null">password = #{newPassword, jdbcType=VARCHAR},</if>
+            <if test="update != null">update_date = #{update,jdbcType=TIMESTAMP},</if>
+            <if test="remarks != null">remarks = #{remarks}</if>
+        </set>
+        <where>
+            <if test="userId != null">user_id = #{userId, jdbcType=INTEGER}</if>
+        </where>
+    </update>
+
+    <!-- 根据账号id获取用户信息 -->
+    <select id="selectSupplierByPrimaryKey" resultMap="BaseResultMapUser">
+        select
+        <include refid="Base_Column_List_02"/>
+        from sys_supplier_user
+        where user_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- 忘记用户密码 -->
+    <update id="supplierUserPasswordUpadate" parameterType="java.util.Map">
+        update sys_supplier_user
+        <set>
+            <if test="newPasswordMd5 != null">password = #{newPasswordMd5, jdbcType=VARCHAR},</if>
+            <if test="update != null">update_date = #{update,jdbcType=TIMESTAMP}</if>
+        </set>
+         <where>
+            <if test="phone != null">phone = #{phone, jdbcType=VARCHAR} or username = #{phone, jdbcType=VARCHAR}</if>
+            <if test="email != null">and email = #{email, jdbcType=VARCHAR} or username = #{email, jdbcType=VARCHAR} </if>
+        </where>
+    </update>
+
+    <!-- 修改账号资料 Integer updateInfo(User user); 通过主键选择更新-->
+    <update id="supplierUpdateInfo" parameterType="com.rondaful.cloud.user.entity.User">
+        update sys_supplier_user
+        <set>
+            <if test=" username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test=" phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test=" mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test=" email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test=" status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test=" delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test=" loginName != null">
+                login_name = #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test=" enabled != null">
+                enabled = #{enabled,jdbcType=CHAR},
+            </if>
+            <if test=" remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test=" updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test=" employeeId != null">
+                employee_id = #{employeeId,jdbcType=VARCHAR},
+            </if>
+            <if test=" orgId != null">
+                org_id = #{orgId,jdbcType=VARCHAR},
+            </if>
+            <if test=" platformType != null">
+                platform_type = #{platformType,jdbcType=INTEGER},
+            </if>
+            <if test="closedCircle != null ">
+                closed_circle = #{closedCircle, jdbcType=VARCHAR},
+            </if>
+            <if test="linkman != null">
+                linkman = #{linkman, jdbcType=VARCHAR},
+            </if>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompany != null">
+                supply_chain_company = #{supplyChainCompany, jdbcType=VARCHAR},
+            </if>
+            <if test="imageSite != null">
+                image_site = #{imageSite, jdbcType=VARCHAR},
+            </if>
+            <if test="companyNameUser != null">
+                company_name_user = #{companyNameUser, jdbcType=VARCHAR},
+            </if>
+            <if test="qq != null">
+                qq = #{qq, jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                postcode = #{postcode, jdbcType=VARCHAR}
+            </if>
+        </set>
+        where user_id = #{userid,jdbcType=INTEGER}
+    </update>
+
+    <!-- 将账户改为已经初始化财务账号 -->
+    <update id="supplierInitResultOk" parameterType="java.util.Map">
+        update sys_supplier_user
+        <set>
+            <if test="insertResult != null">employee_id = #{insertResult}</if>
+        </set>
+        <where>
+            <if test="userId != null">user_id = #{userId}</if>
+        </where>
+    </update>
+
+    <!-- 判断该账户有无进行财务初始化 -->
+    <select id="isInitSupplier" resultType="java.lang.String">
+        select employee_id from sys_supplier_user
+        <where>
+            <if test="userId != null">user_id = #{userId}</if>
+        </where>
+    </select>
+
+    <!-- 判断该供应商用户是否已经激活 -->
+    <select id="isSupplierUserDelfag" resultType="java.lang.Integer">
+        select del_flag from sys_supplier_user
+        <where>
+            <if test="userId != null">user_id = #{userId}</if>
+        </where>
+    </select>
+
+</mapper>

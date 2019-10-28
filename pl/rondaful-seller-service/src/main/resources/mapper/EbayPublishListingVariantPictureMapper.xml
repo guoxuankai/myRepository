@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishListingVariantPictureMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishListingVariantPicture">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="listing_id" jdbcType="INTEGER" property="listingId" />
+        <result column="variant_key" jdbcType="VARCHAR" property="variantKey" />
+        <result column="variant_value" jdbcType="VARCHAR" property="variantValue" />
+        <result column="picture" jdbcType="VARCHAR" property="picture" />
+        <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, variant_key, variant_value, picture, creation_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_variant_picture
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_publish_listing_variant_picture
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingVariantPicture">
+        insert into ebay_publish_listing_variant_picture (id, listing_id, variant_key, 
+            variant_value, picture, creation_time
+            )
+        values (#{id,jdbcType=INTEGER}, #{listingId,jdbcType=INTEGER}, #{variantKey,jdbcType=VARCHAR}, 
+            #{variantValue,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{creationTime,jdbcType=TIMESTAMP}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingVariantPicture">
+        insert into ebay_publish_listing_variant_picture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="variantKey != null">
+                variant_key,
+            </if>
+            <if test="variantValue != null">
+                variant_value,
+            </if>
+            <if test="picture != null">
+                picture,
+            </if>
+            <if test="creationTime != null">
+                creation_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=INTEGER},
+            </if>
+            <if test="variantKey != null">
+                #{variantKey,jdbcType=VARCHAR},
+            </if>
+            <if test="variantValue != null">
+                #{variantValue,jdbcType=VARCHAR},
+            </if>
+            <if test="picture != null">
+                #{picture,jdbcType=VARCHAR},
+            </if>
+            <if test="creationTime != null">
+                #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingVariantPicture">
+        update ebay_publish_listing_variant_picture
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=INTEGER},
+            </if>
+            <if test="variantKey != null">
+                variant_key = #{variantKey,jdbcType=VARCHAR},
+            </if>
+            <if test="variantValue != null">
+                variant_value = #{variantValue,jdbcType=VARCHAR},
+            </if>
+            <if test="picture != null">
+                picture = #{picture,jdbcType=VARCHAR},
+            </if>
+            <if test="creationTime != null">
+                creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingVariantPicture">
+        update ebay_publish_listing_variant_picture
+        set listing_id = #{listingId,jdbcType=INTEGER},
+            variant_key = #{variantKey,jdbcType=VARCHAR},
+            variant_value = #{variantValue,jdbcType=VARCHAR},
+            picture = #{picture,jdbcType=VARCHAR},
+            creation_time = #{creationTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingVariantPicture" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_variant_picture
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="listingId != null">
+                 and listing_id = #{listingId,jdbcType=INTEGER}
+            </if>
+            <if test="variantKey != null">
+                 and variant_key = #{variantKey,jdbcType=VARCHAR}
+            </if>
+            <if test="variantValue != null">
+                 and variant_value = #{variantValue,jdbcType=VARCHAR}
+            </if>
+            <if test="picture != null">
+                 and picture = #{picture,jdbcType=VARCHAR}
+            </if>
+            <if test="creationTime != null">
+                 and creation_time = #{creationTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+    
+         <insert id="insertBatchList" parameterType="java.util.List">
+    	  insert into ebay_publish_listing_variant_picture (listing_id, variant_key, 
+            variant_value, picture,creation_time) VALUES
+    <foreach collection="list" item="item" separator=",">
+  	(#{item.listingId,jdbcType=INTEGER}, #{item.variantKey,jdbcType=VARCHAR}, 
+     #{item.variantValue,jdbcType=VARCHAR}, #{item.picture,jdbcType=VARCHAR},#{item.creationTime,jdbcType=TIMESTAMP})
+    </foreach>
+    </insert> 
+    
+    <delete id="deleteByValue" parameterType="java.lang.Integer">
+          delete from ebay_publish_listing_variant_picture
+        where listing_id = #{listingId,jdbcType=INTEGER}
+    </delete>
+</mapper>

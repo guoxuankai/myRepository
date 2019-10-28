@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.OrderRuleWarehouseMapper">
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.orderRule.OrderRule">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="rule_name" jdbcType="VARCHAR" property="ruleName"/>
+        <result column="seller_id" jdbcType="VARCHAR" property="sellerId"/>
+        <result column="seller_account" jdbcType="VARCHAR" property="sellerAccount"/>
+        <result column="priority" jdbcType="INTEGER" property="priority"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="effective_start_time" jdbcType="TIME" property="effectiveStartTime"/>
+        <result column="effective_end_time" jdbcType="TIME" property="effectiveEndTime"/>
+        <result column="delivery_warehouse_code" jdbcType="VARCHAR" property="deliveryWarehouseCode"/>
+        <result column="price_min" jdbcType="VARCHAR" property="priceMin"/>
+        <result column="price_max" jdbcType="VARCHAR" property="priceMax"/>
+        <result column="weight_min" jdbcType="VARCHAR" property="weightMin"/>
+        <result column="weight_max" jdbcType="VARCHAR" property="weightMax"/>
+        <result column="volume_min" jdbcType="VARCHAR" property="volumeMin"/>
+        <result column="volume_max" jdbcType="VARCHAR" property="volumeMax"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="message" jdbcType="VARCHAR" property="message"/>
+        <result column="platform_mark" jdbcType="VARCHAR" property="platformMark"/>
+        <result column="delivery_warehouse_id" jdbcType="INTEGER" property="deliveryWarehouseId"/>
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.rondaful.cloud.order.entity.orderRule.OrderRuleWithBLOBs">
+        <result column="seller_account_list" jdbcType="LONGVARCHAR" property="sellerAccountList"/>
+        <result column="receive_goods_country_list" jdbcType="LONGVARCHAR" property="receiveGoodsCountryList"/>
+        <result column="receive_goods_zip_code_list" jdbcType="LONGVARCHAR" property="receiveGoodsZipCodeList"/>
+        <result column="pl_sku_list" jdbcType="LONGVARCHAR" property="plSkuList"/>
+        <result column="rule_name" jdbcType="VARCHAR" property="ruleName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id,rule_name, seller_id,seller_account, priority, status,delivery_warehouse_code,
+    DATE_FORMAT(effective_start_time,'%Y-%m-%d %H:%i:%S') as effective_start_time,
+    DATE_FORMAT(effective_end_time,'%Y-%m-%d %H:%i:%S') as effective_end_time,
+    price_min, price_max, weight_min, weight_max, volume_min, volume_max, version,
+    IF(create_time = '0000-00-00 00:00:00' or ISNULL(create_time),'2000-00-00 00:00:00',create_time) AS create_time,
+    IF(update_time = '0000-00-00 00:00:00' or ISNULL(update_time),'2000-00-00 00:00:00',update_time) AS update_time,
+    message,platform_mark,delivery_warehouse_id
+  </sql>
+
+    <sql id="Blob_Column_List">
+    seller_account_list, receive_goods_country_list, receive_goods_zip_code_list, pl_sku_list
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_order_rule_warehouse
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectCount" parameterType="com.rondaful.cloud.order.entity.orderRule.OrderRule"
+            resultType="java.lang.Integer">
+        select count(1) from t_order_rule_warehouse where
+        <if test="platformMark == 'S'.toString()">seller_account = #{sellerAccount,jdbcType=VARCHAR} and platform_mark =
+            #{platformMark,jdbcType=VARCHAR}
+        </if>
+        <if test="platformMark == 'G'.toString()">platform_mark = #{platformMark,jdbcType=VARCHAR}</if>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_order_rule_warehouse
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+    <select id="findAll" parameterType="com.rondaful.cloud.order.entity.orderRule.OrderRule"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_order_rule_warehouse
+        <where>
+            <if test="@Ognl@isNotEmpty(deliveryWarehouseCode )">and delivery_warehouse_code =
+                #{deliveryWarehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerId )">and seller_id = #{sellerId,jdbcType=VARCHAR}</if>
+            <if test="@Ognl@isNotEmpty(sellerIds )">
+                and seller_id in
+                <foreach collection="sellerIds" index="index" item="sellerId" open="(" separator="," close=")">
+                    #{sellerId}
+                </foreach>
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerAccounts )">
+                and seller_account in
+                <foreach collection="sellerAccounts" index="index" item="sellerAccount" open="(" separator=","
+                         close=")">
+                    #{sellerAccount}
+                </foreach>
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerAccount )">and seller_account = #{sellerAccount,jdbcType=VARCHAR}</if>
+            <if test="@Ognl@isNotEmpty(status )">and status = #{status,jdbcType=INTEGER}</if>
+            <if test="@Ognl@isNotEmpty(ruleName )">and rule_name like CONCAT('%',#{ruleName,jdbcType=VARCHAR},'%')</if>
+            <if test="@Ognl@isNotEmpty(startCreateTime )">and DATE_FORMAT(create_time,'%Y-%m-%d') >=
+                #{startCreateTime}
+            </if>
+            <if test="@Ognl@isNotEmpty(endCreateTime )">and DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endCreateTime}
+            </if>
+            <if test="@Ognl@isNotEmpty(createTime )">
+                and ((effective_start_time &lt; #{createTime} and effective_end_time > #{createTime})
+                or (effective_start_time &lt; #{createTime} and ISNULL(effective_end_time))
+                or ( effective_end_time > #{createTime} and ISNULL(effective_start_time))
+                or (ISNULL(effective_end_time) and ISNULL(effective_start_time) ))
+            </if>
+            <if test="@Ognl@isNotEmpty(platformMark)">and platform_mark = #{platformMark,jdbcType=VARCHAR}</if>
+        </where>
+        order by priority,id
+    </select>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.orderRule.OrderRuleWithBLOBs"
+            useGeneratedKeys="true"
+            keyColumn="id" keyProperty="id">
+    insert into t_order_rule_warehouse ( rule_name, seller_id,seller_account, priority,
+      status, effective_start_time, effective_end_time, 
+      delivery_warehouse_code, price_min, price_max,
+      weight_min, weight_max, volume_min, 
+      volume_max, create_time, update_time, 
+      seller_account_list, receive_goods_country_list,
+      receive_goods_zip_code_list, pl_sku_list,message
+      )
+    values ( #{ruleName,jdbcType=VARCHAR}, #{sellerId,jdbcType=VARCHAR},#{sellerAccount,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER},
+      #{status,jdbcType=INTEGER}, #{effectiveStartTime,jdbcType=TIME}, #{effectiveEndTime,jdbcType=TIME},
+      #{deliveryWarehouseCode,jdbcType=VARCHAR}, #{priceMin,jdbcType=VARCHAR}, #{priceMax,jdbcType=VARCHAR},
+      #{weightMin,jdbcType=VARCHAR}, #{weightMax,jdbcType=VARCHAR}, #{volumeMin,jdbcType=VARCHAR},
+      #{volumeMax,jdbcType=VARCHAR},now(),now(),
+      #{sellerAccountList,jdbcType=LONGVARCHAR}, #{receiveGoodsCountryList,jdbcType=LONGVARCHAR},
+      #{receiveGoodsZipCodeList,jdbcType=LONGVARCHAR}, #{plSkuList,jdbcType=LONGVARCHAR}
+      ,#{message,jdbcType=VARCHAR})
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.orderRule.OrderRuleWithBLOBs">
+        insert into t_order_rule_warehouse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="@Ognl@isNotEmpty(id )">
+                id,
+            </if>
+            <if test="@Ognl@isNotEmpty(ruleName )">
+                rule_name,
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerId )">
+                seller_id,
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerAccount )">
+                seller_account,
+            </if>
+            <if test="@Ognl@isNotEmpty(priority )">
+                priority,
+            </if>
+            <if test="@Ognl@isNotEmpty(status )">
+                status,
+            </if>
+            <if test="@Ognl@isNotEmpty(effectiveStartTime )">
+                effective_start_time,
+            </if>
+            <if test="@Ognl@isNotEmpty(effectiveEndTime )">
+                effective_end_time,
+            </if>
+            <if test="@Ognl@isNotEmpty(deliveryWarehouseCode )">
+                delivery_warehouse_code,
+            </if>
+            <if test="@Ognl@isNotEmpty(priceMin )">
+                price_min,
+            </if>
+            <if test="@Ognl@isNotEmpty(priceMax )">
+                price_max,
+            </if>
+            <if test="@Ognl@isNotEmpty(weightMin )">
+                weight_min,
+            </if>
+            <if test="@Ognl@isNotEmpty(weightMax )">
+                weight_max,
+            </if>
+            <if test="@Ognl@isNotEmpty(volumeMin )">
+                volume_min,
+            </if>
+            <if test="@Ognl@isNotEmpty(volumeMax )">
+                volume_max,
+            </if>
+            create_time,
+            update_time,
+            <if test="@Ognl@isNotEmpty(sellerAccountList )">
+                seller_account_list,
+            </if>
+            <if test="@Ognl@isNotEmpty(receiveGoodsCountryList )">
+                receive_goods_country_list,
+            </if>
+            <if test="@Ognl@isNotEmpty(receiveGoodsZipCodeList )">
+                receive_goods_zip_code_list,
+            </if>
+            <if test="@Ognl@isNotEmpty(plSkuList )">
+                pl_sku_list,
+            </if>
+            <if test="@Ognl@isNotEmpty(message )">
+                message,
+            </if>
+            <if test="@Ognl@isNotEmpty(platformMark )">
+                platform_mark,
+            </if>
+            <if test="@Ognl@isNotEmpty(deliveryWarehouseId )">
+                delivery_warehouse_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="@Ognl@isNotEmpty(id )">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="@Ognl@isNotEmpty(ruleName )">
+                #{ruleName,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerId )">
+                #{sellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerAccount )">
+                #{sellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(priority )">
+                #{priority,jdbcType=INTEGER},
+            </if>
+            <if test="@Ognl@isNotEmpty(status )">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="@Ognl@isNotEmpty(effectiveStartTime )">
+                #{effectiveStartTime,jdbcType=TIME},
+            </if>
+            <if test="@Ognl@isNotEmpty(effectiveEndTime )">
+                #{effectiveEndTime,jdbcType=TIME},
+            </if>
+            <if test="@Ognl@isNotEmpty(deliveryWarehouseCode )">
+                #{deliveryWarehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(priceMin )">
+                #{priceMin,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(priceMax )">
+                #{priceMax,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(weightMin )">
+                #{weightMin,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(weightMax )">
+                #{weightMax,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(volumeMin )">
+                #{volumeMin,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(volumeMax )">
+                #{volumeMax,jdbcType=VARCHAR},
+            </if>
+            now(),
+            now(),
+            <if test="@Ognl@isNotEmpty(sellerAccountList )">
+                #{sellerAccountList,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(receiveGoodsCountryList )">
+                #{receiveGoodsCountryList,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(receiveGoodsZipCodeList )">
+                #{receiveGoodsZipCodeList,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(plSkuList )">
+                #{plSkuList,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(message )">
+                #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(platformMark )">
+                #{platformMark,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(deliveryWarehouseId )">
+                #{deliveryWarehouseId,jdbcType=INTEGER },
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.rondaful.cloud.order.entity.orderRule.OrderRuleWithBLOBs">
+        update t_order_rule_warehouse
+        <set>
+            <if test="@Ognl@isNotEmpty(ruleName )">
+                rule_name = #{ruleName,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerId )">
+                seller_id = #{sellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerAccount )">
+                seller_account = #{sellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(priority )">
+                priority = #{priority,jdbcType=INTEGER},
+            </if>
+            <if test="@Ognl@isNotEmpty(status )">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="@Ognl@isNotEmpty(effectiveStartTime )">
+                effective_start_time = #{effectiveStartTime,jdbcType=TIME},
+            </if>
+            <if test="@Ognl@isNotEmpty(effectiveEndTime )">
+                effective_end_time = #{effectiveEndTime,jdbcType=TIME},
+            </if>
+            <if test="@Ognl@isNotEmpty(deliveryWarehouseCode )">
+                delivery_warehouse_code = #{deliveryWarehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(priceMin )">
+                price_min = #{priceMin,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(priceMax )">
+                price_max = #{priceMax,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(weightMin )">
+                weight_min = #{weightMin,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(weightMax )">
+                weight_max = #{weightMax,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(volumeMin )">
+                volume_min = #{volumeMin,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(volumeMax )">
+                volume_max = #{volumeMax,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(version )">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            update_time = now(),
+            <if test="@Ognl@isNotEmpty(sellerAccountList )">
+                seller_account_list = #{sellerAccountList,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(receiveGoodsCountryList )">
+                receive_goods_country_list = #{receiveGoodsCountryList,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(receiveGoodsZipCodeList )">
+                receive_goods_zip_code_list = #{receiveGoodsZipCodeList,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(plSkuList )">
+                pl_sku_list = #{plSkuList,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(message )">
+                message = #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(deliveryWarehouseId )">
+                delivery_warehouse_id = #{deliveryWarehouseId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.rondaful.cloud.order.entity.orderRule.OrderRuleWithBLOBs">
+    update t_order_rule_warehouse
+    set rule_name = #{ruleName,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      seller_account = #{sellerAccount,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      effective_start_time = #{effectiveStartTime,jdbcType=TIME},
+      effective_end_time = #{effectiveEndTime,jdbcType=TIME},
+      delivery_warehouse_code = #{deliveryWarehouseCode,jdbcType=VARCHAR},
+      price_min = #{priceMin,jdbcType=VARCHAR},
+      price_max = #{priceMax,jdbcType=VARCHAR},
+      weight_min = #{weightMin,jdbcType=VARCHAR},
+      weight_max = #{weightMax,jdbcType=VARCHAR},
+      volume_min = #{volumeMin,jdbcType=VARCHAR},
+      volume_max = #{volumeMax,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      update_time = now(),
+      seller_account_list = #{sellerAccountList,jdbcType=LONGVARCHAR},
+      receive_goods_country_list = #{receiveGoodsCountryList,jdbcType=LONGVARCHAR},
+      receive_goods_zip_code_list = #{receiveGoodsZipCodeList,jdbcType=LONGVARCHAR},
+      pl_sku_list = #{plSkuList,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.orderRule.OrderRule">
+    update t_order_rule_warehouse
+    set rule_name = #{ruleName,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      seller_account = #{sellerAccount,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      effective_start_time = #{effectiveStartTime,jdbcType=TIME},
+      effective_end_time = #{effectiveEndTime,jdbcType=TIME},
+      delivery_warehouse_code = #{deliveryWarehouseCode,jdbcType=VARCHAR},
+      price_min = #{priceMin,jdbcType=VARCHAR},
+      price_max = #{priceMax,jdbcType=VARCHAR},
+      weight_min = #{weightMin,jdbcType=VARCHAR},
+      weight_max = #{weightMax,jdbcType=VARCHAR},
+      volume_min = #{volumeMin,jdbcType=VARCHAR},
+      volume_max = #{volumeMax,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+    <update id="updateByPrimaryKeySelective2"
+            parameterType="com.rondaful.cloud.order.entity.orderRule.OrderRuleWithBLOBs">
+        update t_order_rule_warehouse
+        <set>
+            <if test="@Ognl@isNotEmpty(ruleName )">
+                rule_name = #{ruleName,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerId )">
+                seller_id = #{sellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(sellerAccount )">
+                seller_account = #{sellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(priority )">
+                priority = #{priority,jdbcType=INTEGER},
+            </if>
+            <if test="@Ognl@isNotEmpty(status )">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            effective_start_time = #{effectiveStartTime,jdbcType=TIME},
+            effective_end_time = #{effectiveEndTime,jdbcType=TIME},
+            <if test="@Ognl@isNotEmpty(deliveryWarehouseCode )">
+                delivery_warehouse_code = #{deliveryWarehouseCode,jdbcType=VARCHAR},
+            </if>
+            price_min = #{priceMin,jdbcType=VARCHAR},
+            price_max = #{priceMax,jdbcType=VARCHAR},
+            weight_min = #{weightMin,jdbcType=VARCHAR},
+            weight_max = #{weightMax,jdbcType=VARCHAR},
+            volume_min = #{volumeMin,jdbcType=VARCHAR},
+            volume_max = #{volumeMax,jdbcType=VARCHAR},
+            <if test="@Ognl@isNotEmpty(version )">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            update_time = now(),
+            seller_account_list = #{sellerAccountList,jdbcType=LONGVARCHAR},
+            receive_goods_country_list = #{receiveGoodsCountryList,jdbcType=LONGVARCHAR},
+            receive_goods_zip_code_list = #{receiveGoodsZipCodeList,jdbcType=LONGVARCHAR},
+            pl_sku_list = #{plSkuList,jdbcType=LONGVARCHAR},
+            <if test="@Ognl@isNotEmpty(message )">
+                message = #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="@Ognl@isNotEmpty(deliveryWarehouseId )">
+                delivery_warehouse_id = #{deliveryWarehouseId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <!--针对ruleType 进行查询 public ： 公共规则 seller 卖家自定义规则-->
+    <select id="findListByRuleType" resultType="com.rondaful.cloud.order.entity.orderRule.OrderRuleWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from t_order_rule_warehouse
+        <where>
+            1=1
+            <trim>
+                <if test="@Ognl@isNotEmpty(ruleType) and ruleType == 'public'">
+                    AND seller_id is  null
+                </if>
+                <if test="@Ognl@isNotEmpty(ruleType) and ruleType == 'seller'">
+                    AND seller_id is not null
+                </if>
+                <if test="@Ognl@isNotEmpty(rule.startCreateTime) and @Ognl@isNotEmpty(rule.endCreateTime)">
+                    AND (DATE_FORMAT(create_time,'%Y-%m-%d') BETWEEN #{rule.startCreateTime} and #{rule.endCreateTime})
+                </if>
+                <if test="@Ognl@isNotEmpty(rule.ruleName)">
+                    AND rule_name  LIKE CONCAT(CONCAT('%',#{rule.ruleName}),'%')
+                </if>
+                <if test="@Ognl@isNotEmpty(rule.sellerAccount) and rule.platformMark == 'S'.toString()">
+                    AND seller_account = #{rule.sellerAccount}
+                </if>
+                <if test="@Ognl@isNotEmpty(rule.status)">
+                    AND status = #{rule.status}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+
+</mapper>

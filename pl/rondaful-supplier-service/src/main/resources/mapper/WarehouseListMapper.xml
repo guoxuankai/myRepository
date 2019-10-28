@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WarehouseListMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.basics.WarehouseList">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="firm_id" jdbcType="INTEGER" property="firmId" />
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode" />
+        <result column="country_code" jdbcType="VARCHAR" property="countryCode" />
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, firm_id, warehouse_code, country_code, warehouse_name, status
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_warehouse_list
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_warehouse_list
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseList">
+        insert into t_warehouse_list (id, firm_id, warehouse_code, 
+            country_code, warehouse_name, status
+            )
+        values (#{id,jdbcType=INTEGER}, #{firmId,jdbcType=INTEGER}, #{warehouseCode,jdbcType=VARCHAR}, 
+            #{countryCode,jdbcType=VARCHAR}, #{warehouseName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseList">
+        insert into t_warehouse_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="firmId != null">
+                firm_id,
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code,
+            </if>
+            <if test="countryCode != null">
+                country_code,
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="firmId != null">
+                #{firmId,jdbcType=INTEGER},
+            </if>
+            <if test="warehouseCode != null">
+                #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="countryCode != null">
+                #{countryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseList">
+        update t_warehouse_list
+        <set>
+            <if test="firmId != null">
+                firm_id = #{firmId,jdbcType=INTEGER},
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="countryCode != null">
+                country_code = #{countryCode,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseList">
+        update t_warehouse_list
+        set firm_id = #{firmId,jdbcType=INTEGER},
+            warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            country_code = #{countryCode,jdbcType=VARCHAR},
+            warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseList" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_warehouse_list
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="firmId != null and firmId != ''">
+                 and firm_id = #{firmId,jdbcType=INTEGER}
+            </if>
+            <if test="warehouseCode != null and warehouseCode != ''">
+                 and warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="countryCode != null and countryCode != ''">
+                 and country_code = #{countryCode,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseName != null and warehouseName != ''">
+                 and warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_warehouse_list (id, firm_id, warehouse_code,country_code, warehouse_name, status) values
+        <foreach collection="list" item="item" separator="," index="index">
+            (#{item.id,jdbcType=INTEGER}, #{item.firmId,jdbcType=INTEGER}, #{item.warehouseCode,jdbcType=VARCHAR},
+            #{item.countryCode,jdbcType=VARCHAR}, #{item.warehouseName,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByFirmId" parameterType="java.lang.Integer">
+        delete from t_warehouse_list where firm_id = #{firmId,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getsByFirmId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_list
+        where firm_id = #{firmId,jdbcType=INTEGER}
+        <if test="status!=null or status==0">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+    </select>
+    <update id="updateStatusByFirmId" parameterType="java.lang.Integer">
+        update t_warehouse_list
+        set status = #{status,jdbcType=INTEGER}
+        where firm_id = #{firmId,jdbcType=INTEGER}
+    </update>
+
+    <select id="getsByStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_list
+        where status = #{status,jdbcType=INTEGER}
+        <if test="firmId != null">
+            and firm_id = #{firmId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getByCode"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_list
+        where warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+        <if test="firmId !=null">
+            and firm_id = #{firmId,jdbcType=INTEGER}
+        </if>
+        limit 1
+    </select>
+
+    <select id="getsByIds"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_list
+        where id in
+        <foreach collection="ids" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectByFIdCode"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_warehouse_list
+        where firm_id = #{firmId,jdbcType=INTEGER}  and warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getsByFirmIds"  resultType="java.lang.Integer">
+        select id
+        from t_warehouse_list
+        where firm_id in
+        <foreach collection="firmIds" item="item" index="index" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+        and status=1
+    </select>
+
+    <select id="getPage"  resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_warehouse_list
+        <where>
+            <if test="firmIds != null and firmIds.size() > 0">
+                firm_id in
+                <foreach collection="firmIds" item="item" index="index" close=")" open="(" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="status !=null">
+                and status=#{status,jdbcType=INTEGER}
+            </if>
+            <if test="ids !=null and ids.size()>0">
+                and id in
+                <foreach collection="ids" item="item" index="index" close=")" open="(" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <update id="updateStatus">
+        update t_warehouse_list
+        set status = #{status,jdbcType=INTEGER}
+        where
+        id in
+        <foreach collection="warehouseIds" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

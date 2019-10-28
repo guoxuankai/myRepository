@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.AreaCodeMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.AreaCode">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="level" jdbcType="INTEGER" property="level" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="name_en" jdbcType="VARCHAR" property="nameEn" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="post_code" jdbcType="VARCHAR" property="postCode" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, `level`, `name`,name_en, code, parent_id,post_code
+    </sql>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_area_code
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_area_code
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.AreaCode" useGeneratedKeys="true" keyProperty="id">
+        insert into t_area_code (id, `level`, `name`,code, parent_id)
+        values (#{id,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+            #{code,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.AreaCode">
+        insert into t_area_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="nameEn != null">
+                name_en,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nameEn != null">
+                #{nameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.AreaCode">
+        update t_area_code
+        <set>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nameEn != null">
+                name_en = #{nameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="postCode != null">
+                post_code = #{postCode,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByCode" parameterType="com.rondaful.cloud.user.entity.AreaCode">
+        update t_area_code
+        <set>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nameEn != null">
+                name_en = #{nameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="postCode != null">
+                post_code = #{postCode,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+        <if test="code != null">
+            code = #{code,jdbcType=VARCHAR}
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.AreaCode">
+        update t_area_code
+        set level = #{level,jdbcType=INTEGER},
+            name = #{name,jdbcType=VARCHAR},
+            name_en = #{nameEn,jdbcType=VARCHAR},
+            code = #{code,jdbcType=VARCHAR},
+            parent_id = #{parentId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.AreaCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_area_code
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="level != null and level != ''">
+                 and level = #{level,jdbcType=INTEGER}
+            </if>
+            <if test="name != null and name != ''">
+                 and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="nameEn != null and name != ''">
+                and name_en = #{nameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="code != null and code != ''">
+                 and code = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                 and parent_id = #{parentId,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertBranch" parameterType="java.util.List">
+        insert into t_area_code (level, name,name_en
+            code, parent_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.level,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR},#{item.nameEn,jdbcType=VARCHAR},
+            #{item.code,jdbcType=VARCHAR}, #{item.parentId,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <select id="getsByLevel" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_area_code
+        where level = #{level,jdbcType=INTEGER}
+        <if test="parentId !=null and parentId!=''">
+            and parent_id = #{parentId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getsAll"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_area_code
+    </select>
+
+    <select id="getNameByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_area_code
+        where code = #{code,jdbcType=VARCHAR}
+        <if test="level !=null or level ==0 ">
+            and `level` = #{level,jdbcType=INTEGER}
+        </if>
+        limit 1
+    </select>
+
+    <select id="getArea" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_area_code
+        where `level`=1
+        <if test="countryName != null and countryName != ''">
+          and `name` = #{countryName}
+        </if>
+        <if test="countryCode != null and countryCode != ''">
+          and code = #{countryCode}
+        </if>
+    </select>
+</mapper>

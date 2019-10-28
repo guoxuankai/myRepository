@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.VatDetailInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.VatDetailInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="Vat_type" jdbcType="INTEGER" property="vatType"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="vat_number" jdbcType="VARCHAR" property="vatNumber"/>
+        <result column="exemption_number" jdbcType="VARCHAR" property="exemptionNumber"/>
+        <result column="eori" jdbcType="VARCHAR" property="eori"/>
+        <result column="warhouse_code" jdbcType="VARCHAR" property="warehouseCode"/>
+        <result column="cv_contacter" jdbcType="VARCHAR" property="cvContacter"/>
+        <result column="cv_contact_phone" jdbcType="VARCHAR" property="cvContactPhone"/>
+        <result column="vat_email" jdbcType="VARCHAR" property="vatEmail"/>
+        <result column="cv_business_address" jdbcType="VARCHAR" property="cvBusinessAddress"/>
+        <result column="importer_company_licence_file" jdbcType="VARCHAR" property="importerCompanyLicenceFile"/>
+        <result column="importer_company_licence_file_type" jdbcType="VARCHAR"
+                property="importerCompanyLicenceFileType"/>
+        <result column="gst_certificate_file" jdbcType="VARCHAR" property="gstCertificateFile"/>
+        <result column="gst_certificate_file_type" jdbcType="VARCHAR" property="gstCertificateFileType"/>
+        <result column="cv_status" jdbcType="VARCHAR" property="cvStatus"/>
+        <result column="cv_create_time" jdbcType="TIMESTAMP" property="cvCreateTime"/>
+        <result column="auditing_time" jdbcType="TIMESTAMP" property="auditingTime"/>
+        <result column="cv_update_time" jdbcType="TIMESTAMP" property="cvUpdateTime"/>
+        <result column="cv_id" jdbcType="VARCHAR" property="cvId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, Vat_type, company_name, vat_number, exemption_number, eori, warhouse_code, cv_contacter,
+        cv_contact_phone, vat_email, cv_business_address, importer_company_licence_file,
+        importer_company_licence_file_type, gst_certificate_file, gst_certificate_file_type,
+        cv_status, cv_create_time, auditing_time, cv_update_time, cv_id
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_vat_detail_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_vat_detail_info
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteFrom" parameterType="java.lang.Long">
+        delete from t_vat_detail_info
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.VatDetailInfo">
+        insert into t_vat_detail_info (id, Vat_type, company_name,
+            vat_number, exemption_number, eori,
+            warhouse_code, cv_contacter, cv_contact_phone,
+            vat_email, cv_business_address, importer_company_licence_file,
+            importer_company_licence_file_type, gst_certificate_file,
+            gst_certificate_file_type, cv_status, cv_create_time,
+            auditing_time, cv_update_time, cv_id
+            )
+        values (#{id,jdbcType=BIGINT}, #{vatType,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR},
+            #{vatNumber,jdbcType=VARCHAR}, #{exemptionNumber,jdbcType=VARCHAR}, #{eori,jdbcType=VARCHAR},
+            #{warehouseCode,jdbcType=VARCHAR}, #{cvContacter,jdbcType=VARCHAR}, #{cvContactPhone,jdbcType=VARCHAR},
+            #{vatEmail,jdbcType=VARCHAR}, #{cvBusinessAddress,jdbcType=VARCHAR}, #{importerCompanyLicenceFile,jdbcType=VARCHAR},
+            #{importerCompanyLicenceFileType,jdbcType=VARCHAR}, #{gstCertificateFile,jdbcType=VARCHAR},
+            #{gstCertificateFileType,jdbcType=VARCHAR}, #{cvStatus,jdbcType=VARCHAR}, #{cvCreateTime,jdbcType=TIMESTAMP},
+            #{auditingTime,jdbcType=TIMESTAMP}, #{cvUpdateTime,jdbcType=TIMESTAMP}, #{cvId,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.VatDetailInfo">
+        insert into t_vat_detail_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="vatType != null">
+                Vat_type,
+            </if>
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="vatNumber != null">
+                vat_number,
+            </if>
+            <if test="exemptionNumber != null">
+                exemption_number,
+            </if>
+            <if test="eori != null">
+                eori,
+            </if>
+            <if test="warehouseCode != null">
+                warhouse_code,
+            </if>
+            <if test="cvContacter != null">
+                cv_contacter,
+            </if>
+            <if test="cvContactPhone != null">
+                cv_contact_phone,
+            </if>
+            <if test="vatEmail != null">
+                vat_email,
+            </if>
+            <if test="cvBusinessAddress != null">
+                cv_business_address,
+            </if>
+            <if test="importerCompanyLicenceFile != null">
+                importer_company_licence_file,
+            </if>
+            <if test="importerCompanyLicenceFileType != null">
+                importer_company_licence_file_type,
+            </if>
+            <if test="gstCertificateFile != null">
+                gst_certificate_file,
+            </if>
+            <if test="gstCertificateFileType != null">
+                gst_certificate_file_type,
+            </if>
+            <if test="cvStatus != null">
+                cv_status,
+            </if>
+            <if test="cvCreateTime != null">
+                cv_create_time,
+            </if>
+            <if test="auditingTime != null">
+                auditing_time,
+            </if>
+            <if test="cvUpdateTime != null">
+                cv_update_time,
+            </if>
+            <if test="cvId != null">
+                cv_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="vatType != null">
+                #{vatType,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="vatNumber != null">
+                #{vatNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="exemptionNumber != null">
+                #{exemptionNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="eori != null">
+                #{eori,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="cvContacter != null">
+                #{cvContacter,jdbcType=VARCHAR},
+            </if>
+            <if test="cvContactPhone != null">
+                #{cvContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="vatEmail != null">
+                #{vatEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="cvBusinessAddress != null">
+                #{cvBusinessAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="importerCompanyLicenceFile != null">
+                #{importerCompanyLicenceFile,jdbcType=VARCHAR},
+            </if>
+            <if test="importerCompanyLicenceFileType != null">
+                #{importerCompanyLicenceFileType,jdbcType=VARCHAR},
+            </if>
+            <if test="gstCertificateFile != null">
+                #{gstCertificateFile,jdbcType=VARCHAR},
+            </if>
+            <if test="gstCertificateFileType != null">
+                #{gstCertificateFileType,jdbcType=VARCHAR},
+            </if>
+            <if test="cvStatus != null">
+                #{cvStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="cvCreateTime != null">
+                #{cvCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditingTime != null">
+                #{auditingTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cvUpdateTime != null">
+                #{cvUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cvId != null">
+                #{cvId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.VatDetailInfo">
+        update t_vat_detail_info
+        <set>
+            <if test="vatType != null">
+                Vat_type = #{vatType,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="vatNumber != null">
+                vat_number = #{vatNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="exemptionNumber != null">
+                exemption_number = #{exemptionNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="eori != null">
+                eori = #{eori,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                warhouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="cvContacter != null">
+                cv_contacter = #{cvContacter,jdbcType=VARCHAR},
+            </if>
+            <if test="cvContactPhone != null">
+                cv_contact_phone = #{cvContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="vatEmail != null">
+                vat_email = #{vatEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="cvBusinessAddress != null">
+                cv_business_address = #{cvBusinessAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="importerCompanyLicenceFile != null">
+                importer_company_licence_file = #{importerCompanyLicenceFile,jdbcType=VARCHAR},
+            </if>
+            <if test="importerCompanyLicenceFileType != null">
+                importer_company_licence_file_type = #{importerCompanyLicenceFileType,jdbcType=VARCHAR},
+            </if>
+            <if test="gstCertificateFile != null">
+                gst_certificate_file = #{gstCertificateFile,jdbcType=VARCHAR},
+            </if>
+            <if test="gstCertificateFileType != null">
+                gst_certificate_file_type = #{gstCertificateFileType,jdbcType=VARCHAR},
+            </if>
+            <if test="cvStatus != null">
+                cv_status = #{cvStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="cvCreateTime != null">
+                cv_create_time = #{cvCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditingTime != null">
+                auditing_time = #{auditingTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cvUpdateTime != null">
+                cv_update_time = #{cvUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cvId != null">
+                cv_id = #{cvId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.VatDetailInfo">
+        update t_vat_detail_info
+        set Vat_type = #{vatType,jdbcType=INTEGER},
+            company_name = #{companyName,jdbcType=VARCHAR},
+            vat_number = #{vatNumber,jdbcType=VARCHAR},
+            exemption_number = #{exemptionNumber,jdbcType=VARCHAR},
+            eori = #{eori,jdbcType=VARCHAR},
+            warhouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            cv_contacter = #{cvContacter,jdbcType=VARCHAR},
+            cv_contact_phone = #{cvContactPhone,jdbcType=VARCHAR},
+            vat_email = #{vatEmail,jdbcType=VARCHAR},
+            cv_business_address = #{cvBusinessAddress,jdbcType=VARCHAR},
+            importer_company_licence_file = #{importerCompanyLicenceFile,jdbcType=VARCHAR},
+            importer_company_licence_file_type = #{importerCompanyLicenceFileType,jdbcType=VARCHAR},
+            gst_certificate_file = #{gstCertificateFile,jdbcType=VARCHAR},
+            gst_certificate_file_type = #{gstCertificateFileType,jdbcType=VARCHAR},
+            cv_status = #{cvStatus,jdbcType=VARCHAR},
+            cv_create_time = #{cvCreateTime,jdbcType=TIMESTAMP},
+            auditing_time = #{auditingTime,jdbcType=TIMESTAMP},
+            cv_update_time = #{cvUpdateTime,jdbcType=TIMESTAMP},
+            cv_id = #{cvId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.VatDetailInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_vat_detail_info
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="vatType != null and vatType != ''">
+                and Vat_type = #{vatType,jdbcType=INTEGER}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and company_name = #{companyName,jdbcType=VARCHAR}
+            </if>
+            <if test="vatNumber != null and vatNumber != ''">
+                and vat_number = #{vatNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="exemptionNumber != null and exemptionNumber != ''">
+                and exemption_number = #{exemptionNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="eori != null and eori != ''">
+                and eori = #{eori,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseCode != null and warehouseCode != ''">
+                and warhouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="cvContacter != null and cvContacter != ''">
+                and cv_contacter = #{cvContacter,jdbcType=VARCHAR}
+            </if>
+            <if test="cvContactPhone != null and cvContactPhone != ''">
+                and cv_contact_phone = #{cvContactPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="vatEmail != null and vatEmail != ''">
+                and vat_email = #{vatEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="cvBusinessAddress != null and cvBusinessAddress != ''">
+                and cv_business_address = #{cvBusinessAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="importerCompanyLicenceFile != null and importerCompanyLicenceFile != ''">
+                and importer_company_licence_file = #{importerCompanyLicenceFile,jdbcType=VARCHAR}
+            </if>
+            <if test="importerCompanyLicenceFileType != null and importerCompanyLicenceFileType != ''">
+                and importer_company_licence_file_type = #{importerCompanyLicenceFileType,jdbcType=VARCHAR}
+            </if>
+            <if test="gstCertificateFile != null and gstCertificateFile != ''">
+                and gst_certificate_file = #{gstCertificateFile,jdbcType=VARCHAR}
+            </if>
+            <if test="gstCertificateFileType != null and gstCertificateFileType != ''">
+                and gst_certificate_file_type = #{gstCertificateFileType,jdbcType=VARCHAR}
+            </if>
+            <if test="cvStatus != null and cvStatus != ''">
+                and cv_status = #{cvStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="cvCreateTime != null and cvCreateTime != ''">
+                and cv_create_time = #{cvCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="auditingTime != null and auditingTime != ''">
+                and auditing_time = #{auditingTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="cvUpdateTime != null and cvUpdateTime != ''">
+                and cv_update_time = #{cvUpdateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="cvId != null and cvId != ''">
+                and cv_id = #{cvId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectBycvStatus" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_vat_detail_info
+        where cv_status = #{cvStatus,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertList" parameterType="java.util.List">
+        insert into t_vat_detail_info(Vat_type, company_name,
+        vat_number, exemption_number, eori,
+        warhouse_code, cv_contacter, cv_contact_phone,
+        vat_email, cv_business_address, importer_company_licence_file,
+        importer_company_licence_file_type, gst_certificate_file,
+        gst_certificate_file_type, cv_status, cv_create_time,
+        auditing_time, cv_update_time, cv_id
+        )
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.vatType,jdbcType=INTEGER}, #{item.companyName,jdbcType=VARCHAR},
+            #{item.vatNumber,jdbcType=VARCHAR}, #{item.exemptionNumber,jdbcType=VARCHAR}, #{item.eori,jdbcType=VARCHAR},
+            #{item.warehouseCode,jdbcType=VARCHAR}, #{item.cvContacter,jdbcType=VARCHAR},
+            #{item.cvContactPhone,jdbcType=VARCHAR},
+            #{item.vatEmail,jdbcType=VARCHAR}, #{item.cvBusinessAddress,jdbcType=VARCHAR},
+            #{item.importerCompanyLicenceFile,jdbcType=VARCHAR},
+            #{item.importerCompanyLicenceFileType,jdbcType=VARCHAR}, #{item.gstCertificateFile,jdbcType=VARCHAR},
+            #{item.gstCertificateFileType,jdbcType=VARCHAR}, #{item.cvStatus,jdbcType=VARCHAR},
+            #{item.cvCreateTime,jdbcType=TIMESTAMP},
+            #{item.auditingTime,jdbcType=TIMESTAMP}, #{item.cvUpdateTime,jdbcType=TIMESTAMP},
+            #{item.cvId,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="selectCount" resultType="int">
+        select count(1) from t_vat_detail_info
+    </select>
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.CommodityFocusMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.CommodityFocus">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+        <result column="commodity_id" jdbcType="VARCHAR" property="commodityId" />
+        <result column="creat_time" jdbcType="VARCHAR" property="creatTime" />
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+        <result column="seller_id" jdbcType="BIGINT" property="sellerId" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, version, commodity_id, creat_time, update_time, seller_id
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_focus
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_commodity_focus
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.CommodityFocus">
+        insert into t_commodity_focus (id, version, commodity_id, 
+            creat_time, update_time, seller_id
+            )
+        values (#{id,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, #{commodityId,jdbcType=VARCHAR}, 
+            #{creatTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{sellerId,jdbcType=BIGINT}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityFocus">
+        insert into t_commodity_focus
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="commodityId != null">
+                commodity_id,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="sellerId != null">
+                seller_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="commodityId != null">
+                #{commodityId,jdbcType=VARCHAR},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerId != null">
+                #{sellerId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.CommodityFocus">
+        update t_commodity_focus
+        <set>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+            <if test="commodityId != null">
+                commodity_id = #{commodityId,jdbcType=VARCHAR},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerId != null">
+                seller_id = #{sellerId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.CommodityFocus">
+        update t_commodity_focus
+        set version = #{version,jdbcType=BIGINT} + 1,
+            commodity_id = #{commodityId,jdbcType=VARCHAR},
+            creat_time = #{creatTime,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=VARCHAR},
+            seller_id = #{sellerId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.commodity.entity.CommodityFocus" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_focus
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+            <if test="commodityId != null">
+                 and commodity_id = #{commodityId,jdbcType=VARCHAR}
+            </if>
+            <if test="creatTime != null">
+                 and creat_time = #{creatTime,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null">
+                 and update_time = #{updateTime,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerId != null">
+                 and seller_id = #{sellerId,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+</mapper>

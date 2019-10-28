@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.LogisticsInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.LogisticsInfo">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+        <result column="type" jdbcType="TINYINT" property="type" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+		<result column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+        <result column="amazon_carrier" jdbcType="VARCHAR" property="amazonCarrier" />
+        <result column="amazon_code" jdbcType="VARCHAR" property="amazonCode" />
+        <result column="ebay_carrier" jdbcType="VARCHAR" property="ebayCarrier" />
+        <result column="aliexpress_code" jdbcType="VARCHAR" property="aliexpressCode" />
+        <result column="other_amazon_carrier" jdbcType="VARCHAR" property="otherAmazonCarrier" />
+        <result column="other_amazon_code" jdbcType="VARCHAR" property="otherAmazonCode" />
+        <result column="other_ebay_carrier" jdbcType="VARCHAR" property="otherEbayCarrier" />
+        <result column="carrier_name" jdbcType="VARCHAR" property="carrierName" />
+        <result column="carrier_code" jdbcType="VARCHAR" property="carrierCode" />
+        <result column="last_update_by" jdbcType="BIGINT" property="lastUpdateBy" />
+        <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+    <sql id="logistics_info_Column_List">
+        id, short_name, type, code,status,warehouse_id,amazon_carrier, amazon_code,
+        ebay_carrier, aliexpress_code, other_amazon_carrier, other_amazon_code, other_ebay_carrier,
+        carrier_name, carrier_code,last_update_by, last_update_time, create_time
+    </sql>
+
+
+    <insert id="insertLogisticsInfoList" parameterType="java.util.List">
+        insert into t_logistics_info (short_name,type,code,warehouse_id,carrier_name,
+        	 		carrier_code,last_update_time, create_time)
+         values
+         <foreach collection="list" index="index" item="info"  separator=",">
+	         (#{info.shortName},#{info.type},#{info.code},#{info.warehouseId},#{info.carrierName},
+	          #{info.carrierCode},#{info.lastUpdateTime},#{info.createTime})
+         </foreach>
+    </insert>
+
+    <insert id="insertLogisticsInfo" parameterType="com.rondaful.cloud.supplier.entity.LogisticsInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_logistics_info (short_name, type,code,status,warehouse_id,
+        				carrier_name,carrier_code,last_update_time, create_time)
+         values  (#{shortName},#{type}, #{code},'0',#{warehouseId},
+	          		#{carrierName},#{carrierCode},#{lastUpdateTime}, #{createTime})
+    </insert>
+
+    <select id="queryLogisticsListPage" parameterType="com.rondaful.cloud.supplier.entity.LogisticsInfo" resultType="com.rondaful.cloud.supplier.dto.LogisticsDTO">
+		SELECT
+			id,short_name shortName,type,code,warehouse_id warehouseId,
+			amazon_carrier amazonCarrier,amazon_code amazonCode,
+			ebay_carrier ebayCarrier,aliexpress_code aliexpressCode,
+			other_amazon_carrier otherAmazonCarrier,other_amazon_code otherAmazonCode,
+			other_ebay_carrier otherEbayCarrier,carrier_name carrierName,
+			carrier_code carrierCode,status
+		FROM t_logistics_info
+		WHERE 1=1
+	      	  <if test="status != null"> and status = #{status}  </if>
+	          <if test="shortName != null and shortName !=''">  and short_name like CONCAT('%',#{shortName},'%')  </if>
+	          <if test="carrierName != null and carrierName !=''"> and carrier_name = #{carrierName} </if>
+	          <if test="type != null and type !=''"> and type = #{type}  </if>
+	          <if test="code != null and code !=''"> and code = #{code}  </if>
+	          <if test="warehouseId != null and warehouseId !=''"> and warehouse_id = #{warehouseId} </if>
+		      <if test="warehouseIdList != null and warehouseIdList.size() > 0">
+				  and warehouse_id in
+				  <foreach collection="warehouseIdList" index="index" item="warehouseId" open="(" separator="," close=")">
+					  #{warehouseId}
+				  </foreach>
+			  </if>
+	         GROUP BY id
+    </select>
+
+	<select id="queryLogisticsListById" parameterType="com.rondaful.cloud.supplier.entity.LogisticsInfo" resultType="com.rondaful.cloud.supplier.model.dto.logistics.ThirdAppLogisticsDTO">
+		SELECT
+		id,short_name shortName,type,code,
+		amazon_carrier amazonCarrier,amazon_code amazonCode,
+		ebay_carrier ebayCarrier,aliexpress_code aliexpressCode,
+		other_amazon_carrier otherAmazonCarrier,other_amazon_code otherAmazonCode,
+		other_ebay_carrier otherEbayCarrier,carrier_name carrierName,
+		carrier_code carrierCode,status
+		FROM t_logistics_info
+		WHERE 1=1 and status = #{status}
+		<if test="warehouseId != null and warehouseId !=''"> and warehouse_id = #{warehouseId} </if>
+		GROUP BY id
+	</select>
+
+    <select id="queryLogisticsList" resultType="com.rondaful.cloud.supplier.dto.LogisticsDTO">
+		SELECT
+			id,short_name shortName,type,code,warehouse_id warehouseId,
+			amazon_carrier amazonCarrier,amazon_code amazonCode,
+			ebay_carrier ebayCarrier,aliexpress_code aliexpressCode,
+			other_amazon_carrier otherAmazonCarrier,other_amazon_code otherAmazonCode,
+			other_ebay_carrier otherEbayCarrier,carrier_name carrierName,
+			carrier_code carrierCode,status
+		FROM t_logistics_info
+		WHERE  status = 1 AND short_name != ''
+	         GROUP BY code
+    </select>
+
+
+    <select id="queryLogisticsByCode" resultType="com.rondaful.cloud.supplier.dto.LogisticsDTO">
+    	SELECT
+   			 id,short_name shortName,carrier_name carrierName,status,
+   			 aliexpress_code aliexpressCode,amazon_carrier amazonCarrier,
+   			 amazon_code amazonCode,carrier_code carrierCode, ebay_carrier ebayCarrier,
+   			 code,other_amazon_carrier otherAmazonCarrier, other_amazon_code otherAmazonCode,
+   			 other_ebay_carrier otherEbayCarrier,online_logistics onlineLogistics
+	      FROM t_logistics_info
+	      WHERE  code = #{logisticsCode} AND warehouse_Id = #{warehouseId}
+    </select>
+
+
+    <select id="queryThirdLogistics" resultType="com.rondaful.cloud.supplier.entity.PlatformLogistics">
+    	select
+    		ebay_carrier ebayCarrier,
+    		amazon_carrier amazonCarrier,
+    		amazon_code amazonCode
+    	from t_platform_logistics
+    </select>
+
+   	<select id="selectAliexpressCode" resultType="java.lang.String">
+		select service_name aliexpressCode from t_aliexpress_logistics
+	</select>
+
+    <update id="updateLogisticsMapping" parameterType="com.rondaful.cloud.supplier.entity.LogisticsInfo">
+    	update t_logistics_info
+    	set ebay_carrier = #{ebayCarrier},
+    		amazon_carrier = #{amazonCarrier},
+    		amazon_code = #{amazonCode},
+    		aliexpress_code = #{aliexpressCode},
+    		other_amazon_carrier = #{otherAmazonCarrier},
+    		other_amazon_code = #{otherAmazonCode},
+    		other_ebay_carrier = #{otherEbayCarrier},
+    		last_update_by = #{lastUpdateBy},
+    		last_update_time = #{lastUpdateTime}
+    	WHERE code =#{code}  AND warehouse_Id = #{warehouseId}
+    </update>
+
+    <update id="updateStatusById" parameterType="com.rondaful.cloud.supplier.entity.LogisticsInfo">
+    	update t_logistics_info
+    	set status = #{status}
+    	where code =#{code} AND warehouse_Id = #{warehouseId}
+    </update>
+
+   	<update id="updateAliexpressCode" parameterType="com.rondaful.cloud.supplier.entity.LogisticsInfo">
+		update t_logistics_info
+		set	aliexpress_code = #{aliexpressCode}
+		where code = #{code}
+	</update>
+
+  	<select id="getLogisticsByCode" resultType="com.rondaful.cloud.supplier.dto.LogisticsDTO">
+  		select
+	        id,short_name shortName,code,type,warehouse_id warehouseId,
+	        amazon_carrier amazonCarrier, amazon_code amazonCode, ebay_carrier ebayCarrier,
+	        aliexpress_code aliexpressCode, other_amazon_carrier otherAmazonCarrier,
+	        other_amazon_code otherAmazonCode, other_ebay_carrier otherEbayCarrier,
+	        carrier_name carrierName, carrier_code carrierCode,online_logistics onlineLogistics
+  		from t_logistics_info
+  		where warehouse_Id = #{warehouseId}
+  			and code = #{code} and status = 1
+  	</select>
+
+	<select id="selectLogisticsMapping" resultType="com.rondaful.cloud.supplier.entity.Logistics.LogisticsMapping">
+		select
+			erp_logistics_code erpLogisticsCode,erp_logistics_name erpLogisticsName,granary_logistics_code granaryLogisticsCode,granary_logistics_name granaryLogisticsName
+		from t_logistics_mapping
+		where 1=1
+		<if test="granaryLogisticsCode != null and granaryLogisticsCode !=''"> and granary_logistics_code = #{granaryLogisticsCode} </if>
+		<if test="erpLogisticsCode != null and erpLogisticsCode !=''"> and erp_logistics_code = #{erpLogisticsCode} </if>
+		<if test="warehouseId != null and warehouseId !=''"> and warehouse_id = #{warehouseId} </if>
+	</select>
+
+</mapper>

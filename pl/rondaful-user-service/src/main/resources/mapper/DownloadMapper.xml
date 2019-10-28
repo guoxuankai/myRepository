@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.DownloadMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.Download">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="job" jdbcType="VARCHAR" property="job" />
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+        <result column="platform_type" jdbcType="INTEGER" property="platformType" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="top_user_id" jdbcType="INTEGER" property="topUserId" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, job, start_time, end_time, platform_type, user_id, top_user_id, status, url, 
+        version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_download
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_download
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.user.entity.Download" useGeneratedKeys="true" keyProperty="id">
+        insert into t_download (id, job, start_time, 
+            end_time, platform_type, user_id, 
+            top_user_id, status, url, 
+            version)
+        values (#{id,jdbcType=INTEGER}, #{job,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
+            #{endTime,jdbcType=TIMESTAMP}, #{platformType,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+            #{topUserId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
+            #{version,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.user.entity.Download">
+        insert into t_download
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="job != null">
+                job,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="platformType != null">
+                platform_type,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="topUserId != null">
+                top_user_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="job != null">
+                #{job,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="platformType != null">
+                #{platformType,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="topUserId != null">
+                #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.user.entity.Download">
+        update t_download
+        <set>
+            <if test="job != null">
+                job = #{job,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="platformType != null">
+                platform_type = #{platformType,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="topUserId != null">
+                top_user_id = #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.user.entity.Download">
+        update t_download
+        set job = #{job,jdbcType=VARCHAR},
+            start_time = #{startTime,jdbcType=TIMESTAMP},
+            end_time = #{endTime,jdbcType=TIMESTAMP},
+            platform_type = #{platformType,jdbcType=INTEGER},
+            user_id = #{userId,jdbcType=INTEGER},
+            top_user_id = #{topUserId,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            url = #{url,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.user.entity.Download" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_download
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="job != null and job != ''">
+                 and job = #{job,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                 and start_time = #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                 and end_time = #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="platformType != null and platformType != ''">
+                 and platform_type = #{platformType,jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+                 and user_id = #{userId,jdbcType=INTEGER}
+            </if>
+            <if test="topUserId != null and topUserId != ''">
+                 and top_user_id = #{topUserId,jdbcType=INTEGER}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="url != null and url != ''">
+                 and url = #{url,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getsPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_download
+        where user_id = #{userId,jdbcType=INTEGER} and platform_type = #{platformType,jdbcType=INTEGER}
+        <if test="status !=null  or status==0">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+        <if test="startTime !=null and endTime !=null">
+            and start_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+        </if>
+        and week(start_time) = week(now()) order by  start_time desc
+    </select>
+
+</mapper>

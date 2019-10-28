@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SellerSkuMapMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.SellerSkuMap">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="platform" jdbcType="VARCHAR" property="platform"/>
+        <result column="authorization_id" jdbcType="VARCHAR" property="authorizationId"/>
+        <result column="platform_sku" jdbcType="VARCHAR" property="platformSku"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <collection property="skuBinds"  column="id" select="selectSkuBinds"></collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    	id, platform,authorization_id, platform_sku, status, version,create_time,update_time
+  	</sql>
+  	
+  	<select id="selectSkuBinds" parameterType="java.lang.Long" resultType="com.rondaful.cloud.commodity.entity.SkuMapBind">
+        select 
+        	id,
+        	map_id mapId,
+        	system_sku systemSku,
+        	sku_num skuNum
+        from t_sku_map_bind
+        where map_id = #{mapId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_seller_sku_map
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="page" parameterType="com.rondaful.cloud.commodity.entity.SellerSkuMap" resultMap="BaseResultMap">
+        select
+        	t1.id, t1.platform,t1.authorization_id, t1.platform_sku, t1.status, t1.version,t1.create_time,t1.update_time
+        from t_seller_sku_map t1
+        <trim prefix="where" prefixOverrides="and">
+        	<if test="id != null">
+        		and t1.id = #{id}
+        	</if>
+        	<if test="platform != null and platform != ''">
+        		and t1.platform = #{platform,jdbcType=VARCHAR}
+        	</if>
+        	<if test="authorizationId != null and authorizationId != ''">
+        		and t1.authorization_id = #{authorizationId}
+        	</if>
+        	<if test="platformSku != null and platformSku != ''">
+        		and t1.platform_sku = #{platformSku}
+        	</if>
+        	<if test="status != null">
+        		and t1.status = #{status}
+        	</if>
+        	<if test="authorizationIds != null">
+        		and t1.authorization_id in
+        		<foreach item="auId" collection="authorizationIds" open="(" separator="," close=")">
+	                #{auId}
+	            </foreach>
+        	</if>
+        	<if test="startCreateTime != null and startCreateTime != ''">
+        		and t1.create_time &gt;= str_to_date(CONCAT(#{startCreateTime},' 00:00:00'),'%Y-%m-%d %H:%i:%s')
+        	</if>
+        	<if test="endCreateTime != null and endCreateTime != ''">
+        		and t1.create_time &lt;= str_to_date(CONCAT(#{endCreateTime},' 23:59:59'),'%Y-%m-%d %H:%i:%s')
+        	</if>
+        	and EXISTS (select 1 from t_sku_map_bind t2 where t2.map_id=t1.id
+        		<if test="plSku != null and plSku != ''">
+        			and t2.system_sku like CONCAT(CONCAT('%', #{plSku}), '%')
+        		</if>
+        	)
+        </trim>
+        order by t1.create_time desc,t1.id desc
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    	delete from t_seller_sku_map
+   		where id = #{id}
+  	</delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SellerSkuMap" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+	    insert into t_seller_sku_map ( 
+	    	platform, 
+	    	authorization_id,
+	      	platform_sku,
+			status, 
+	      	create_time
+	     )
+	    values ( 
+	    	#{platform,jdbcType=VARCHAR},
+	        #{authorizationId,jdbcType=VARCHAR},
+	        #{platformSku,jdbcType=VARCHAR}, 
+	        #{status},
+	      	now()
+	    )
+  	</insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.SellerSkuMap">
+        insert into t_seller_sku_map
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platform != null and platform != ''">
+                platform,
+            </if>
+            <if test="authorizationId != null and authorizationId != ''">
+                authorization_id,
+            </if>
+            <if test="platformSku != null and platformSku != ''">
+                platform_sku,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platform != null and platform != ''">
+                #{platform,jdbcType=VARCHAR},
+            </if>
+            <if test="authorizationId != null and authorizationId != ''">
+                #{authorizationId,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSku != null and platformSku != ''">
+                #{platformSku,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.SellerSkuMap">
+        update t_seller_sku_map set update_time = now()
+           <if test="platform != null and platform != ''">
+               ,platform = #{platform,jdbcType=VARCHAR}
+           </if>
+           <if test="authorizationId != null and authorizationId != ''">
+               ,authorization_id = #{authorizationId,jdbcType=VARCHAR}
+           </if>
+           <if test="platformSku != null and platformSku != ''">
+               ,platform_sku = #{platformSku,jdbcType=VARCHAR}
+           </if>
+           <if test="status != null">
+               ,status = #{status,jdbcType=INTEGER}
+           </if>
+           <if test="version != null">
+               ,version = #{version,jdbcType=BIGINT} + 1
+           </if>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.SellerSkuMap">
+	    update t_seller_sku_map
+	    set platform = #{platform,jdbcType=VARCHAR},
+	      authorization_id = #{authorizationId,jdbcType=VARCHAR},
+	      platform_sku = #{platformSku,jdbcType=VARCHAR},
+	      status = #{status,jdbcType=INTEGER},
+	      version = #{version,jdbcType=BIGINT} + 1,
+	      update_time = now()
+	    where id = #{id,jdbcType=BIGINT},
+	    and version = #{version,jdbcType=BIGINT}
+  	</update>
+  	
+  	<update id="updateStatus">
+	    update t_seller_sku_map set update_time = now(),status = #{status,jdbcType=INTEGER}
+	    where id = #{id,jdbcType=BIGINT}
+  	</update>
+   
+   <select id="getUniqueNum" resultType="int">
+        select
+        	count(*)
+        from t_seller_sku_map
+        where 
+       	platform = #{platform}
+       	and authorization_id = #{authorizationId}
+       	and platform_sku = #{platformSku}
+    </select>
+    
+    <select id="getByUniqueKey" resultMap="BaseResultMap">
+        select
+        	<include refid="Base_Column_List"/>
+        from t_seller_sku_map
+        where 
+       	platform = #{platform}
+       	and authorization_id = #{authorizationId}
+       	and platform_sku = #{platformSku}
+       	and `status`=1
+    </select>
+
+</mapper>

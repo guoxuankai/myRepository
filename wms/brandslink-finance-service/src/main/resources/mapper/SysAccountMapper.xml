@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.SysAccountMapper">
+    
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.SysAccount">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+        <result column="income_money" jdbcType="DECIMAL" property="incomeMoney" />
+        <result column="expend_money" jdbcType="DECIMAL" property="expendMoney" />
+        <result column="usable_money" jdbcType="DECIMAL" property="usableMoney" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id,nick_name,income_money,expend_money,usable_money,create_by,create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from tf_sys_account where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tf_sys_account where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.finance.pojo.entity.SysAccount">
+        insert into tf_sys_account (nick_name,income_money,expend_money, usable_money, create_by, create_time)
+        values ( #{nickName,jdbcType=VARCHAR},#{incomeMoney,jdbcType=DECIMAL},#{expendMoney,jdbcType=DECIMAL},
+        #{usableMoney,jdbcType=DECIMAL},#{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.finance.pojo.entity.SysAccount">
+        insert into tf_sys_account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nickName != null">
+                nick_name,
+            </if>
+            <if test="incomeMoney != null">
+                income_money,
+            </if>
+            <if test="expendMoney != null">
+                expend_money,
+            </if>
+            <if test="usableMoney != null">
+                usable_money,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="incomeMoney != null">
+                #{incomeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="expendMoney != null">
+                #{expendMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="usableMoney != null">
+                #{usableMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.finance.pojo.entity.SysAccount">
+        update tf_sys_account
+        <set>
+            <if test="nickName != null">
+                nick_name = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="incomeMoney != null">
+                income_money = #{incomeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="expendMoney != null">
+                expend_money = #{expendMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="usableMoney != null">
+                usable_money = #{usableMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.finance.pojo.entity.SysAccount">
+        update tf_sys_account set nick_name = #{nickName,jdbcType=VARCHAR},
+        income_money = #{incomeMoney,jdbcType=DECIMAL},
+        expend_money = #{expendMoney,jdbcType=DECIMAL},
+        usable_money = #{usableMoney,jdbcType=DECIMAL},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.brandslink.cloud.finance.pojo.entity.SysAccount" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_sys_account
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="nickName != null and nickName != ''">
+                 and nick_name = #{nickName,jdbcType=VARCHAR}
+            </if>
+            <if test="incomeMoney != null">
+                income_money = #{incomeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="expendMoney != null">
+                expend_money = #{expendMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="usableMoney != null and usableMoney != ''">
+                 and usable_money = #{usableMoney,jdbcType=DECIMAL}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+
+    <update id="updateByRecharge">
+        update tf_sys_account set income_money=income_money+#{money},usable_money=usable_money+#{money} where id=#{sysId}
+    </update>
+
+</mapper>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.StandardQuoteDetailMapper">
+    
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.StandardQuoteDetail">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="row_id" jdbcType="INTEGER" property="rowId" />
+        <result column="cells_id" jdbcType="INTEGER" property="cellsId" />
+        <result column="quote_id" jdbcType="INTEGER" property="quoteId" />
+        <result column="quote_type" jdbcType="TINYINT" property="quoteType" />
+        <result column="quote_value" jdbcType="DECIMAL" property="quoteValue" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, row_id, cells_id, quote_id, quote_type, quote_value, create_by, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_sys_quote_cells
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tf_sys_quote_cells
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuoteDetail">
+        insert into tf_sys_quote_cells (id, row_id, cells_id, 
+            quote_id, quote_type, quote_value, 
+            create_by, create_time)
+        values (#{id,jdbcType=INTEGER}, #{rowId,jdbcType=INTEGER}, #{cellsId,jdbcType=INTEGER}, 
+            #{quoteId,jdbcType=INTEGER}, #{quoteType,jdbcType=TINYINT}, #{quoteValue,jdbcType=DECIMAL}, 
+            #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuoteDetail">
+        insert into tf_sys_quote_cells
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="rowId != null">
+                row_id,
+            </if>
+            <if test="cellsId != null">
+                cells_id,
+            </if>
+            <if test="quoteId != null">
+                quote_id,
+            </if>
+            <if test="quoteType != null">
+                quote_type,
+            </if>
+            <if test="quoteValue != null">
+                quote_value,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="rowId != null">
+                #{rowId,jdbcType=INTEGER},
+            </if>
+            <if test="cellsId != null">
+                #{cellsId,jdbcType=INTEGER},
+            </if>
+            <if test="quoteId != null">
+                #{quoteId,jdbcType=INTEGER},
+            </if>
+            <if test="quoteType != null">
+                #{quoteType,jdbcType=TINYINT},
+            </if>
+            <if test="quoteValue != null">
+                #{quoteValue,jdbcType=DECIMAL},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuoteDetail">
+        update tf_sys_quote_cells
+        <set>
+            <if test="rowId != null">
+                row_id = #{rowId,jdbcType=INTEGER},
+            </if>
+            <if test="cellsId != null">
+                cells_id = #{cellsId,jdbcType=INTEGER},
+            </if>
+            <if test="quoteId != null">
+                quote_id = #{quoteId,jdbcType=INTEGER},
+            </if>
+            <if test="quoteType != null">
+                quote_type = #{quoteType,jdbcType=TINYINT},
+            </if>
+            <if test="quoteValue != null">
+                quote_value = #{quoteValue,jdbcType=DECIMAL},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuoteDetail">
+        update tf_sys_quote_cells
+        set row_id = #{rowId,jdbcType=INTEGER},
+            cells_id = #{cellsId,jdbcType=INTEGER},
+            quote_id = #{quoteId,jdbcType=INTEGER},
+            quote_type = #{quoteType,jdbcType=TINYINT},
+            quote_value = #{quoteValue,jdbcType=DECIMAL},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuoteDetail" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_sys_quote_cells
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="rowId != null and rowId != ''">
+                 and row_id = #{rowId,jdbcType=INTEGER}
+            </if>
+            <if test="cellsId != null and cellsId != ''">
+                 and cells_id = #{cellsId,jdbcType=INTEGER}
+            </if>
+            <if test="quoteId != null and quoteId != ''">
+                 and quote_id = #{quoteId,jdbcType=INTEGER}
+            </if>
+            <if test="quoteType != null and quoteType != ''">
+                 and quote_type = #{quoteType,jdbcType=TINYINT}
+            </if>
+            <if test="quoteValue != null and quoteValue != ''">
+                 and quote_value = #{quoteValue,jdbcType=DECIMAL}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getByQuoteId" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuoteDetail" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tf_sys_quote_cells
+        <trim prefix="where" prefixOverrides="and">
+            <if test="quoteId != null and quoteId != ''">
+                and quote_id = #{quoteId,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.SalesreturnMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.Salesreturn">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="salesreturn_site" jdbcType="VARCHAR" property="salesreturnSite" />
+        <result column="postcode" jdbcType="VARCHAR" property="postcode" />
+        <result column="linkman_name" jdbcType="VARCHAR" property="linkmanName" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="platform_type" jdbcType="INTEGER" property="platformType" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, user_id, salesreturn_site, postcode, linkman_name, mobile, phone, platform_type
+    </sql>
+    
+    <!-- 查询退货信息是否存在-->
+    <select id="isSalesreturn" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*) from
+        <if test="platformTypes == 0">sys_supplier_salesreturn</if>
+        <if test="platformTypes == 1">sys_seller_salesreturn</if>
+         where user_id = #{userId}
+    </select>
+
+    <!-- 新增用户退货信息 -->
+    <insert id="insertSalesreturn" parameterType="com.rondaful.cloud.user.entity.Salesreturn">
+        insert into
+        <if test="platformType == 0">sys_supplier_salesreturn</if>
+        <if test="platformType == 1">sys_seller_salesreturn</if>
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="userId != null">
+            user_id,
+        </if>
+        <if test="salesreturnSite != null">
+            salesreturn_site,
+        </if>
+        <if test="postcode != null">
+            postcode,
+        </if>
+        <if test="linkmanName != null">
+            linkman_name,
+        </if>
+        <if test="mobile != null">
+            mobile,
+        </if>
+        <if test="phone != null">
+            phone,
+        </if>
+        <if test="platformType != null">
+            platform_type
+        </if>
+       </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="userId != null">
+            #{userId,jdbcType=INTEGER},
+        </if>
+        <if test="salesreturnSite != null">
+            #{salesreturnSite,jdbcType=VARCHAR},
+        </if>
+        <if test="postcode != null">
+            #{postcode,jdbcType=VARCHAR},
+        </if>
+        <if test="linkmanName != null">
+            #{linkmanName,jdbcType=VARCHAR},
+        </if>
+        <if test="mobile != null">
+            #{mobile,jdbcType=VARCHAR},
+        </if>
+        <if test="phone != null">
+            #{phone,jdbcType=VARCHAR},
+        </if>
+        <if test="platformType != null">
+            #{platformType,jdbcType=INTEGER}
+        </if>
+        </trim>
+    </insert>
+
+    <!-- 修改用户信息 -->
+    <update id="updateSalesreturn" parameterType="com.rondaful.cloud.user.entity.Salesreturn">
+        update
+        <if test="platformType == 0">sys_supplier_salesreturn</if>
+        <if test="platformType == 1">sys_seller_salesreturn</if>
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="salesreturnSite != null">
+                salesreturn_site = #{salesreturnSite,jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                postcode = #{postcode,jdbcType=VARCHAR},
+            </if>
+            <if test="linkmanName != null">
+                linkman_name = #{linkmanName,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="platformType != null">
+                platform_type = #{platformType,jdbcType=INTEGER}
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+
+
+    <!-- 供应商个人中心===>获取退货信息 -->
+    <select id="getSupplierSalesReturn" resultMap="BaseResultMap" >
+        select <include refid="Base_Column_List"/>
+        from sys_supplier_salesreturn
+        <where>
+            <if test="userId != null">user_id = #{userId}</if>
+        </where>
+    </select>
+
+
+</mapper>

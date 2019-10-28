@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.logistics.mapper.MethodCollectorRelationMapper">
+
+    <insert id="insertBatch">
+        insert into t_method_collector_relation (method_id, collector_id,
+        provider_id, warehouse, warehouse_name,collector_code, collector_name, update_by)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.methodId,jdbcType=BIGINT},#{item.collectorId,jdbcType=BIGINT},
+            #{item.providerId,jdbcType=BIGINT},#{item.warehouse,jdbcType=VARCHAR},#{item.warehouseName,jdbcType=VARCHAR},
+            #{item.collectorCode,jdbcType=VARCHAR},#{item.collectorName,jdbcType=VARCHAR},#{item.updateBy,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByMethodID">
+        delete from t_method_collector_relation
+        where method_id = #{methodId,jdbcType=VARCHAR}
+    </delete>
+
+    <resultMap id="selectMethodByMethodCollectorRelationResultMap" type="com.brandslink.cloud.logistics.model.MethodCollectorRelationModel">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="method_id" jdbcType="BIGINT" property="methodId" />
+        <result column="collector_id" jdbcType="BIGINT" property="collectorId" />
+        <result column="provider_id" jdbcType="BIGINT" property="providerId" />
+        <result column="warehouse" jdbcType="VARCHAR" property="warehouse" />
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
+        <result column="collector_name" jdbcType="VARCHAR" property="collectorName" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="collector_code" jdbcType="VARCHAR" property="collectorCode" />
+        <result column="warehouse_collect_type" jdbcType="OTHER" property="warehouseCollectType" typeHandler="com.brandslink.cloud.logistics.jsonHandler.ArrayJsonHandler" />
+        <result column="mid" jdbcType="BIGINT"  property="methodId"/>
+        <result column="logistics_method_name" property="methodName"/>
+        <result column="logistics_method_code" property="methodCode"/>
+    </resultMap>
+    <select id="selectMethodByMethodCollectorRelation" resultMap="selectMethodByMethodCollectorRelationResultMap">
+        select
+        r.*,
+        r.collector_code,
+        c.warehouse_collect_type,
+        m.id AS mid,
+        m.logistics_method_name,
+        m.logistics_method_code
+        from t_method_collector_relation r
+        left join t_logistics_collector c on r.collector_id = c.id
+        left join t_logistics_method m on r.method_id = m.id
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="methodId != null and methodId != ''">
+                and method_id = #{methodId,jdbcType=BIGINT}
+            </if>
+            <if test="collectorId != null and collectorId != ''">
+                and collector_id = #{collectorId,jdbcType=BIGINT}
+            </if>
+            <if test="providerId != null and providerId != ''">
+                and provider_id = #{providerId,jdbcType=BIGINT}
+            </if>
+            <if test="warehouse != null and warehouse != ''">
+                and warehouse = #{warehouse,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseName != null and warehouseName != ''">
+                and warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="collectorCode != null and collectorCode != ''">
+                and r.collector_code = #{collectorCode,jdbcType=VARCHAR}
+            </if>
+            <if test="collectorName != null and collectorName != ''">
+                and collector_name = #{collectorName,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <update id="updateCollectorInfoBycollectorID" parameterType="com.brandslink.cloud.logistics.model.MethodCollectorRelationModel">
+        update t_method_collector_relation
+        set
+        collector_code = #{collectorCode,jdbcType=VARCHAR},
+        collector_name = #{collectorName,jdbcType=VARCHAR}
+        where collector_id = #{collectorId,jdbcType=BIGINT}
+    </update>
+
+    <!--##################################################################################################-->
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.logistics.model.MethodCollectorRelationModel">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="method_id" jdbcType="BIGINT" property="methodId" />
+        <result column="collector_id" jdbcType="BIGINT" property="collectorId" />
+        <result column="provider_id" jdbcType="BIGINT" property="providerId" />
+        <result column="warehouse" jdbcType="VARCHAR" property="warehouse" />
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
+        <result column="collector_code" jdbcType="VARCHAR" property="collectorCode" />
+        <result column="collector_name" jdbcType="VARCHAR" property="collectorName" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, method_id, collector_id, provider_id, warehouse, warehouse_name, collector_code, 
+        collector_name, update_date, update_by
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_method_collector_relation
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_method_collector_relation
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.logistics.model.MethodCollectorRelationModel">
+        insert into t_method_collector_relation (id, method_id, collector_id, 
+            provider_id, warehouse, warehouse_name, 
+            collector_code, collector_name, update_date, 
+            update_by)
+        values (#{id,jdbcType=BIGINT}, #{methodId,jdbcType=BIGINT}, #{collectorId,jdbcType=BIGINT}, 
+            #{providerId,jdbcType=BIGINT}, #{warehouse,jdbcType=VARCHAR}, #{warehouseName,jdbcType=VARCHAR}, 
+            #{collectorCode,jdbcType=VARCHAR}, #{collectorName,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+            #{updateBy,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.logistics.model.MethodCollectorRelationModel">
+        insert into t_method_collector_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="methodId != null">
+                method_id,
+            </if>
+            <if test="collectorId != null">
+                collector_id,
+            </if>
+            <if test="providerId != null">
+                provider_id,
+            </if>
+            <if test="warehouse != null">
+                warehouse,
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name,
+            </if>
+            <if test="collectorCode != null">
+                collector_code,
+            </if>
+            <if test="collectorName != null">
+                collector_name,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="methodId != null">
+                #{methodId,jdbcType=BIGINT},
+            </if>
+            <if test="collectorId != null">
+                #{collectorId,jdbcType=BIGINT},
+            </if>
+            <if test="providerId != null">
+                #{providerId,jdbcType=BIGINT},
+            </if>
+            <if test="warehouse != null">
+                #{warehouse,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="collectorCode != null">
+                #{collectorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="collectorName != null">
+                #{collectorName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.logistics.model.MethodCollectorRelationModel">
+        update t_method_collector_relation
+        <set>
+            <if test="methodId != null">
+                method_id = #{methodId,jdbcType=BIGINT},
+            </if>
+            <if test="collectorId != null">
+                collector_id = #{collectorId,jdbcType=BIGINT},
+            </if>
+            <if test="providerId != null">
+                provider_id = #{providerId,jdbcType=BIGINT},
+            </if>
+            <if test="warehouse != null">
+                warehouse = #{warehouse,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="collectorCode != null">
+                collector_code = #{collectorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="collectorName != null">
+                collector_name = #{collectorName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.logistics.model.MethodCollectorRelationModel">
+        update t_method_collector_relation
+        set method_id = #{methodId,jdbcType=BIGINT},
+            collector_id = #{collectorId,jdbcType=BIGINT},
+            provider_id = #{providerId,jdbcType=BIGINT},
+            warehouse = #{warehouse,jdbcType=VARCHAR},
+            warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            collector_code = #{collectorCode,jdbcType=VARCHAR},
+            collector_name = #{collectorName,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.brandslink.cloud.logistics.model.MethodCollectorRelationModel" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_method_collector_relation
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="methodId != null and methodId != ''">
+                 and method_id = #{methodId,jdbcType=BIGINT}
+            </if>
+            <if test="collectorId != null and collectorId != ''">
+                 and collector_id = #{collectorId,jdbcType=BIGINT}
+            </if>
+            <if test="providerId != null and providerId != ''">
+                 and provider_id = #{providerId,jdbcType=BIGINT}
+            </if>
+            <if test="warehouse != null and warehouse != ''">
+                 and warehouse = #{warehouse,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseName != null and warehouseName != ''">
+                 and warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="collectorCode != null and collectorCode != ''">
+                 and collector_code = #{collectorCode,jdbcType=VARCHAR}
+            </if>
+            <if test="collectorName != null and collectorName != ''">
+                 and collector_name = #{collectorName,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

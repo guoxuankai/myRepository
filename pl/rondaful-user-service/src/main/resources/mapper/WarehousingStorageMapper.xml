@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.storage.mapper.WarehousingStorageMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.storage.entity.StorageApply">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+        <result column="site" jdbcType="VARCHAR" property="site" />
+        <result column="linkman" jdbcType="VARCHAR" property="linkman" />
+        <result column="job" jdbcType="VARCHAR" property="job" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="reserved" jdbcType="VARCHAR" property="reserved" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, company_name, site, linkman, job, phone, email, remark, reserved
+    </sql>
+
+    <!-- 仓储物流商申请 -->
+    <insert id="warehousingUserApply" parameterType="com.rondaful.cloud.user.storage.entity.StorageApply">
+        insert into storage_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyName != null">
+                company_name,
+            </if>
+            <if test="site != null">
+                site,
+            </if>
+            <if test="linkman != null">
+                linkman,
+            </if>
+            <if test="job != null">
+                job,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="reserved != null">
+                reserved,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyName != null">
+                #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="site != null">
+                #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="linkman != null">
+                #{linkman,jdbcType=VARCHAR},
+            </if>
+            <if test="job != null">
+                #{job,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="reserved != null">
+                #{reserved,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+
+</mapper>

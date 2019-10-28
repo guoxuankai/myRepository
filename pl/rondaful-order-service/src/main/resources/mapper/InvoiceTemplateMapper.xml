@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.InvoiceTemplateMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.InvoiceTemplate">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="seller_id" jdbcType="INTEGER" property="sellerId" />
+        <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="contact_info" jdbcType="VARCHAR" property="contactInfo" />
+        <result column="tel_phone" jdbcType="VARCHAR" property="telPhone" />
+        <result column="web_site" jdbcType="VARCHAR" property="webSite" />
+        <result column="fax" jdbcType="VARCHAR" property="fax" />
+        <result column="country_code" jdbcType="CHAR" property="countryCode" />
+        <result column="country_cn_name" jdbcType="VARCHAR" property="countryCnName" />
+        <result column="export_language" jdbcType="CHAR" property="exportLanguage" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="detail_address" jdbcType="VARCHAR" property="detailAddress" />
+        <result column="postcode" jdbcType="VARCHAR" property="postcode" />
+        <result column="vat_tax_number" jdbcType="VARCHAR" property="vatTaxNumber" />
+        <result column="vat_tax_rate" jdbcType="DECIMAL" property="vatTaxRate" />
+        <result column="vat_tax_type" jdbcType="CHAR" property="vatTaxType" />
+        <result column="creator" jdbcType="VARCHAR" property="creator" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    </resultMap>
+
+    <resultMap id="ListResultMap" type="com.rondaful.cloud.order.model.vo.invoiceTemplate.InvoiceTemplateListVO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="contact_info" jdbcType="VARCHAR" property="contactInfo" />
+        <result column="tel_phone" jdbcType="VARCHAR" property="telPhone" />
+        <result column="country_code" jdbcType="CHAR" property="countryCode" />
+        <result column="country_cn_name" jdbcType="VARCHAR" property="countryCnName" />
+        <result column="export_language" jdbcType="CHAR" property="exportLanguage" />
+        <result column="vat_tax_number" jdbcType="VARCHAR" property="vatTaxNumber" />
+        <result column="vat_tax_rate" jdbcType="DECIMAL" property="vatTaxRate" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+    <resultMap id="DropDownListResultMap" type="com.rondaful.cloud.order.model.vo.invoiceTemplate.InvoiceTemplateDropDownListVO">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, seller_id, title, contact_info, tel_phone, web_site, fax, country_code, province, 
+        city, detail_address, postcode, vat_tax_number, vat_tax_rate, vat_tax_type, creator, 
+        create_time, modifier, modified_time, template_name, export_language,country_cn_name
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_invoice_template
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_invoice_template
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.InvoiceTemplate">
+        insert into t_invoice_template (id, seller_id, template_name,title,
+            contact_info, tel_phone, web_site, 
+            fax, country_code, country_cn_name, export_language, province,
+            city, detail_address, postcode, 
+            vat_tax_number, vat_tax_rate, vat_tax_type, 
+            creator, create_time, modifier, 
+            modified_time)
+        values (#{id,jdbcType=INTEGER}, #{sellerId,jdbcType=INTEGER}, #{templateName,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR},
+            #{contactInfo,jdbcType=VARCHAR}, #{telPhone,jdbcType=VARCHAR}, #{webSite,jdbcType=VARCHAR}, 
+            #{fax,jdbcType=VARCHAR}, #{countryCode,jdbcType=CHAR},#{countryCnName,jdbcType=VARCHAR}, #{exportLanguage,jdbcType=CHAR}, #{province,jdbcType=VARCHAR},
+            #{city,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR}, #{postcode,jdbcType=VARCHAR}, 
+            #{vatTaxNumber,jdbcType=VARCHAR}, #{vatTaxRate,jdbcType=DECIMAL}, #{vatTaxType,jdbcType=CHAR}, 
+            #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, 
+            #{modifiedTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.InvoiceTemplate">
+        insert into t_invoice_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sellerId != null">
+                seller_id,
+            </if>
+            <if test="templateName != null">
+                template_name,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="contactInfo != null">
+                contact_info,
+            </if>
+            <if test="telPhone != null">
+                tel_phone,
+            </if>
+            <if test="webSite != null">
+                web_site,
+            </if>
+            <if test="fax != null">
+                fax,
+            </if>
+            <if test="countryCode != null">
+                country_code,
+            </if>
+            <if test="countryCnName != null">
+                country_cn_name,
+            </if>
+            <if test="exportLanguage != null">
+                export_language,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="detailAddress != null">
+                detail_address,
+            </if>
+            <if test="postcode != null">
+                postcode,
+            </if>
+            <if test="vatTaxNumber != null">
+                vat_tax_number,
+            </if>
+            <if test="vatTaxRate != null">
+                vat_tax_rate,
+            </if>
+            <if test="vatTaxType != null">
+                vat_tax_type,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="modifiedTime != null">
+                modified_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="sellerId != null">
+                #{sellerId,jdbcType=INTEGER},
+            </if>
+            <if test="templateName != null">
+                #{templateName,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="contactInfo != null">
+                #{contactInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="telPhone != null">
+                #{telPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="webSite != null">
+                #{webSite,jdbcType=VARCHAR},
+            </if>
+            <if test="fax != null">
+                #{fax,jdbcType=VARCHAR},
+            </if>
+            <if test="countryCode != null">
+                #{countryCode,jdbcType=CHAR},
+            </if>
+            <if test="countryCnName != null">
+                #{countryCnName,jdbcType=VARCHAR},
+            </if>
+            <if test="exportLanguage != null">
+                #{exportLanguage,jdbcType=CHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="detailAddress != null">
+                #{detailAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                #{postcode,jdbcType=VARCHAR},
+            </if>
+            <if test="vatTaxNumber != null">
+                #{vatTaxNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="vatTaxRate != null">
+                #{vatTaxRate,jdbcType=DECIMAL},
+            </if>
+            <if test="vatTaxType != null">
+                #{vatTaxType,jdbcType=CHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.InvoiceTemplate">
+        update t_invoice_template
+        <set>
+            <if test="sellerId != null">
+                seller_id = #{sellerId,jdbcType=INTEGER},
+            </if>
+            <if test="templateName != null">
+                template_name = #{templateName,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="contactInfo != null">
+                contact_info = #{contactInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="telPhone != null">
+                tel_phone = #{telPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="webSite != null">
+                web_site = #{webSite,jdbcType=VARCHAR},
+            </if>
+            <if test="fax != null">
+                fax = #{fax,jdbcType=VARCHAR},
+            </if>
+            <if test="countryCode != null">
+                country_code = #{countryCode,jdbcType=CHAR},
+            </if>
+            <if test="countryCnName != null">
+                country_cn_name = #{countryCnName,jdbcType=VARCHAR},
+            </if>
+            <if test="exportLanguage != null">
+                export_language = #{exportLanguage,jdbcType=CHAR},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="detailAddress != null">
+                detail_address = #{detailAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                postcode = #{postcode,jdbcType=VARCHAR},
+            </if>
+            <if test="vatTaxNumber != null">
+                vat_tax_number = #{vatTaxNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="vatTaxRate != null">
+                vat_tax_rate = #{vatTaxRate,jdbcType=DECIMAL},
+            </if>
+            <if test="vatTaxType != null">
+                vat_tax_type = #{vatTaxType,jdbcType=CHAR},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.InvoiceTemplate">
+        update t_invoice_template
+        set seller_id = #{sellerId,jdbcType=INTEGER},
+            template_name = #{templateName,jdbcType=VARCHAR},
+            title = #{title,jdbcType=VARCHAR},
+            contact_info = #{contactInfo,jdbcType=VARCHAR},
+            tel_phone = #{telPhone,jdbcType=VARCHAR},
+            web_site = #{webSite,jdbcType=VARCHAR},
+            fax = #{fax,jdbcType=VARCHAR},
+            country_code = #{countryCode,jdbcType=CHAR},
+            country_cn_name = #{countryCnName,jdbcType=VARCHAR},
+            export_language = #{exportLanguage,jdbcType=CHAR},
+            province = #{province,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            detail_address = #{detailAddress,jdbcType=VARCHAR},
+            postcode = #{postcode,jdbcType=VARCHAR},
+            vat_tax_number = #{vatTaxNumber,jdbcType=VARCHAR},
+            vat_tax_rate = #{vatTaxRate,jdbcType=DECIMAL},
+            vat_tax_type = #{vatTaxType,jdbcType=CHAR},
+            creator = #{creator,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            modifier = #{modifier,jdbcType=VARCHAR},
+            modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" resultMap="ListResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_invoice_template
+        <trim prefix="where" prefixOverrides="and">
+            <if test="userIdList != null">
+                 and seller_id IN
+                <foreach collection="userIdList" item="userId"  open="(" close=")" separator=",">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="searchDTO.templateName != null and searchDTO.templateName != ''">
+                 and template_name like CONCAT('%',#{searchDTO.templateName},'%')
+            </if>
+            <if test="searchDTO.title != null and searchDTO.title != ''">
+                 and title = #{searchDTO.title,jdbcType=VARCHAR}
+            </if>
+            <if test="searchDTO.contactInfo != null and searchDTO.contactInfo != ''">
+                 and contact_info = #{searchDTO.contactInfo,jdbcType=VARCHAR}
+            </if>
+            <if test="searchDTO.telPhone != null and searchDTO.telPhone != ''">
+                 and tel_phone = #{searchDTO.telPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="searchDTO.webSite != null and searchDTO.webSite != ''">
+                 and web_site = #{searchDTO.webSite,jdbcType=VARCHAR}
+            </if>
+            <if test="searchDTO.countryCode != null and searchDTO.countryCode != ''">
+                 and country_code = #{searchDTO.countryCode,jdbcType=CHAR}
+            </if>
+            <if test="searchDTO.startCreateTime != null and searchDTO.startCreateTime != ''">
+                and create_time >= #{searchDTO.startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="searchDTO.endCreateTime != null and searchDTO.endCreateTime != ''">
+                <![CDATA[ and create_time <= #{searchDTO.endCreateTime,jdbcType=TIMESTAMP} ]]>
+            </if>
+        </trim>
+
+        ORDER BY create_time desc
+    </select>
+
+    <select id="selectDropDownList" parameterType="java.lang.Integer" resultMap="DropDownListResultMap">
+        SELECT
+        id, template_name
+        FROM t_invoice_template
+        WHERE seller_id IN
+        <foreach collection="userIdList" item="userId"  open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+
+    </select>
+</mapper>

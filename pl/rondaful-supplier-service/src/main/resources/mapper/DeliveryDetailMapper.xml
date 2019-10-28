@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.DeliveryDetailMapper">
+    <resultMap id="BaseResultMapDetail" type="com.rondaful.cloud.supplier.entity.DeliveryDetail">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="delivery_id" jdbcType="VARCHAR" property="deliveryId" />
+        <result column="pinlian_sku" jdbcType="VARCHAR" property="sku" />
+        <result column="supplier" jdbcType="VARCHAR" property="supplierName" />
+        <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+        <result column="item_name_en" jdbcType="VARCHAR" property="itemNameEn" />
+        <result column="item_attr" jdbcType="VARCHAR" property="itemAttr" />
+        <result column="item_price" jdbcType="VARCHAR" property="itemPrice" />
+        <result column="item_url" jdbcType="VARCHAR" property="itemUrl" />
+        <result column="sku_num" jdbcType="INTEGER" property="skuQuantity" />
+        <result column="fare_type_amount" jdbcType="INTEGER" property="fareTypeAmount" />
+        <!-- <association property="deliveryRecord" resultMap="com.rondaful.cloud.supplier.mapper.DeliveryRecordMapper.BaseResultMap"></association> --> 
+    </resultMap>
+    
+    <insert id="insertBatchDeliveryDetail" parameterType="java.util.List">
+        insert into t_delivery_detail (delivery_id, pinlian_sku, supplier,supplier_id,
+            item_name,item_name_en, item_attr, item_price, 
+           item_url, sku_num,fare_type_amount) values 
+             <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.deliveryId,jdbcType=VARCHAR}, #{item.sku,jdbcType=VARCHAR},  #{item.supplierName,jdbcType=VARCHAR},#{item.supplierId,jdbcType=VARCHAR},
+            #{item.itemName,jdbcType=VARCHAR},#{item.itemNameEn,jdbcType=VARCHAR}, #{item.itemAttr,jdbcType=VARCHAR}, #{item.itemPrice,jdbcType=VARCHAR}, 
+            #{item.itemUrl,jdbcType=VARCHAR}, #{item.skuQuantity,jdbcType=INTEGER},#{item.fareTypeAmount,jdbcType=VARCHAR})
+            </foreach>
+    </insert>
+    
+    
+   <!-- 取得出库详情 -->
+    <select id="getDeliveryDetail" parameterType="java.util.Map" resultMap="BaseResultMapDetail">
+       SELECT
+			delivery_id,
+			pinlian_sku,
+			item_attr,
+			item_name,
+			item_name_en,
+			item_price,
+			item_url,
+			sku_num,
+			supplier,
+			fare_type_amount
+		FROM
+		t_delivery_detail 
+		WHERE 1=1
+			<if test="supplierId != null">
+            and supplier_id =  #{supplierId,jdbcType=INTEGER} 
+         	</if>
+			<if test="deliveryId != null">
+                 and delivery_id = #{deliveryId,jdbcType=VARCHAR}
+            </if>
+            
+    </select>
+    
+     <!-- 根据供应商取得出库Ids -->
+    <select id="getDeliveryIdsBySupplier" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+			DISTINCT(delivery_id)
+		FROM
+		t_delivery_detail 
+		WHERE 1=1
+		<if test="supplierId != null">
+            and supplier_id =  #{supplierId,jdbcType=INTEGER} 
+         </if>
+    </select>
+     <!-- 查询出库记录总数 -->
+    <select id="selectDeliveryDetailCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+     SELECT count(0) FROM (SELECT DISTINCT (delivery_id) FROM t_delivery_detail WHERE 1 = 1
+      <if test="supplierId != null">
+            and supplier_id =  #{supplierId,jdbcType=INTEGER} 
+         </if>) table_count 
+		
+    </select>
+		
+   <!-- 查询出库商品的总数根据供应商 -->
+    <select id="getSkuCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT sum(sku_num) FROM t_delivery_detail WHERE 1 = 1
+      <if test="supplierId != null">
+            and supplier_id =  #{supplierId,jdbcType=INTEGER} 
+         </if>
+    </select>
+    
+      <!-- 查询出库商品的总金额根据供应商 -->
+    <select id="getSkuPriceTotal" parameterType="java.lang.Integer" resultType="java.lang.String">
+	   select sum(sku_num*item_price) from t_delivery_detail  WHERE 1 = 1
+			<if test="supplierId != null">
+			            and supplier_id =  #{supplierId,jdbcType=INTEGER} 
+			  </if>
+       </select>
+</mapper>

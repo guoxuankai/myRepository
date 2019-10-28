@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.RoleMenuMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.entity.RoleMenuKey">
+    <id column="role_id" jdbcType="INTEGER" property="roleId" />
+    <id column="menu_id" jdbcType="INTEGER" property="menuId" />
+  </resultMap>
+  
+  <!-- 建立角色权限的关系 -->
+  <insert id="insertOrleMenu" parameterType="java.util.Map">
+      insert into sys_role_menu (role_id,menu_id,platform_type) values
+  <foreach collection="ids" item="ids" index= "index"  separator="," >(#{rid},#{ids},#{platformType})</foreach>
+  </insert>
+  
+  <!-- 删除对应的用户的角色 -->
+  <delete id="deleteRoleMenu" parameterType="java.lang.Integer" >
+  	delete from sys_role_menu
+  	<where>
+		<if test="rid != null">role_id = #{rid,jdbcType=INTEGER}</if>
+		<if test="platformType != null">and platform_type = #{platformType}</if>
+	</where>
+  </delete>
+ 
+  <!-- 根据对应的角色id 获取用户对应的权限 -->
+	<select id="getMenuNameByRoleId" resultType="java.util.HashMap">
+		select m.id id, m.name name
+			from sys_role_menu rm join sys_menu m on rm.menu_id = m.id
+				where rm.role_id = #{roleId}
+	</select>
+	
+	<!-- 根据角色id获取对应的权限id -->
+	<select id="getMenuIdsByRoleIds" resultType="java.lang.Integer">
+		select menu_id from sys_role_menu 
+			where role_id = #{roleIds, jdbcType=INTEGER}
+	</select>
+ 
+  
+</mapper>

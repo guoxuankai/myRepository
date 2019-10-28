@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.CustomerFlowMapper">
+    
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.CustomerFlow">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+        <result column="customer_code" jdbcType="VARCHAR" property="customerCode" />
+        <result column="cost_type" jdbcType="TINYINT" property="costType" />
+        <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
+        <result column="warehouse_code" jdbcType="VARCHAR" property="warehouseCode" />
+        <result column="source_no" jdbcType="VARCHAR" property="sourceNo" />
+        <result column="waybill_no" jdbcType="VARCHAR" property="waybillNo" />
+        <result column="number" jdbcType="INTEGER" property="number" />
+        <result column="before_money" jdbcType="DECIMAL" property="beforeMoney" />
+        <result column="original_cost" jdbcType="DECIMAL" property="originalCost" />
+        <result column="discount" jdbcType="DOUBLE" property="discount" />
+        <result column="discount_cost" jdbcType="DECIMAL" property="discountCost" />
+        <result column="after_money" jdbcType="DECIMAL" property="afterMoney" />
+        <result column="usable_money" jdbcType="DECIMAL" property="usableMoney" />
+        <result column="freeze_money" jdbcType="DECIMAL" property="freezeMoney" />
+        <result column="is_show" jdbcType="TINYINT" property="isShow" />
+        <result column="order_type" jdbcType="TINYINT" property="orderType" />
+        <result column="feature_json" jdbcType="VARCHAR" property="featureJson" />
+        <result column="bill_time" jdbcType="TIMESTAMP" property="billTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, order_no, customer_code, cost_type, warehouse_name, warehouse_code, bill_time,
+        source_no, waybill_no, number, before_money, original_cost, discount, discount_cost,
+        after_money, usable_money, freeze_money, is_show, order_type, feature_json, create_by, 
+        create_time
+    </sql>
+
+    <select id="selectBySourceNo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from tf_customer_flow where source_no = #{sourceNo,jdbcType=VARCHAR} and cost_type=6
+    </select>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from tf_customer_flow  where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tf_customer_flow
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.finance.pojo.entity.CustomerFlow">
+        insert into tf_customer_flow (id, order_no, customer_code, 
+            cost_type, warehouse_name, warehouse_code, 
+            bill_time, source_no, waybill_no,
+            number, before_money,
+            original_cost, discount, discount_cost, 
+            after_money, usable_money, freeze_money, 
+            is_show, order_type, feature_json, 
+            create_by, create_time)
+        values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=INTEGER}, #{customerCode,jdbcType=VARCHAR}, 
+            #{costType,jdbcType=TINYINT}, #{warehouseName,jdbcType=VARCHAR}, #{warehouseCode,jdbcType=VARCHAR}, 
+            #{billTime,jdbcType=TIMESTAMP}, #{sourceNo,jdbcType=VARCHAR}, #{waybillNo,jdbcType=INTEGER},
+            #{number,jdbcType=INTEGER}, #{beforeMoney,jdbcType=DECIMAL},
+            #{originalCost,jdbcType=DECIMAL}, #{discount,jdbcType=DOUBLE}, #{discountCost,jdbcType=DECIMAL}, 
+            #{afterMoney,jdbcType=DECIMAL}, #{usableMoney,jdbcType=DECIMAL}, #{freezeMoney,jdbcType=DECIMAL}, 
+            #{isShow,jdbcType=TINYINT}, #{orderType,jdbcType=TINYINT}, #{featureJson,jdbcType=VARCHAR}, 
+            #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.finance.pojo.entity.CustomerFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into tf_customer_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orderNo != null">
+                order_no,
+            </if>
+            <if test="customerCode != null">
+                customer_code,
+            </if>
+            <if test="costType != null">
+                cost_type,
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name,
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code,
+            </if>
+            <if test="billTime != null">
+                bill_time,
+            </if>
+            <if test="sourceNo != null">
+                source_no,
+            </if>
+            <if test="waybillNo != null">
+                waybill_no,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="beforeMoney != null">
+                before_money,
+            </if>
+            <if test="originalCost != null">
+                original_cost,
+            </if>
+            <if test="discount != null">
+                discount,
+            </if>
+            <if test="discountCost != null">
+                discount_cost,
+            </if>
+            <if test="afterMoney != null">
+                after_money,
+            </if>
+            <if test="usableMoney != null">
+                usable_money,
+            </if>
+            <if test="freezeMoney != null">
+                freeze_money,
+            </if>
+            <if test="isShow != null">
+                is_show,
+            </if>
+            <if test="orderType != null">
+                order_type,
+            </if>
+            <if test="featureJson != null">
+                feature_json,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="orderNo != null">
+                #{orderNo,jdbcType=INTEGER},
+            </if>
+            <if test="customerCode != null">
+                #{customerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="costType != null">
+                #{costType,jdbcType=TINYINT},
+            </if>
+            <if test="warehouseName != null">
+                #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="billTime != null">
+                #{billTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sourceNo != null">
+                #{sourceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="waybillNo != null">
+                #{waybillNo,jdbcType=INTEGER},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=INTEGER},
+            </if>
+            <if test="beforeMoney != null">
+                #{beforeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="originalCost != null">
+                #{originalCost,jdbcType=DECIMAL},
+            </if>
+            <if test="discount != null">
+                #{discount,jdbcType=DOUBLE},
+            </if>
+            <if test="discountCost != null">
+                #{discountCost,jdbcType=DECIMAL},
+            </if>
+            <if test="afterMoney != null">
+                #{afterMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="usableMoney != null">
+                #{usableMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="freezeMoney != null">
+                #{freezeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="isShow != null">
+                #{isShow,jdbcType=TINYINT},
+            </if>
+            <if test="orderType != null">
+                #{orderType,jdbcType=TINYINT},
+            </if>
+            <if test="featureJson != null">
+                #{featureJson,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.finance.pojo.entity.CustomerFlow">
+        update tf_customer_flow
+        <set>
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=INTEGER},
+            </if>
+            <if test="customerCode != null">
+                customer_code = #{customerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="costType != null">
+                cost_type = #{costType,jdbcType=TINYINT},
+            </if>
+            <if test="warehouseName != null">
+                warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            </if>
+            <if test="warehouseCode != null">
+                warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            </if>
+            <if test="billTime != null">
+                bill_time = #{billTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sourceNo != null">
+                source_no = #{sourceNo,jdbcType=VARCHAR},
+            </if>
+            <if test="waybillNo != null">
+                waybill_no = #{waybillNo,jdbcType=INTEGER},
+            </if>
+            <if test="number != null">
+                number = #{number,jdbcType=INTEGER},
+            </if>
+            <if test="beforeMoney != null">
+                before_money = #{beforeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="originalCost != null">
+                original_cost = #{originalCost,jdbcType=DECIMAL},
+            </if>
+            <if test="discount != null">
+                discount = #{discount,jdbcType=DOUBLE},
+            </if>
+            <if test="discountCost != null">
+                discount_cost = #{discountCost,jdbcType=DECIMAL},
+            </if>
+            <if test="afterMoney != null">
+                after_money = #{afterMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="usableMoney != null">
+                usable_money = #{usableMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="freezeMoney != null">
+                freeze_money = #{freezeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="isShow != null">
+                is_show = #{isShow,jdbcType=TINYINT},
+            </if>
+            <if test="orderType != null">
+                order_type = #{orderType,jdbcType=TINYINT},
+            </if>
+            <if test="featureJson != null">
+                feature_json = #{featureJson,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.finance.pojo.entity.CustomerFlow">
+        update tf_customer_flow
+        set order_no = #{orderNo,jdbcType=INTEGER},
+            customer_code = #{customerCode,jdbcType=VARCHAR},
+            cost_type = #{costType,jdbcType=TINYINT},
+            warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+            warehouse_code = #{warehouseCode,jdbcType=VARCHAR},
+            bill_time = #{billTime,jdbcType=TIMESTAMP},
+            source_no = #{sourceNo,jdbcType=VARCHAR},
+            waybill_no = #{waybillNo,jdbcType=INTEGER},
+            number = #{number,jdbcType=INTEGER},
+            before_money = #{beforeMoney,jdbcType=DECIMAL},
+            original_cost = #{originalCost,jdbcType=DECIMAL},
+            discount = #{discount,jdbcType=DOUBLE},
+            discount_cost = #{discountCost,jdbcType=DECIMAL},
+            after_money = #{afterMoney,jdbcType=DECIMAL},
+            usable_money = #{usableMoney,jdbcType=DECIMAL},
+            freeze_money = #{freezeMoney,jdbcType=DECIMAL},
+            is_show = #{isShow,jdbcType=TINYINT},
+            order_type = #{orderType,jdbcType=TINYINT},
+            feature_json = #{featureJson,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.brandslink.cloud.finance.pojo.entity.CustomerFlow" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_customer_flow
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="orderNo != null and orderNo != ''">
+                 and order_no = #{orderNo,jdbcType=INTEGER}
+            </if>
+            <if test="customerCode != null and customerCode != ''">
+                 and customer_code = #{customerCode,jdbcType=VARCHAR}
+            </if>
+            <if test="costType != null and costType != ''">
+                 and cost_type = #{costType,jdbcType=TINYINT}
+            </if>
+            <if test="warehouseName != null and warehouseName != ''">
+                 and warehouse_name = #{warehouseName,jdbcType=VARCHAR}
+            </if>
+            <if test="warehouseCode != null and warehouseCode != ''">
+                 and warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="billTime != null">
+                 and bill_time = #{billTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="sourceNo != null and sourceNo != ''">
+                 and source_no = #{sourceNo,jdbcType=VARCHAR}
+            </if>
+            <if test="waybillNo != null and waybillNo != ''">
+                 and waybill_no = #{waybillNo,jdbcType=INTEGER}
+            </if>
+            <if test="number != null and number != ''">
+                 and number = #{number,jdbcType=INTEGER}
+            </if>
+            <if test="beforeMoney != null and beforeMoney != ''">
+                 and before_money = #{beforeMoney,jdbcType=DECIMAL}
+            </if>
+            <if test="originalCost != null and originalCost != ''">
+                 and original_cost = #{originalCost,jdbcType=DECIMAL}
+            </if>
+            <if test="discount != null and discount != ''">
+                 and discount = #{discount,jdbcType=DOUBLE}
+            </if>
+            <if test="discountCost != null and discountCost != ''">
+                 and discount_cost = #{discountCost,jdbcType=DECIMAL}
+            </if>
+            <if test="afterMoney != null and afterMoney != ''">
+                 and after_money = #{afterMoney,jdbcType=DECIMAL}
+            </if>
+            <if test="usableMoney != null and usableMoney != ''">
+                 and usable_money = #{usableMoney,jdbcType=DECIMAL}
+            </if>
+            <if test="freezeMoney != null and freezeMoney != ''">
+                 and freeze_money = #{freezeMoney,jdbcType=DECIMAL}
+            </if>
+            <if test="isShow != null and isShow != ''">
+                 and is_show = #{isShow,jdbcType=TINYINT}
+            </if>
+            <if test="orderType != null and orderType != ''">
+                 and order_type = #{orderType,jdbcType=TINYINT}
+            </if>
+            <if test="featureJson != null and featureJson != ''">
+                 and feature_json = #{featureJson,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                 and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getList" parameterType="com.brandslink.cloud.finance.pojo.vo.CustomerFlowVo"
+            resultType="com.brandslink.cloud.finance.pojo.dto.CustomerFlowDto">
+        select * from (select a.id,b.customer_name as customerName,a.order_no as orderNo,a.cost_type as costType,
+            a.warehouse_name as warehouseName,a.bill_time as billTime,a.source_no as sourceNo,a.number,a.original_cost as originalCost,
+            a.discount,a.discount_cost as discountCost,a.order_type as orderType,a.create_time as createTime
+            from tf_customer_flow a join tf_customer b on a.customer_code=b.customer_code where 1=1
+            <if test="orderNo != null and orderNo != ''">
+                and a.order_no = #{orderNo,jdbcType=INTEGER}
+            </if>
+            <if test="warehouseCode != null and warehouseCode != ''">
+                and a.warehouse_code = #{warehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="customerCode != null and customerCode != ''">
+                and a.customer_code = #{customerCode,jdbcType=VARCHAR}
+            </if>
+            <if test="sourceNo != null and sourceNo != ''">
+                and a.source_no = #{sourceNo,jdbcType=VARCHAR}
+            </if>
+            <if test="costType != null and costType != ''">
+                and a.cost_type = #{costType,jdbcType=TINYINT}
+            </if>
+            <if test="orderType != null and orderType != ''">
+                and a.order_type = #{orderType,jdbcType=TINYINT}
+            </if>
+            <if test="startBillTime != null and endBillTime != null">
+                and a.bill_time between #{startBillTime,jdbcType=TIMESTAMP} and #{endBillTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null">
+                and a.create_time between #{startCreateTime,jdbcType=TIMESTAMP} and #{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+        )a order by ${sortField} ${sortType}
+    </select>
+
+    <select id="selectById" parameterType="java.lang.Integer"  resultType="com.brandslink.cloud.finance.pojo.dto.CustomerFlowDto">
+        select a.id,b.customer_name as customerName,a.order_no as orderNo,a.source_no as sourceNo,
+        a.cost_type as costType,a.feature_json as feature,a.warehouse_name as warehouseName,a.number,
+        a.discount,a.discount_cost as discountCost,a.original_cost as originalCost,a.order_type as orderType,
+        a.bill_time as billTime,a.create_time as createTime
+        from tf_customer_flow a join tf_customer b on a.customer_code=b.customer_code where a.id=#{id}
+    </select>
+</mapper>

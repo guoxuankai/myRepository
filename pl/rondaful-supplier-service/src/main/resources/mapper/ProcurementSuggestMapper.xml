@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.ProcurementSuggestMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.procurement.ProcurementSuggest">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="pinlian_sku" jdbcType="VARCHAR" property="pinlianSku" />
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="amount" jdbcType="INTEGER" property="amount" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, pinlian_sku, order_id, status, warehouse_id, create_time, amount, update_time, 
+        update_by
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_procurement_suggest
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_procurement_suggest
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.procurement.ProcurementSuggest">
+        insert into t_procurement_suggest (id, pinlian_sku, order_id, 
+            status, warehouse_id, create_time, 
+            amount, update_time, update_by
+            )
+        values (#{id,jdbcType=BIGINT}, #{pinlianSku,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{warehouseId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+            #{amount,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.procurement.ProcurementSuggest">
+        insert into t_procurement_suggest
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="pinlianSku != null">
+                pinlian_sku,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="pinlianSku != null">
+                #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.procurement.ProcurementSuggest">
+        update t_procurement_suggest
+        <set>
+            <if test="pinlianSku != null">
+                pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id = #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.procurement.ProcurementSuggest">
+        update t_procurement_suggest
+        set pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            order_id = #{orderId,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            warehouse_id = #{warehouseId,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            amount = #{amount,jdbcType=INTEGER},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.procurement.ProcurementSuggest" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_procurement_suggest
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="pinlianSku != null and pinlianSku != ''">
+                 and pinlian_sku = #{pinlianSku,jdbcType=VARCHAR}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                 and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="warehouseId != null and warehouseId != ''">
+                 and warehouse_id = #{warehouseId,jdbcType=INTEGER}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="amount != null and amount != ''">
+                 and amount = #{amount,jdbcType=INTEGER}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getsSuggestPage"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_procurement_suggest
+        where create_time between #{startTime,jdbcType=TIMESTAMP} and  #{endTime,jdbcType=TIMESTAMP}
+        <if test="warehouseId !=null">
+            and warehouse_id = #{warehouseId,jdbcType=INTEGER}
+        </if>
+        <if test="status !=null and status ==0">
+            and status = #{status,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getByOrderId" parameterType="java.lang.String"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_procurement_suggest
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.transorder.mapper.OrderRuleWarehouseMapper">
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.transorder.entity.OrderRule">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="rule_name" jdbcType="VARCHAR" property="ruleName"/>
+        <result column="seller_id" jdbcType="VARCHAR" property="sellerId"/>
+        <result column="seller_account" jdbcType="VARCHAR" property="sellerAccount"/>
+        <result column="priority" jdbcType="INTEGER" property="priority"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="effective_start_time" jdbcType="TIME" property="effectiveStartTime"/>
+        <result column="effective_end_time" jdbcType="TIME" property="effectiveEndTime"/>
+        <result column="delivery_warehouse_code" jdbcType="VARCHAR" property="deliveryWarehouseCode"/>
+        <result column="price_min" jdbcType="VARCHAR" property="priceMin"/>
+        <result column="price_max" jdbcType="VARCHAR" property="priceMax"/>
+        <result column="weight_min" jdbcType="VARCHAR" property="weightMin"/>
+        <result column="weight_max" jdbcType="VARCHAR" property="weightMax"/>
+        <result column="volume_min" jdbcType="VARCHAR" property="volumeMin"/>
+        <result column="volume_max" jdbcType="VARCHAR" property="volumeMax"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="message" jdbcType="VARCHAR" property="message"/>
+        <result column="platform_mark" jdbcType="VARCHAR" property="platformMark"/>
+        <result column="delivery_warehouse_id" jdbcType="INTEGER" property="deliveryWarehouseId"/>
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.rondaful.cloud.transorder.entity.OrderRuleWithBLOBs">
+        <result column="seller_account_list" jdbcType="LONGVARCHAR" property="sellerAccountList"/>
+        <result column="receive_goods_country_list" jdbcType="LONGVARCHAR" property="receiveGoodsCountryList"/>
+        <result column="receive_goods_zip_code_list" jdbcType="LONGVARCHAR" property="receiveGoodsZipCodeList"/>
+        <result column="pl_sku_list" jdbcType="LONGVARCHAR" property="plSkuList"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id,rule_name, seller_id,seller_account, priority, status,delivery_warehouse_code,
+    DATE_FORMAT(effective_start_time,'%Y-%m-%d %H:%i:%S') as effective_start_time,
+    DATE_FORMAT(effective_end_time,'%Y-%m-%d %H:%i:%S') as effective_end_time,
+    price_min, price_max, weight_min, weight_max, volume_min, volume_max, version,
+    IF(create_time = '0000-00-00 00:00:00' or ISNULL(create_time),'2000-00-00 00:00:00',create_time) AS create_time,
+    IF(update_time = '0000-00-00 00:00:00' or ISNULL(update_time),'2000-00-00 00:00:00',update_time) AS update_time,
+    message,platform_mark,delivery_warehouse_id
+  </sql>
+
+    <sql id="Blob_Column_List">
+    seller_account_list, receive_goods_country_list, receive_goods_zip_code_list, pl_sku_list
+  </sql>
+
+
+    <select id="findAll" parameterType="com.rondaful.cloud.transorder.entity.OrderRule"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_order_rule_warehouse
+        <where>
+            <if test="deliveryWarehouseCode!=null">and delivery_warehouse_code =
+                #{deliveryWarehouseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerId!=null">and seller_id = #{sellerId,jdbcType=VARCHAR}</if>
+            <if test="sellerIds!=null and sellerIds.size>0">
+                and seller_id in
+                <foreach collection="sellerIds" index="index" item="sellerId" open="(" separator="," close=")">
+                    #{sellerId}
+                </foreach>
+            </if>
+            <if test="sellerAccounts!=null">
+                and seller_account in
+                <foreach collection="sellerAccounts" index="index" item="sellerAccount" open="(" separator=","
+                         close=")">
+                    #{sellerAccount}
+                </foreach>
+            </if>
+            <if test="sellerAccount!=null">and seller_account = #{sellerAccount,jdbcType=VARCHAR}</if>
+            <if test="status!=null">and status = #{status,jdbcType=INTEGER}</if>
+            <if test="ruleName!=null">and rule_name like CONCAT('%',#{ruleName,jdbcType=VARCHAR},'%')</if>
+            <if test="startCreateTime!=null">and DATE_FORMAT(create_time,'%Y-%m-%d') >=
+                #{startCreateTime}
+            </if>
+            <if test="endCreateTime!=null">and DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{endCreateTime}
+            </if>
+            <if test="createTime!=null">
+                and ((effective_start_time &lt; #{createTime} and effective_end_time > #{createTime})
+                or (effective_start_time &lt; #{createTime} and ISNULL(effective_end_time))
+                or ( effective_end_time > #{createTime} and ISNULL(effective_start_time))
+                or (ISNULL(effective_end_time) and ISNULL(effective_start_time) ))
+            </if>
+            <if test="platformMark!=null">and platform_mark = #{platformMark,jdbcType=VARCHAR}</if>
+        </where>
+        order by priority,id
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>brandslink-gateway-service</contextName>
+    <property name="log.path" value="/logs/brandslink-gateway-service/brandslink-gateway-service" />
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 过滤掉xx级别以下的日志不输出 TRACE < DEBUG < INFO < WARN < ERROR -->
+        <!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+             <level>ERROR</level>
+         </filter>-->
+        <encoder>
+            <pattern>[%-5level] [%date{yyyy-MM-dd HH:mm:ss}] [%thread] %logger{66} -%file:%line -%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--输出到文件-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}-%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+            <!-- 单个日志文件最多1GB, 60天的日志周期，最大不能超过60GB -->
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>60GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--单个文件达到最大1GB时会被压缩和切割 -->
+                <maxFileSize>1GB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%-5level] [%date{yyyy-MM-dd HH:mm:ss}] [%thread] %logger{66} -%file:%line -%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="async_file" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>512</queueSize>
+        <appender-ref ref="file"/>
+    </appender>
+
+    <logger name="org.springframework" level="ERROR" />
+    <logger name="com.netflix" level="ERROR" />
+    <logger name="org.apache" level="ERROR" />
+
+    <!-- 日志打印级别 -->
+    <root level="debug">
+        <appender-ref ref="console" />
+        <appender-ref ref="async_file" />
+    </root>
+
+    <!-- 用来设置某一个包或者具体的某一个类的日志打印 -->
+    <!--<logger name="com.xx.xx.xx" level="WARN" additivity="true">-->
+    <!--<appender-ref ref="console"/>-->
+    <!--</logger>-->
+
+    <!-- 根据环境设置不同日志打印，logback-spring.xml命名才生效 -->
+    <!--<springProfile name="test,dev,prod">
+        <root level="debug">
+            <appender-ref ref="console" />
+            <appender-ref ref="file" />
+        </root>
+    </springProfile>-->
+
+</configuration>

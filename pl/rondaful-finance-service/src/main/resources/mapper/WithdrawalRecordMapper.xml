@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.rondaful.cloud.finance.mapper.WithdrawalRecordMapper">
+	<resultMap id="BaseResultMap"
+		type="com.rondaful.cloud.finance.entity.WithdrawalRecord">
+		<id column="withdrawal_id" jdbcType="INTEGER"
+			property="withdrawalId" />
+		<result column="withdrawal_no" jdbcType="CHAR"
+			property="withdrawalNo" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="pay_time" jdbcType="TIMESTAMP"
+			property="payTime" />
+		<result column="modify_time" jdbcType="TIMESTAMP"
+			property="modifyTime" />
+		<result column="supplier_name" jdbcType="CHAR"
+			property="supplierName" />
+		<result column="withdrawal_amount" jdbcType="DECIMAL"
+			property="withdrawalAmount" />
+		<result column="withdrawal_type" jdbcType="CHAR"
+			property="withdrawalType" />
+		<result column="bill_url" jdbcType="CHAR" property="billUrl" />
+		<result column="transfer_receipt_url" jdbcType="CHAR"
+			property="transferReceiptUrl" />
+		<result column="examine_status" jdbcType="CHAR"
+			property="examineStatus" />
+		<result column="tb_status" jdbcType="CHAR" property="tbStatus" />
+		<result column="remark" jdbcType="CHAR" property="remark" />
+		<result column="version" jdbcType="INTEGER" property="version" />
+		<result column="supplier_id" jdbcType="INTEGER"
+			property="supplierId" />
+		<result column="trans_serial_no" jdbcType="CHAR"
+			property="transSerialNo" />
+		<result column="annotation" jdbcType="CHAR"
+			property="annotation" />
+		<result column="withdrawal_account" jdbcType="CHAR"
+			property="withdrawalAccount" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		withdrawal_id, withdrawal_no, create_time, pay_time,
+		modify_time, supplier_name,
+		withdrawal_amount, withdrawal_type,
+		bill_url, transfer_receipt_url,
+		examine_status,
+		tb_status, remark,
+		version, supplier_id, trans_serial_no, annotation
+		,withdrawal_account
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from rdf_pl_withdrawal_record
+		where withdrawal_id =
+		#{withdrawalId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from rdf_pl_withdrawal_record
+		where withdrawal_id
+		= #{withdrawalId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.rondaful.cloud.finance.entity.WithdrawalRecord">
+		insert into rdf_pl_withdrawal_record (withdrawal_id,
+		withdrawal_no,
+		create_time,
+		pay_time, modify_time, supplier_name,
+		withdrawal_amount, withdrawal_type, bill_url,
+		transfer_receipt_url,
+		examine_status, tb_status,
+		remark, version, supplier_id,
+		trans_serial_no, annotation ,withdrawal_account)
+		values
+		(#{withdrawalId,jdbcType=INTEGER}, #{withdrawalNo,jdbcType=CHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{payTime,jdbcType=TIMESTAMP},
+		#{modifyTime,jdbcType=TIMESTAMP}, #{supplierName,jdbcType=CHAR},
+		#{withdrawalAmount,jdbcType=DECIMAL}, #{withdrawalType,jdbcType=CHAR},
+		#{billUrl,jdbcType=CHAR},
+		#{transferReceiptUrl,jdbcType=CHAR},
+		#{examineStatus,jdbcType=CHAR}, #{tbStatus,jdbcType=CHAR},
+		#{remark,jdbcType=CHAR}, #{version,jdbcType=INTEGER},
+		#{supplierId,jdbcType=INTEGER},
+		#{transSerialNo,jdbcType=CHAR},
+		#{annotation,jdbcType=CHAR} ,#{withdrawalAccount,jdbcType=CHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.rondaful.cloud.finance.entity.WithdrawalRecord">
+		insert into rdf_pl_withdrawal_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="withdrawalId != null">
+				withdrawal_id,
+			</if>
+			<if test="withdrawalNo != null">
+				withdrawal_no,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="payTime != null">
+				pay_time,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+			<if test="supplierName != null">
+				supplier_name,
+			</if>
+			<if test="withdrawalAmount != null">
+				withdrawal_amount,
+			</if>
+			<if test="withdrawalType != null">
+				withdrawal_type,
+			</if>
+			<if test="billUrl != null">
+				bill_url,
+			</if>
+			<if test="transferReceiptUrl != null">
+				transfer_receipt_url,
+			</if>
+			<if test="examineStatus != null">
+				examine_status,
+			</if>
+			<if test="tbStatus != null">
+				tb_status,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="version != null">
+				version,
+			</if>
+			<if test="supplierId != null">
+				supplier_id,
+			</if>
+			<if test="transSerialNo != null">
+				trans_serial_no,
+			</if>
+			<if test="annotation != null">
+				annotation,
+			</if>
+			<if test="withdrawalAccount != null">
+				withdrawal_account,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="withdrawalId != null">
+				#{withdrawalId,jdbcType=INTEGER},
+			</if>
+			<if test="withdrawalNo != null">
+				#{withdrawalNo,jdbcType=CHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="payTime != null">
+				#{payTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="supplierName != null">
+				#{supplierName,jdbcType=CHAR},
+			</if>
+			<if test="withdrawalAmount != null">
+				#{withdrawalAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="withdrawalType != null">
+				#{withdrawalType,jdbcType=CHAR},
+			</if>
+			<if test="billUrl != null">
+				#{billUrl,jdbcType=CHAR},
+			</if>
+			<if test="transferReceiptUrl != null">
+				#{transferReceiptUrl,jdbcType=CHAR},
+			</if>
+			<if test="examineStatus != null">
+				#{examineStatus,jdbcType=CHAR},
+			</if>
+			<if test="tbStatus != null">
+				#{tbStatus,jdbcType=CHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=CHAR},
+			</if>
+			<if test="version != null">
+				#{version,jdbcType=INTEGER},
+			</if>
+			<if test="supplierId != null">
+				#{supplierId,jdbcType=INTEGER},
+			</if>
+			<if test="transSerialNo != null">
+				#{transSerialNo,jdbcType=CHAR},
+			</if>
+			<if test="annotation != null">
+				#{annotation,jdbcType=CHAR},
+			</if>
+			<if test="withdrawalAccount != null">
+				#{withdrawalAccount,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.rondaful.cloud.finance.entity.WithdrawalRecord">
+		update rdf_pl_withdrawal_record
+		<set>
+			<if test="withdrawalNo != null">
+				withdrawal_no = #{withdrawalNo,jdbcType=CHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="payTime != null">
+				pay_time = #{payTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="supplierName != null">
+				supplier_name = #{supplierName,jdbcType=CHAR},
+			</if>
+			<if test="withdrawalAmount != null">
+				withdrawal_amount = #{withdrawalAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="withdrawalType != null">
+				withdrawal_type = #{withdrawalType,jdbcType=CHAR},
+			</if>
+			<if test="billUrl != null">
+				bill_url = #{billUrl,jdbcType=CHAR},
+			</if>
+			<if test="transferReceiptUrl != null">
+				transfer_receipt_url =
+				#{transferReceiptUrl,jdbcType=CHAR},
+			</if>
+			<if test="examineStatus != null">
+				examine_status = #{examineStatus,jdbcType=CHAR},
+			</if>
+			<if test="tbStatus != null">
+				tb_status = #{tbStatus,jdbcType=CHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=CHAR},
+			</if>
+			<if test="version != null">
+				version = #{version,jdbcType=INTEGER}+1,
+			</if>
+			<if test="supplierId != null">
+				supplier_id = #{supplierId,jdbcType=INTEGER},
+			</if>
+			<if test="transSerialNo != null">
+				trans_serial_no = #{transSerialNo,jdbcType=CHAR},
+			</if>
+			<if test="annotation != null">
+				annotation = #{annotation,jdbcType=CHAR},
+			</if>
+			<if test="withdrawalAccount != null">
+				withdrawal_account = #{withdrawalAccount,jdbcType=CHAR},
+			</if>
+		</set>
+		where withdrawal_id = #{withdrawalId,jdbcType=INTEGER} and
+		tb_status='normal' and version=#{version,jdbcType=INTEGER}
+		<if test="examineStatus != null">
+			and
+			<choose>
+				<when test="examineStatus == '打款成功'">
+					examine_status = '审核通过'
+				</when>
+				<otherwise>
+					examine_status = '待审核'
+				</otherwise>
+			</choose>
+		</if>
+
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.rondaful.cloud.finance.entity.WithdrawalRecord">
+		update rdf_pl_withdrawal_record
+		set withdrawal_no =
+		#{withdrawalNo,jdbcType=CHAR},
+		pay_time =
+		#{payTime,jdbcType=TIMESTAMP},
+		supplier_name =
+		#{supplierName,jdbcType=CHAR},
+		withdrawal_amount =
+		#{withdrawalAmount,jdbcType=DECIMAL},
+		withdrawal_type =
+		#{withdrawalType,jdbcType=CHAR},
+		bill_url = #{billUrl,jdbcType=CHAR},
+		transfer_receipt_url = #{transferReceiptUrl,jdbcType=CHAR},
+		examine_status = #{examineStatus,jdbcType=CHAR},
+		remark = #{remark,jdbcType=CHAR},
+		version =
+		#{version,jdbcType=INTEGER}+1,
+		supplier_id =
+		#{supplierId,jdbcType=INTEGER},
+		trans_serial_no =
+		#{transSerialNo,jdbcType=CHAR},
+		annotation =
+		#{annotation,jdbcType=CHAR},
+		withdrawal_account =
+		#{withdrawalAccount,jdbcType=CHAR}
+		where withdrawal_id =
+		#{withdrawalId,jdbcType=INTEGER}
+		and tb_status='normal' and
+		version=#{version,jdbcType=INTEGER}
+		and
+		examine_status = '审核不通过'
+	</update>
+</mapper>

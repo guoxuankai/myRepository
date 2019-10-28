@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.StandardQuoteMapper">
+
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.StandardQuote">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="config_id" jdbcType="INTEGER" property="configId"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
+        <result column="quote_type" jdbcType="TINYINT" property="quoteType"/>
+        <result column="quote_status" jdbcType="TINYINT" property="quoteStatus"/>
+        <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, config_id, version, quote_type, quote_status, submit_time, update_by, create_by, 
+        update_time, create_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tf_sys_quote
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tf_sys_quote
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuote">
+        insert into tf_sys_quote (id, config_id, version, 
+            quote_type, quote_status, submit_time, 
+            update_by, create_by, update_time, 
+            create_time)
+        values (#{id,jdbcType=INTEGER}, #{configId,jdbcType=INTEGER}, #{version,jdbcType=VARCHAR}, 
+            #{quoteType,jdbcType=TINYINT}, #{quoteStatus,jdbcType=TINYINT}, #{submitTime,jdbcType=TIMESTAMP}, 
+            #{updateBy,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuote">
+        insert into tf_sys_quote
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="configId != null">
+                config_id,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="quoteType != null">
+                quote_type,
+            </if>
+            <if test="quoteStatus != null">
+                quote_status,
+            </if>
+            <if test="submitTime != null">
+                submit_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="configId != null">
+                #{configId,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=VARCHAR},
+            </if>
+            <if test="quoteType != null">
+                #{quoteType,jdbcType=TINYINT},
+            </if>
+            <if test="quoteStatus != null">
+                #{quoteStatus,jdbcType=TINYINT},
+            </if>
+            <if test="submitTime != null">
+                #{submitTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuote">
+        update tf_sys_quote
+        <set>
+            <if test="configId != null">
+                config_id = #{configId,jdbcType=INTEGER},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=VARCHAR} + 1,
+            </if>
+            <if test="quoteType != null">
+                quote_type = #{quoteType,jdbcType=TINYINT},
+            </if>
+            <if test="quoteStatus != null">
+                quote_status = #{quoteStatus,jdbcType=TINYINT},
+            </if>
+            <if test="submitTime != null">
+                submit_time = #{submitTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuote">
+        update tf_sys_quote
+        set config_id = #{configId,jdbcType=INTEGER},
+            version = #{version,jdbcType=VARCHAR} + 1,
+            quote_type = #{quoteType,jdbcType=TINYINT},
+            quote_status = #{quoteStatus,jdbcType=TINYINT},
+            submit_time = #{submitTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+
+    <select id="page" parameterType="com.brandslink.cloud.finance.pojo.entity.StandardQuote" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tf_sys_quote
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="configId != null and configId != ''">
+                and config_id = #{configId,jdbcType=INTEGER}
+            </if>
+            <if test="version != null and version != ''">
+                and version = #{version,jdbcType=VARCHAR}
+            </if>
+            <if test="quoteType != null and quoteType != ''">
+                and quote_type = #{quoteType,jdbcType=TINYINT}
+            </if>
+            <if test="quoteStatus != null and quoteStatus != ''">
+                and quote_status = #{quoteStatus,jdbcType=TINYINT}
+            </if>
+            <if test="submitTime != null and submitTime != ''">
+                and submit_time = #{submitTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <select id="list" parameterType="com.brandslink.cloud.finance.pojo.vo.StandardQuoteVO"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tf_sys_quote
+        <trim prefix="where" prefixOverrides="and">
+            <if test="version != null and version != ''">
+                and version = #{version,jdbcType=VARCHAR}
+            </if>
+            <if test="quoteType != null and quoteType != ''">
+                and quote_type = #{quoteType,jdbcType=TINYINT}
+            </if>
+            <if test="quoteStatus != null and quoteStatus != ''">
+                and quote_status = #{quoteStatus,jdbcType=TINYINT}
+            </if>
+            <if test="startEffectTime != null and endEffectTime != null ">
+                and update_time between #{startEffectTime,jdbcType=TIMESTAMP} and #{endEffectTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="startCreateTime != null and endCreateTime != null ">
+                and create_time between #{startCreateTime,jdbcType=TIMESTAMP} and #{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="startSubmitTime != null and endSubmitTime != null ">
+                and submit_time between #{startSubmitTime,jdbcType=TIMESTAMP} and #{endSubmitTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        order by create_time desc
+    </select>
+
+
+    <select id="getEffectiveId" resultType="integer">
+        select a.id from tf_sys_quote a where a.update_time<![CDATA[<]]>now() and (select count(1) from tf_sys_quote b where b.update_time<![CDATA[<]]>now() and b.quote_type=a.quote_type and b.update_time>a.update_time)<![CDATA[<]]>1
+    </select>
+
+
+</mapper>

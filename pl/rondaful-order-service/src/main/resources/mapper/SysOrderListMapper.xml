@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.SysOrderListMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.model.vo.sysOrderList.SysOrderVo">
+        <!--<id column="id" jdbcType="INTEGER" property="id" />-->
+        <id column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId"/>
+        <result column="source_order_id" jdbcType="VARCHAR" property="platformOrderId"/>
+        <result column="platform_seller_id" jdbcType="VARCHAR" property="sellerAccount"/>
+        <!--<result column="item_name" jdbcType="VARCHAR" property="commodityNameCn" />-->
+        <!--<result column="item_name_en" jdbcType="VARCHAR" property="commodityNameEn" />-->
+        <result column="created_time" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="delivery_time" jdbcType="VARCHAR" property="deliveryTime"/>
+        <!--<result column="order_track_id" jdbcType="VARCHAR" property="packageNo" />-->
+        <result column="deliver_deadline" jdbcType="VARCHAR" property="deliverDeadline"/>
+        <association property="sysOrderPackageList" column="sys_order_id"
+                     select="com.rondaful.cloud.order.mapper.SysOrderPackageMapper.selectPackageByOderId">
+        </association>
+        <association property="sysOrderDetailList" column="sys_order_id"
+                     select="com.rondaful.cloud.order.mapper.SysOrderDetailMapper.querySysOrderDetailByOrderId">
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, sys_order_id, record_number, source_order_id, deliver_deadline, conver_sys_status,
+        order_source, order_delivery_status, is_after_sale_order, platform_shop_id, platform_seller_account,
+        shop_type, platform_seller_id, seller_pl_id, seller_pl_account, supply_chain_company_id,
+        supply_chain_company_name, total, order_amount, estimate_ship_cost, commodities_amount,
+        marketplace_id, pay_id, pay_status, pay_method, pay_time, order_time, created_time,
+        delivery_time, shipping_service_cost, sys_shipping_discount, interest, gross_margin,
+        profit_margin, buyer_user_id, buyer_name, buyer_checkout_message, create_date, create_by,
+        update_date, update_by, remark, platform_commission_rate, free_freight_type
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_new
+        where id = #{id,jdbcType=INTEGER}
+        and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete from tb_sys_order_new
+        where id = #{id,jdbcType=INTEGER}
+          and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </delete>
+
+
+    <select id="page" parameterType="com.rondaful.cloud.order.model.vo.sysOrderList.SysOrderVo" resultMap="BaseResultMap">
+        SELECT
+            neworder.id,
+            neworder.sys_order_id,
+            neworder.platform_seller_id,
+            neworder.platform_seller_id
+        FROM
+            tb_sys_order_new AS neworder
+       /* LEFT JOIN tb_sys_order_detail AS detail ON neworder.sys_order_id = detail.sys_order_id
+        LEFT JOIN tb_sys_order_package AS package ON neworder.sys_order_id = package.sys_order_id*/
+        <trim prefix="where" prefixOverrides="and">
+            <!--<if test="id != null and id != ''">-->
+                <!--and id = #{id,jdbcType=BIGINT}-->
+            <!--</if>-->
+            <if test="sysOrderId != null and sysOrderId != ''">
+                and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

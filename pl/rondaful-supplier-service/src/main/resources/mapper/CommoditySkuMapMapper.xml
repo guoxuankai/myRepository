@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.CommoditySkuMapMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.inventory.CommoditySkuMap">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="pinlian_sku" jdbcType="VARCHAR" property="pinlianSku" />
+        <result column="supplier_sku" jdbcType="VARCHAR" property="supplierSku" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, pinlian_sku, supplier_sku
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_sku_map
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_commodity_sku_map
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.inventory.CommoditySkuMap">
+        insert into t_commodity_sku_map (id, pinlian_sku, supplier_sku
+            )
+        values (#{id,jdbcType=INTEGER}, #{pinlianSku,jdbcType=VARCHAR}, #{supplierSku,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.inventory.CommoditySkuMap">
+        insert into t_commodity_sku_map
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="pinlianSku != null">
+                pinlian_sku,
+            </if>
+            <if test="supplierSku != null">
+                supplier_sku,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="pinlianSku != null">
+                #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSku != null">
+                #{supplierSku,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.inventory.CommoditySkuMap">
+        update t_commodity_sku_map
+        <set>
+            <if test="pinlianSku != null">
+                pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierSku != null">
+                supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.inventory.CommoditySkuMap">
+        update t_commodity_sku_map
+        set pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            supplier_sku = #{supplierSku,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.inventory.CommoditySkuMap" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_commodity_sku_map
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="pinlianSku != null and pinlianSku != ''">
+                 and pinlian_sku = #{pinlianSku,jdbcType=VARCHAR}
+            </if>
+            <if test="supplierSku != null and supplierSku != ''">
+                 and supplier_sku = #{supplierSku,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_commodity_sku_map (pinlian_sku, supplier_sku)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.pinlianSku,jdbcType=VARCHAR}, #{item.supplierSku,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="getsSupplierSku" parameterType="java.lang.String" resultType="java.lang.String">
+        select supplier_sku from ${tableName}
+    </select>
+
+    <select id="getBySSku" parameterType="java.lang.String" resultType="java.lang.String">
+        select pinlian_sku from t_commodity_sku_map where supplier_sku = #{supplierSku,jdbcType=VARCHAR}
+    </select>
+</mapper>

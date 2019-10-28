@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AmazonTemplateRuleMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AmazonTemplateRule">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="empower_id" jdbcType="BIGINT" property="empowerId" />
+        <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+        <result column="default_template" jdbcType="INTEGER" property="defaultTemplate" />
+        <result column="category_first_rule" jdbcType="VARCHAR" property="categoryFirstRule" />
+        <result column="category_second_rule" jdbcType="VARCHAR" property="categorySecondRule" />
+        <result column="publish_type" jdbcType="INTEGER" property="publishType" />
+        <result column="fulfillment_latency" jdbcType="INTEGER" property="fulfillmentLatency" />
+        <result column="platform_sku_rule" jdbcType="VARCHAR" property="platformSkuRule" />
+        <result column="brand_rule" jdbcType="VARCHAR" property="brandRule" />
+        <result column="product_title_rule" jdbcType="VARCHAR" property="productTitleRule" />
+        <result column="product_no_rule" jdbcType="VARCHAR" property="productNoRule" />
+        <result column="product_price_rule" jdbcType="VARCHAR" property="productPriceRule" />
+        <result column="quantity_rule" jdbcType="VARCHAR" property="quantityRule" />
+        <result column="manufacturer_rule" jdbcType="VARCHAR" property="manufacturerRule" />
+        <result column="part_number" jdbcType="VARCHAR" property="partNumber" />
+        <result column="description_rule" jdbcType="VARCHAR" property="descriptionRule" />
+        <result column="parent_main_image_rule" jdbcType="VARCHAR" property="parentMainImageRule" />
+        <result column="parent_addition_image_rule" jdbcType="VARCHAR" property="parentAdditionImageRule" />
+        <result column="child_main_image_rule" jdbcType="VARCHAR" property="childMainImageRule" />
+        <result column="child_addition_image_rule" jdbcType="VARCHAR" property="childAdditionImageRule" />
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName" />
+        <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
+        <result column="third_party_name" jdbcType="VARCHAR" property="thirdPartyName" />
+        <result column="top_user_id" jdbcType="INTEGER" property="topUserId" />
+        <result column="compute_template" jdbcType="VARCHAR" property="computeTemplate" />
+    </resultMap>
+     
+    <sql id="Base_Column_List">
+        id, empower_id, template_name, default_template, category_first_rule, category_second_rule, 
+        publish_type, fulfillment_latency, platform_sku_rule, brand_rule, product_title_rule, 
+        product_no_rule, product_price_rule, quantity_rule, manufacturer_rule, part_number, 
+        description_rule, parent_main_image_rule, parent_addition_image_rule, child_main_image_rule, 
+        child_addition_image_rule, create_user_id, create_time, update_time, create_user_name, 
+        update_user_name, update_user_id,third_party_name,compute_template
+    </sql>
+
+
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from amazon_template_rule
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from amazon_template_rule
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateRule">
+        insert into amazon_template_rule (id, empower_id, template_name, 
+            default_template, category_first_rule, category_second_rule, 
+            publish_type, fulfillment_latency, platform_sku_rule, 
+            brand_rule, product_title_rule, product_no_rule, 
+            product_price_rule, quantity_rule, manufacturer_rule, 
+            part_number, description_rule, parent_main_image_rule, 
+            parent_addition_image_rule, child_main_image_rule, 
+            child_addition_image_rule, create_user_id, 
+            create_time, update_time, create_user_name,  update_user_name, update_user_id,third_party_name)
+        values (#{id,jdbcType=BIGINT}, #{empowerId,jdbcType=BIGINT}, #{templateName,jdbcType=VARCHAR}, 
+            #{defaultTemplate,jdbcType=INTEGER}, #{categoryFirstRule,jdbcType=VARCHAR}, #{categorySecondRule,jdbcType=VARCHAR}, 
+            #{publishType,jdbcType=INTEGER}, #{fulfillmentLatency,jdbcType=INTEGER}, #{platformSkuRule,jdbcType=VARCHAR}, 
+            #{brandRule,jdbcType=VARCHAR}, #{productTitleRule,jdbcType=VARCHAR}, #{productNoRule,jdbcType=VARCHAR}, 
+            #{productPriceRule,jdbcType=VARCHAR}, #{quantityRule,jdbcType=VARCHAR}, #{manufacturerRule,jdbcType=VARCHAR}, 
+            #{partNumber,jdbcType=VARCHAR}, #{descriptionRule,jdbcType=VARCHAR}, #{parentMainImageRule,jdbcType=VARCHAR}, 
+            #{parentAdditionImageRule,jdbcType=VARCHAR}, #{childMainImageRule,jdbcType=VARCHAR}, 
+            #{childAdditionImageRule,jdbcType=VARCHAR}, #{createUserId,jdbcType=BIGINT}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserName,jdbcType=VARCHAR}
+            ,  #{updateUserName,jdbcType=VARCHAR}, #{updateUserId,jdbcType=BIGINT}, #{thirdPartyName,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateRule">
+        insert into amazon_template_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="empowerId != null">
+                empower_id,
+            </if>
+            <if test="templateName != null">
+                template_name,
+            </if>
+            <if test="defaultTemplate != null">
+                default_template,
+            </if>
+            <if test="categoryFirstRule != null">
+                category_first_rule,
+            </if>
+            <if test="categorySecondRule != null">
+                category_second_rule,
+            </if>
+            <if test="publishType != null">
+                publish_type,
+            </if>
+            <if test="fulfillmentLatency != null">
+                fulfillment_latency,
+            </if>
+            <if test="platformSkuRule != null">
+                platform_sku_rule,
+            </if>
+            <if test="brandRule != null">
+                brand_rule,
+            </if>
+            <if test="productTitleRule != null">
+                product_title_rule,
+            </if>
+            <if test="productNoRule != null">
+                product_no_rule,
+            </if>
+            <if test="productPriceRule != null">
+                product_price_rule,
+            </if>
+            <if test="quantityRule != null">
+                quantity_rule,
+            </if>
+            <if test="manufacturerRule != null">
+                manufacturer_rule,
+            </if>
+            <if test="partNumber != null">
+                part_number,
+            </if>
+            <if test="descriptionRule != null">
+                description_rule,
+            </if>
+            <if test="parentMainImageRule != null">
+                parent_main_image_rule,
+            </if>
+            <if test="parentAdditionImageRule != null">
+                parent_addition_image_rule,
+            </if>
+            <if test="childMainImageRule != null">
+                child_main_image_rule,
+            </if>
+            <if test="childAdditionImageRule != null">
+                child_addition_image_rule,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createUserName != null">
+                create_user_name,
+            </if>
+           
+            <if test="updateUserName != null">
+                update_user_name,
+            </if>
+            <if test="updateUserId != null">
+                update_user_id,
+            </if>
+            <if test="thirdPartyName != null">
+                third_party_name,
+            </if>
+            <if test="topUserId != null">
+                top_user_id,
+            </if>
+            <if test="computeTemplate != null">
+                compute_template,
+            </if>
+            
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="empowerId != null">
+                #{empowerId,jdbcType=BIGINT},
+            </if>
+            <if test="templateName != null">
+                #{templateName,jdbcType=VARCHAR},
+            </if>
+            <if test="defaultTemplate != null">
+                #{defaultTemplate,jdbcType=INTEGER},
+            </if>
+            <if test="categoryFirstRule != null">
+                #{categoryFirstRule,jdbcType=VARCHAR},
+            </if>
+            <if test="categorySecondRule != null">
+                #{categorySecondRule,jdbcType=VARCHAR},
+            </if>
+            <if test="publishType != null">
+                #{publishType,jdbcType=INTEGER},
+            </if>
+            <if test="fulfillmentLatency != null">
+                #{fulfillmentLatency,jdbcType=INTEGER},
+            </if>
+            <if test="platformSkuRule != null">
+                #{platformSkuRule,jdbcType=VARCHAR},
+            </if>
+            <if test="brandRule != null">
+                #{brandRule,jdbcType=VARCHAR},
+            </if>
+            <if test="productTitleRule != null">
+                #{productTitleRule,jdbcType=VARCHAR},
+            </if>
+            <if test="productNoRule != null">
+                #{productNoRule,jdbcType=VARCHAR},
+            </if>
+            <if test="productPriceRule != null">
+                #{productPriceRule,jdbcType=VARCHAR},
+            </if>
+            <if test="quantityRule != null">
+                #{quantityRule,jdbcType=VARCHAR},
+            </if>
+            <if test="manufacturerRule != null">
+                #{manufacturerRule,jdbcType=VARCHAR},
+            </if>
+            <if test="partNumber != null">
+                #{partNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="descriptionRule != null">
+                #{descriptionRule,jdbcType=VARCHAR},
+            </if>
+            <if test="parentMainImageRule != null">
+                #{parentMainImageRule,jdbcType=VARCHAR},
+            </if>
+            <if test="parentAdditionImageRule != null">
+                #{parentAdditionImageRule,jdbcType=VARCHAR},
+            </if>
+            <if test="childMainImageRule != null">
+                #{childMainImageRule,jdbcType=VARCHAR},
+            </if>
+            <if test="childAdditionImageRule != null">
+                #{childAdditionImageRule,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserName != null">
+                #{createUserName,jdbcType=VARCHAR},
+            </if>
+          
+            <if test="updateUserName != null">
+                #{updateUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUserId != null">
+                #{updateUserId,jdbcType=BIGINT},
+            </if>
+            <if test="thirdPartyName != null">
+                #{thirdPartyName,jdbcType=VARCHAR},
+            </if>
+            <if test="topUserId != null">
+                #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="computeTemplate != null">
+                #{computeTemplate,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateRule">
+        update amazon_template_rule
+        <set>
+            <if test="empowerId != null">
+                empower_id = #{empowerId,jdbcType=BIGINT},
+            </if>
+            <if test="templateName != null">
+                template_name = #{templateName,jdbcType=VARCHAR},
+            </if>
+            <if test="defaultTemplate != null">
+                default_template = #{defaultTemplate,jdbcType=INTEGER},
+            </if>
+            <if test="categoryFirstRule != null">
+                category_first_rule = #{categoryFirstRule,jdbcType=VARCHAR},
+            </if>
+            <if test="categorySecondRule != null">
+                category_second_rule = #{categorySecondRule,jdbcType=VARCHAR},
+            </if>
+            <if test="publishType != null">
+                publish_type = #{publishType,jdbcType=INTEGER},
+            </if>
+            <if test="fulfillmentLatency != null">
+                fulfillment_latency = #{fulfillmentLatency,jdbcType=INTEGER},
+            </if>
+            <if test="platformSkuRule != null">
+                platform_sku_rule = #{platformSkuRule,jdbcType=VARCHAR},
+            </if>
+            <if test="brandRule != null">
+                brand_rule = #{brandRule,jdbcType=VARCHAR},
+            </if>
+            <if test="productTitleRule != null">
+                product_title_rule = #{productTitleRule,jdbcType=VARCHAR},
+            </if>
+            <if test="productNoRule != null">
+                product_no_rule = #{productNoRule,jdbcType=VARCHAR},
+            </if>
+            <if test="productPriceRule != null">
+                product_price_rule = #{productPriceRule,jdbcType=VARCHAR},
+            </if>
+            <if test="quantityRule != null">
+                quantity_rule = #{quantityRule,jdbcType=VARCHAR},
+            </if>
+            <if test="manufacturerRule != null">
+                manufacturer_rule = #{manufacturerRule,jdbcType=VARCHAR},
+            </if>
+            <if test="partNumber != null">
+                part_number = #{partNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="descriptionRule != null">
+                description_rule = #{descriptionRule,jdbcType=VARCHAR},
+            </if>
+            <if test="parentMainImageRule != null">
+                parent_main_image_rule = #{parentMainImageRule,jdbcType=VARCHAR},
+            </if>
+            <if test="parentAdditionImageRule != null">
+                parent_addition_image_rule = #{parentAdditionImageRule,jdbcType=VARCHAR},
+            </if>
+            <if test="childMainImageRule != null">
+                child_main_image_rule = #{childMainImageRule,jdbcType=VARCHAR},
+            </if>
+            <if test="childAdditionImageRule != null">
+                child_addition_image_rule = #{childAdditionImageRule,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                create_user_id = #{createUserId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserName != null">
+               create_user_name = #{createUserName,jdbcType=VARCHAR},
+            </if>
+         
+            <if test="updateUserName != null">
+               update_user_name = #{updateUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUserId != null">
+               update_user_id = #{updateUserId,jdbcType=BIGINT},
+            </if>
+            <if test="thirdPartyName != null">
+               third_party_name = #{thirdPartyName,jdbcType=VARCHAR},
+            </if>
+            <if test="topUserId != null">
+               top_user_id = #{topUserId,jdbcType=INTEGER},
+            </if>
+            <if test="computeTemplate != null">
+               compute_template = #{computeTemplate,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateRule">
+        update amazon_template_rule
+        set empower_id = #{empowerId,jdbcType=BIGINT},
+            template_name = #{templateName,jdbcType=VARCHAR},
+            default_template = #{defaultTemplate,jdbcType=INTEGER},
+            category_first_rule = #{categoryFirstRule,jdbcType=VARCHAR},
+            category_second_rule = #{categorySecondRule,jdbcType=VARCHAR},
+            publish_type = #{publishType,jdbcType=INTEGER},
+            fulfillment_latency = #{fulfillmentLatency,jdbcType=INTEGER},
+            platform_sku_rule = #{platformSkuRule,jdbcType=VARCHAR},
+            brand_rule = #{brandRule,jdbcType=VARCHAR},
+            product_title_rule = #{productTitleRule,jdbcType=VARCHAR},
+            product_no_rule = #{productNoRule,jdbcType=VARCHAR},
+            product_price_rule = #{productPriceRule,jdbcType=VARCHAR},
+            quantity_rule = #{quantityRule,jdbcType=VARCHAR},
+            manufacturer_rule = #{manufacturerRule,jdbcType=VARCHAR},
+            part_number = #{partNumber,jdbcType=VARCHAR},
+            description_rule = #{descriptionRule,jdbcType=VARCHAR},
+            parent_main_image_rule = #{parentMainImageRule,jdbcType=VARCHAR},
+            parent_addition_image_rule = #{parentAdditionImageRule,jdbcType=VARCHAR},
+            child_main_image_rule = #{childMainImageRule,jdbcType=VARCHAR},
+            child_addition_image_rule = #{childAdditionImageRule,jdbcType=VARCHAR},
+            create_user_id = #{createUserId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_user_name = #{createUserName,jdbcType=VARCHAR},
+   
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectDefaulte" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateRule" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from amazon_template_rule
+        where  default_template = #{defaultTemplate,jdbcType=INTEGER} and third_party_name = #{thirdPartyName,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateRule" resultMap="BaseResultMap">
+	     <choose>
+	       <when test="empowerId == 0">
+	          select * from amazon_template_rule atr 
+	       </when>
+	       <otherwise>
+	          SELECT atr.*,e.account as empowerAccount  
+       		 from amazon_template_rule atr LEFT JOIN empower e ON atr.empower_id=e.empowerId
+	       </otherwise>
+	    </choose>
+         
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and atr.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="empowerId == 0">
+                 and atr.empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+            <if test="empowerId != null and empowerId != ''">
+                 and atr.empower_id = #{empowerId,jdbcType=BIGINT}
+            </if>
+            <if test="templateName != null and templateName != ''">
+                 and atr.template_name like CONCAT('%',#{templateName},'%')
+            </if>
+            <if test="defaultTemplate != null">
+                 and atr.default_template = #{defaultTemplate,jdbcType=INTEGER}
+            </if>
+            <if test="categoryFirstRule != null and categoryFirstRule != ''">
+                 and atr.category_first_rule = #{categoryFirstRule,jdbcType=VARCHAR}
+            </if>
+            <if test="categorySecondRule != null and categorySecondRule != ''">
+                 and atr.category_second_rule = #{categorySecondRule,jdbcType=VARCHAR}
+            </if>
+            <if test="publishType != null and publishType != ''">
+                 and atr.publish_type = #{publishType,jdbcType=INTEGER}
+            </if>
+            <if test="fulfillmentLatency != null and fulfillmentLatency != ''">
+                 and atr.fulfillment_latency = #{fulfillmentLatency,jdbcType=INTEGER}
+            </if>
+            <if test="platformSkuRule != null and platformSkuRule != ''">
+                 and atr.platform_sku_rule = #{platformSkuRule,jdbcType=VARCHAR}
+            </if>
+            <if test="brandRule != null and brandRule != ''">
+                 and atr.brand_rule = #{brandRule,jdbcType=VARCHAR}
+            </if>
+            <if test="productTitleRule != null and productTitleRule != ''">
+                 and atr.product_title_rule = #{productTitleRule,jdbcType=VARCHAR}
+            </if>
+            <if test="productNoRule != null and productNoRule != ''">
+                 and atr.product_no_rule = #{productNoRule,jdbcType=VARCHAR}
+            </if>
+            <if test="productPriceRule != null and productPriceRule != ''">
+                 and atr.product_price_rule = #{productPriceRule,jdbcType=VARCHAR}
+            </if>
+            <if test="quantityRule != null and quantityRule != ''">
+                 and atr.quantity_rule = #{quantityRule,jdbcType=VARCHAR}
+            </if>
+            <if test="manufacturerRule != null and manufacturerRule != ''">
+                 and atr.manufacturer_rule = #{manufacturerRule,jdbcType=VARCHAR}
+            </if>
+            <if test="partNumber != null and partNumber != ''">
+                 and atr.part_number = #{partNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="descriptionRule != null and descriptionRule != ''">
+                 and atr.description_rule = #{descriptionRule,jdbcType=VARCHAR}
+            </if>
+            <if test="parentMainImageRule != null and parentMainImageRule != ''">
+                 and atr.parent_main_image_rule = #{parentMainImageRule,jdbcType=VARCHAR}
+            </if>
+            <if test="parentAdditionImageRule != null and parentAdditionImageRule != ''">
+                 and atr.parent_addition_image_rule = #{parentAdditionImageRule,jdbcType=VARCHAR}
+            </if>
+            <if test="childMainImageRule != null and childMainImageRule != ''">
+                 and atr.child_main_image_rule = #{childMainImageRule,jdbcType=VARCHAR}
+            </if>
+            <if test="childAdditionImageRule != null and childAdditionImageRule != ''">
+                 and atr.child_addition_image_rule = #{childAdditionImageRule,jdbcType=VARCHAR}
+            </if>
+            
+            
+            <choose>
+        	<when test="isPage == '0'.toString()">
+            and (atr.create_user_id = #{createUserId,jdbcType=BIGINT}
+        	</when>
+        	<otherwise>
+            and atr.create_user_id = #{createUserId,jdbcType=BIGINT}
+        	</otherwise>
+   			 </choose>
+            
+            <if test="createTime != null and createTime != ''">
+                 and atr.create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and atr.update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="thirdPartyName != null and thirdPartyName != ''">
+                and atr.third_party_name = #{thirdPartyName,jdbcType=VARCHAR}
+           </if>
+           <if test="empowerIds != null and empowerIds.size()>0">
+           		or e.empowerId in 
+           		 <foreach collection="empowerIds" item="id" index="index" open="(" close=")" separator=",">
+		  			#{id}
+				</foreach>
+           </if>
+           
+           <!-- <if test="startCreateTime != null and endCreateTime != null">
+                or atr.top_user_id = #{topUserId,jdbcType=INTEGER})
+           </if>
+           <if test="topUserId != null and topUserId != ''">
+                or atr.top_user_id = #{topUserId,jdbcType=INTEGER}
+           </if> -->
+           
+            <choose>
+        	<when test="isPage == '0'.toString()">
+            or atr.top_user_id = #{topUserId,jdbcType=INTEGER})
+        	</when>
+        	<otherwise>
+            or atr.top_user_id = #{topUserId,jdbcType=INTEGER}
+        	</otherwise>
+   			 </choose>
+   			 
+           <if test="isPage == 1">
+				or atr.default_template = 2 
+            </if>
+           
+            <choose>
+                <when test="@com.rondaful.cloud.Ognl@isNotEmpty(timeType)">
+                    <if test="@com.rondaful.cloud.Ognl@isNotEmpty(startCreateTime )">
+                        and
+                        <if test="timeType == '0'.toString()">DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s')</if>
+                        <if test="timeType == '3'.toString()">DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s')</if>
+                        >= #{startCreateTime,jdbcType=VARCHAR}
+                    </if>
+                    <if test="@com.rondaful.cloud.Ognl@isNotEmpty(endCreateTime )">
+                        and
+                        <if test="timeType == '0'.toString()">DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s')</if>
+                        <if test="timeType == '3'.toString()">DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s')</if>
+                        &lt;= #{endCreateTime,jdbcType=VARCHAR}
+                    </if>
+                </when>
+                <otherwise></otherwise>
+            </choose>
+        </trim>
+        ORDER BY id ASC
+    </select>
+    
+    
+    <insert id="copyTemplateRule" parameterType="Long">
+    INSERT INTO amazon_template_rule(`empower_id`,`template_name`,`default_template`,`category_first_rule`,`category_second_rule`,
+	`publish_type`,`fulfillment_latency`,`platform_sku_rule`,`brand_rule`,`product_title_rule`,`product_no_rule`,`product_price_rule`,
+	`quantity_rule`,`manufacturer_rule`,`part_number`,`description_rule`,`parent_main_image_rule`,`parent_addition_image_rule`,
+	`child_main_image_rule`,`child_addition_image_rule`,`create_user_id`,`create_time`,`update_time`,`create_user_name`,`update_user_name`,`update_user_id`) 
+	SELECT  `empower_id`,`template_name`,`default_template`,`category_first_rule`,`category_second_rule`,`publish_type`,`fulfillment_latency`,
+	`platform_sku_rule`,`brand_rule`,`product_title_rule`,`product_no_rule`,`product_price_rule`,`quantity_rule`,`manufacturer_rule`,
+	`part_number`,`description_rule`,`parent_main_image_rule`,`parent_addition_image_rule`,`child_main_image_rule`,
+	`child_addition_image_rule`,`create_user_id`,NOW() as `create_time`,NOW() as `update_time`,`create_user_name`,update_user_name,update_user_id
+	FROM amazon_template_rule WHERE id=#{id}
+    </insert>
+    
+    <!-- 修改默认模板-->
+    <update id="updateByDefaultTemplateStatus" parameterType="java.util.Map">
+    UPDATE amazon_template_rule SET default_template = #{notDefault} WHERE default_template = #{default} and third_party_name=#{thirdPartyName}
+    </update>
+    
+    <select id="getByEmpowerIdAndDefaultTemplate" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateRule" resultMap="BaseResultMap">
+    select * from amazon_template_rule where empower_id=#{empowerId} AND default_template =#{defaultTemplate};
+    </select>
+    
+    <select id="getByList" parameterType="com.rondaful.cloud.seller.entity.AmazonTemplateRule" resultMap="BaseResultMap">
+    select * from amazon_template_rule atr where 1=1
+           <if test="empowerId != null">
+                and atr.empower_id = #{empowerId,jdbcType=BIGINT}
+           </if>
+            <if test="defaultTemplate != null">
+                and atr.default_template = #{defaultTemplate,jdbcType=INTEGER}
+            </if>
+            <if test="templateName != null and templateName != ''">
+                 and atr.template_name like CONCAT('%',#{templateName},'%')
+            </if>
+            <if test="thirdPartyName != null and thirdPartyName != ''">
+                and atr.third_party_name = #{thirdPartyName,jdbcType=VARCHAR}
+           </if>
+    </select>
+    
+    <select id="getByMap"  resultMap="BaseResultMap">
+        select * from amazon_template_rule atr where 1=1
+           <if test="empowerId != null">
+                and atr.empower_id = #{empowerId,jdbcType=BIGINT}
+           </if>
+           <if test="id != null">
+                and atr.id = #{id,jdbcType=BIGINT}
+           </if>
+            <if test="defaultTemplate != null">
+                and atr.default_template = #{defaultTemplate,jdbcType=INTEGER}
+            </if>
+            <if test="templateName != null and templateName != ''">
+                 and atr.template_name = #{templateName,jdbcType=VARCHAR}
+            </if>
+            <if test="thirdPartyName != null and thirdPartyName != ''">
+                and atr.third_party_name = #{thirdPartyName,jdbcType=VARCHAR}
+           </if>
+           <if test="createUserId != null">
+                and atr.create_user_id = #{createUserId,jdbcType=BIGINT}
+            </if>
+           
+           
+    </select>
+    
+     <select id="getByThirdPartyNameAndDefaultTemplate"  resultMap="BaseResultMap">
+		select * from amazon_template_rule atr where 1=1 
+		AND ((atr.third_party_name = #{thirdPartyName}  
+		 <if test="@com.rondaful.cloud.Ognl@isNotEmpty(topUserId)">
+                and atr.top_user_id=#{topUserId}
+         </if>
+         <if test="@com.rondaful.cloud.Ognl@isNotEmpty(createUserId)">
+                and atr.create_user_id=#{createUserId}
+         </if>
+         <if test="@com.rondaful.cloud.Ognl@isNotEmpty(empowerId)">
+                and atr.empower_id=#{empowerId}
+         </if>
+		) or atr.default_template=#{defaultTemplate} )
+     </select>
+    
+    <select id="getByThirdPartyNameTemplateAndDefaultTemplate"  resultMap="BaseResultMap">
+		SELECT * FROM amazon_template_rule WHERE third_party_name=#{thirdPartyName} AND default_template=#{defaultTemplate};
+     </select>
+     
+     
+     
+     
+</mapper>

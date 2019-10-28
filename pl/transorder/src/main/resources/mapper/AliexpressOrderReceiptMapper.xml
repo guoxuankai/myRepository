@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.transorder.mapper.AliexpressOrderReceiptMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderReceipt">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="contact_person" jdbcType="VARCHAR" property="contactPerson" />
+        <result column="country" jdbcType="VARCHAR" property="country" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="detail_address" jdbcType="VARCHAR" property="detailAddress" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="address2" jdbcType="VARCHAR" property="address2" />
+        <result column="phone_country" jdbcType="VARCHAR" property="phoneCountry" />
+        <result column="phone_area" jdbcType="VARCHAR" property="phoneArea" />
+        <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
+        <result column="zip" jdbcType="VARCHAR" property="zip" />
+        <result column="mobile_no" jdbcType="VARCHAR" property="mobileNo" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, order_id, contact_person, country, province, city, detail_address, address, address2, 
+        phone_country, phone_area, phone_number, zip, mobile_no, create_time, update_time, 
+        version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_aliexpress_order_receipt
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_aliexpress_order_receipt
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderReceipt">
+        insert into t_aliexpress_order_receipt (id, order_id, contact_person, 
+            country, province, city, 
+            detail_address, address, address2, 
+            phone_country, phone_area, phone_number, 
+            zip, mobile_no, create_time, 
+            update_time, version)
+        values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{contactPerson,jdbcType=VARCHAR}, 
+            #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+            #{detailAddress,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{address2,jdbcType=VARCHAR}, 
+            #{phoneCountry,jdbcType=VARCHAR}, #{phoneArea,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, 
+            #{zip,jdbcType=VARCHAR}, #{mobileNo,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+            #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=BIGINT})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderReceipt">
+        insert into t_aliexpress_order_receipt
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="contactPerson != null">
+                contact_person,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="detailAddress != null">
+                detail_address,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="address2 != null">
+                address2,
+            </if>
+            <if test="phoneCountry != null">
+                phone_country,
+            </if>
+            <if test="phoneArea != null">
+                phone_area,
+            </if>
+            <if test="phoneNumber != null">
+                phone_number,
+            </if>
+            <if test="zip != null">
+                zip,
+            </if>
+            <if test="mobileNo != null">
+                mobile_no,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPerson != null">
+                #{contactPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="detailAddress != null">
+                #{detailAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="address2 != null">
+                #{address2,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCountry != null">
+                #{phoneCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneArea != null">
+                #{phoneArea,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="zip != null">
+                #{zip,jdbcType=VARCHAR},
+            </if>
+            <if test="mobileNo != null">
+                #{mobileNo,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderReceipt">
+        update t_aliexpress_order_receipt
+        <set>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPerson != null">
+                contact_person = #{contactPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="detailAddress != null">
+                detail_address = #{detailAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="address2 != null">
+                address2 = #{address2,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneCountry != null">
+                phone_country = #{phoneCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneArea != null">
+                phone_area = #{phoneArea,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                phone_number = #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="zip != null">
+                zip = #{zip,jdbcType=VARCHAR},
+            </if>
+            <if test="mobileNo != null">
+                mobile_no = #{mobileNo,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderReceipt">
+        update t_aliexpress_order_receipt
+        set order_id = #{orderId,jdbcType=VARCHAR},
+            contact_person = #{contactPerson,jdbcType=VARCHAR},
+            country = #{country,jdbcType=VARCHAR},
+            province = #{province,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            detail_address = #{detailAddress,jdbcType=VARCHAR},
+            address = #{address,jdbcType=VARCHAR},
+            address2 = #{address2,jdbcType=VARCHAR},
+            phone_country = #{phoneCountry,jdbcType=VARCHAR},
+            phone_area = #{phoneArea,jdbcType=VARCHAR},
+            phone_number = #{phoneNumber,jdbcType=VARCHAR},
+            zip = #{zip,jdbcType=VARCHAR},
+            mobile_no = #{mobileNo,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            version = #{version,jdbcType=BIGINT} + 1
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderReceipt" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_aliexpress_order_receipt
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                 and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="contactPerson != null and contactPerson != ''">
+                 and contact_person = #{contactPerson,jdbcType=VARCHAR}
+            </if>
+            <if test="country != null and country != ''">
+                 and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="province != null and province != ''">
+                 and province = #{province,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null and city != ''">
+                 and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="detailAddress != null and detailAddress != ''">
+                 and detail_address = #{detailAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="address != null and address != ''">
+                 and address = #{address,jdbcType=VARCHAR}
+            </if>
+            <if test="address2 != null and address2 != ''">
+                 and address2 = #{address2,jdbcType=VARCHAR}
+            </if>
+            <if test="phoneCountry != null and phoneCountry != ''">
+                 and phone_country = #{phoneCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="phoneArea != null and phoneArea != ''">
+                 and phone_area = #{phoneArea,jdbcType=VARCHAR}
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                 and phone_number = #{phoneNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="zip != null and zip != ''">
+                 and zip = #{zip,jdbcType=VARCHAR}
+            </if>
+            <if test="mobileNo != null and mobileNo != ''">
+                 and mobile_no = #{mobileNo,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+</mapper>

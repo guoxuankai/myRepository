@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishBuyerRequirementsMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishBuyerRequirements">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="listing_id" jdbcType="INTEGER" property="listingId" />
+        <result column="ship_to_registration_country" jdbcType="BIT" property="shipToRegistrationCountry" />
+        <result column="maximum_item_count" jdbcType="INTEGER" property="maximumItemCount" />
+        <result column="minimum_feedback_score" jdbcType="INTEGER" property="minimumFeedbackScore" />
+        <result column="maximum_unpaid_item_strikes_count" jdbcType="INTEGER" property="maximumUnpaidItemStrikesCount" />
+        <result column="maximum_unpaid_item_strikes_duration" jdbcType="CHAR" property="maximumUnpaidItemStrikesDuration" />
+        <result column="zero_feedback_Score" jdbcType="BIT" property="zeroFeedbackScore" />
+        <result column="creation_time" jdbcType="TIMESTAMP" property="creationTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, ship_to_registration_country, maximum_item_count, minimum_feedback_score, 
+        maximum_unpaid_item_strikes_count, maximum_unpaid_item_strikes_duration, zero_feedback_Score, 
+        creation_time, update_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_buyer_requirements
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_publish_buyer_requirements
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishBuyerRequirements">
+        insert into ebay_publish_buyer_requirements (id, listing_id, ship_to_registration_country, 
+            maximum_item_count, minimum_feedback_score, 
+            maximum_unpaid_item_strikes_count, maximum_unpaid_item_strikes_duration, 
+            zero_feedback_Score, creation_time, update_time
+            )
+        values (#{id,jdbcType=INTEGER}, #{listingId,jdbcType=INTEGER}, #{shipToRegistrationCountry,jdbcType=BIT}, 
+            #{maximumItemCount,jdbcType=INTEGER}, #{minimumFeedbackScore,jdbcType=INTEGER}, 
+            #{maximumUnpaidItemStrikesCount,jdbcType=INTEGER}, #{maximumUnpaidItemStrikesDuration,jdbcType=CHAR}, 
+            #{zeroFeedbackScore,jdbcType=BIT}, #{creationTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishBuyerRequirements">
+        insert into ebay_publish_buyer_requirements
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="shipToRegistrationCountry != null">
+                ship_to_registration_country,
+            </if>
+            <if test="maximumItemCount != null">
+                maximum_item_count,
+            </if>
+            <if test="minimumFeedbackScore != null">
+                minimum_feedback_score,
+            </if>
+            <if test="maximumUnpaidItemStrikesCount != null">
+                maximum_unpaid_item_strikes_count,
+            </if>
+            <if test="maximumUnpaidItemStrikesDuration != null">
+                maximum_unpaid_item_strikes_duration,
+            </if>
+            <if test="zeroFeedbackScore != null">
+                zero_feedback_Score,
+            </if>
+            <if test="creationTime != null">
+                creation_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=INTEGER},
+            </if>
+            <if test="shipToRegistrationCountry != null">
+                #{shipToRegistrationCountry,jdbcType=BIT},
+            </if>
+            <if test="maximumItemCount != null">
+                #{maximumItemCount,jdbcType=INTEGER},
+            </if>
+            <if test="minimumFeedbackScore != null">
+                #{minimumFeedbackScore,jdbcType=INTEGER},
+            </if>
+            <if test="maximumUnpaidItemStrikesCount != null">
+                #{maximumUnpaidItemStrikesCount,jdbcType=INTEGER},
+            </if>
+            <if test="maximumUnpaidItemStrikesDuration != null">
+                #{maximumUnpaidItemStrikesDuration,jdbcType=CHAR},
+            </if>
+            <if test="zeroFeedbackScore != null">
+                #{zeroFeedbackScore,jdbcType=BIT},
+            </if>
+            <if test="creationTime != null">
+                #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishBuyerRequirements">
+        update ebay_publish_buyer_requirements
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=INTEGER},
+            </if>
+            <if test="shipToRegistrationCountry != null">
+                ship_to_registration_country = #{shipToRegistrationCountry,jdbcType=BIT},
+            </if>
+            <if test="maximumItemCount != null">
+                maximum_item_count = #{maximumItemCount,jdbcType=INTEGER},
+            </if>
+            <if test="minimumFeedbackScore != null">
+                minimum_feedback_score = #{minimumFeedbackScore,jdbcType=INTEGER},
+            </if>
+            <if test="maximumUnpaidItemStrikesCount != null">
+                maximum_unpaid_item_strikes_count = #{maximumUnpaidItemStrikesCount,jdbcType=INTEGER},
+            </if>
+            <if test="maximumUnpaidItemStrikesDuration != null">
+                maximum_unpaid_item_strikes_duration = #{maximumUnpaidItemStrikesDuration,jdbcType=CHAR},
+            </if>
+            <if test="zeroFeedbackScore != null">
+                zero_feedback_Score = #{zeroFeedbackScore,jdbcType=BIT},
+            </if>
+            <if test="creationTime != null">
+                creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishBuyerRequirements">
+        update ebay_publish_buyer_requirements
+        set listing_id = #{listingId,jdbcType=INTEGER},
+            ship_to_registration_country = #{shipToRegistrationCountry,jdbcType=BIT},
+            maximum_item_count = #{maximumItemCount,jdbcType=INTEGER},
+            minimum_feedback_score = #{minimumFeedbackScore,jdbcType=INTEGER},
+            maximum_unpaid_item_strikes_count = #{maximumUnpaidItemStrikesCount,jdbcType=INTEGER},
+            maximum_unpaid_item_strikes_duration = #{maximumUnpaidItemStrikesDuration,jdbcType=CHAR},
+            zero_feedback_Score = #{zeroFeedbackScore,jdbcType=BIT},
+            creation_time = #{creationTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishBuyerRequirements" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_buyer_requirements
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="listingId != null">
+                 and listing_id = #{listingId,jdbcType=INTEGER}
+            </if>
+            <if test="shipToRegistrationCountry != null">
+                 and ship_to_registration_country = #{shipToRegistrationCountry,jdbcType=BIT}
+            </if>
+            <if test="maximumItemCount != null">
+                 and maximum_item_count = #{maximumItemCount,jdbcType=INTEGER}
+            </if>
+            <if test="minimumFeedbackScore != null">
+                 and minimum_feedback_score = #{minimumFeedbackScore,jdbcType=INTEGER}
+            </if>
+            <if test="maximumUnpaidItemStrikesCount != null">
+                 and maximum_unpaid_item_strikes_count = #{maximumUnpaidItemStrikesCount,jdbcType=INTEGER}
+            </if>
+            <if test="maximumUnpaidItemStrikesDuration != null">
+                 and maximum_unpaid_item_strikes_duration = #{maximumUnpaidItemStrikesDuration,jdbcType=CHAR}
+            </if>
+            <if test="zeroFeedbackScore != null">
+                 and zero_feedback_Score = #{zeroFeedbackScore,jdbcType=BIT}
+            </if>
+            <if test="creationTime != null">
+                 and creation_time = #{creationTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+    
+     <delete id="deleteByValue" parameterType="com.rondaful.cloud.seller.entity.EbayPublishBuyerRequirements">
+        delete from ebay_publish_buyer_requirements where listing_id = #{listingId,jdbcType=INTEGER}
+    </delete>
+    
+    
+        <select id="selectByValue" parameterType="com.rondaful.cloud.seller.entity.EbayPublishBuyerRequirements" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_buyer_requirements
+        where listing_id = #{listingId,jdbcType=INTEGER}
+    </select>
+    
+</mapper>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbaySiteDetailMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbaySiteDetail">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="listing_feature" jdbcType="VARCHAR" property="listingFeature" />
+        <result column="payment" jdbcType="VARCHAR" property="payment" />
+        <result column="requirement" jdbcType="VARCHAR" property="requirement" />
+        <result column="return_policy" jdbcType="VARCHAR" property="returnPolicy" />
+        <result column="tax" jdbcType="VARCHAR" property="tax" />
+        <result column="site" jdbcType="VARCHAR" property="site" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.rondaful.cloud.seller.entity.EbaySiteDetail">
+        <result column="shipping" jdbcType="LONGVARCHAR" property="shipping" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_feature, payment, requirement, return_policy, tax, site
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        shipping
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from ebay_site_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_site_detail
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbaySiteDetail">
+        insert into ebay_site_detail (id, listing_feature, payment, 
+            requirement, return_policy, tax, 
+            site, shipping)
+        values (#{id,jdbcType=INTEGER}, #{listingFeature,jdbcType=VARCHAR}, #{payment,jdbcType=VARCHAR}, 
+            #{requirement,jdbcType=VARCHAR}, #{returnPolicy,jdbcType=VARCHAR}, #{tax,jdbcType=VARCHAR}, 
+            #{site,jdbcType=VARCHAR}, #{shipping,jdbcType=LONGVARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbaySiteDetail">
+        insert into ebay_site_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingFeature != null">
+                listing_feature,
+            </if>
+            <if test="payment != null">
+                payment,
+            </if>
+            <if test="requirement != null">
+                requirement,
+            </if>
+            <if test="returnPolicy != null">
+                return_policy,
+            </if>
+            <if test="tax != null">
+                tax,
+            </if>
+            <if test="site != null">
+                site,
+            </if>
+            <if test="shipping != null">
+                shipping,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="listingFeature != null">
+                #{listingFeature,jdbcType=VARCHAR},
+            </if>
+            <if test="payment != null">
+                #{payment,jdbcType=VARCHAR},
+            </if>
+            <if test="requirement != null">
+                #{requirement,jdbcType=VARCHAR},
+            </if>
+            <if test="returnPolicy != null">
+                #{returnPolicy,jdbcType=VARCHAR},
+            </if>
+            <if test="tax != null">
+                #{tax,jdbcType=VARCHAR},
+            </if>
+            <if test="site != null">
+                #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="shipping != null">
+                #{shipping,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbaySiteDetail">
+        update ebay_site_detail
+        <set>
+            <if test="listingFeature != null">
+                listing_feature = #{listingFeature,jdbcType=VARCHAR},
+            </if>
+            <if test="payment != null">
+                payment = #{payment,jdbcType=VARCHAR},
+            </if>
+            <if test="requirement != null">
+                requirement = #{requirement,jdbcType=VARCHAR},
+            </if>
+            <if test="returnPolicy != null">
+                return_policy = #{returnPolicy,jdbcType=VARCHAR},
+            </if>
+            <if test="tax != null">
+                tax = #{tax,jdbcType=VARCHAR},
+            </if>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="shipping != null">
+                shipping = #{shipping,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.rondaful.cloud.seller.entity.EbaySiteDetail">
+        update ebay_site_detail
+        set listing_feature = #{listingFeature,jdbcType=VARCHAR},
+            payment = #{payment,jdbcType=VARCHAR},
+            requirement = #{requirement,jdbcType=VARCHAR},
+            return_policy = #{returnPolicy,jdbcType=VARCHAR},
+            tax = #{tax,jdbcType=VARCHAR},
+            site = #{site,jdbcType=VARCHAR},
+            shipping = #{shipping,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbaySiteDetail">
+        update ebay_site_detail
+        set listing_feature = #{listingFeature,jdbcType=VARCHAR},
+            payment = #{payment,jdbcType=VARCHAR},
+            requirement = #{requirement,jdbcType=VARCHAR},
+            return_policy = #{returnPolicy,jdbcType=VARCHAR},
+            tax = #{tax,jdbcType=VARCHAR},
+            site = #{site,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbaySiteDetail" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from ebay_site_detail
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="listingFeature != null">
+                 and listing_feature = #{listingFeature,jdbcType=VARCHAR}
+            </if>
+            <if test="payment != null">
+                 and payment = #{payment,jdbcType=VARCHAR}
+            </if>
+            <if test="requirement != null">
+                 and requirement = #{requirement,jdbcType=VARCHAR}
+            </if>
+            <if test="returnPolicy != null">
+                 and return_policy = #{returnPolicy,jdbcType=VARCHAR}
+            </if>
+            <if test="tax != null">
+                 and tax = #{tax,jdbcType=VARCHAR}
+            </if>
+            <if test="site != null">
+                 and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="shipping != null">
+                 and shipping = #{shipping,jdbcType=LONGVARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

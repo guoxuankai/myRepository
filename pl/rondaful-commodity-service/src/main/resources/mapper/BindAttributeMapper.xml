@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.BindAttributeMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.BindAttribute">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="erp_attr_name" jdbcType="VARCHAR" property="erpAttrName" />
+    <result column="erp_attr_value" jdbcType="VARCHAR" property="erpAttrValue" />
+    <result column="attr_cn_name" jdbcType="VARCHAR" property="attrCnName" />
+    <result column="attr_en_name" jdbcType="VARCHAR" property="attrEnName" />
+    <result column="attr_cn_value" jdbcType="VARCHAR" property="attrCnValue" />
+    <result column="attr_en_value" jdbcType="VARCHAR" property="attrEnValue" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, erp_attr_name, erp_attr_value, attr_cn_name, attr_en_name, attr_cn_value, attr_en_value
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_bind_attribute
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_bind_attribute
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.BindAttribute">
+    insert into t_bind_attribute (id, erp_attr_name, erp_attr_value, 
+      attr_cn_name, attr_en_name, attr_cn_value, 
+      attr_en_value)
+    values (#{id,jdbcType=BIGINT}, #{erpAttrName,jdbcType=VARCHAR}, #{erpAttrValue,jdbcType=VARCHAR}, 
+      #{attrCnName,jdbcType=VARCHAR}, #{attrEnName,jdbcType=VARCHAR}, #{attrCnValue,jdbcType=VARCHAR}, 
+      #{attrEnValue,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.BindAttribute">
+    insert into t_bind_attribute
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="erpAttrName != null">
+        erp_attr_name,
+      </if>
+      <if test="erpAttrValue != null">
+        erp_attr_value,
+      </if>
+      <if test="attrCnName != null">
+        attr_cn_name,
+      </if>
+      <if test="attrEnName != null">
+        attr_en_name,
+      </if>
+      <if test="attrCnValue != null">
+        attr_cn_value,
+      </if>
+      <if test="attrEnValue != null">
+        attr_en_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="erpAttrName != null">
+        #{erpAttrName,jdbcType=VARCHAR},
+      </if>
+      <if test="erpAttrValue != null">
+        #{erpAttrValue,jdbcType=VARCHAR},
+      </if>
+      <if test="attrCnName != null">
+        #{attrCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="attrEnName != null">
+        #{attrEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="attrCnValue != null">
+        #{attrCnValue,jdbcType=VARCHAR},
+      </if>
+      <if test="attrEnValue != null">
+        #{attrEnValue,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.BindAttribute">
+    update t_bind_attribute
+    <set>
+      <if test="erpAttrName != null">
+        erp_attr_name = #{erpAttrName,jdbcType=VARCHAR},
+      </if>
+      <if test="erpAttrValue != null">
+        erp_attr_value = #{erpAttrValue,jdbcType=VARCHAR},
+      </if>
+      <if test="attrCnName != null">
+        attr_cn_name = #{attrCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="attrEnName != null">
+        attr_en_name = #{attrEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="attrCnValue != null">
+        attr_cn_value = #{attrCnValue,jdbcType=VARCHAR},
+      </if>
+      <if test="attrEnValue != null">
+        attr_en_value = #{attrEnValue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.BindAttribute">
+    update t_bind_attribute
+    set erp_attr_name = #{erpAttrName,jdbcType=VARCHAR},
+      erp_attr_value = #{erpAttrValue,jdbcType=VARCHAR},
+      attr_cn_name = #{attrCnName,jdbcType=VARCHAR},
+      attr_en_name = #{attrEnName,jdbcType=VARCHAR},
+      attr_cn_value = #{attrCnValue,jdbcType=VARCHAR},
+      attr_en_value = #{attrEnValue,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="getByErpNameAndValue" resultMap="BaseResultMap">
+	  select 
+      <include refid="Base_Column_List" />
+      from t_bind_attribute
+      where erp_attr_name=#{erpAttrName} and erp_attr_value=#{erpAttrValue}
+  </select>
+  
+  <select id="getByPlNameAndValue" resultMap="BaseResultMap">
+	  select 
+      <include refid="Base_Column_List" />
+      from t_bind_attribute
+      where attr_cn_name=#{attrCnName} and attr_cn_value=#{attrCnValue}
+  </select>
+  
+</mapper>

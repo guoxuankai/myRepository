@@ -1,0 +1,118 @@
+#应用名称
+spring:
+  application:
+    name: rondaful-user-service
+  #配置中心
+  cloud:
+    config:
+      profile: dev
+      name: config,default
+      username: rondaful
+      password: rondaful123
+      discovery:
+        enabled: true
+        service-id: rondaful-config-service
+      label: master
+
+  messages:
+    basename: i18n/message
+    cache-seconds: 3600
+    encoding: UTF-8
+
+  data:
+    mongodb:
+      host: 120.77.156.102
+      port: 27047
+      username: test201901
+      password: 123456Ronda
+      #authentication-database: testDB
+      database: testDB
+#免登陆请求
+system:
+  ignore:
+    login:
+      url: /test/**,/offline/**,/api/**,/rest/**,/log/**,/login/**,/provider/**,/protected/**, /findUserIdOrUserName/**,/home/login,/user/supplier/forget/**,/seller/user/forget/**,
+           /seller/user/apply,/area/code/**,/interior/service/**,/third/app/basic/**
+
+#应用端口
+server:
+  port: 8101
+
+#服务发现172.19.38.62
+eureka:
+  client:
+    serviceUrl:
+      #defaultZone: http://rondaful:rondaful123@172.19.43.62:8000/eureka/
+      defaultZone: http://rondaful:rondaful123@localhost:8000/eureka/
+    #刷新本地缓存时间
+    registryFetchIntervalSeconds: 5
+  instance:
+    status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}/rest/api/doc/index.html
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    prefer-ip-address: true
+    #服务过期时间配置,超过这个时间没有接收到心跳EurekaServer就会将这个实例剔除
+    lease-expiration-duration-in-seconds: 15
+    #服务刷新时间配置，每隔这个时间会主动心跳一次
+    lease-renewal-interval-in-seconds: 5
+
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: rondaful
+    password: rondaful123
+
+
+
+
+---
+spring:
+  profiles: test
+  cloud:
+    config:
+      profile: test
+
+  data:
+    mongodb:
+      host: 192.168.0.247
+      port: 27047
+      username: test201901
+      password: 123456Ronda
+      authentication-database: testDB
+
+eureka:
+  client:
+    serviceUrl:
+      #defaultZone: http://rondaful:rondaful123@172.16.2.203:8000/eureka/
+      defaultZone: http://rondaful:rondaful123@172.16.2.203:8000/eureka/
+
+logging:
+  level: info
+
+
+---
+
+server:
+  port: 50110
+
+spring:
+  profiles: prod
+  cloud:
+    config:
+      profile: prod
+
+  data:
+    mongodb:
+      host: 192.168.0.247
+      port: 27047
+      username: prod201901
+      password: 123456Ronda!@#
+      database: prodDB
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://rondaful:rondaful123@192.168.0.4:50105/eureka/
+logging:
+  level: error

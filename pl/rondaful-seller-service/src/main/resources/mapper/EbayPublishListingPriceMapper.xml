@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayPublishListingPriceMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayPublishListingPrice">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="listing_id" jdbcType="BIGINT" property="listingId" />
+        <result column="start_price" jdbcType="DECIMAL" property="startPrice" />
+        <result column="best_offer_enabled" jdbcType="BIT" property="bestOfferEnabled" />
+        <result column="auto_accept_price" jdbcType="DECIMAL" property="autoAcceptPrice" />
+        <result column="minimum_best_offer_price" jdbcType="DECIMAL" property="minimumBestOfferPrice" />
+        <result column="buy_it_now_price" jdbcType="DECIMAL" property="buyItNowPrice" />
+        <result column="floor_price" jdbcType="DECIMAL" property="floorPrice" />
+        <result column="productReferenceID" jdbcType="VARCHAR" property="productreferenceid" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, start_price, best_offer_enabled, auto_accept_price, minimum_best_offer_price, 
+        buy_it_now_price, floor_price, productReferenceID
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_price
+        where listing_id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from ebay_publish_listing_price
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByListingId" parameterType="java.lang.Long">
+        delete from ebay_publish_listing_price
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingPrice">
+        insert into ebay_publish_listing_price (id, listing_id, start_price, 
+            best_offer_enabled, auto_accept_price, minimum_best_offer_price, 
+            buy_it_now_price, floor_price, productReferenceID
+            )
+        values (#{id,jdbcType=BIGINT}, #{listingId,jdbcType=BIGINT}, #{startPrice,jdbcType=DECIMAL}, 
+            #{bestOfferEnabled,jdbcType=BIT}, #{autoAcceptPrice,jdbcType=DECIMAL}, #{minimumBestOfferPrice,jdbcType=DECIMAL}, 
+            #{buyItNowPrice,jdbcType=DECIMAL}, #{floorPrice,jdbcType=DECIMAL}, #{productreferenceid,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingPrice">
+        insert into ebay_publish_listing_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="startPrice != null">
+                start_price,
+            </if>
+            <if test="bestOfferEnabled != null">
+                best_offer_enabled,
+            </if>
+            <if test="autoAcceptPrice != null">
+                auto_accept_price,
+            </if>
+            <if test="minimumBestOfferPrice != null">
+                minimum_best_offer_price,
+            </if>
+            <if test="buyItNowPrice != null">
+                buy_it_now_price,
+            </if>
+            <if test="floorPrice != null">
+                floor_price,
+            </if>
+            <if test="productreferenceid != null">
+                productReferenceID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="startPrice != null">
+                #{startPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="bestOfferEnabled != null">
+                #{bestOfferEnabled,jdbcType=BIT},
+            </if>
+            <if test="autoAcceptPrice != null">
+                #{autoAcceptPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="minimumBestOfferPrice != null">
+                #{minimumBestOfferPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="buyItNowPrice != null">
+                #{buyItNowPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="floorPrice != null">
+                #{floorPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="productreferenceid != null">
+                #{productreferenceid,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingPrice">
+        update ebay_publish_listing_price
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="startPrice != null">
+                start_price = #{startPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="bestOfferEnabled != null">
+                best_offer_enabled = #{bestOfferEnabled,jdbcType=BIT},
+            </if>
+            <if test="autoAcceptPrice != null">
+                auto_accept_price = #{autoAcceptPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="minimumBestOfferPrice != null">
+                minimum_best_offer_price = #{minimumBestOfferPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="buyItNowPrice != null">
+                buy_it_now_price = #{buyItNowPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="floorPrice != null">
+                floor_price = #{floorPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="productreferenceid != null">
+                productReferenceID = #{productreferenceid,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingPrice">
+        update ebay_publish_listing_price
+        set listing_id = #{listingId,jdbcType=BIGINT},
+            start_price = #{startPrice,jdbcType=DECIMAL},
+            best_offer_enabled = #{bestOfferEnabled,jdbcType=BIT},
+            auto_accept_price = #{autoAcceptPrice,jdbcType=DECIMAL},
+            minimum_best_offer_price = #{minimumBestOfferPrice,jdbcType=DECIMAL},
+            buy_it_now_price = #{buyItNowPrice,jdbcType=DECIMAL},
+            floor_price = #{floorPrice,jdbcType=DECIMAL},
+            productReferenceID = #{productreferenceid,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayPublishListingPrice" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_publish_listing_price
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="listingId != null and listingId != ''">
+                 and listing_id = #{listingId,jdbcType=BIGINT}
+            </if>
+            <if test="startPrice != null and startPrice != ''">
+                 and start_price = #{startPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="bestOfferEnabled != null and bestOfferEnabled != ''">
+                 and best_offer_enabled = #{bestOfferEnabled,jdbcType=BIT}
+            </if>
+            <if test="autoAcceptPrice != null and autoAcceptPrice != ''">
+                 and auto_accept_price = #{autoAcceptPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="minimumBestOfferPrice != null and minimumBestOfferPrice != ''">
+                 and minimum_best_offer_price = #{minimumBestOfferPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="buyItNowPrice != null and buyItNowPrice != ''">
+                 and buy_it_now_price = #{buyItNowPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="floorPrice != null and floorPrice != ''">
+                 and floor_price = #{floorPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="productreferenceid != null and productreferenceid != ''">
+                 and productReferenceID = #{productreferenceid,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>

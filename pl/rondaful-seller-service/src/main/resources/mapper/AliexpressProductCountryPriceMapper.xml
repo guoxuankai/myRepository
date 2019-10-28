@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.AliexpressProductCountryPriceMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.AliexpressProductCountryPrice">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="listing_id" jdbcType="BIGINT" property="listingId" />
+        <result column="smt_sku_id" jdbcType="VARCHAR" property="smtSkuId" />
+        <result column="pl_sku" jdbcType="VARCHAR" property="plSku" />
+        <result column="country_id" jdbcType="BIGINT" property="countryId" />
+        <result column="country_name" jdbcType="VARCHAR" property="countryName" />
+        <result column="colour_id" jdbcType="BIGINT" property="colourId" />
+        <result column="size_id" jdbcType="BIGINT" property="sizeId" />
+        <result column="sign_bit" jdbcType="VARCHAR" property="signBit" />
+        <result column="pricing_range" jdbcType="DECIMAL" property="pricingRange" />
+        <result column="retail_price_start" jdbcType="DECIMAL" property="retailPriceStart" />
+        <result column="retail_price_end" jdbcType="DECIMAL" property="retailPriceEnd" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, listing_id, pl_sku, country_id, country_name, colour_id, size_id, sign_bit, pricing_range, smt_sku_id,
+        retail_price_start, retail_price_end, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_product_country_price
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from aliexpress_product_country_price
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.AliexpressProductCountryPrice">
+        insert into aliexpress_product_country_price (id, listing_id, pl_sku, 
+            country_id, country_name, colour_id, 
+            size_id, sign_bit, pricing_range, 
+            retail_price_start, retail_price_end, create_time
+            )
+        values (#{id,jdbcType=BIGINT}, #{listingId,jdbcType=BIGINT}, #{plSku,jdbcType=VARCHAR}, 
+            #{countryId,jdbcType=BIGINT}, #{countryName,jdbcType=VARCHAR}, #{colourId,jdbcType=BIGINT}, 
+            #{sizeId,jdbcType=BIGINT}, #{signBit,jdbcType=VARCHAR}, #{pricingRange,jdbcType=DECIMAL}, 
+            #{retailPriceStart,jdbcType=DECIMAL}, #{retailPriceEnd,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressProductCountryPrice">
+        insert into aliexpress_product_country_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="listingId != null">
+                listing_id,
+            </if>
+            <if test="smtSkuId != null">
+                smt_sku_id,
+            </if>
+            <if test="plSku != null">
+                pl_sku,
+            </if>
+            <if test="countryId != null">
+                country_id,
+            </if>
+            <if test="countryName != null">
+                country_name,
+            </if>
+            <if test="colourId != null">
+                colour_id,
+            </if>
+            <if test="sizeId != null">
+                size_id,
+            </if>
+            <if test="signBit != null">
+                sign_bit,
+            </if>
+            <if test="pricingRange != null">
+                pricing_range,
+            </if>
+            <if test="retailPriceStart != null">
+                retail_price_start,
+            </if>
+            <if test="retailPriceEnd != null">
+                retail_price_end,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="listingId != null">
+                #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="smtSkuId != null">
+                #{smtSkuId,jdbcType=VARCHAR},
+            </if>
+            <if test="plSku != null">
+                #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="countryId != null">
+                #{countryId,jdbcType=BIGINT},
+            </if>
+            <if test="countryName != null">
+                #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="colourId != null">
+                #{colourId,jdbcType=BIGINT},
+            </if>
+            <if test="sizeId != null">
+                #{sizeId,jdbcType=BIGINT},
+            </if>
+            <if test="signBit != null">
+                #{signBit,jdbcType=VARCHAR},
+            </if>
+            <if test="pricingRange != null">
+                #{pricingRange,jdbcType=DECIMAL},
+            </if>
+            <if test="retailPriceStart != null">
+                #{retailPriceStart,jdbcType=DECIMAL},
+            </if>
+            <if test="retailPriceEnd != null">
+                #{retailPriceEnd,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.AliexpressProductCountryPrice">
+        update aliexpress_product_country_price
+        <set>
+            <if test="listingId != null">
+                listing_id = #{listingId,jdbcType=BIGINT},
+            </if>
+            <if test="smtSkuId != null">
+                smt_sku_id = #{smtSkuId,jdbcType=VARCHAR},
+            </if>
+            <if test="plSku != null">
+                pl_sku = #{plSku,jdbcType=VARCHAR},
+            </if>
+            <if test="countryId != null">
+                country_id = #{countryId,jdbcType=BIGINT},
+            </if>
+            <if test="countryName != null">
+                country_name = #{countryName,jdbcType=VARCHAR},
+            </if>
+            <if test="colourId != null">
+                colour_id = #{colourId,jdbcType=BIGINT},
+            </if>
+            <if test="sizeId != null">
+                size_id = #{sizeId,jdbcType=BIGINT},
+            </if>
+            <if test="signBit != null">
+                sign_bit = #{signBit,jdbcType=VARCHAR},
+            </if>
+            <if test="pricingRange != null">
+                pricing_range = #{pricingRange,jdbcType=DECIMAL},
+            </if>
+            <if test="retailPriceStart != null">
+                retail_price_start = #{retailPriceStart,jdbcType=DECIMAL},
+            </if>
+            <if test="retailPriceEnd != null">
+                retail_price_end = #{retailPriceEnd,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.AliexpressProductCountryPrice">
+        update aliexpress_product_country_price
+        set listing_id = #{listingId,jdbcType=BIGINT},
+            pl_sku = #{plSku,jdbcType=VARCHAR},
+            country_id = #{countryId,jdbcType=BIGINT},
+            country_name = #{countryName,jdbcType=VARCHAR},
+            colour_id = #{colourId,jdbcType=BIGINT},
+            size_id = #{sizeId,jdbcType=BIGINT},
+            sign_bit = #{signBit,jdbcType=VARCHAR},
+            pricing_range = #{pricingRange,jdbcType=DECIMAL},
+            retail_price_start = #{retailPriceStart,jdbcType=DECIMAL},
+            retail_price_end = #{retailPriceEnd,jdbcType=DECIMAL},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.AliexpressProductCountryPrice" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from aliexpress_product_country_price
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="listingId != null and listingId != ''">
+                 and listing_id = #{listingId,jdbcType=BIGINT}
+            </if>
+            <if test="plSku != null and plSku != ''">
+                 and pl_sku = #{plSku,jdbcType=VARCHAR}
+            </if>
+            <if test="countryId != null and countryId != ''">
+                 and country_id = #{countryId,jdbcType=BIGINT}
+            </if>
+            <if test="countryName != null and countryName != ''">
+                 and country_name = #{countryName,jdbcType=VARCHAR}
+            </if>
+            <if test="colourId != null and colourId != ''">
+                 and colour_id = #{colourId,jdbcType=BIGINT}
+            </if>
+            <if test="sizeId != null and sizeId != ''">
+                 and size_id = #{sizeId,jdbcType=BIGINT}
+            </if>
+            <if test="signBit != null and signBit != ''">
+                 and sign_bit = #{signBit,jdbcType=VARCHAR}
+            </if>
+            <if test="pricingRange != null and pricingRange != ''">
+                 and pricing_range = #{pricingRange,jdbcType=DECIMAL}
+            </if>
+            <if test="retailPriceStart != null and retailPriceStart != ''">
+                 and retail_price_start = #{retailPriceStart,jdbcType=DECIMAL}
+            </if>
+            <if test="retailPriceEnd != null and retailPriceEnd != ''">
+                 and retail_price_end = #{retailPriceEnd,jdbcType=DECIMAL}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+    <select id="getProductCountryPriceByPublishListingId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from aliexpress_product_country_price
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </select>
+
+
+    <delete id="deleteByListingId" parameterType="java.lang.Long">
+        delete from aliexpress_product_country_price
+        where listing_id = #{listingId,jdbcType=BIGINT}
+    </delete>
+
+</mapper>

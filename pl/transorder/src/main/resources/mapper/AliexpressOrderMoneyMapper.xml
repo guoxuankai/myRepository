@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.transorder.mapper.AliexpressOrderMoneyMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderMoney">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+        <result column="pay_amount_by_settlement_cur" jdbcType="DECIMAL" property="payAmountBySettlementCur" />
+        <result column="gmt_pay_time" jdbcType="TIMESTAMP" property="gmtPayTime" />
+        <result column="settlement_currency" jdbcType="VARCHAR" property="settlementCurrency" />
+        <result column="payment_type" jdbcType="VARCHAR" property="paymentType" />
+        <result column="fund_status" jdbcType="VARCHAR" property="fundStatus" />
+        <result column="loan_status" jdbcType="VARCHAR" property="loanStatus" />
+        <result column="loan_time" jdbcType="TIMESTAMP" property="loanTime" />
+        <result column="loan_amount" jdbcType="DECIMAL" property="loanAmount" />
+        <result column="loan_code" jdbcType="VARCHAR" property="loanCode" />
+        <result column="refund_status" jdbcType="VARCHAR" property="refundStatus" />
+        <result column="refund_amount" jdbcType="DECIMAL" property="refundAmount" />
+        <result column="refund_amount_code" jdbcType="VARCHAR" property="refundAmountCode" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="version" jdbcType="BIGINT" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, order_id, pay_amount_by_settlement_cur, gmt_pay_time, settlement_currency, payment_type, 
+        fund_status, loan_status, loan_time, loan_amount, loan_code, refund_status, refund_amount, 
+        refund_amount_code, create_time, update_time, version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_aliexpress_order_money
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_aliexpress_order_money
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderMoney">
+        insert into t_aliexpress_order_money (id, order_id, pay_amount_by_settlement_cur, 
+            gmt_pay_time, settlement_currency, payment_type, 
+            fund_status, loan_status, loan_time, 
+            loan_amount, loan_code, refund_status, 
+            refund_amount, refund_amount_code, create_time, 
+            update_time, version)
+        values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{payAmountBySettlementCur,jdbcType=DECIMAL}, 
+            #{gmtPayTime,jdbcType=TIMESTAMP}, #{settlementCurrency,jdbcType=VARCHAR}, #{paymentType,jdbcType=VARCHAR}, 
+            #{fundStatus,jdbcType=VARCHAR}, #{loanStatus,jdbcType=VARCHAR}, #{loanTime,jdbcType=TIMESTAMP}, 
+            #{loanAmount,jdbcType=DECIMAL}, #{loanCode,jdbcType=VARCHAR}, #{refundStatus,jdbcType=VARCHAR}, 
+            #{refundAmount,jdbcType=DECIMAL}, #{refundAmountCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+            #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=BIGINT})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderMoney">
+        insert into t_aliexpress_order_money
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="payAmountBySettlementCur != null">
+                pay_amount_by_settlement_cur,
+            </if>
+            <if test="gmtPayTime != null">
+                gmt_pay_time,
+            </if>
+            <if test="settlementCurrency != null">
+                settlement_currency,
+            </if>
+            <if test="paymentType != null">
+                payment_type,
+            </if>
+            <if test="fundStatus != null">
+                fund_status,
+            </if>
+            <if test="loanStatus != null">
+                loan_status,
+            </if>
+            <if test="loanTime != null">
+                loan_time,
+            </if>
+            <if test="loanAmount != null">
+                loan_amount,
+            </if>
+            <if test="loanCode != null">
+                loan_code,
+            </if>
+            <if test="refundStatus != null">
+                refund_status,
+            </if>
+            <if test="refundAmount != null">
+                refund_amount,
+            </if>
+            <if test="refundAmountCode != null">
+                refund_amount_code,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="payAmountBySettlementCur != null">
+                #{payAmountBySettlementCur,jdbcType=DECIMAL},
+            </if>
+            <if test="gmtPayTime != null">
+                #{gmtPayTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="settlementCurrency != null">
+                #{settlementCurrency,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentType != null">
+                #{paymentType,jdbcType=VARCHAR},
+            </if>
+            <if test="fundStatus != null">
+                #{fundStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="loanStatus != null">
+                #{loanStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="loanTime != null">
+                #{loanTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loanAmount != null">
+                #{loanAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="loanCode != null">
+                #{loanCode,jdbcType=VARCHAR},
+            </if>
+            <if test="refundStatus != null">
+                #{refundStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="refundAmount != null">
+                #{refundAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="refundAmountCode != null">
+                #{refundAmountCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderMoney">
+        update t_aliexpress_order_money
+        <set>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="payAmountBySettlementCur != null">
+                pay_amount_by_settlement_cur = #{payAmountBySettlementCur,jdbcType=DECIMAL},
+            </if>
+            <if test="gmtPayTime != null">
+                gmt_pay_time = #{gmtPayTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="settlementCurrency != null">
+                settlement_currency = #{settlementCurrency,jdbcType=VARCHAR},
+            </if>
+            <if test="paymentType != null">
+                payment_type = #{paymentType,jdbcType=VARCHAR},
+            </if>
+            <if test="fundStatus != null">
+                fund_status = #{fundStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="loanStatus != null">
+                loan_status = #{loanStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="loanTime != null">
+                loan_time = #{loanTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loanAmount != null">
+                loan_amount = #{loanAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="loanCode != null">
+                loan_code = #{loanCode,jdbcType=VARCHAR},
+            </if>
+            <if test="refundStatus != null">
+                refund_status = #{refundStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="refundAmount != null">
+                refund_amount = #{refundAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="refundAmountCode != null">
+                refund_amount_code = #{refundAmountCode,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderMoney">
+        update t_aliexpress_order_money
+        set order_id = #{orderId,jdbcType=VARCHAR},
+            pay_amount_by_settlement_cur = #{payAmountBySettlementCur,jdbcType=DECIMAL},
+            gmt_pay_time = #{gmtPayTime,jdbcType=TIMESTAMP},
+            settlement_currency = #{settlementCurrency,jdbcType=VARCHAR},
+            payment_type = #{paymentType,jdbcType=VARCHAR},
+            fund_status = #{fundStatus,jdbcType=VARCHAR},
+            loan_status = #{loanStatus,jdbcType=VARCHAR},
+            loan_time = #{loanTime,jdbcType=TIMESTAMP},
+            loan_amount = #{loanAmount,jdbcType=DECIMAL},
+            loan_code = #{loanCode,jdbcType=VARCHAR},
+            refund_status = #{refundStatus,jdbcType=VARCHAR},
+            refund_amount = #{refundAmount,jdbcType=DECIMAL},
+            refund_amount_code = #{refundAmountCode,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            version = #{version,jdbcType=BIGINT} + 1
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.transorder.entity.aliexpress.AliexpressOrderMoney" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_aliexpress_order_money
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                 and order_id = #{orderId,jdbcType=VARCHAR}
+            </if>
+            <if test="payAmountBySettlementCur != null and payAmountBySettlementCur != ''">
+                 and pay_amount_by_settlement_cur = #{payAmountBySettlementCur,jdbcType=DECIMAL}
+            </if>
+            <if test="gmtPayTime != null and gmtPayTime != ''">
+                 and gmt_pay_time = #{gmtPayTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="settlementCurrency != null and settlementCurrency != ''">
+                 and settlement_currency = #{settlementCurrency,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentType != null and paymentType != ''">
+                 and payment_type = #{paymentType,jdbcType=VARCHAR}
+            </if>
+            <if test="fundStatus != null and fundStatus != ''">
+                 and fund_status = #{fundStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="loanStatus != null and loanStatus != ''">
+                 and loan_status = #{loanStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="loanTime != null and loanTime != ''">
+                 and loan_time = #{loanTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="loanAmount != null and loanAmount != ''">
+                 and loan_amount = #{loanAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="loanCode != null and loanCode != ''">
+                 and loan_code = #{loanCode,jdbcType=VARCHAR}
+            </if>
+            <if test="refundStatus != null and refundStatus != ''">
+                 and refund_status = #{refundStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="refundAmount != null and refundAmount != ''">
+                 and refund_amount = #{refundAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="refundAmountCode != null and refundAmountCode != ''">
+                 and refund_amount_code = #{refundAmountCode,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                 and update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </select>
+</mapper>

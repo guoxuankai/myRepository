@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.SupplyChainCompanyMapper">
+
+    <resultMap id="BaseResultMapUser" type="com.rondaful.cloud.user.entity.User">
+        <id column="user_id" jdbcType="INTEGER" property="userid"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+        <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="enabled" jdbcType="VARCHAR" property="enabled"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="employee_id" jdbcType="VARCHAR" property="employeeId"/>
+        <result column="org_id" jdbcType="VARCHAR" property="orgId"/>
+        <result column="platform_type" jdbcType="INTEGER" property="platformType"/>
+        <result column="closed_circle" jdbcType="INTEGER" property="closedCircle"/>
+        <result column="linkman" jdbcType="VARCHAR" property="linkman"/>
+        <result column="site" jdbcType="VARCHAR" property="site"/>
+        <result column="supply_chain_company" jdbcType="VARCHAR" property="supplyChainCompany"/>
+        <result column="image_site" jdbcType="VARCHAR" property="imageSite"/>
+        <result column="company_name_user" jdbcType="VARCHAR" property="companyNameUser" />
+        <result column="qq" jdbcType="VARCHAR" property="qq" />
+        <result column="postcode" jdbcType="VARCHAR" property="postcode" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    user_id, parent_id, username,
+      phone, mobile, email, status,      
+     	 del_flag, login_name, enabled, remarks, create_date, update_date,  
+     		 employee_id, org_id, platform_type,closed_circle,linkman,site,supply_chain_company,image_site,company_name_user,qq,postcode
+  </sql>
+
+    <!-- 新增供应链公司 -->
+    <insert id="insertSupplyChainCompany" parameterType="com.rondaful.cloud.user.entity.User" useGeneratedKeys="true" keyProperty="userid">
+        insert into sys_supply_chain_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="loginName != null">
+                login_name,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="employeeId != null">
+                employee_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="platformType != null">
+                platform_type,
+            </if>
+            <if test="closedCircle != null">
+                closed_circle,
+            </if>
+            <if test="linkman != null">
+                linkman,
+            </if>
+            <if test="site != null">
+                site,
+            </if>
+            <if test="supplyChainCompany != null">
+                supply_chain_company,
+            </if>
+            <if test="imageSite != null">image_site,</if>
+            <if test="companyNameUser != null">company_name_user,</if>
+            <if test="qq != null">qq,</if>
+            <if test="postcode != null">postcode</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test="loginName != null">
+                #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="enabled != null">
+                #{enabled,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="employeeId != null">
+                #{employeeId,jdbcType=VARCHAR},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=VARCHAR},
+            </if>
+            <if test="platformType != null">
+                #{platformType,jdbcType=INTEGER},
+            </if>
+            <if test="closedCircle != null">
+                #{closedCircle, jdbcType=INTEGER},
+            </if>
+            <if test="linkman != null">
+                #{linkman,jdbcType=VARCHAR},
+            </if>
+            <if test="site != null">
+                #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompany != null">#{supplyChainCompany, jdbcType=VARCHAR},</if>
+            <if test="imageSite != null">#{imageSite,jdbcType=VARCHAR},</if>
+            <if test="companyNameUser != null">#{companyNameUser,jdbcType=VARCHAR},</if>
+            <if test="qq != null">#{qq,jdbcType=VARCHAR},</if>
+            <if test="postcode != null">#{postcode,jdbcType=VARCHAR}</if>
+        </trim>
+    </insert>
+
+    <!-- 供应链公司列表===>获取供应链公司基础信息 -->
+    <select id="getSupplierChainCompanyUser" parameterType="java.util.Map" resultType="com.rondaful.cloud.user.entity.SupplyChainCompanyListBean">
+        select
+        user_id as id,
+        company_name_user as supplyChainCompanyName,
+        linkman as linjman,
+        mobile as linkmanMoble,
+        phone as linkmanPhone,
+        status as status,
+        create_date as createDate,
+        update_date as updateDate,
+        enabled as createOptionPerson,
+        remarks as updateOptionPerson
+        from sys_supply_chain_user
+          <where>
+              <if test="status != null">status = #{status}</if>
+              <if test="supplyChainCompany != null">and company_name_user = #{supplyChainCompany}</if>
+              <if test="createDate != null">and create_date <![CDATA[>=]]> #{createDate} </if>
+              <if test="createDateClose != null">and #{createDateClose} <![CDATA[>=]]> create_date </if>
+              <if test="updateDateStart != null">and update_date <![CDATA[>=]]> #{updateDateStart} </if>
+              <if test="updateDateClose != null">and #{updateDateClose} <![CDATA[>=]]> update_date </if>
+          </where>
+        order by create_date desc
+    </select>
+
+    <!-- 供应链公司列表====>查询与此供应链公司相关联的卖家数量 -->
+    <select id="getSupplyChainCompanyBindingNumberSeller" parameterType="java.lang.Integer"  resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM sys_user_supplychain_and
+        <where>
+            <if test="companyinfoId != null">supplychaincompany_id = #{companyinfoId}</if>
+            <if test="sellerCode != null">and platform_type = #{sellerCode}</if>
+        </where>
+    </select>
+
+    <!-- 供应链公司列表====>查询与此供应链公司相关联的供应商数量 -->
+    <select id="getSupplyChainCompanyBindingNumberSupplier" parameterType="java.lang.Integer"  resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM sys_user_supplychain_and
+        <where>
+            <if test="companyinfoId != null">supplychaincompany_id = #{companyinfoId}</if>
+            <if test="supplierCode != null">and platform_type = #{supplierCode}</if>
+        </where>
+    </select>
+
+    <!-- 修改账号资料 Integer updateInfo(User user); 通过主键选择更新-->
+    <update id="supplierUpdateInfo" parameterType="com.rondaful.cloud.user.entity.User">
+        update sys_supplier_user
+        <set>
+            <if test=" username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test=" password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test=" phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test=" mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test=" email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test=" status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test=" delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test=" loginName != null">
+                login_name = #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test=" enabled != null">
+                enabled = #{enabled,jdbcType=CHAR},
+            </if>
+            <if test=" remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test=" updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test=" employeeId != null">
+                employee_id = #{employeeId,jdbcType=VARCHAR},
+            </if>
+            <if test=" orgId != null">
+                org_id = #{orgId,jdbcType=VARCHAR},
+            </if>
+            <if test=" platformType != null">
+                platform_type = #{platformType,jdbcType=INTEGER},
+            </if>
+            <if test="closedCircle != null ">
+                closed_circle = #{closedCircle, jdbcType=VARCHAR},
+            </if>
+            <if test="linkman != null">
+                linkman = #{linkman, jdbcType=VARCHAR},
+            </if>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompany != null">
+                supply_chain_company = #{supplyChainCompany, jdbcType=VARCHAR},
+            </if>
+            <if test="imageSite != null">
+                image_site = #{imageSite, jdbcType=VARCHAR}
+            </if>
+            <if test="companyNameUser != null">
+                company_name_user = #{companyNameUser, jdbcType=VARCHAR}
+            </if>
+            <if test="qq != null">
+                qq = #{qq, jdbcType=VARCHAR}
+            </if>
+            <if test="postcode != null">
+                postcode = #{postcode, jdbcType=VARCHAR}
+            </if>
+        </set>
+        where user_id = #{userid,jdbcType=INTEGER}
+    </update>
+
+    <!-- 供应链公司信息修改===>验证用户名是否存在,根据公司id查询信息 -->
+    <select id="isSupplyChainCompanyById" resultMap="BaseResultMapUser">
+      select <include refid="Base_Column_List"/> from sys_supply_chain_user
+        <where>
+            <if test="supplyChainCompanyId != null">user_id = #{supplyChainCompanyId,jdbcType=INTEGER} </if>
+        </where>
+    </select>
+
+    <!-- 供应链公司信息修改===>修改供应链公司基础数据-->
+    <update id="updateSupplyChainInfo" parameterType="com.rondaful.cloud.user.entity.User">
+        update sys_supply_chain_user
+        <set>
+            <if test=" username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test=" password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test=" phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test=" mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test=" email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test=" status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test=" delFlag != null">
+                del_flag = #{delFlag,jdbcType=INTEGER},
+            </if>
+            <if test=" loginName != null">
+                login_name = #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test=" enabled != null">
+                enabled = #{enabled,jdbcType=CHAR},
+            </if>
+            <if test=" remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test=" updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test=" employeeId != null">
+                employee_id = #{employeeId,jdbcType=VARCHAR},
+            </if>
+            <if test=" orgId != null">
+                org_id = #{orgId,jdbcType=VARCHAR},
+            </if>
+            <if test=" platformType != null">
+                platform_type = #{platformType,jdbcType=INTEGER},
+            </if>
+            <if test="closedCircle != null ">
+                closed_circle = #{closedCircle, jdbcType=VARCHAR},
+            </if>
+            <if test="linkman != null">
+                linkman = #{linkman, jdbcType=VARCHAR},
+            </if>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompany != null">
+                supply_chain_company = #{supplyChainCompany, jdbcType=VARCHAR},
+            </if>
+            <if test="imageSite != null">
+                image_site = #{imageSite, jdbcType=VARCHAR},
+            </if>
+            <if test="companyNameUser != null">
+                company_name_user = #{companyNameUser, jdbcType=VARCHAR},
+            </if>
+            <if test="qq != null">
+                qq = #{qq, jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                postcode = #{postcode, jdbcType=VARCHAR}
+            </if>
+        </set>
+        where user_id = #{userid,jdbcType=INTEGER}
+    </update>
+
+    <!-- 供应链公司个人中心===>获取基本信息 -->
+    <select id="getSupplyChainCompanyUser" resultMap="BaseResultMapUser" >
+      select <include refid="Base_Column_List"/> from sys_supply_chain_user
+        <where>
+            <if test="supplyChainCompanyId != null">user_id = #{supplyChainCompanyId}</if>
+        </where>
+    </select>
+
+    <!-- 供应链公司的停用和启用 -->
+    <update id="supplyChainCompanyStatusUpdate" parameterType="java.util.Map">
+        update sys_supply_chain_user
+        <set>
+            <if test="status != null">status = #{status}</if>
+        </set>
+        <where>
+            <if test="userIds != null">
+                user_id in (<foreach collection="userIds" item="userIds" index="index" separator=",">#{userIds}</foreach>)
+            </if>
+        </where>
+    </update>
+
+</mapper>

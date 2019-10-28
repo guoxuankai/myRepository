@@ -1,0 +1,2003 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.order.mapper.SysOrderNewMapper">
+
+    <!--手工标记订单异常  wujiachuang-->
+    <update id="updateMarkException" >
+         update tb_sys_order_new
+         set
+         mark_exception = #{markException,jdbcType=VARCHAR}
+         where
+         sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <!--不定查询采购订单-->
+    <select id="selectSysOrderByMultiCondition" resultType="com.rondaful.cloud.order.entity.system.SysOrderNew" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_new
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="errorOrder==1">
+                AND is_error_order = 'yes'
+            </if>
+            <if test="payStatus != null">
+                AND pay_status = #{payStatus,jdbcType=TINYINT}
+            </if>
+            <if test="sourceOrderId != null and sourceOrderId!=''">
+                AND source_order_id = #{sourceOrderId,jdbcType=VARCHAR}
+                OR  record_number = #{sourceOrderId,jdbcType=VARCHAR}
+            </if>
+            <choose>
+                <when test="orderSource == 0">
+                    AND order_source NOT IN (4,5,6)
+                </when>
+                <when test="orderSource != null and orderSource!=''">
+                    AND order_source = #{orderSource,jdbcType=TINYINT}
+                </when>
+            </choose>
+            <if test="shopNameIdLists.size() > 0">
+                AND platform_shop_id IN
+                <foreach collection="shopNameIdLists" item="shopNameId" index="index"
+                         open="(" close=")" separator=",">
+                    #{shopNameId}
+                </foreach>
+            </if>
+            <if test="plAccountIdsList.size() > 0">
+                AND seller_pl_id IN
+                <foreach collection="plAccountIdsList" item="plId" index="index"
+                         open="(" close=")" separator=",">
+                    #{plId}
+                </foreach>
+            </if>
+            <if test="sysOrderIdList.size() > 0">
+                AND sys_order_id IN
+                <foreach collection="sysOrderIdList" item="sysOrderId" index="index"
+                         open="(" close=")" separator=",">
+                    #{sysOrderId}
+                </foreach>
+            </if>
+            <if test="recordNumber!=null and recordNumber!='' ">
+                AND record_number = #{recordNumber,jdbcType=VARCHAR}
+            </if>
+            <if test= "isLogisticsAbnormal!=null and isLogisticsAbnormal!='' ">
+                AND is_error_order !=''
+            </if>
+            <if test="isAfterSaleOrder != 3 ">
+                AND is_after_sale_order != 0
+            </if>
+            <if test="plOrderStatus != 0 ">
+                AND order_delivery_status = #{plOrderStatus,jdbcType=TINYINT}
+            </if>
+            <if test="splittedOrMergedStatus != null and splittedOrMergedStatus != '' ">
+                AND splitted_or_merged = #{splittedOrMergedStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="startDate !=null and startDate !='' ">
+                <![CDATA[ and created_time  >=  #{startDate}  ]]>
+            </if>
+            <if test="endDate !=null and endDate!='' ">
+                <![CDATA[ and created_time <=  #{endDate}  ]]>
+            </if>
+            <if test="startTime!=null and endTime!=null and startTime!= '' and endTime != ''">
+                AND delivery_time between
+                #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+        ORDER BY created_time DESC
+        <if test="bindex !=null and num!='' ">
+            limit #{bindex,jdbcType=INTEGER} , #{num,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <!--订单拦截成功后重置支付ID和支付方式（针对作废前是已拦截状态的订单，待发货的不需要。都没付款）_WJC-->
+    <update id="updatePayIdAndPayMethod" parameterType="java.lang.String">
+        update tb_sys_order_new
+        <set>
+            pay_id = '',
+            pay_method = 0,
+            pay_status = 40
+        </set>
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <!--根据订单ID查询订单wujiachuang-->
+    <select id="queryOrderByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_new
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询已发货90天的订单_WJC-->
+    <select id="selectShippedSysOrder"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_new
+        where order_delivery_status = 5
+        AND DATE_SUB(CURDATE(),INTERVAL 3 MONTH) &gt;= DATE(delivery_time)
+    </select>
+
+    <!--根据订单ID更改订单状态wujiachuang-->
+    <update id="updateOrdersStatus">
+        update tb_sys_order_new
+        set order_delivery_status = #{orderStatus,jdbcType=TINYINT}
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <!--根据订单ID更改订单拆合状态-->
+    <update id="updateOrdersSplittedOrMerged">
+        update tb_sys_order_new
+        set splitted_or_merged = #{splittedOrMerged,jdbcType=TINYINT}
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <!--更改订单支付方式（取消作废用）wujiachuang-->
+    <update id="updateOrderPayMethod" parameterType="com.rondaful.cloud.order.entity.system.SysOrderNew">
+        update tb_sys_order_new
+        set
+                 order_delivery_status = #{orderDeliveryStatus,jdbcType=TINYINT},
+                 pay_status = #{payStatus,jdbcType=TINYINT},
+                 pay_method = #{payMethod,jdbcType=TINYINT}
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.order.entity.system.SysOrderNew">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId"/>
+        <result column="record_number" jdbcType="VARCHAR" property="recordNumber"/>
+        <result column="source_order_id" jdbcType="VARCHAR" property="sourceOrderId"/>
+        <result column="deliver_deadline" jdbcType="VARCHAR" property="deliverDeadline"/>
+        <result column="conver_sys_status" jdbcType="TINYINT" property="converSysStatus"/>
+        <result column="order_source" jdbcType="TINYINT" property="orderSource"/>
+        <result column="order_delivery_status" jdbcType="TINYINT" property="orderDeliveryStatus"/>
+        <result column="is_after_sale_order" jdbcType="TINYINT" property="isAfterSaleOrder"/>
+        <result column="platform_shop_id" jdbcType="INTEGER" property="platformShopId"/>
+        <result column="platform_seller_account" jdbcType="VARCHAR" property="platformSellerAccount"/>
+        <result column="shop_type" jdbcType="VARCHAR" property="shopType"/>
+        <result column="platform_seller_id" jdbcType="VARCHAR" property="platformSellerId"/>
+        <result column="seller_pl_id" jdbcType="INTEGER" property="sellerPlId"/>
+        <result column="seller_pl_account" jdbcType="VARCHAR" property="sellerPlAccount"/>
+        <result column="supply_chain_company_id" jdbcType="INTEGER" property="supplyChainCompanyId"/>
+        <result column="supply_chain_company_name" jdbcType="VARCHAR" property="supplyChainCompanyName"/>
+        <result column="total" jdbcType="DECIMAL" property="total"/>
+        <result column="order_amount" jdbcType="DECIMAL" property="orderAmount"/>
+        <result column="estimate_ship_cost" jdbcType="DECIMAL" property="estimateShipCost"/>
+        <result column="commodities_amount" jdbcType="DECIMAL" property="commoditiesAmount"/>
+        <result column="platform_total_price" jdbcType="DECIMAL" property="platformTotalPrice"/>
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId"/>
+        <result column="pay_id" jdbcType="VARCHAR" property="payId"/>
+        <result column="pay_status" jdbcType="TINYINT" property="payStatus"/>
+        <result column="pay_method" jdbcType="TINYINT" property="payMethod"/>
+        <result column="pay_time" jdbcType="VARCHAR" property="payTime"/>
+        <result column="order_time" jdbcType="VARCHAR" property="orderTime"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="delivery_time" jdbcType="VARCHAR" property="deliveryTime"/>
+        <result column="shipping_service_cost" jdbcType="DECIMAL" property="shippingServiceCost"/>
+        <result column="sys_shipping_discount" jdbcType="DECIMAL" property="sysShippingDiscount"/>
+        <result column="interest" jdbcType="DECIMAL" property="interest"/>
+        <result column="gross_margin" jdbcType="DECIMAL" property="grossMargin"/>
+        <result column="profit_margin" jdbcType="DECIMAL" property="profitMargin"/>
+        <result column="buyer_user_id" jdbcType="VARCHAR" property="buyerUserId"/>
+        <result column="buyer_name" jdbcType="VARCHAR" property="buyerName"/>
+        <result column="buyer_checkout_message" jdbcType="VARCHAR" property="buyerCheckoutMessage"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="mark_exception" jdbcType="VARCHAR" property="markException"/>
+        <result column="platform_commission_rate" jdbcType="DECIMAL" property="platformCommissionRate"/>
+        <result column="free_freight_type" jdbcType="TINYINT" property="freeFreightType"/>
+        <result column="splitted_or_merged" jdbcType="VARCHAR" property="splittedOrMerged"/>
+        <result column="is_error_order" jdbcType="VARCHAR" property="isErrorOrder"/>
+        <result column="is_convert_order" jdbcType="VARCHAR" property="isConvertOrder"/>
+    </resultMap>
+
+    <!--联合查询resultMap_ZJL-->
+    <resultMap id="BatchSysOrderMap" type="com.rondaful.cloud.order.entity.system.SysOrderNew">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId"/>
+        <result column="record_number" jdbcType="VARCHAR" property="recordNumber"/>
+        <result column="source_order_id" jdbcType="VARCHAR" property="sourceOrderId"/>
+        <result column="deliver_deadline" jdbcType="VARCHAR" property="deliverDeadline"/>
+        <result column="conver_sys_status" jdbcType="TINYINT" property="converSysStatus"/>
+        <result column="order_source" jdbcType="TINYINT" property="orderSource"/>
+        <result column="order_delivery_status" jdbcType="TINYINT" property="orderDeliveryStatus"/>
+        <result column="is_after_sale_order" jdbcType="TINYINT" property="isAfterSaleOrder"/>
+        <result column="platform_shop_id" jdbcType="INTEGER" property="platformShopId"/>
+        <result column="platform_seller_account" jdbcType="VARCHAR" property="platformSellerAccount"/>
+        <result column="shop_type" jdbcType="VARCHAR" property="shopType"/>
+        <result column="platform_seller_id" jdbcType="VARCHAR" property="platformSellerId"/>
+        <result column="seller_pl_id" jdbcType="INTEGER" property="sellerPlId"/>
+        <result column="seller_pl_account" jdbcType="VARCHAR" property="sellerPlAccount"/>
+        <result column="supply_chain_company_id" jdbcType="INTEGER" property="supplyChainCompanyId"/>
+        <result column="supply_chain_company_name" jdbcType="VARCHAR" property="supplyChainCompanyName"/>
+        <result column="total" jdbcType="DECIMAL" property="total"/>
+        <result column="order_amount" jdbcType="DECIMAL" property="orderAmount"/>
+        <result column="estimate_ship_cost" jdbcType="DECIMAL" property="estimateShipCost"/>
+        <result column="commodities_amount" jdbcType="DECIMAL" property="commoditiesAmount"/>
+        <result column="platform_total_price" jdbcType="DECIMAL" property="platformTotalPrice"/>
+        <result column="marketplace_id" jdbcType="VARCHAR" property="marketplaceId"/>
+        <result column="pay_id" jdbcType="VARCHAR" property="payId"/>
+        <result column="pay_status" jdbcType="TINYINT" property="payStatus"/>
+        <result column="pay_method" jdbcType="TINYINT" property="payMethod"/>
+        <result column="pay_time" jdbcType="VARCHAR" property="payTime"/>
+        <result column="order_time" jdbcType="VARCHAR" property="orderTime"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="delivery_time" jdbcType="VARCHAR" property="deliveryTime"/>
+        <result column="shipping_service_cost" jdbcType="DECIMAL" property="shippingServiceCost"/>
+        <result column="sys_shipping_discount" jdbcType="DECIMAL" property="sysShippingDiscount"/>
+        <result column="interest" jdbcType="DECIMAL" property="interest"/>
+        <result column="gross_margin" jdbcType="DECIMAL" property="grossMargin"/>
+        <result column="profit_margin" jdbcType="DECIMAL" property="profitMargin"/>
+        <result column="buyer_user_id" jdbcType="VARCHAR" property="buyerUserId"/>
+        <result column="buyer_name" jdbcType="VARCHAR" property="buyerName"/>
+        <result column="buyer_checkout_message" jdbcType="VARCHAR" property="buyerCheckoutMessage"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="mark_exception" jdbcType="VARCHAR" property="markException"/>
+        <result column="platform_commission_rate" jdbcType="DECIMAL" property="platformCommissionRate"/>
+        <result column="free_freight_type" jdbcType="TINYINT" property="freeFreightType"/>
+        <result column="splitted_or_merged" jdbcType="VARCHAR" property="splittedOrMerged"/>
+        <result column="is_error_order" jdbcType="TINYINT" property="isErrorOrder"/>
+        <result column="is_convert_order" jdbcType="VARCHAR" property="isConvertOrder"/>
+        <collection column="sys_order_id"
+                    ofType="com.rondaful.cloud.order.entity.SysOrderDetail"
+                    property="sysOrderDetails"
+                    select="getSysOrderDetailAnother">
+        </collection>
+        <collection column="sys_order_id"
+                    ofType="com.rondaful.cloud.order.entity.system.SysOrderPackage"
+                    property="sysOrderPackageList"
+                    select="getSysOrderPackageAnother">
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, sys_order_id, record_number, source_order_id, deliver_deadline, conver_sys_status, 
+        order_source, order_delivery_status, is_after_sale_order, platform_shop_id, platform_seller_account, 
+        shop_type, platform_seller_id, seller_pl_id, seller_pl_account, supply_chain_company_id, 
+        supply_chain_company_name, total, order_amount, estimate_ship_cost, commodities_amount,platform_total_price,
+        marketplace_id, pay_id, pay_status, pay_method, pay_time, order_time, created_time, 
+        delivery_time, shipping_service_cost, sys_shipping_discount, interest, gross_margin, 
+        profit_margin, buyer_user_id, buyer_name, buyer_checkout_message, create_date, create_by, 
+        update_date, update_by, remark, mark_exception,platform_commission_rate, free_freight_type,splitted_or_merged,is_error_order,is_convert_order
+    </sql>
+
+    <!--系统订单项SQL片段_WJC-->
+    <sql id="OrderDetail_Base_Column_List">
+        id,sys_order_id, source_order_id, source_order_line_item_id, order_line_item_id,
+        record_number, bulk, weight, item_id, item_cost, item_url, item_name,item_name_en, item_attr,
+        item_price, sku, sku_title, sku_quantity, sku_shipping_fee, fare_type_amount, supplier_id, supplier_name, supply_chain_company_id,
+        supply_chain_company_name, supplier_sku, supplier_sku_title, supplier_sku_price, record_number, create_date,
+        create_by, update_date, update_by, remark, source_sku, free_freight, is_after_sale
+    </sql>
+
+    <!--系统订单项结果集映射_WJC-->
+    <resultMap id="SysOrderDetailMap" type="com.rondaful.cloud.order.entity.SysOrderDetail">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId"/>
+        <result column="source_order_id" jdbcType="VARCHAR" property="sourceOrderId"/>
+        <result column="source_order_line_item_id" jdbcType="VARCHAR" property="sourceOrderLineItemId"/>
+        <result column="order_line_item_id" jdbcType="VARCHAR" property="orderLineItemId"/>
+        <result column="bulk" jdbcType="DECIMAL" property="bulk"/>
+        <result column="weight" jdbcType="DECIMAL" property="weight"/>
+        <result column="item_id" jdbcType="BIGINT" property="itemId"/>
+        <result column="item_cost" jdbcType="DECIMAL" property="itemCost"/>
+        <result column="item_url" jdbcType="VARCHAR" property="itemUrl"/>
+        <result column="item_name" jdbcType="VARCHAR" property="itemName"/>
+        <result column="item_name_en" jdbcType="VARCHAR" property="itemNameEn"/>
+        <result column="item_attr" jdbcType="VARCHAR" property="itemAttr"/>
+        <result column="item_price" jdbcType="DECIMAL" property="itemPrice"/>
+        <result column="sku" jdbcType="VARCHAR" property="sku"/>
+        <result column="sku_title" jdbcType="VARCHAR" property="skuTitle"/>
+        <result column="sku_quantity" jdbcType="INTEGER" property="skuQuantity"/>
+        <result column="sku_shipping_fee" jdbcType="DECIMAL" property="skuShippingFee"/>
+        <result column="fare_type_amount" jdbcType="VARCHAR" property="fareTypeAmount"/>
+        <result column="supplier_id" jdbcType="BIGINT" property="supplierId"/>
+        <result column="supplier_name" jdbcType="VARCHAR" property="supplierName"/>
+        <result column="supply_chain_company_id" jdbcType="INTEGER" property="supplyChainCompanyId"/>
+        <result column="supply_chain_company_name" jdbcType="VARCHAR" property="supplyChainCompanyName"/>
+        <result column="supplier_sku" jdbcType="VARCHAR" property="supplierSku"/>
+        <result column="supplier_sku_title" jdbcType="VARCHAR" property="supplierSkuTitle"/>
+        <result column="supplier_sku_price" jdbcType="VARCHAR" property="supplierSkuPrice"/>
+        <result column="record_number" jdbcType="INTEGER" property="recordNumber"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="source_sku" jdbcType="VARCHAR" property="sourceSku"/>
+        <result column="free_freight" jdbcType="TINYINT" property="freeFreight"/>
+        <result column="is_after_sale" jdbcType="TINYINT" property="isAfterSale"/>
+    </resultMap>
+
+    <resultMap id="OrderPackageBaseResultMap" type="com.rondaful.cloud.order.entity.system.SysOrderPackage">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="sys_order_id" jdbcType="VARCHAR" property="sysOrderId" />
+        <result column="source_order_id" jdbcType="VARCHAR" property="sourceOrderId" />
+        <result column="order_track_id" jdbcType="VARCHAR" property="orderTrackId" />
+        <result column="package_status" jdbcType="VARCHAR" property="packageStatus" />
+        <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
+        <result column="delivery_warehouse_id" jdbcType="INTEGER" property="deliveryWarehouseId" />
+        <result column="delivery_warehouse_code" jdbcType="VARCHAR" property="deliveryWarehouseCode" />
+        <result column="delivery_warehouse" jdbcType="VARCHAR" property="deliveryWarehouse" />
+        <result column="shipping_carrier_used_code" jdbcType="VARCHAR" property="shippingCarrierUsedCode" />
+        <result column="shipping_carrier_used" jdbcType="VARCHAR" property="shippingCarrierUsed" />
+        <result column="delivery_method_code" jdbcType="VARCHAR" property="deliveryMethodCode" />
+        <result column="logistics_strategy" jdbcType="VARCHAR" property="logisticsStrategy" />
+        <result column="delivery_method" jdbcType="VARCHAR" property="deliveryMethod" />
+        <result column="amazon_carrier_name" jdbcType="VARCHAR" property="amazonCarrierName" />
+        <result column="amazon_shipping_method" jdbcType="VARCHAR" property="amazonShippingMethod" />
+        <result column="ebay_carrier_name" jdbcType="VARCHAR" property="ebayCarrierName" />
+        <result column="actual_ship_cost" jdbcType="DECIMAL" property="actualShipCost" />
+        <result column="additional_freight_rate" jdbcType="DECIMAL" property="additionalFreightRate" />
+        <result column="estimate_ship_cost" jdbcType="DECIMAL" property="estimateShipCost" />
+        <result column="ship_track_number" jdbcType="VARCHAR" property="shipTrackNumber" />
+        <result column="ship_order_id" jdbcType="VARCHAR" property="shipOrderId" />
+        <result column="reference_id" jdbcType="VARCHAR" property="referenceId" />
+        <result column="warehouse_ship_exception" jdbcType="VARCHAR" property="warehouseShipException" />
+        <result column="operate_status" jdbcType="VARCHAR" property="operateStatus" />
+        <result column="operate_order_track_id" jdbcType="VARCHAR" property="operateOrderTrackId" />
+        <result column="operate_sys_order_id" jdbcType="VARCHAR" property="operateSysOrderId" />
+        <result column="is_show" jdbcType="VARCHAR" property="isShow" />
+        <result column="calculate_fee_info" jdbcType="VARCHAR" property="calculateFeeInfo" />
+        <result column="creater" jdbcType="VARCHAR" property="creater" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="modifier" jdbcType="VARCHAR" property="modifier" />
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    </resultMap>
+
+    <resultMap id="WarehouseExceptionResultMap" type="com.rondaful.cloud.order.entity.WarehouseShipExceptionVo">
+        <result column="order_track_id" jdbcType="VARCHAR" property="orderTrackId" />
+        <result column="warehouse_ship_exception" jdbcType="VARCHAR" property="warehouseShipException" />
+    </resultMap>
+
+    <sql id="OrderPackage_Base_Column_List">
+        id, sys_order_id, source_order_id, order_track_id, package_status, delivery_time,
+        delivery_warehouse_id, delivery_warehouse_code, delivery_warehouse, shipping_carrier_used_code,
+        shipping_carrier_used, delivery_method_code, logistics_strategy, delivery_method,
+        amazon_carrier_name, amazon_shipping_method, ebay_carrier_name, actual_ship_cost,
+        additional_freight_rate, estimate_ship_cost, ship_track_number, ship_order_id, reference_id,
+        warehouse_ship_exception, operate_status, operate_order_track_id, operate_sys_order_id,
+        is_show, calculate_fee_info, creater, create_time, modifier, modified_time
+    </sql>
+
+    <!-- 星商改版  author:lz  date:2019-07-29 19:30 -->
+    <select id="selectSysOrderBySysOrderIdAndSourceOrderId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_new
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+        <if test="sourceOrderId != null and sourceOrderId != ''">
+            AND source_order_id = #{sourceOrderId,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!--联合查询查询系统订单项_ZJL-->
+    <select id="getSysOrderDetailAnother" parameterType="java.lang.String" resultMap="SysOrderDetailMap">
+        SELECT
+        <include refid="OrderDetail_Base_Column_List"/>
+        FROM tb_sys_order_detail
+        WHERE sys_order_id = #{sys_order_id,jdbcType=VARCHAR}
+        AND bind_status != 'remove'
+    </select>
+
+    <!--联合查询查询包裹_ljt-->
+    <select id="getSysOrderPackageAnother" parameterType="java.lang.String" resultMap="OrderPackageBaseResultMap">
+        SELECT
+        <include refid="OrderPackage_Base_Column_List"/>
+        FROM tb_sys_order_package
+        WHERE sys_order_id = #{sys_order_id,jdbcType=VARCHAR}
+    </select>
+
+
+    <!-- 批量插入 - chenjiangxin -->
+    <insert id="insertBatchSelective">
+        insert into tb_sys_order_new (sys_order_id, record_number,
+        source_order_id, deliver_deadline, conver_sys_status,
+        order_source, order_delivery_status, is_after_sale_order,
+        platform_shop_id, platform_seller_account,
+        shop_type, platform_seller_id, seller_pl_id,
+        seller_pl_account, supply_chain_company_id,
+        supply_chain_company_name, total, order_amount,
+        estimate_ship_cost, commodities_amount,platform_total_price,
+        marketplace_id, pay_id, pay_status,
+        pay_method, pay_time, order_time,
+        created_time, delivery_time, shipping_service_cost,
+        sys_shipping_discount, interest, gross_margin,
+        profit_margin, buyer_user_id, buyer_name,
+        buyer_checkout_message, create_by,
+        update_by, remark,
+        platform_commission_rate, free_freight_type,is_convert_order
+        )
+        values
+        <foreach collection="orderList" item="item" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <choose>
+                    <when test="item.sysOrderId != null">
+                        #{item.sysOrderId,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.recordNumber != null">
+                        #{item.recordNumber,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.sourceOrderId != null">
+                        #{item.sourceOrderId,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.deliverDeadline != null">
+                        #{item.deliverDeadline,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.converSysStatus != null">
+                        #{item.converSysStatus,jdbcType=TINYINT},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.orderSource != null">
+                        #{item.orderSource,jdbcType=TINYINT},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.orderDeliveryStatus != null">
+                        #{item.orderDeliveryStatus,jdbcType=TINYINT},
+                    </when>
+                    <otherwise>
+                        1,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.isAfterSaleOrder != null">
+                        #{item.isAfterSaleOrder,jdbcType=TINYINT},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.platformShopId != null">
+                        #{item.platformShopId,jdbcType=INTEGER},
+                    </when>
+                    <otherwise>
+                        null,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.platformSellerAccount != null">
+                        #{item.platformSellerAccount,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.shopType != null">
+                        #{item.shopType,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.platformSellerId != null">
+                        #{item.platformSellerId,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.sellerPlId != null">
+                        #{item.sellerPlId,jdbcType=INTEGER},
+                    </when>
+                    <otherwise>
+                        null,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.sellerPlAccount != null">
+                        #{item.sellerPlAccount,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplyChainCompanyId != null">
+                        #{item.supplyChainCompanyId,jdbcType=INTEGER},
+                    </when>
+                    <otherwise>
+                        null,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplyChainCompanyName != null">
+                        #{item.supplyChainCompanyName,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                        #{item.total,jdbcType=DECIMAL},
+                        #{item.orderAmount,jdbcType=DECIMAL},
+                        #{item.estimateShipCost,jdbcType=DECIMAL},
+                <choose>
+                    <when test="item.commoditiesAmount != null">
+                        #{item.commoditiesAmount,jdbcType=DECIMAL},
+                    </when>
+                    <otherwise>
+                        0.00,
+                    </otherwise>
+                </choose>
+                        #{item.platformTotalPrice,jdbcType=DECIMAL},
+                <choose>
+                    <when test="item.marketplaceId != null">
+                        #{item.marketplaceId,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.payId != null">
+                        #{item.payId,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.payStatus != null">
+                        #{item.payStatus,jdbcType=TINYINT},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.payMethod != null">
+                        #{item.payMethod,jdbcType=TINYINT},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.payTime != null">
+                        #{item.payTime,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.orderTime != null">
+                        #{item.orderTime,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.createdTime != null">
+                        #{item.createdTime,jdbcType=TIMESTAMP},
+                    </when>
+                    <otherwise>
+                        null,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.deliveryTime != null">
+                        #{item.deliveryTime,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.shippingServiceCost != null">
+                        #{item.shippingServiceCost,jdbcType=DECIMAL},
+                    </when>
+                    <otherwise>
+                        0.00,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.sysShippingDiscount != null">
+                        #{item.sysShippingDiscount,jdbcType=DECIMAL},
+                    </when>
+                    <otherwise>
+                        0.00,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.interest != null">
+                        #{item.interest,jdbcType=DECIMAL},
+                    </when>
+                    <otherwise>
+                        0.00,
+                    </otherwise>
+                </choose>
+                        #{item.grossMargin,jdbcType=DECIMAL},
+                        #{item.profitMargin,jdbcType=DECIMAL},
+                <choose>
+                    <when test="item.buyerUserId != null">
+                        #{item.buyerUserId,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.buyerName != null">
+                        #{item.buyerName,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.buyerCheckoutMessage != null">
+                        #{item.buyerCheckoutMessage,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.createBy != null">
+                        #{item.createBy,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.updateBy != null">
+                        #{item.updateBy,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.remark != null">
+                        #{item.remark,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        '',
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.platformCommissionRate != null">
+                        #{item.platformCommissionRate,jdbcType=DECIMAL},
+                    </when>
+                    <otherwise>
+                        0.00,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.freeFreightType != null">
+                        #{item.freeFreightType,jdbcType=TINYINT},
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.isConvertOrder != null">
+                        #{item.isConvertOrder,jdbcType=VARCHAR},
+                    </when>
+                    <otherwise>
+                        'no',
+                    </otherwise>
+                </choose>
+            </trim>
+        </foreach>
+
+    </insert>
+
+    <update id="updateBySysOrderIdSelective" parameterType="com.rondaful.cloud.order.entity.system.SysOrderNew">
+        update tb_sys_order_new
+        <set>
+            <if test="recordNumber != null">
+                record_number = #{recordNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceOrderId != null">
+                source_order_id = #{sourceOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="deliverDeadline != null">
+                deliver_deadline = #{deliverDeadline,jdbcType=VARCHAR},
+            </if>
+            <if test="converSysStatus != null">
+                conver_sys_status = #{converSysStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderSource != null">
+                order_source = #{orderSource,jdbcType=TINYINT},
+            </if>
+            <if test="orderDeliveryStatus != null">
+                order_delivery_status = #{orderDeliveryStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isAfterSaleOrder != null">
+                is_after_sale_order = #{isAfterSaleOrder,jdbcType=TINYINT},
+            </if>
+            <if test="platformShopId != null">
+                platform_shop_id = #{platformShopId,jdbcType=INTEGER},
+            </if>
+            <if test="platformSellerAccount != null">
+                platform_seller_account = #{platformSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="shopType != null">
+                shop_type = #{shopType,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSellerId != null">
+                platform_seller_id = #{platformSellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerPlId != null">
+                seller_pl_id = #{sellerPlId,jdbcType=INTEGER},
+            </if>
+            <if test="sellerPlAccount != null">
+                seller_pl_account = #{sellerPlAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompanyId != null">
+                supply_chain_company_id = #{supplyChainCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="supplyChainCompanyName != null">
+                supply_chain_company_name = #{supplyChainCompanyName,jdbcType=VARCHAR},
+            </if>
+            <if test="total != null">
+                total = #{total,jdbcType=DECIMAL},
+            </if>
+            <if test="orderAmount != null">
+                order_amount = #{orderAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="estimateShipCost != null">
+                estimate_ship_cost = #{estimateShipCost,jdbcType=DECIMAL},
+            </if>
+            <if test="commoditiesAmount != null">
+                commodities_amount = #{commoditiesAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="platformTotalPrice != null">
+                platform_total_price = #{platformTotalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="payId != null">
+                pay_id = #{payId,jdbcType=VARCHAR},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus,jdbcType=TINYINT},
+            </if>
+            <if test="payMethod != null">
+                pay_method = #{payMethod,jdbcType=TINYINT},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime,jdbcType=VARCHAR},
+            </if>
+            <if test="orderTime != null">
+                order_time = #{orderTime,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingServiceCost != null">
+                shipping_service_cost = #{shippingServiceCost,jdbcType=DECIMAL},
+            </if>
+            <if test="sysShippingDiscount != null">
+                sys_shipping_discount = #{sysShippingDiscount,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null">
+                interest = #{interest,jdbcType=DECIMAL},
+            </if>
+            <if test="grossMargin != null">
+                gross_margin = #{grossMargin,jdbcType=DECIMAL},
+            </if>
+            <if test="profitMargin != null">
+                profit_margin = #{profitMargin,jdbcType=DECIMAL},
+            </if>
+            <if test="buyerUserId != null">
+                buyer_user_id = #{buyerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerName != null">
+                buyer_name = #{buyerName,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerCheckoutMessage != null">
+                buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="markException != null">
+                mark_exception = #{markException,jdbcType=VARCHAR},
+            </if>
+            <if test="platformCommissionRate != null">
+                platform_commission_rate = #{platformCommissionRate,jdbcType=DECIMAL},
+            </if>
+            <if test="freeFreightType != null">
+                free_freight_type = #{freeFreightType,jdbcType=TINYINT},
+            </if>
+            <if test="splittedOrMerged != null">
+                splitted_or_merged = #{splittedOrMerged,jdbcType=VARCHAR},
+            </if>
+            <if test="isErrorOrder != null">
+                is_error_order = #{isErrorOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="isConvertOrder != null">
+                is_convert_order = #{isConvertOrder,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_new
+        where id = #{id,jdbcType=INTEGER}
+        and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="map">
+        delete from tb_sys_order_new
+        where id = #{id,jdbcType=INTEGER}
+          and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.rondaful.cloud.order.entity.system.SysOrderNew">
+        insert into tb_sys_order_new (id, sys_order_id, record_number, 
+            source_order_id, deliver_deadline, conver_sys_status, 
+            order_source, order_delivery_status, is_after_sale_order, 
+            platform_shop_id, platform_seller_account, 
+            shop_type, platform_seller_id, seller_pl_id, 
+            seller_pl_account, supply_chain_company_id, 
+            supply_chain_company_name, total, order_amount, 
+            estimate_ship_cost, commodities_amount,platform_total_price,
+            marketplace_id, pay_id, pay_status, 
+            pay_method, pay_time, order_time, 
+            created_time, delivery_time, shipping_service_cost, 
+            sys_shipping_discount, interest, gross_margin, 
+            profit_margin, buyer_user_id, buyer_name, 
+            buyer_checkout_message, create_date, create_by, 
+            update_date, update_by, remark, mark_exception,
+            platform_commission_rate, free_freight_type,splitted_or_merged,is_error_order,is_convert_order
+            )
+        values (#{id,jdbcType=INTEGER}, #{sysOrderId,jdbcType=VARCHAR}, #{recordNumber,jdbcType=VARCHAR}, 
+            #{sourceOrderId,jdbcType=VARCHAR}, #{deliverDeadline,jdbcType=VARCHAR}, #{converSysStatus,jdbcType=TINYINT}, 
+            #{orderSource,jdbcType=TINYINT}, #{orderDeliveryStatus,jdbcType=TINYINT}, #{isAfterSaleOrder,jdbcType=TINYINT}, 
+            #{platformShopId,jdbcType=INTEGER}, #{platformSellerAccount,jdbcType=VARCHAR}, 
+            #{shopType,jdbcType=VARCHAR}, #{platformSellerId,jdbcType=VARCHAR}, #{sellerPlId,jdbcType=INTEGER}, 
+            #{sellerPlAccount,jdbcType=VARCHAR}, #{supplyChainCompanyId,jdbcType=INTEGER}, 
+            #{supplyChainCompanyName,jdbcType=VARCHAR}, #{total,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL}, 
+            #{estimateShipCost,jdbcType=DECIMAL}, #{commoditiesAmount,jdbcType=DECIMAL}, 
+            #{marketplaceId,jdbcType=VARCHAR}, #{payId,jdbcType=VARCHAR}, #{payStatus,jdbcType=TINYINT}, 
+            #{payMethod,jdbcType=TINYINT}, #{payTime,jdbcType=VARCHAR}, #{orderTime,jdbcType=VARCHAR}, 
+            #{createdTime,jdbcType=TIMESTAMP}, #{deliveryTime,jdbcType=VARCHAR}, #{shippingServiceCost,jdbcType=DECIMAL}, 
+            #{sysShippingDiscount,jdbcType=DECIMAL}, #{interest,jdbcType=DECIMAL}, #{grossMargin,jdbcType=DECIMAL}, 
+            #{profitMargin,jdbcType=DECIMAL}, #{buyerUserId,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, 
+            #{buyerCheckoutMessage,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},  #{markException,jdbcType=VARCHAR},
+            #{platformCommissionRate,jdbcType=DECIMAL}, #{freeFreightType,jdbcType=TINYINT}, #{splittedOrMerged,jdbcType=VARCHAR}, #{isErrorOrder,jdbcType=VARCHAR}, #{isConvertOrder,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.order.entity.system.SysOrderNew">
+        insert into tb_sys_order_new
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sysOrderId != null">
+                sys_order_id,
+            </if>
+            <if test="recordNumber != null">
+                record_number,
+            </if>
+            <if test="sourceOrderId != null">
+                source_order_id,
+            </if>
+            <if test="deliverDeadline != null">
+                deliver_deadline,
+            </if>
+            <if test="converSysStatus != null">
+                conver_sys_status,
+            </if>
+            <if test="orderSource != null">
+                order_source,
+            </if>
+            <if test="orderDeliveryStatus != null">
+                order_delivery_status,
+            </if>
+            <if test="isAfterSaleOrder != null">
+                is_after_sale_order,
+            </if>
+            <if test="platformShopId != null">
+                platform_shop_id,
+            </if>
+            <if test="platformSellerAccount != null">
+                platform_seller_account,
+            </if>
+            <if test="shopType != null">
+                shop_type,
+            </if>
+            <if test="platformSellerId != null">
+                platform_seller_id,
+            </if>
+            <if test="sellerPlId != null">
+                seller_pl_id,
+            </if>
+            <if test="sellerPlAccount != null">
+                seller_pl_account,
+            </if>
+            <if test="supplyChainCompanyId != null">
+                supply_chain_company_id,
+            </if>
+            <if test="supplyChainCompanyName != null">
+                supply_chain_company_name,
+            </if>
+            <if test="total != null">
+                total,
+            </if>
+            <if test="orderAmount != null">
+                order_amount,
+            </if>
+            <if test="estimateShipCost != null">
+                estimate_ship_cost,
+            </if>
+            <if test="commoditiesAmount != null">
+                commodities_amount,
+            </if>
+            <if test="platformTotalPrice != null">
+                platform_total_price,
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id,
+            </if>
+            <if test="payId != null">
+                pay_id,
+            </if>
+            <if test="payStatus != null">
+                pay_status,
+            </if>
+            <if test="payMethod != null">
+                pay_method,
+            </if>
+            <if test="payTime != null">
+                pay_time,
+            </if>
+            <if test="orderTime != null">
+                order_time,
+            </if>
+            <if test="createdTime != null">
+                created_time,
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time,
+            </if>
+            <if test="shippingServiceCost != null">
+                shipping_service_cost,
+            </if>
+            <if test="sysShippingDiscount != null">
+                sys_shipping_discount,
+            </if>
+            <if test="interest != null">
+                interest,
+            </if>
+            <if test="grossMargin != null">
+                gross_margin,
+            </if>
+            <if test="profitMargin != null">
+                profit_margin,
+            </if>
+            <if test="buyerUserId != null">
+                buyer_user_id,
+            </if>
+            <if test="buyerName != null">
+                buyer_name,
+            </if>
+            <if test="buyerCheckoutMessage != null">
+                buyer_checkout_message,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="markException != null">
+                mark_exception,
+            </if>
+            <if test="platformCommissionRate != null">
+                platform_commission_rate,
+            </if>
+            <if test="freeFreightType != null">
+                free_freight_type,
+            </if>
+            <if test="splittedOrMerged != null">
+                splitted_or_merged,
+            </if>
+            <if test="isErrorOrder != null">
+                is_error_order,
+            </if>
+            <if test="isConvertOrder != null">
+                is_convert_order,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="sysOrderId != null">
+                #{sysOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordNumber != null">
+                #{recordNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceOrderId != null">
+                #{sourceOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="deliverDeadline != null">
+                #{deliverDeadline,jdbcType=VARCHAR},
+            </if>
+            <if test="converSysStatus != null">
+                #{converSysStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderSource != null">
+                #{orderSource,jdbcType=TINYINT},
+            </if>
+            <if test="orderDeliveryStatus != null">
+                #{orderDeliveryStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isAfterSaleOrder != null">
+                #{isAfterSaleOrder,jdbcType=TINYINT},
+            </if>
+            <if test="platformShopId != null">
+                #{platformShopId,jdbcType=INTEGER},
+            </if>
+            <if test="platformSellerAccount != null">
+                #{platformSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="shopType != null">
+                #{shopType,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSellerId != null">
+                #{platformSellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerPlId != null">
+                #{sellerPlId,jdbcType=INTEGER},
+            </if>
+            <if test="sellerPlAccount != null">
+                #{sellerPlAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompanyId != null">
+                #{supplyChainCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="supplyChainCompanyName != null">
+                #{supplyChainCompanyName,jdbcType=VARCHAR},
+            </if>
+            <if test="total != null">
+                #{total,jdbcType=DECIMAL},
+            </if>
+            <if test="orderAmount != null">
+                #{orderAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="estimateShipCost != null">
+                #{estimateShipCost,jdbcType=DECIMAL},
+            </if>
+            <if test="commoditiesAmount != null">
+                #{commoditiesAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="marketplaceId != null">
+                #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="payId != null">
+                #{payId,jdbcType=VARCHAR},
+            </if>
+            <if test="payStatus != null">
+                #{payStatus,jdbcType=TINYINT},
+            </if>
+            <if test="payMethod != null">
+                #{payMethod,jdbcType=TINYINT},
+            </if>
+            <if test="payTime != null">
+                #{payTime,jdbcType=VARCHAR},
+            </if>
+            <if test="orderTime != null">
+                #{orderTime,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deliveryTime != null">
+                #{deliveryTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingServiceCost != null">
+                #{shippingServiceCost,jdbcType=DECIMAL},
+            </if>
+            <if test="sysShippingDiscount != null">
+                #{sysShippingDiscount,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null">
+                #{interest,jdbcType=DECIMAL},
+            </if>
+            <if test="grossMargin != null">
+                #{grossMargin,jdbcType=DECIMAL},
+            </if>
+            <if test="profitMargin != null">
+                #{profitMargin,jdbcType=DECIMAL},
+            </if>
+            <if test="buyerUserId != null">
+                #{buyerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerName != null">
+                #{buyerName,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerCheckoutMessage != null">
+                #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="markException != null">
+                #{markException,jdbcType=VARCHAR},
+            </if>
+            <if test="platformCommissionRate != null">
+                #{platformCommissionRate,jdbcType=DECIMAL},
+            </if>
+            <if test="freeFreightType != null">
+                #{freeFreightType,jdbcType=TINYINT},
+            </if>
+            <if test="splittedOrMerged  != null">
+                #{splittedOrMerged,jdbcType=VARCHAR},
+            </if>
+            <if test="isErrorOrder  != null">
+                #{isErrorOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="isConvertOrder  != null">
+                #{isConvertOrder,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.order.entity.system.SysOrderNew">
+        update tb_sys_order_new
+        <set>
+            <if test="recordNumber != null">
+                record_number = #{recordNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="sourceOrderId != null">
+                source_order_id = #{sourceOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="deliverDeadline != null">
+                deliver_deadline = #{deliverDeadline,jdbcType=VARCHAR},
+            </if>
+            <if test="converSysStatus != null">
+                conver_sys_status = #{converSysStatus,jdbcType=TINYINT},
+            </if>
+            <if test="orderSource != null">
+                order_source = #{orderSource,jdbcType=TINYINT},
+            </if>
+            <if test="orderDeliveryStatus != null">
+                order_delivery_status = #{orderDeliveryStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isAfterSaleOrder != null">
+                is_after_sale_order = #{isAfterSaleOrder,jdbcType=TINYINT},
+            </if>
+            <if test="platformShopId != null">
+                platform_shop_id = #{platformShopId,jdbcType=INTEGER},
+            </if>
+            <if test="platformSellerAccount != null">
+                platform_seller_account = #{platformSellerAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="shopType != null">
+                shop_type = #{shopType,jdbcType=VARCHAR},
+            </if>
+            <if test="platformSellerId != null">
+                platform_seller_id = #{platformSellerId,jdbcType=VARCHAR},
+            </if>
+            <if test="sellerPlId != null">
+                seller_pl_id = #{sellerPlId,jdbcType=INTEGER},
+            </if>
+            <if test="sellerPlAccount != null">
+                seller_pl_account = #{sellerPlAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="supplyChainCompanyId != null">
+                supply_chain_company_id = #{supplyChainCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="supplyChainCompanyName != null">
+                supply_chain_company_name = #{supplyChainCompanyName,jdbcType=VARCHAR},
+            </if>
+            <if test="total != null">
+                total = #{total,jdbcType=DECIMAL},
+            </if>
+            <if test="orderAmount != null">
+                order_amount = #{orderAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="estimateShipCost != null">
+                estimate_ship_cost = #{estimateShipCost,jdbcType=DECIMAL},
+            </if>
+            <if test="commoditiesAmount != null">
+                commodities_amount = #{commoditiesAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="platformTotalPrice != null">
+                platform_total_price = #{platformTotalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="marketplaceId != null">
+                marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            </if>
+            <if test="payId != null">
+                pay_id = #{payId,jdbcType=VARCHAR},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus,jdbcType=TINYINT},
+            </if>
+            <if test="payMethod != null">
+                pay_method = #{payMethod,jdbcType=TINYINT},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime,jdbcType=VARCHAR},
+            </if>
+            <if test="orderTime != null">
+                order_time = #{orderTime,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+            </if>
+            <if test="shippingServiceCost != null">
+                shipping_service_cost = #{shippingServiceCost,jdbcType=DECIMAL},
+            </if>
+            <if test="sysShippingDiscount != null">
+                sys_shipping_discount = #{sysShippingDiscount,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null">
+                interest = #{interest,jdbcType=DECIMAL},
+            </if>
+            <if test="grossMargin != null">
+                gross_margin = #{grossMargin,jdbcType=DECIMAL},
+            </if>
+            <if test="profitMargin != null">
+                profit_margin = #{profitMargin,jdbcType=DECIMAL},
+            </if>
+            <if test="buyerUserId != null">
+                buyer_user_id = #{buyerUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerName != null">
+                buyer_name = #{buyerName,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerCheckoutMessage != null">
+                buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="markException != null">
+                mark_exception = #{markException,jdbcType=VARCHAR},
+            </if>
+            <if test="platformCommissionRate != null">
+                platform_commission_rate = #{platformCommissionRate,jdbcType=DECIMAL},
+            </if>
+            <if test="freeFreightType != null">
+                free_freight_type = #{freeFreightType,jdbcType=TINYINT},
+            </if>
+            <if test="splittedOrMerged != null">
+                splitted_or_merged = #{splittedOrMerged,jdbcType=VARCHAR},
+            </if>
+            <if test="isErrorOrder != null">
+                is_error_order = #{isErrorOrder,jdbcType=VARCHAR},
+            </if>
+            <if test="isConvertOrder != null">
+                is_convert_order = #{isConvertOrder,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.order.entity.system.SysOrderNew">
+        update tb_sys_order_new
+        set record_number = #{recordNumber,jdbcType=VARCHAR},
+            source_order_id = #{sourceOrderId,jdbcType=VARCHAR},
+            deliver_deadline = #{deliverDeadline,jdbcType=VARCHAR},
+            conver_sys_status = #{converSysStatus,jdbcType=TINYINT},
+            order_source = #{orderSource,jdbcType=TINYINT},
+            order_delivery_status = #{orderDeliveryStatus,jdbcType=TINYINT},
+            is_after_sale_order = #{isAfterSaleOrder,jdbcType=TINYINT},
+            platform_shop_id = #{platformShopId,jdbcType=INTEGER},
+            platform_seller_account = #{platformSellerAccount,jdbcType=VARCHAR},
+            shop_type = #{shopType,jdbcType=VARCHAR},
+            platform_seller_id = #{platformSellerId,jdbcType=VARCHAR},
+            seller_pl_id = #{sellerPlId,jdbcType=INTEGER},
+            seller_pl_account = #{sellerPlAccount,jdbcType=VARCHAR},
+            supply_chain_company_id = #{supplyChainCompanyId,jdbcType=INTEGER},
+            supply_chain_company_name = #{supplyChainCompanyName,jdbcType=VARCHAR},
+            total = #{total,jdbcType=DECIMAL},
+            order_amount = #{orderAmount,jdbcType=DECIMAL},
+            estimate_ship_cost = #{estimateShipCost,jdbcType=DECIMAL},
+            commodities_amount = #{commoditiesAmount,jdbcType=DECIMAL},
+            platform_total_price = #{platformTotalPrice,jdbcType=DECIMAL},
+            marketplace_id = #{marketplaceId,jdbcType=VARCHAR},
+            pay_id = #{payId,jdbcType=VARCHAR},
+            pay_status = #{payStatus,jdbcType=TINYINT},
+            pay_method = #{payMethod,jdbcType=TINYINT},
+            pay_time = #{payTime,jdbcType=VARCHAR},
+            order_time = #{orderTime,jdbcType=VARCHAR},
+            created_time = #{createdTime,jdbcType=TIMESTAMP},
+            delivery_time = #{deliveryTime,jdbcType=VARCHAR},
+            shipping_service_cost = #{shippingServiceCost,jdbcType=DECIMAL},
+            sys_shipping_discount = #{sysShippingDiscount,jdbcType=DECIMAL},
+            interest = #{interest,jdbcType=DECIMAL},
+            gross_margin = #{grossMargin,jdbcType=DECIMAL},
+            profit_margin = #{profitMargin,jdbcType=DECIMAL},
+            buyer_user_id = #{buyerUserId,jdbcType=VARCHAR},
+            buyer_name = #{buyerName,jdbcType=VARCHAR},
+            buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR},
+            mark_exception = #{markException,jdbcType=VARCHAR},
+            platform_commission_rate = #{platformCommissionRate,jdbcType=DECIMAL},
+            free_freight_type = #{freeFreightType,jdbcType=TINYINT},
+            splitted_or_merged = #{splittedOrMerged ,jdbcType=VARCHAR},
+            is_error_order = #{isErrorOrder ,jdbcType=VARCHAR},
+            is_convert_order = #{isConvertOrder ,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+          and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+    <!--拦截订单:更改订单状态为已拦截并清空发货异常信息、跟踪单号、物流商单号_WJC-->
+    <update id="updateInterceptSystemOrder" parameterType="java.lang.String">
+        update tb_sys_order_new
+        <set>
+            order_delivery_status = 4 ,
+            warehouse_ship_exception = '',
+            ship_track_number = '',
+            ship_order_id = ''
+        </set>
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+    <!--将订单变更为异常订单wujiachuang-->
+    <update id="updateToExceptionOrder" parameterType="java.lang.String">
+        update tb_sys_order_new
+        set is_error_order = 'yes'
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+    <!--根据订单号更新售后订单状态_WJC-->
+    <update id="updateOrderAfterStatus" parameterType="java.lang.String">
+        update tb_sys_order_new
+        <set>
+            is_after_sale_order = #{status,jdbcType=TINYINT}
+        </set>
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+    <!--编辑订单wujiachuang-->
+    <update id="updateOrder" parameterType="com.rondaful.cloud.order.entity.system.SysOrderNew">
+        update tb_sys_order_new
+        <set>
+            <if test="buyerCheckoutMessage != null">
+                buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="estimateShipCost != null">
+            estimate_ship_cost =  #{estimateShipCost,jdbcType=DECIMAL},
+            </if>
+            <if test="grossMargin != null">
+                gross_margin =  #{grossMargin,jdbcType=DECIMAL},
+            </if>
+            <if test="profitMargin != null">
+                profit_margin =  #{profitMargin,jdbcType=DECIMAL},
+            </if>
+            <if test="total != null">
+                total = #{total,jdbcType=DECIMAL},
+            </if>
+            <if test="orderAmount != null and orderAmount != ''">
+                 order_amount = #{orderAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="splittedOrMerged != null">
+                splitted_or_merged = #{splittedOrMerged,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+    <!--清空订单异常标记wujiachuang-->
+    <update id="resetOrderErrorStatus" parameterType="java.lang.String">
+        update tb_sys_order_new
+        set is_error_order = 'no'
+        where sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+    </update>
+    <!--根据系统订单号批量更新发货状态_wujiachuang-->
+    <update id="updateOrderCompleteStatus">
+        update tb_sys_order_new
+        <set>
+            <if test="deliverStatus != null">
+                order_delivery_status = #{deliverStatus,jdbcType=TINYINT},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where
+        order_delivery_status = 5
+        AND is_after_sale_order != 0
+        AND sys_order_id  in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="page" parameterType="com.rondaful.cloud.order.entity.system.SysOrderNew" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_new
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="sysOrderId != null and sysOrderId != ''">
+                and sys_order_id = #{sysOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="recordNumber != null and recordNumber != ''">
+                and record_number = #{recordNumber,jdbcType=VARCHAR}
+            </if>
+            <if test="sourceOrderId != null and sourceOrderId != ''">
+                and source_order_id = #{sourceOrderId,jdbcType=VARCHAR}
+            </if>
+            <if test="deliverDeadline != null and deliverDeadline != ''">
+                and deliver_deadline = #{deliverDeadline,jdbcType=VARCHAR}
+            </if>
+            <if test="converSysStatus != null and converSysStatus != ''">
+                and conver_sys_status = #{converSysStatus,jdbcType=TINYINT}
+            </if>
+            <if test="orderSource != null and orderSource != ''">
+                and order_source = #{orderSource,jdbcType=TINYINT}
+            </if>
+            <if test="orderDeliveryStatus != null and orderDeliveryStatus != ''">
+                and order_delivery_status = #{orderDeliveryStatus,jdbcType=TINYINT}
+            </if>
+            <if test="isAfterSaleOrder != null and isAfterSaleOrder != ''">
+                and is_after_sale_order = #{isAfterSaleOrder,jdbcType=TINYINT}
+            </if>
+            <if test="platformShopId != null and platformShopId != ''">
+                and platform_shop_id = #{platformShopId,jdbcType=INTEGER}
+            </if>
+            <if test="platformSellerAccount != null and platformSellerAccount != ''">
+                and platform_seller_account = #{platformSellerAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="shopType != null and shopType != ''">
+                and shop_type = #{shopType,jdbcType=VARCHAR}
+            </if>
+            <if test="platformSellerId != null and platformSellerId != ''">
+                and platform_seller_id = #{platformSellerId,jdbcType=VARCHAR}
+            </if>
+            <if test="sellerPlId != null and sellerPlId != ''">
+                and seller_pl_id = #{sellerPlId,jdbcType=INTEGER}
+            </if>
+            <if test="sellerPlAccount != null and sellerPlAccount != ''">
+                and seller_pl_account = #{sellerPlAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="supplyChainCompanyId != null and supplyChainCompanyId != ''">
+                and supply_chain_company_id = #{supplyChainCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="supplyChainCompanyName != null and supplyChainCompanyName != ''">
+                and supply_chain_company_name = #{supplyChainCompanyName,jdbcType=VARCHAR}
+            </if>
+            <if test="total != null and total != ''">
+                and total = #{total,jdbcType=DECIMAL}
+            </if>
+            <if test="orderAmount != null and orderAmount != ''">
+                and order_amount = #{orderAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="estimateShipCost != null and estimateShipCost != ''">
+                and estimate_ship_cost = #{estimateShipCost,jdbcType=DECIMAL}
+            </if>
+            <if test="commoditiesAmount != null and commoditiesAmount != ''">
+                and commodities_amount = #{commoditiesAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="platformTotalPrice != null">
+                and platform_total_price = #{platformTotalPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="marketplaceId != null and marketplaceId != ''">
+                and marketplace_id = #{marketplaceId,jdbcType=VARCHAR}
+            </if>
+            <if test="payId != null and payId != ''">
+                and pay_id = #{payId,jdbcType=VARCHAR}
+            </if>
+            <if test="payStatus != null and payStatus != ''">
+                and pay_status = #{payStatus,jdbcType=TINYINT}
+            </if>
+            <if test="payMethod != null and payMethod != ''">
+                and pay_method = #{payMethod,jdbcType=TINYINT}
+            </if>
+            <if test="payTime != null and payTime != ''">
+                and pay_time = #{payTime,jdbcType=VARCHAR}
+            </if>
+            <if test="orderTime != null and orderTime != ''">
+                and order_time = #{orderTime,jdbcType=VARCHAR}
+            </if>
+            <if test="createdTime != null and createdTime != ''">
+                and created_time = #{createdTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="deliveryTime != null and deliveryTime != ''">
+                and delivery_time = #{deliveryTime,jdbcType=VARCHAR}
+            </if>
+            <if test="shippingServiceCost != null and shippingServiceCost != ''">
+                and shipping_service_cost = #{shippingServiceCost,jdbcType=DECIMAL}
+            </if>
+            <if test="sysShippingDiscount != null and sysShippingDiscount != ''">
+                and sys_shipping_discount = #{sysShippingDiscount,jdbcType=DECIMAL}
+            </if>
+            <if test="interest != null and interest != ''">
+                and interest = #{interest,jdbcType=DECIMAL}
+            </if>
+            <if test="grossMargin != null and grossMargin != ''">
+                and gross_margin = #{grossMargin,jdbcType=DECIMAL}
+            </if>
+            <if test="profitMargin != null and profitMargin != ''">
+                and profit_margin = #{profitMargin,jdbcType=DECIMAL}
+            </if>
+            <if test="buyerUserId != null and buyerUserId != ''">
+                and buyer_user_id = #{buyerUserId,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerName != null and buyerName != ''">
+                and buyer_name = #{buyerName,jdbcType=VARCHAR}
+            </if>
+            <if test="buyerCheckoutMessage != null and buyerCheckoutMessage != ''">
+                and buyer_checkout_message = #{buyerCheckoutMessage,jdbcType=VARCHAR}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                and create_date = #{createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="markException != null and markException != ''">
+                and mark_exception = #{markException,jdbcType=VARCHAR}
+            </if>
+            <if test="platformCommissionRate != null and platformCommissionRate != ''">
+                and platform_commission_rate = #{platformCommissionRate,jdbcType=DECIMAL}
+            </if>
+            <if test="freeFreightType != null and freeFreightType != ''">
+                and free_freight_type = #{freeFreightType,jdbcType=TINYINT}
+            </if>
+            <if test="splittedOrMerged  != null and splittedOrMerged  != ''">
+                and splitted_or_merged  = #{splittedOrMerged ,jdbcType=VARCHAR}
+            </if>
+            <if test="isErrorOrder  != null and isErrorOrder  != ''">
+                and is_error_order  = #{isErrorOrder ,jdbcType=VARCHAR}
+            </if>
+            <if test="isConvertOrder  != null and isConvertOrder  != ''">
+                and is_convert_order  = #{isConvertOrder ,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+    <!--获取查询条数wujiachuang-->
+    <select id="getSysOrderNewCount" resultType="java.lang.Integer">
+        select
+        count(*)
+        from tb_sys_order_new
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="errorOrder==1">
+                AND is_error_order = 'yes'
+            </if>
+            <if test="payStatus != null">
+                AND pay_status = #{payStatus,jdbcType=TINYINT}
+            </if>
+            <if test="sourceOrderId != null and sourceOrderId!=''">
+                AND source_order_id = #{sourceOrderId,jdbcType=VARCHAR}
+            </if>
+            <choose>
+                <when test="orderSource == 0">
+                    AND order_source NOT IN (4,5,6)
+                </when>
+                <when test="orderSource != null and orderSource!=''">
+                    AND order_source = #{orderSource,jdbcType=TINYINT}
+                </when>
+            </choose>
+            <if test="shopNameIdLists.size() > 0">
+                AND platform_shop_id IN
+                <foreach collection="shopNameIdLists" item="shopNameId" index="index"
+                         open="(" close=")" separator=",">
+                    #{shopNameId}
+                </foreach>
+            </if>
+            <if test="plAccountIdsList.size() > 0">
+                AND seller_pl_id IN
+                <foreach collection="plAccountIdsList" item="plId" index="index"
+                         open="(" close=")" separator=",">
+                    #{plId}
+                </foreach>
+            </if>
+            <if test="sysOrderIdList.size() > 0">
+                AND sys_order_id IN
+                <foreach collection="sysOrderIdList" item="sysOrderId" index="index"
+                         open="(" close=")" separator=",">
+                    #{sysOrderId}
+                </foreach>
+            </if>
+            <if test="recordNumber!=null and recordNumber!='' ">
+                AND record_number = #{recordNumber,jdbcType=VARCHAR}
+            </if>
+            <if test= "isLogisticsAbnormal!=null and isLogisticsAbnormal!='' ">
+                AND is_error_order !=''
+            </if>
+            <if test="isAfterSaleOrder != 3 ">
+                AND is_after_sale_order != 0
+            </if>
+            <if test="plOrderStatus != 0 ">
+                AND order_delivery_status = #{plOrderStatus,jdbcType=TINYINT}
+            </if>
+            <if test="splittedOrMergedStatus != null and splittedOrMergedStatus != '' ">
+                AND splitted_or_merged = #{splittedOrMergedStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="startDate !=null and startDate !='' ">
+                <![CDATA[ and created_time  >=  #{startDate}  ]]>
+            </if>
+            <if test="endDate !=null and endDate!='' ">
+                <![CDATA[ and created_time <=  #{endDate}  ]]>
+            </if>
+            <if test="startTime!=null and endTime!=null and startTime!= '' and endTime != ''">
+                AND delivery_time between
+                #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+    <!--根据来源订单号查找品连订单号集合wujiachuang-->
+    <select id="queryPlOrderIdBySourceOrderId" resultType="java.lang.String" parameterType="java.lang.String">
+        select sys_order_id
+        from tb_sys_order_new
+        where source_order_id = #{sourceOrderId,jdbcType=VARCHAR}
+    </select>
+
+    <!--根据系统订单ID批量查询系统订单记录_ZJL-->
+    <select id="selectBatchSysOrderListBySysOrderId" parameterType="list" resultMap="BatchSysOrderMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from tb_sys_order_new
+        WHERE sys_order_id in
+        <foreach close=")" collection="sysOrderIds" item="sysOrderId" open="(" separator=",">
+            #{sysOrderId}
+        </foreach>
+    </select>
+
+    <!--查询用户今日订单数量_WJC-->
+    <select id="getOrderCountToday" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM tb_sys_order_new
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="1 == 1">
+                AND DATE_FORMAT( created_time,'%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+            </if>
+            <if test="loginName != null and loginName!=''">
+                AND seller_pl_account = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="shopNameId != null and shopNameId!=''">
+                AND platform_shop_id = #{shopNameId,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+    <!--查询用户昨日订单数量_WJC-->
+    <select id="getOrderCountYesterday" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM tb_sys_order_new
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="1 == 1">
+                AND DATE_FORMAT( created_time,'%Y-%m-%d') = DATE_FORMAT(CURDATE()-1, '%Y-%m-%d')
+            </if>
+            <if test="loginName != null and loginName!=''">
+                AND seller_pl_account = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="shopNameId != null and shopNameId!=''">
+                AND platform_shop_id = #{shopNameId,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+    <!--查询近一个月的订单数量并且按天分类_WJC-->
+    <select id="querySellerDayOrderCount" resultType="com.rondaful.cloud.order.entity.TheMonthOrderCount">
+        select IFNULL(b.counts,0) counts,a.click_date createTime,DAYOFWEEK(DATE(click_date)) week
+        from (
+        SELECT curdate() as click_date
+        union all
+        SELECT date_sub(curdate(), interval 1 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 2 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 3 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 4 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 5 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 6 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 7 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 8 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 9 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 10 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 11 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 12 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 13 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 14 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 15 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 16 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 17 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 18 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 19 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 20 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 21 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 22 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 23 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 24 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 25 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 26 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 27 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 28 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 29 day) as click_date
+        ) a left join
+        (
+        select count(*) counts,DATE(created_time) createTime,DAYOFWEEK(DATE(created_time)) week
+        FROM tb_sys_order_new
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="1==1">
+                AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(created_time)
+            </if>
+            <if test="loginName != null and loginName!=''">
+                AND seller_pl_account = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="shopNameId != null and shopNameId!=''">
+                AND platform_shop_id = #{shopNameId,jdbcType=INTEGER}
+            </if>
+        </trim>
+        GROUP BY DATE_FORMAT( created_time, "%Y-%m-%d " )
+        )b
+        on a.click_date = b.createTime
+        order by createTime asc
+    </select>
+    <!--查询用户总销售额_WJC-->
+    <select id="querySellerTotalSales" resultType="java.lang.Double">
+--         SELECT sum(order_amount+actual_ship_cost)
+        SELECT sum(total)
+        FROM tb_sys_order_new
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="time != null and time!=''">
+                AND ( datediff ( created_time , #{time,jdbcType=VARCHAR} ) = 0 )
+            </if>
+            <if test="loginName != null and loginName!=''">
+                AND seller_pl_account = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="shopNameId != null and shopNameId!=''">
+                AND platform_shop_id = #{shopNameId,jdbcType=INTEGER}
+            </if>
+        </trim>
+        and (order_delivery_status=5 OR order_delivery_status=8)
+    </select>
+    <!--查询用户总利润_WJC-->
+    <select id="querySellerTotalProfit" resultType="java.lang.Double">
+        SELECT sum(gross_margin)
+        FROM tb_sys_order_new
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="time != null and time!=''">
+                AND ( datediff ( created_time , #{time,jdbcType=VARCHAR} ) = 0 )
+            </if>
+            <if test="loginName != null and loginName!=''">
+                AND seller_pl_account = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="shopNameId != null and shopNameId!=''">
+                AND platform_shop_id = #{shopNameId,jdbcType=INTEGER}
+            </if>
+        </trim>
+        and (order_delivery_status=5 OR order_delivery_status=8)
+    </select>
+    <!--查询近一个月用户销售额和毛利并且按天分类_WJC-->
+    <select id="queryDaySellerSalesAndProfit" resultType="com.rondaful.cloud.order.entity.TheMonthOrderSaleAndProfit">
+
+        select IFNULL(b.profit,0) profit,IFNULL(b.sale,0) sale,a.click_date createTime,DAYOFWEEK(DATE(click_date)) week
+        from (
+        SELECT curdate() as click_date
+        union all
+        SELECT date_sub(curdate(), interval 1 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 2 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 3 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 4 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 5 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 6 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 7 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 8 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 9 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 10 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 11 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 12 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 13 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 14 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 15 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 16 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 17 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 18 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 19 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 20 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 21 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 22 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 23 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 24 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 25 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 26 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 27 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 28 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 29 day) as click_date
+        ) a left join
+        (
+        select sum(gross_margin) profit,sum(total) sale,DATE(delivery_time)
+        createTime,DAYOFWEEK(DATE(delivery_time)) week
+        FROM tb_sys_order_new
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="1==1">
+                AND DATE_SUB(CURDATE(), INTERVAL 30 DAY) &lt;= date(delivery_time)
+            </if>
+            <if test="loginName != null and loginName!=''">
+                AND seller_pl_account = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="shopNameId != null and shopNameId!=''">
+                AND platform_shop_id = #{shopNameId,jdbcType=INTEGER}
+            </if>
+        </trim>
+        and (order_delivery_status=5 OR order_delivery_status=8)
+        GROUP BY DATE_FORMAT( delivery_time, "%Y-%m-%d " )
+        )b
+        on a.click_date = b.createTime
+        order by createTime asc
+    </select>
+    <!--查询买家人数和国家代码_WJC-->
+    <select id="queryTotalBuyerCountAndCountry" resultType="com.rondaful.cloud.order.entity.BuyerCountAndCountryCode">
+        SELECT ship_to_country as buyerCountryCode,count(ship_to_country) as buyerCount
+        from tb_sys_order_new
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="loginName != null and loginName!=''">
+                AND seller_pl_account = #{loginName,jdbcType=VARCHAR}
+            </if>
+            <if test="shopNameId != null and shopNameId!=''">
+                AND platform_shop_id = #{shopNameId,jdbcType=INTEGER}
+            </if>
+        </trim>
+        group by ship_to_country
+    </select>
+    <!--临时-->
+    <select id="queryInterceptOrder" resultType="java.lang.String">
+        select sys_order_id
+        from tb_sys_order_new
+        where order_delivery_status = 4
+    </select>
+</mapper>

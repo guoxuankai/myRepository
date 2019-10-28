@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.WarehouseListAddressMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.basics.WarehouseListAddress">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="zip_code" jdbcType="VARCHAR" property="zipCode" />
+        <result column="phone1" jdbcType="VARCHAR" property="phone1" />
+        <result column="phone2" jdbcType="VARCHAR" property="phone2" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="corporation_name" jdbcType="VARCHAR" property="corporationName" />
+        <result column="version" jdbcType="INTEGER" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, province, city, address,zip_code, phone1, phone2, email, user_name, corporation_name,
+        version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_warehouse_list_address
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_warehouse_list_address
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseListAddress">
+        insert into t_warehouse_list_address (id, province, city, 
+            address, zip_code, phone1,
+            phone2, email, user_name, 
+            corporation_name, version)
+        values (#{id,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+            #{address,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, #{phone1,jdbcType=VARCHAR},
+            #{phone2,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+            #{corporationName,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseListAddress">
+        insert into t_warehouse_list_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="zipCode != null">
+                zip_code,
+            </if>
+            <if test="phone1 != null">
+                phone1,
+            </if>
+            <if test="phone2 != null">
+                phone2,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="corporationName != null">
+                corporation_name,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="zipCode != null">
+                #{zipCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone1 != null">
+                #{phone1,jdbcType=VARCHAR},
+            </if>
+            <if test="phone2 != null">
+                #{phone2,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="corporationName != null">
+                #{corporationName,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseListAddress">
+        update t_warehouse_list_address
+        <set>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="zipCode != null">
+                zip_code = #{zipCode,jdbcType=VARCHAR},
+            </if>
+            <if test="phone1 != null">
+                phone1 = #{phone1,jdbcType=VARCHAR},
+            </if>
+            <if test="phone2 != null">
+                phone2 = #{phone2,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="corporationName != null">
+                corporation_name = #{corporationName,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseListAddress">
+        update t_warehouse_list_address
+        set province = #{province,jdbcType=VARCHAR},
+            city = #{city,jdbcType=VARCHAR},
+            address = #{address,jdbcType=VARCHAR},
+            zip_code = #{zipCode,jdbcType=VARCHAR},
+            phone1 = #{phone1,jdbcType=VARCHAR},
+            phone2 = #{phone2,jdbcType=VARCHAR},
+            email = #{email,jdbcType=VARCHAR},
+            user_name = #{userName,jdbcType=VARCHAR},
+            corporation_name = #{corporationName,jdbcType=VARCHAR},
+            version = #{version,jdbcType=INTEGER} + 1
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseListAddress" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_warehouse_list_address
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="province != null and province != ''">
+                 and province = #{province,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null and city != ''">
+                 and city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="address != null and address != ''">
+                 and address = #{address,jdbcType=VARCHAR}
+            </if>
+            <if test="zipCode != null and zipCode != ''">
+                 and zip_code = #{zipCode,jdbcType=VARCHAR}
+            </if>
+            <if test="phone1 != null and phone1 != ''">
+                 and phone1 = #{phone1,jdbcType=VARCHAR}
+            </if>
+            <if test="phone2 != null and phone2 != ''">
+                 and phone2 = #{phone2,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                 and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="userName != null and userName != ''">
+                 and user_name = #{userName,jdbcType=VARCHAR}
+            </if>
+            <if test="corporationName != null and corporationName != ''">
+                 and corporation_name = #{corporationName,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null and version != ''">
+                 and version = #{version,jdbcType=INTEGER}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="replace" parameterType="com.rondaful.cloud.supplier.entity.basics.WarehouseListAddress">
+        REPLACE INTO t_warehouse_list_address (id, province, city,
+            address, zip_code, phone1,phone2, email, user_name,corporation_name, version)
+        values (#{id,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+            #{address,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, #{phone1,jdbcType=VARCHAR},
+            #{phone2,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+            #{corporationName,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})
+    </insert>
+</mapper>

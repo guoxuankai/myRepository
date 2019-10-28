@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SkuWarehouseInfoMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.SkuWarehouseInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="system_sku" jdbcType="VARCHAR" property="systemSku" />
+    <result column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+    <result column="stock_day" jdbcType="INTEGER" property="stockDay" />
+    <result column="additional_cost" jdbcType="DECIMAL" property="additionalCost" />
+    <result column="warehouse_price_us" jdbcType="DECIMAL" property="warehousePriceUs" />
+    <result column="warehouse_price" jdbcType="DECIMAL" property="warehousePrice" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, system_sku, warehouse_id, stock_day, additional_cost, warehouse_price_us, warehouse_price
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sku_warehouse_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectBySku" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sku_warehouse_info
+    where system_sku = #{systemSku,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteBySku" parameterType="String">
+    delete from t_sku_warehouse_info
+    where system_sku = #{systemSku,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SkuWarehouseInfo">
+    insert into t_sku_warehouse_info (system_sku, warehouse_id, 
+      stock_day, additional_cost, warehouse_price_us, 
+      warehouse_price)
+    values (#{systemSku,jdbcType=VARCHAR}, #{warehouseId,jdbcType=BIGINT}, 
+      #{stockDay,jdbcType=INTEGER}, #{additionalCost,jdbcType=DECIMAL}, #{warehousePriceUs,jdbcType=DECIMAL}, 
+      #{warehousePrice,jdbcType=DECIMAL})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.rondaful.cloud.commodity.entity.SkuWarehouseInfo">
+    insert into t_sku_warehouse_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="systemSku != null">
+        system_sku,
+      </if>
+      <if test="warehouseId != null">
+        warehouse_id,
+      </if>
+      <if test="stockDay != null">
+        stock_day,
+      </if>
+      <if test="additionalCost != null">
+        additional_cost,
+      </if>
+      <if test="warehousePriceUs != null">
+        warehouse_price_us,
+      </if>
+      <if test="warehousePrice != null">
+        warehouse_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="systemSku != null">
+        #{systemSku,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseId != null">
+        #{warehouseId,jdbcType=BIGINT},
+      </if>
+      <if test="stockDay != null">
+        #{stockDay,jdbcType=INTEGER},
+      </if>
+      <if test="additionalCost != null">
+        #{additionalCost,jdbcType=DECIMAL},
+      </if>
+      <if test="warehousePriceUs != null">
+        #{warehousePriceUs,jdbcType=DECIMAL},
+      </if>
+      <if test="warehousePrice != null">
+        #{warehousePrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.commodity.entity.SkuWarehouseInfo">
+    update t_sku_warehouse_info
+    <set>
+      <if test="systemSku != null">
+        system_sku = #{systemSku,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseId != null">
+        warehouse_id = #{warehouseId,jdbcType=BIGINT},
+      </if>
+      <if test="stockDay != null">
+        stock_day = #{stockDay,jdbcType=INTEGER},
+      </if>
+      <if test="additionalCost != null">
+        additional_cost = #{additionalCost,jdbcType=DECIMAL},
+      </if>
+      <if test="warehousePriceUs != null">
+        warehouse_price_us = #{warehousePriceUs,jdbcType=DECIMAL},
+      </if>
+      <if test="warehousePrice != null">
+        warehouse_price = #{warehousePrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.commodity.entity.SkuWarehouseInfo">
+    update t_sku_warehouse_info
+    set system_sku = #{systemSku,jdbcType=VARCHAR},
+      warehouse_id = #{warehouseId,jdbcType=BIGINT},
+      stock_day = #{stockDay,jdbcType=INTEGER},
+      additional_cost = #{additionalCost,jdbcType=DECIMAL},
+      warehouse_price_us = #{warehousePriceUs,jdbcType=DECIMAL},
+      warehouse_price = #{warehousePrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <insert id="insertBatch" parameterType="java.util.ArrayList">
+	insert into t_sku_warehouse_info (
+		system_sku, 
+		warehouse_id, 
+		stock_day, 
+      	additional_cost,
+      	warehouse_price_us,
+      	warehouse_price
+	)
+	values
+	<foreach collection="list" item="item" index="index" separator=",">
+		(
+			#{item.systemSku,jdbcType=VARCHAR},
+			#{item.warehouseId,jdbcType=BIGINT},
+			#{item.stockDay,jdbcType=INTEGER},
+			#{item.additionalCost,jdbcType=DECIMAL},
+			#{item.warehousePriceUs,jdbcType=DECIMAL},
+			#{item.warehousePrice,jdbcType=DECIMAL}
+		)
+	</foreach>
+  </insert>
+  
+</mapper>

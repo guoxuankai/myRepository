@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.ProcurementListMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.procurement.ProcurementList">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="procurement_id" jdbcType="BIGINT" property="procurementId" />
+        <result column="pinlian_sku" jdbcType="VARCHAR" property="pinlianSku" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="buy_amount" jdbcType="INTEGER" property="buyAmount" />
+        <result column="putaway_amount" jdbcType="INTEGER" property="putawayAmount" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="freight" jdbcType="DECIMAL" property="freight" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, procurement_id, pinlian_sku, status, buy_amount, putaway_amount, price, freight
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_procurement_list
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from t_procurement_list
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.procurement.ProcurementList">
+        insert into t_procurement_list (id, procurement_id, pinlian_sku, 
+            status, buy_amount, putaway_amount, 
+            price, freight)
+        values (#{id,jdbcType=BIGINT}, #{procurementId,jdbcType=BIGINT}, #{pinlianSku,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{buyAmount,jdbcType=INTEGER}, #{putawayAmount,jdbcType=INTEGER}, 
+            #{price,jdbcType=DECIMAL}, #{freight,jdbcType=DECIMAL})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.procurement.ProcurementList">
+        insert into t_procurement_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="procurementId != null">
+                procurement_id,
+            </if>
+            <if test="pinlianSku != null">
+                pinlian_sku,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="buyAmount != null">
+                buy_amount,
+            </if>
+            <if test="putawayAmount != null">
+                putaway_amount,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="freight != null">
+                freight,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="procurementId != null">
+                #{procurementId,jdbcType=BIGINT},
+            </if>
+            <if test="pinlianSku != null">
+                #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="buyAmount != null">
+                #{buyAmount,jdbcType=INTEGER},
+            </if>
+            <if test="putawayAmount != null">
+                #{putawayAmount,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="freight != null">
+                #{freight,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.procurement.ProcurementList">
+        update t_procurement_list
+        <set>
+            <if test="procurementId != null">
+                procurement_id = #{procurementId,jdbcType=BIGINT},
+            </if>
+            <if test="pinlianSku != null">
+                pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="buyAmount != null">
+                buy_amount = #{buyAmount,jdbcType=INTEGER},
+            </if>
+            <if test="putawayAmount != null">
+                putaway_amount = #{putawayAmount,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="freight != null">
+                freight = #{freight,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.procurement.ProcurementList">
+        update t_procurement_list
+        set procurement_id = #{procurementId,jdbcType=BIGINT},
+            pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            buy_amount = #{buyAmount,jdbcType=INTEGER},
+            putaway_amount = #{putawayAmount,jdbcType=INTEGER},
+            price = #{price,jdbcType=DECIMAL},
+            freight = #{freight,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.procurement.ProcurementList" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_procurement_list
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="procurementId != null and procurementId != ''">
+                 and procurement_id = #{procurementId,jdbcType=BIGINT}
+            </if>
+            <if test="pinlianSku != null and pinlianSku != ''">
+                 and pinlian_sku = #{pinlianSku,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null and status != ''">
+                 and status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="buyAmount != null and buyAmount != ''">
+                 and buy_amount = #{buyAmount,jdbcType=INTEGER}
+            </if>
+            <if test="putawayAmount != null and putawayAmount != ''">
+                 and putaway_amount = #{putawayAmount,jdbcType=INTEGER}
+            </if>
+            <if test="price != null and price != ''">
+                 and price = #{price,jdbcType=DECIMAL}
+            </if>
+            <if test="freight != null and freight != ''">
+                 and freight = #{freight,jdbcType=DECIMAL}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_procurement_list (id, procurement_id, pinlian_sku,
+            status, buy_amount, putaway_amount,
+            price,freight)
+        values
+        <foreach collection="list" item="item" separator="," index="index">
+            (#{item.id,jdbcType=BIGINT}, #{item.procurementId,jdbcType=BIGINT}, #{item.pinlianSku,jdbcType=VARCHAR},
+            #{item.status,jdbcType=INTEGER}, #{item.buyAmount,jdbcType=INTEGER}, #{item.putawayAmount,jdbcType=INTEGER},
+            #{item.price,jdbcType=DECIMAL}, #{item.freight,jdbcType=DECIMAL})
+        </foreach>
+    </insert>
+
+    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_procurement_list
+        where  procurement_id = #{procurementId,jdbcType=BIGINT} limit 1
+    </select>
+
+    <select id="getByPId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_procurement_list
+        where  procurement_id = #{procurementId,jdbcType=BIGINT}
+    </select>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";" close="" open="">
+            update t_procurement_list set
+            buy_amount = #{item.buyAmount,jdbcType=INTEGER},
+            price = #{item.price,jdbcType=DECIMAL},
+            freight = #{item.freight,jdbcType=DECIMAL}
+            where id = #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+</mapper>

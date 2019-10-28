@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brandslink.cloud.finance.mapper.ImportFailureMapper">
+    
+    <resultMap id="BaseResultMap" type="com.brandslink.cloud.finance.pojo.entity.ImportFailure">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="package_no" jdbcType="VARCHAR" property="packageNo" />
+        <result column="waybill" jdbcType="VARCHAR" property="waybill" />
+        <result column="reason" jdbcType="VARCHAR" property="reason" />
+        <result column="import_people" jdbcType="VARCHAR" property="importPeople" />
+        <result column="import_time" jdbcType="TIMESTAMP" property="importTime" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, package_no, waybill, reason, import_people, import_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_import_failure
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tf_import_failure
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.brandslink.cloud.finance.pojo.entity.ImportFailure">
+        insert into tf_import_failure (id, package_no, waybill, 
+            reason, import_people, import_time
+            )
+        values (#{id,jdbcType=INTEGER}, #{packageNo,jdbcType=VARCHAR}, #{waybill,jdbcType=VARCHAR}, 
+            #{reason,jdbcType=VARCHAR}, #{importPeople,jdbcType=VARCHAR}, #{importTime,jdbcType=TIMESTAMP}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.brandslink.cloud.finance.pojo.entity.ImportFailure">
+        insert into tf_import_failure
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="packageNo != null">
+                package_no,
+            </if>
+            <if test="waybill != null">
+                waybill,
+            </if>
+            <if test="reason != null">
+                reason,
+            </if>
+            <if test="importPeople != null">
+                import_people,
+            </if>
+            <if test="importTime != null">
+                import_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="packageNo != null">
+                #{packageNo,jdbcType=VARCHAR},
+            </if>
+            <if test="waybill != null">
+                #{waybill,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="importPeople != null">
+                #{importPeople,jdbcType=VARCHAR},
+            </if>
+            <if test="importTime != null">
+                #{importTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.brandslink.cloud.finance.pojo.entity.ImportFailure">
+        update tf_import_failure
+        <set>
+            <if test="packageNo != null">
+                package_no = #{packageNo,jdbcType=VARCHAR},
+            </if>
+            <if test="waybill != null">
+                waybill = #{waybill,jdbcType=VARCHAR},
+            </if>
+            <if test="reason != null">
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="importPeople != null">
+                import_people = #{importPeople,jdbcType=VARCHAR},
+            </if>
+            <if test="importTime != null">
+                import_time = #{importTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.brandslink.cloud.finance.pojo.entity.ImportFailure">
+        update tf_import_failure
+        set package_no = #{packageNo,jdbcType=VARCHAR},
+            waybill = #{waybill,jdbcType=VARCHAR},
+            reason = #{reason,jdbcType=VARCHAR},
+            import_people = #{importPeople,jdbcType=VARCHAR},
+            import_time = #{importTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.brandslink.cloud.finance.pojo.entity.ImportFailure" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tf_import_failure
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="packageNo != null and packageNo != ''">
+                 and package_no = #{packageNo,jdbcType=VARCHAR}
+            </if>
+            <if test="waybill != null and waybill != ''">
+                 and waybill = #{waybill,jdbcType=VARCHAR}
+            </if>
+            <if test="reason != null and reason != ''">
+                 and reason = #{reason,jdbcType=VARCHAR}
+            </if>
+            <if test="importPeople != null and importPeople != ''">
+                 and import_people = #{importPeople,jdbcType=VARCHAR}
+            </if>
+            <if test="importTime != null and importTime != ''">
+                 and import_time = #{importTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <delete id="deleteByIds" parameterType="list">
+        delete from tf_import_failure
+        where id in
+        <foreach collection="ids"  item="item" open="(" separator="," close=")"  >#{item}</foreach>
+    </delete>
+
+
+</mapper>

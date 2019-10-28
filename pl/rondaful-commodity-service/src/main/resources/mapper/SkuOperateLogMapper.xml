@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.commodity.mapper.SkuOperateLogMapper">
+  <resultMap id="BaseResultMap" type="com.rondaful.cloud.commodity.entity.SkuOperateLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="system_sku" jdbcType="VARCHAR" property="systemSku" />
+    <result column="operate_by" jdbcType="VARCHAR" property="operateBy" />
+    <result column="operate_info" jdbcType="VARCHAR" property="operateInfo" />
+    <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, system_sku, operate_by, operate_info, creat_time
+  </sql>
+  
+  <select id="selectBySku" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sku_operate_log
+    where system_sku = #{systemSku}
+    order by creat_time desc
+  </select>
+  
+
+  <insert id="insert" parameterType="com.rondaful.cloud.commodity.entity.SkuOperateLog">
+    insert into t_sku_operate_log (system_sku, operate_by, 
+      operate_info, creat_time)
+    values (#{systemSku,jdbcType=VARCHAR}, #{operateBy,jdbcType=VARCHAR}, 
+      #{operateInfo,jdbcType=VARCHAR}, now())
+  </insert>
+  
+</mapper>

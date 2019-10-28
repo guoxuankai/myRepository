@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.LogisticsAuthMapper">
+
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.Logistics.LogisticsAuth">
+        <id column="develop_id" jdbcType="BIGINT" property="developId" />
+        <result column="secret" jdbcType="VARCHAR" property="secret" />
+        <result column="token" jdbcType="VARCHAR" property="token" />
+        <result column="type" jdbcType="TINYINT" property="type" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        develop_id,secret,token,type,create_time
+    </sql>
+
+
+    <insert id="insertLogisticsAuth" parameterType="com.rondaful.cloud.supplier.entity.Logistics.LogisticsAuth">
+        insert into t_logistics_Auth (develop_id,secret,token,type,create_time)
+         values (#{developId},#{secret},#{info.code},#{token},#{type},#{createTime})
+    </insert>
+
+
+
+
+	<select id="queryLogisticsAuth" parameterType="com.rondaful.cloud.supplier.entity.Logistics.LogisticsAuth" resultType="com.rondaful.cloud.supplier.entity.Logistics.LogisticsAuth">
+		SELECT
+		develop_id developId,secret,token,type
+		FROM t_logistics_Auth
+		WHERE 1=1 and type = #{type}
+	</select>
+
+</mapper>

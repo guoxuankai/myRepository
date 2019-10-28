@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.user.mapper.StorageUserMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.user.storage.entity.StorageUser">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="create_date" jdbcType="VARCHAR" property="createDate" />
+        <result column="update_date" jdbcType="VARCHAR" property="updateDate" />
+        <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+        <result column="uniform_credit_code" jdbcType="VARCHAR" property="uniformCreditCode" />
+        <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
+        <result column="legal_person" jdbcType="VARCHAR" property="legalPerson" />
+        <result column="identity_card" jdbcType="VARCHAR" property="identityCard" />
+        <result column="identitycard_front_site" jdbcType="VARCHAR" property="identitycardFrontSite" />
+        <result column="identitycard_reverse_site" jdbcType="VARCHAR" property="identitycardReverseSite" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="detailed_address" jdbcType="VARCHAR" property="detailedAddress" />
+        <result column="linkman" jdbcType="VARCHAR" property="linkman" />
+        <result column="cooperation_model" jdbcType="INTEGER" property="cooperationModel" />
+        <result column="obligate" jdbcType="VARCHAR" property="obligate" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="dispose_result" jdbcType="INTEGER" property="disposeResult" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, account, password, phone, email, create_date, update_date, company_name, uniform_credit_code, 
+        business_license, legal_person, identity_card, identitycard_front_site, identitycard_reverse_site, 
+        state, province, city, detailed_address, linkman, cooperation_model, obligate, status, 
+        dispose_result
+    </sql>
+    
+
+
+
+
+
+</mapper>

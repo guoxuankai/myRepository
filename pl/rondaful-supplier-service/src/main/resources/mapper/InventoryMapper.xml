@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.supplier.mapper.InventoryMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.supplier.entity.inventory.Inventory">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId" />
+        <result column="supplier_sku" jdbcType="VARCHAR" property="supplierSku" />
+        <result column="instransit_qty" jdbcType="INTEGER" property="instransitQty" />
+        <result column="available_qty" jdbcType="INTEGER" property="availableQty" />
+        <result column="qty" jdbcType="INTEGER" property="qty" />
+        <result column="waiting_shipping_qty" jdbcType="INTEGER" property="waitingShippingQty" />
+        <result column="allocating_qty" jdbcType="INTEGER" property="allocatingQty" />
+        <result column="defects_qty" jdbcType="INTEGER" property="defectsQty" />
+        <result column="pinlian_sku" jdbcType="VARCHAR" property="pinlianSku" />
+        <result column="product_barcode" jdbcType="VARCHAR" property="productBarcode" />
+        <result column="pending_qty" jdbcType="INTEGER" property="pendingQty" />
+        <result column="shipped_qty" jdbcType="INTEGER" property="shippedQty" />
+        <result column="sold_shared_qty" jdbcType="INTEGER" property="soldSharedQty" />
+        <result column="stocking_qty" jdbcType="INTEGER" property="stockingQty" />
+        <result column="pi_no_stock_qty" jdbcType="INTEGER" property="piNoStockQty" />
+        <result column="tune_out_qty" jdbcType="INTEGER" property="tuneOutQty" />
+        <result column="tune_in_qty" jdbcType="INTEGER" property="tuneInQty" />
+        <result column="product_sales_value" jdbcType="DECIMAL" property="productSalesValue" />
+        <result column="warn_val" jdbcType="INTEGER" property="warnVal" />
+        <result column="sync_time" jdbcType="TIMESTAMP" property="syncTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+        <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+        <result column="local_waiting_shipping_qty" jdbcType="INTEGER" property="localWaitingShippingQty" />
+        <result column="seller_id" jdbcType="VARCHAR" property="sellerId" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, warehouse_id, supplier_sku, instransit_qty, available_qty, qty, waiting_shipping_qty, 
+        allocating_qty, defects_qty, pinlian_sku,
+        product_barcode, pending_qty, shipped_qty, sold_shared_qty, stocking_qty, pi_no_stock_qty, 
+        tune_out_qty, tune_in_qty, product_sales_value, warn_val, sync_time, update_by, update_date,supplier_id,local_waiting_shipping_qty
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_inventory
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_inventory
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.supplier.entity.inventory.Inventory">
+        insert into t_inventory (id, warehouse_id, supplier_sku, 
+            instransit_qty, available_qty, qty, 
+            waiting_shipping_qty, allocating_qty, defects_qty, 
+            pinlian_sku, product_barcode, pending_qty,
+            shipped_qty, sold_shared_qty, stocking_qty, 
+            pi_no_stock_qty, tune_out_qty, tune_in_qty, 
+            product_sales_value, warn_val, sync_time, 
+            update_by, update_date,supplier_id)
+        values (#{id,jdbcType=INTEGER}, #{warehouseId,jdbcType=INTEGER}, #{supplierSku,jdbcType=VARCHAR}, 
+            #{instransitQty,jdbcType=INTEGER}, #{availableQty,jdbcType=INTEGER}, #{qty,jdbcType=INTEGER}, 
+            #{waitingShippingQty,jdbcType=INTEGER}, #{allocatingQty,jdbcType=INTEGER}, #{defectsQty,jdbcType=INTEGER}, 
+            #{pinlianSku,jdbcType=VARCHAR},  #{productBarcode,jdbcType=VARCHAR}, #{pendingQty,jdbcType=INTEGER},
+            #{shippedQty,jdbcType=INTEGER}, #{soldSharedQty,jdbcType=INTEGER}, #{stockingQty,jdbcType=INTEGER}, 
+            #{piNoStockQty,jdbcType=INTEGER}, #{tuneOutQty,jdbcType=INTEGER}, #{tuneInQty,jdbcType=INTEGER}, 
+            #{productSalesValue,jdbcType=DECIMAL}, #{warnVal,jdbcType=INTEGER}, #{syncTime,jdbcType=TIMESTAMP}, 
+            #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{supplierId,jdbcType=INTEGER})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.supplier.entity.inventory.Inventory">
+        insert into t_inventory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="warehouseId != null">
+                warehouse_id,
+            </if>
+            <if test="supplierSku != null">
+                supplier_sku,
+            </if>
+            <if test="instransitQty != null">
+                instransit_qty,
+            </if>
+            <if test="availableQty != null">
+                available_qty,
+            </if>
+            <if test="qty != null">
+                qty,
+            </if>
+            <if test="waitingShippingQty != null">
+                waiting_shipping_qty,
+            </if>
+            <if test="allocatingQty != null">
+                allocating_qty,
+            </if>
+            <if test="defectsQty != null">
+                defects_qty,
+            </if>
+            <if test="pinlianSku != null">
+                pinlian_sku,
+            </if>
+            <if test="productBarcode != null">
+                product_barcode,
+            </if>
+            <if test="pendingQty != null">
+                pending_qty,
+            </if>
+            <if test="shippedQty != null">
+                shipped_qty,
+            </if>
+            <if test="soldSharedQty != null">
+                sold_shared_qty,
+            </if>
+            <if test="stockingQty != null">
+                stocking_qty,
+            </if>
+            <if test="piNoStockQty != null">
+                pi_no_stock_qty,
+            </if>
+            <if test="tuneOutQty != null">
+                tune_out_qty,
+            </if>
+            <if test="tuneInQty != null">
+                tune_in_qty,
+            </if>
+            <if test="productSalesValue != null">
+                product_sales_value,
+            </if>
+            <if test="warnVal != null">
+                warn_val,
+            </if>
+            <if test="syncTime != null">
+                sync_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateDate != null">
+                update_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="warehouseId != null">
+                #{warehouseId,jdbcType=INTEGER},
+            </if>
+            <if test="supplierSku != null">
+                #{supplierSku,jdbcType=VARCHAR},
+            </if>
+            <if test="instransitQty != null">
+                #{instransitQty,jdbcType=INTEGER},
+            </if>
+            <if test="availableQty != null">
+                #{availableQty,jdbcType=INTEGER},
+            </if>
+            <if test="qty != null">
+                #{qty,jdbcType=INTEGER},
+            </if>
+            <if test="waitingShippingQty != null">
+                #{waitingShippingQty,jdbcType=INTEGER},
+            </if>
+            <if test="allocatingQty != null">
+                #{allocatingQty,jdbcType=INTEGER},
+            </if>
+            <if test="defectsQty != null">
+                #{defectsQty,jdbcType=INTEGER},
+            </if>
+            <if test="pinlianSku != null">
+                #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="productBarcode != null">
+                #{productBarcode,jdbcType=VARCHAR},
+            </if>
+            <if test="pendingQty != null">
+                #{pendingQty,jdbcType=INTEGER},
+            </if>
+            <if test="shippedQty != null">
+                #{shippedQty,jdbcType=INTEGER},
+            </if>
+            <if test="soldSharedQty != null">
+                #{soldSharedQty,jdbcType=INTEGER},
+            </if>
+            <if test="stockingQty != null">
+                #{stockingQty,jdbcType=INTEGER},
+            </if>
+            <if test="piNoStockQty != null">
+                #{piNoStockQty,jdbcType=INTEGER},
+            </if>
+            <if test="tuneOutQty != null">
+                #{tuneOutQty,jdbcType=INTEGER},
+            </if>
+            <if test="tuneInQty != null">
+                #{tuneInQty,jdbcType=INTEGER},
+            </if>
+            <if test="productSalesValue != null">
+                #{productSalesValue,jdbcType=DECIMAL},
+            </if>
+            <if test="warnVal != null">
+                #{warnVal,jdbcType=INTEGER},
+            </if>
+            <if test="syncTime != null">
+                #{syncTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.supplier.entity.inventory.Inventory">
+        update t_inventory
+        <set>
+            <if test="supplierSku != null">
+                supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+            </if>
+            <if test="instransitQty != null or instransitQty==0">
+                instransit_qty = #{instransitQty,jdbcType=INTEGER},
+            </if>
+            <if test="availableQty != null or availableQty==0 ">
+                available_qty = #{availableQty,jdbcType=INTEGER},
+            </if>
+            <if test="qty != null or qty==0">
+                qty = #{qty,jdbcType=INTEGER},
+            </if>
+            <if test="waitingShippingQty != null or waitingShippingQty==0">
+                waiting_shipping_qty = #{waitingShippingQty,jdbcType=INTEGER},
+            </if>
+            <if test="allocatingQty != null or allocatingQty==0">
+                allocating_qty = #{allocatingQty,jdbcType=INTEGER},
+            </if>
+            <if test="defectsQty != null or defectsQty==0">
+                defects_qty = #{defectsQty,jdbcType=INTEGER},
+            </if>
+            <if test="pinlianSku != null">
+                pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            </if>
+            <if test="productBarcode != null">
+                product_barcode = #{productBarcode,jdbcType=VARCHAR},
+            </if>
+            <if test="pendingQty != null or pendingQty==0">
+                pending_qty = #{pendingQty,jdbcType=INTEGER},
+            </if>
+            <if test="shippedQty != null or shippedQty==0 ">
+                shipped_qty = #{shippedQty,jdbcType=INTEGER},
+            </if>
+            <if test="soldSharedQty != null or soldSharedQty==0 ">
+                sold_shared_qty = #{soldSharedQty,jdbcType=INTEGER},
+            </if>
+            <if test="stockingQty != null or stockingQty==0 ">
+                stocking_qty = #{stockingQty,jdbcType=INTEGER},
+            </if>
+            <if test="piNoStockQty != null or piNoStockQty==0 ">
+                pi_no_stock_qty = #{piNoStockQty,jdbcType=INTEGER},
+            </if>
+            <if test="tuneOutQty != null or tuneOutQty==0 ">
+                tune_out_qty = #{tuneOutQty,jdbcType=INTEGER},
+            </if>
+            <if test="tuneInQty != null or tuneInQty==0 ">
+                tune_in_qty = #{tuneInQty,jdbcType=INTEGER},
+            </if>
+            <if test="productSalesValue != null">
+                product_sales_value = #{productSalesValue,jdbcType=DECIMAL},
+            </if>
+            <if test="warnVal != null">
+                warn_val = #{warnVal,jdbcType=INTEGER},
+            </if>
+            <if test="syncTime != null">
+                sync_time = #{syncTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER} and warehouse_id = #{warehouseId,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.supplier.entity.inventory.Inventory">
+        update t_inventory
+        set
+            supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+            instransit_qty = #{instransitQty,jdbcType=INTEGER},
+            available_qty = #{availableQty,jdbcType=INTEGER},
+            qty = #{qty,jdbcType=INTEGER},
+            waiting_shipping_qty = #{waitingShippingQty,jdbcType=INTEGER},
+            allocating_qty = #{allocatingQty,jdbcType=INTEGER},
+            defects_qty = #{defectsQty,jdbcType=INTEGER},
+            pinlian_sku = #{pinlianSku,jdbcType=VARCHAR},
+            product_barcode = #{productBarcode,jdbcType=VARCHAR},
+            pending_qty = #{pendingQty,jdbcType=INTEGER},
+            shipped_qty = #{shippedQty,jdbcType=INTEGER},
+            sold_shared_qty = #{soldSharedQty,jdbcType=INTEGER},
+            stocking_qty = #{stockingQty,jdbcType=INTEGER},
+            pi_no_stock_qty = #{piNoStockQty,jdbcType=INTEGER},
+            tune_out_qty = #{tuneOutQty,jdbcType=INTEGER},
+            tune_in_qty = #{tuneInQty,jdbcType=INTEGER},
+            product_sales_value = #{productSalesValue,jdbcType=DECIMAL},
+            warn_val = #{warnVal,jdbcType=INTEGER},
+            sync_time = #{syncTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_date = #{updateDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER} and warehouse_id = #{warehouseId,jdbcType=INTEGER}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.supplier.entity.inventory.Inventory" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_inventory
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null and id != ''">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="warehouseId != null and warehouseId != ''">
+                 and warehouse_id = #{warehouseId,jdbcType=INTEGER}
+            </if>
+            <if test="supplierSku != null and supplierSku != ''">
+                 and supplier_sku = #{supplierSku,jdbcType=VARCHAR}
+            </if>
+            <if test="instransitQty != null and instransitQty != ''">
+                 and instransit_qty = #{instransitQty,jdbcType=INTEGER}
+            </if>
+            <if test="availableQty != null and availableQty != ''">
+                 and available_qty = #{availableQty,jdbcType=INTEGER}
+            </if>
+            <if test="qty != null and qty != ''">
+                 and qty = #{qty,jdbcType=INTEGER}
+            </if>
+            <if test="waitingShippingQty != null and waitingShippingQty != ''">
+                 and waiting_shipping_qty = #{waitingShippingQty,jdbcType=INTEGER}
+            </if>
+            <if test="allocatingQty != null and allocatingQty != ''">
+                 and allocating_qty = #{allocatingQty,jdbcType=INTEGER}
+            </if>
+            <if test="defectsQty != null and defectsQty != ''">
+                 and defects_qty = #{defectsQty,jdbcType=INTEGER}
+            </if>
+            <if test="pinlianSku != null and pinlianSku != ''">
+                 and pinlian_sku = #{pinlianSku,jdbcType=VARCHAR}
+            </if>
+            <if test="productBarcode != null and productBarcode != ''">
+                 and product_barcode = #{productBarcode,jdbcType=VARCHAR}
+            </if>
+            <if test="pendingQty != null and pendingQty != ''">
+                 and pending_qty = #{pendingQty,jdbcType=INTEGER}
+            </if>
+            <if test="shippedQty != null and shippedQty != ''">
+                 and shipped_qty = #{shippedQty,jdbcType=INTEGER}
+            </if>
+            <if test="soldSharedQty != null and soldSharedQty != ''">
+                 and sold_shared_qty = #{soldSharedQty,jdbcType=INTEGER}
+            </if>
+            <if test="stockingQty != null and stockingQty != ''">
+                 and stocking_qty = #{stockingQty,jdbcType=INTEGER}
+            </if>
+            <if test="piNoStockQty != null and piNoStockQty != ''">
+                 and pi_no_stock_qty = #{piNoStockQty,jdbcType=INTEGER}
+            </if>
+            <if test="tuneOutQty != null and tuneOutQty != ''">
+                 and tune_out_qty = #{tuneOutQty,jdbcType=INTEGER}
+            </if>
+            <if test="tuneInQty != null and tuneInQty != ''">
+                 and tune_in_qty = #{tuneInQty,jdbcType=INTEGER}
+            </if>
+            <if test="productSalesValue != null and productSalesValue != ''">
+                 and product_sales_value = #{productSalesValue,jdbcType=DECIMAL}
+            </if>
+            <if test="warnVal != null and warnVal != ''">
+                 and warn_val = #{warnVal,jdbcType=INTEGER}
+            </if>
+            <if test="syncTime != null and syncTime != ''">
+                 and sync_time = #{syncTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                 and update_by = #{updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="updateDate != null and updateDate != ''">
+                 and update_date = #{updateDate,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_inventory (warehouse_id, supplier_sku,
+            instransit_qty, available_qty, qty,
+            waiting_shipping_qty, allocating_qty, defects_qty,
+            pinlian_sku, product_barcode, pending_qty,
+            shipped_qty, sold_shared_qty, stocking_qty,
+            pi_no_stock_qty, tune_out_qty, tune_in_qty,
+            product_sales_value, warn_val, sync_time,
+            update_by, update_date,supplier_id)
+        values
+        <foreach collection="list" item="item" separator="," index="index">
+            ( #{item.warehouseId,jdbcType=INTEGER}, #{item.supplierSku,jdbcType=VARCHAR},
+            #{item.instransitQty,jdbcType=INTEGER}, #{item.availableQty,jdbcType=INTEGER}, #{item.qty,jdbcType=INTEGER},
+            #{item.waitingShippingQty,jdbcType=INTEGER}, #{item.allocatingQty,jdbcType=INTEGER}, #{item.defectsQty,jdbcType=INTEGER},
+            #{item.pinlianSku,jdbcType=VARCHAR}, #{item.productBarcode,jdbcType=VARCHAR}, #{item.pendingQty,jdbcType=INTEGER},
+            #{item.shippedQty,jdbcType=INTEGER}, #{item.soldSharedQty,jdbcType=INTEGER}, #{item.stockingQty,jdbcType=INTEGER},
+            #{item.piNoStockQty,jdbcType=INTEGER}, #{item.tuneOutQty,jdbcType=INTEGER}, #{item.tuneInQty,jdbcType=INTEGER},
+            #{item.productSalesValue,jdbcType=DECIMAL}, #{item.warnVal,jdbcType=INTEGER}, #{item.syncTime,jdbcType=TIMESTAMP},
+            #{item.updateBy,jdbcType=VARCHAR}, #{item.updateDate,jdbcType=TIMESTAMP}, #{item.supplierId,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <select id="getsPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_inventory
+        where warehouse_id in
+        <foreach collection="warehouseIds" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        <if test="pinlianSkus != null and pinlianSkus.size() >0 ">
+            and pinlian_sku in
+            <foreach collection="pinlianSkus" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="status !=null or status==0">
+            <choose>
+                <when test="status==1">
+                    AND ( (available_qty - local_waiting_shipping_qty) &gt;= warn_val  or  warn_val=-1)
+                </when>
+                <otherwise>
+                    AND warn_val!=-1 AND ((available_qty - local_waiting_shipping_qty) &lt; warn_val)
+                </otherwise>
+            </choose>
+        </if>
+        <if test="supplierIds !=null and supplierIds.size()>0">
+            and supplier_id in
+            <foreach collection="supplierIds" close=")" open="(" separator="," index="index" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="sellerId != null and sellerId !=0">
+            and (seller_id is null or seller_id like CONCAT('%"',#{sellerId},'"%'))
+        </if>
+    </select>
+
+    <select id="getByWPinlianSku" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_inventory
+        where warehouse_id=#{warehouseId,jdbcType=INTEGER}
+        and pinlian_sku=#{pinlianSku,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateByPinlianSku" parameterType="com.rondaful.cloud.supplier.entity.inventory.Inventory">
+        update t_inventory
+        <set>
+            <if test="supplierSku != null">
+                supplier_sku = #{supplierSku,jdbcType=VARCHAR},
+            </if>
+            <if test="instransitQty != null">
+                instransit_qty = #{instransitQty,jdbcType=INTEGER},
+            </if>
+            <if test="availableQty != null">
+                available_qty = #{availableQty,jdbcType=INTEGER},
+            </if>
+            <if test="qty != null">
+                qty = #{qty,jdbcType=INTEGER},
+            </if>
+            <if test="waitingShippingQty != null">
+                waiting_shipping_qty = #{waitingShippingQty,jdbcType=INTEGER},
+            </if>
+            <if test="allocatingQty != null">
+                allocating_qty = #{allocatingQty,jdbcType=INTEGER},
+            </if>
+            <if test="defectsQty != null">
+                defects_qty = #{defectsQty,jdbcType=INTEGER},
+            </if>
+            <if test="productBarcode != null">
+                product_barcode = #{productBarcode,jdbcType=VARCHAR},
+            </if>
+            <if test="pendingQty != null">
+                pending_qty = #{pendingQty,jdbcType=INTEGER},
+            </if>
+            <if test="shippedQty != null">
+                shipped_qty = #{shippedQty,jdbcType=INTEGER},
+            </if>
+            <if test="soldSharedQty != null">
+                sold_shared_qty = #{soldSharedQty,jdbcType=INTEGER},
+            </if>
+            <if test="stockingQty != null">
+                stocking_qty = #{stockingQty,jdbcType=INTEGER},
+            </if>
+            <if test="piNoStockQty != null">
+                pi_no_stock_qty = #{piNoStockQty,jdbcType=INTEGER},
+            </if>
+            <if test="tuneOutQty != null">
+                tune_out_qty = #{tuneOutQty,jdbcType=INTEGER},
+            </if>
+            <if test="tuneInQty != null">
+                tune_in_qty = #{tuneInQty,jdbcType=INTEGER},
+            </if>
+            <if test="productSalesValue != null">
+                product_sales_value = #{productSalesValue,jdbcType=DECIMAL},
+            </if>
+            <if test="warnVal != null">
+                warn_val = #{warnVal,jdbcType=INTEGER},
+            </if>
+            <if test="syncTime != null">
+                sync_time = #{syncTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where warehouse_id = #{warehouseId,jdbcType=INTEGER} and pinlian_sku = #{pinlianSku,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateWarnVal" >
+      update t_inventory set warn_val = #{warnVal,jdbcType=INTEGER},update_by = #{updateBy,jdbcType=VARCHAR},update_date = now() where
+      warehouse_id = #{warehouseId,jdbcType=INTEGER} and  pinlian_sku in
+      <foreach collection="pinlianSkus" index="index" separator="," open="(" close=")" item="item">
+          #{item}
+      </foreach>
+    </update>
+
+    <select id="getsWIdSku" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_inventory
+        where warehouse_id in
+        <foreach collection="warehouseIds" index="index" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+        and pinlian_sku in
+        <foreach collection="skus"  index="index" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+        group by warehouse_id
+    </select>
+
+    <select id="getBySku" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_inventory
+        where warehouse_id in
+        <foreach collection="warehouseIds" index="index" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+        and pinlian_sku in
+        <foreach collection="skus"  index="index" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getsBySku" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_inventory
+        where warehouse_id = #{warehouseId,jdbcType=INTEGER}
+        and pinlian_sku in
+        <foreach collection="skus"  index="index" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        select
+        count(id)
+        from t_inventory
+        where warehouse_id = #{warehouseId,jdbcType=INTEGER} and available_qty &gt; 0
+    </select>
+
+    <update id="updateLocalShipping" >
+        UPDATE t_inventory  SET local_waiting_shipping_qty=local_waiting_shipping_qty+( #{qty,jdbcType=INTEGER} )
+        WHERE warehouse_id = #{warehouseId,jdbcType=INTEGER} and  pinlian_sku = #{pinlianSku,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateSellerId" >
+        UPDATE t_inventory  SET seller_id=#{sellerId,jdbcType=INTEGER}
+        WHERE warehouse_id = #{warehouseId,jdbcType=INTEGER} and  pinlian_sku = #{pinlianSku,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getAppCount" resultType="java.lang.Integer">
+        select
+        count(id)
+        from t_inventory
+        where
+        warehouse_id IN
+        <foreach collection="warehouseIds" item="item" close=")" open="(" separator="," index="index">
+            #{item}
+        </foreach>
+        AND (supplier_id = #{supplierId,jdbcType=INTEGER} or supplier_id = 0)
+        <if test="type ==1 ">
+            AND (available_qty - warn_val) &lt; 0
+        </if>
+        <if test="type ==2">
+            AND (available_qty - local_waiting_shipping_qty) &gt;= 0
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rondaful.cloud.seller.mapper.EbayProductCategoryAttributeMapper">
+    
+    <resultMap id="BaseResultMap" type="com.rondaful.cloud.seller.entity.EbayProductCategoryAttribute">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="category_id" jdbcType="CHAR" property="categoryId" />
+        <result column="min_values" jdbcType="INTEGER" property="minValues" />
+        <result column="max_values" jdbcType="INTEGER" property="maxValues" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="name_cn" jdbcType="VARCHAR" property="nameCn" />
+        <result column="selection_mode" jdbcType="VARCHAR" property="selectionMode" />
+        <result column="value_type" jdbcType="VARCHAR" property="valueType" />
+        <result column="value" jdbcType="VARCHAR" property="value" />
+        <result column="variation_specifics" jdbcType="VARCHAR" property="variationSpecifics" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="site" jdbcType="VARCHAR" property="site" />
+        <result column="version" jdbcType="VARCHAR" property="version" />
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, category_id, min_values, max_values, name, name_cn, selection_mode, value_type, 
+        value, variation_specifics, create_time, site, version
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_product_category_attribute
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ebay_product_category_attribute
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.rondaful.cloud.seller.entity.EbayProductCategoryAttribute">
+        insert into ebay_product_category_attribute (id, category_id, min_values, 
+            max_values, name, name_cn, 
+            selection_mode, value_type, value, 
+            variation_specifics, create_time, site, 
+            version)
+        values (#{id,jdbcType=INTEGER}, #{categoryId,jdbcType=CHAR}, #{minValues,jdbcType=INTEGER}, 
+            #{maxValues,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{nameCn,jdbcType=VARCHAR}, 
+            #{selectionMode,jdbcType=VARCHAR}, #{valueType,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
+            #{variationSpecifics,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{site,jdbcType=VARCHAR}, 
+            #{version,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.rondaful.cloud.seller.entity.EbayProductCategoryAttribute">
+        insert into ebay_product_category_attribute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="minValues != null">
+                min_values,
+            </if>
+            <if test="maxValues != null">
+                max_values,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="nameCn != null">
+                name_cn,
+            </if>
+            <if test="selectionMode != null">
+                selection_mode,
+            </if>
+            <if test="valueType != null">
+                value_type,
+            </if>
+            <if test="value != null">
+                value,
+            </if>
+            <if test="variationSpecifics != null">
+                variation_specifics,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="site != null">
+                site,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=CHAR},
+            </if>
+            <if test="minValues != null">
+                #{minValues,jdbcType=INTEGER},
+            </if>
+            <if test="maxValues != null">
+                #{maxValues,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nameCn != null">
+                #{nameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="selectionMode != null">
+                #{selectionMode,jdbcType=VARCHAR},
+            </if>
+            <if test="valueType != null">
+                #{valueType,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="variationSpecifics != null">
+                #{variationSpecifics,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="site != null">
+                #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.rondaful.cloud.seller.entity.EbayProductCategoryAttribute">
+        update ebay_product_category_attribute
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=CHAR},
+            </if>
+            <if test="minValues != null">
+                min_values = #{minValues,jdbcType=INTEGER},
+            </if>
+            <if test="maxValues != null">
+                max_values = #{maxValues,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nameCn != null">
+                name_cn = #{nameCn,jdbcType=VARCHAR},
+            </if>
+            <if test="selectionMode != null">
+                selection_mode = #{selectionMode,jdbcType=VARCHAR},
+            </if>
+            <if test="valueType != null">
+                value_type = #{valueType,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                value = #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="variationSpecifics != null">
+                variation_specifics = #{variationSpecifics,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="site != null">
+                site = #{site,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=VARCHAR} + 1,
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+        <if test="version != null">
+            and version = #{version,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.rondaful.cloud.seller.entity.EbayProductCategoryAttribute">
+        update ebay_product_category_attribute
+        set category_id = #{categoryId,jdbcType=CHAR},
+            min_values = #{minValues,jdbcType=INTEGER},
+            max_values = #{maxValues,jdbcType=INTEGER},
+            name = #{name,jdbcType=VARCHAR},
+            name_cn = #{nameCn,jdbcType=VARCHAR},
+            selection_mode = #{selectionMode,jdbcType=VARCHAR},
+            value_type = #{valueType,jdbcType=VARCHAR},
+            value = #{value,jdbcType=VARCHAR},
+            variation_specifics = #{variationSpecifics,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            site = #{site,jdbcType=VARCHAR},
+            version = #{version,jdbcType=VARCHAR} + 1
+        where id = #{id,jdbcType=INTEGER}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
+    
+    <select id="page" parameterType="com.rondaful.cloud.seller.entity.EbayProductCategoryAttribute" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ebay_product_category_attribute
+        <trim prefix="where" prefixOverrides="and">
+            <if test="id != null">
+                 and id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="categoryId != null">
+                 and category_id = #{categoryId,jdbcType=CHAR}
+            </if>
+            <if test="minValues != null and minValues != ''">
+                 and min_values = #{minValues,jdbcType=INTEGER}
+            </if>
+            <if test="maxValues != null">
+                 and max_values = #{maxValues,jdbcType=INTEGER}
+            </if>
+            <if test="name != null">
+                 and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="nameCn != null">
+                 and name_cn = #{nameCn,jdbcType=VARCHAR}
+            </if>
+            <if test="selectionMode != null">
+                 and selection_mode = #{selectionMode,jdbcType=VARCHAR}
+            </if>
+            <if test="valueType != null">
+                 and value_type = #{valueType,jdbcType=VARCHAR}
+            </if>
+            <if test="value != null">
+                 and value = #{value,jdbcType=VARCHAR}
+            </if>
+            <if test="variationSpecifics != null">
+                 and variation_specifics = #{variationSpecifics,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null">
+                 and create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="site != null">
+                 and site = #{site,jdbcType=VARCHAR}
+            </if>
+            <if test="version != null">
+                 and version = #{version,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </select>
+</mapper>
