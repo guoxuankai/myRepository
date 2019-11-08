@@ -1,0 +1,42 @@
+# define docker image when run job
+image: maven:3.3.9-jdk-8
+
+# define job variables at job level
+variables:
+  MAVEN_CLI_OPTS: "-s /home/gitlab-runner/builds/settings/settings.xml --batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=/home/gitlab-runner/builds/settings/repository"
+
+# define list of files that should be cached
+cache:
+  paths:
+  - /home/gitlab-runner/builds/settings/repository/
+  - target/
+
+# defines a job stage(default: test)
+stages:
+- build
+- package
+- deploy
+
+# define build job
+build:
+  stage: build
+  script:
+  - echo "======== start build ========"
+  - mvn $MAVEN_CLI_OPTS compile
+
+# define package job
+package:
+  stage: package
+  script:
+  - echo "======== start package ========"
+  - mvn $MAVEN_CLI_OPTS -Dmaven.test.skip=true package
+
+# define deploy job
+deploy:
+  stage: deploy
+  script:
+  - echo "======== start deploy ========"
+  - mvn $MAVEN_CLI_OPTS deploy
+  only:
+  - /^feature_.*$/
